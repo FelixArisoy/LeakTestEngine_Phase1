@@ -69,7 +69,7 @@
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="z_AteqCommTest\FB_AteqF6_IoMapper_Test.TcPOU">
+    <Compile Include="z_AteqCommTest\FB_Test_AteqF6_IoMapper.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="z_AteqComm\FB_AteqF6_IoMapper.TcPOU">

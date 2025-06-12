@@ -3,9 +3,9 @@
   <POU Name="FB_AteqF6_IoMapper" Id="{a376dbe7-1003-4cb6-a929-84c96ac13f52}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_AteqF6_IoMapper
 VAR_INPUT
-    iIndex        : INT;
-    pInputStart   : POINTER TO BYTE;
-    pOutputStart  : POINTER TO BYTE;
+	iIndex	: UINT;
+    pInputStartAdr   : POINTER TO BYTE;
+    pOutputStartAdr  : POINTER TO BYTE;
 END_VAR
 VAR_IN_OUT
     stDevice : ST_AteqF6_Device;
@@ -19,7 +19,7 @@ VAR
     nCounter 	: BYTE 	:= 0;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[bUpdate();]]></ST>
     </Implementation>
     <Method Name="bUpdate" Id="{174759b4-2266-4e4e-b2f5-6f8751b949e1}">
       <Declaration><![CDATA[METHOD PUBLIC bUpdate : BOOL
@@ -30,14 +30,14 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[// Copy Input → Device.stIn
-nInBytes := MEMCPY(ADR(stDevice.stIn), pInputStart, nInSize);
+nInBytes := MEMCPY(ADR(stDevice.stIn), pInputStartAdr, nInSize);
 
 // Copy Device.stOut → Output
-nOutBytes := MEMCPY(pOutputStart, ADR(stDevice.stOut), nOutSize);
+nOutBytes := MEMCPY(pOutputStartAdr, ADR(stDevice.stOut), nOutSize);
 
 // Heartbeat toggle
 nCounter := nCounter + 1;
-IF nCounter >= 100 THEN // Every ~2s at 20ms
+IF nCounter >= 200 THEN // Every ~2s at 10ms
     bHeartbeat := NOT bHeartbeat;
     nCounter := 0;
 END_IF

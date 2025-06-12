@@ -45,7 +45,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{FF505B91-FACF-4A2B-B73E-9C5E3B10185D}" Name="ValveControllerPLC" PrjFilePath="ValveControllerPLC\ValveControllerPLC.plcproj" TmcFilePath="ValveControllerPLC\ValveControllerPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{D33A9F8C-70D0-6646-B8C9-8725E8B180A3}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{5DCD78E5-926A-1725-0395-633DFE331179}">
 					<Name>ValveControllerPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
@@ -676,10 +676,10 @@ SW Release Version: 3.4.19]]></Comment>
 						</UsedGsdmlModule>
 						<UsedGsdmlSubModule SubModuleIdentNumber="4608" SubSlotNumber="1" TypeOfSubmodule="3" Id="DIM 3fo" SubModuleName="COMX RE/PNS V3.4.19 - V3.4.x FO" InfoText="Firmware version V3.4.19 - V3.4.x. Fiberoptics Hardware. Supports FastStartup, Identification &amp; Maintenance 1-4, RT and IRT Communication." SubModuleCategory="Device Access Point Modules"/>
 						<UsedGsdmlSubModule SubModuleIdentNumber="19" SubSlotNumber="1" TypeOfSubmodule="3" Id="64byteinput" SubModuleName="64 Bytes Input" InfoText="64 Bytes Input Submodule">
-							<DataItemIn Name="Inputs" VarSize="512" VarType="{18071995-0000-0000-0000-000300000040}"/>
+							<DataItemIn/>
 						</UsedGsdmlSubModule>
 						<UsedGsdmlSubModule SubModuleIdentNumber="20" SubSlotNumber="1" TypeOfSubmodule="3" Id="64byteoutput" SubModuleName="64 Bytes Output" InfoText="64 Bytes Output Submodule">
-							<DataItemOut Name="Outputs" VarSize="512" VarType="{18071995-0000-0000-0000-000300000040}"/>
+							<DataItemOut/>
 						</UsedGsdmlSubModule>
 						<API Id="1">
 							<Name>API</Name>

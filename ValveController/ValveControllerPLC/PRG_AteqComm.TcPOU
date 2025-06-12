@@ -4,23 +4,25 @@
     <Declaration><![CDATA[PROGRAM PRG_AteqComm
 VAR
     aFbMappers : ARRAY[1..4] OF FB_AteqF6_IoMapper;
-    iIndex     : INT;
+    iIndex     : UINT;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[(*
+      <ST><![CDATA[
 FOR iIndex := 1 TO nAteqF6_DevCount DO
     aFbMappers[iIndex](
         iIndex := iIndex,
-        pInputStart := ADR(aAteqF6_InputRaw[(iIndex - 1) * 64]),
-        pOutputStart := ADR(aAteqF6_OutputRaw[(iIndex - 1) * 64]),
+        pInputStartAdr := ADR(aAteqF6_InputRaw[(iIndex - 1) * 64]),
+        pOutputStartAdr := ADR(aAteqF6_OutputRaw[(iIndex - 1) * 64]),
         stDevice := aAteqF6_Device[iIndex]
     );
     aAteqF6_bHeartbeat[iIndex] := aFbMappers[iIndex].bHeartbeat;
 END_FOR
-*)]]></ST>
+]]></ST>
     </Implementation>
     <LineIds Name="PRG_AteqComm">
-      <LineId Id="10" Count="9" />
+      <LineId Id="10" Count="2" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="14" Count="5" />
       <LineId Id="5" Count="0" />
     </LineIds>
   </POU>
