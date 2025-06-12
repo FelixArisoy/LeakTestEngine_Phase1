@@ -15,9 +15,7 @@ VAR_OUTPUT
     bHeartbeat : BOOL;
 END_VAR
 VAR
-    nInSize 	: UDINT := SIZEOF(ST_AteqF6_Read);
-	nOutSize 	: UDINT := SIZEOF(ST_AteqF6_Write);
-    nCounter 	: BYTE 	:= 0;
+    
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[BuildOutBytes();
@@ -75,8 +73,6 @@ stDevice.stIn.aReserved1[0] := GVL_Ateq.aF6_InputRaw[iIndex][4];
 stDevice.stIn.aReserved1[1] := GVL_Ateq.aF6_InputRaw[iIndex][5];
 
 
-stDevice.stIn.nProgramInUse := SHL(BYTE_TO_WORD(GVL_Ateq.aF6_InputRaw[iIndex][6]), 8) OR BYTE_TO_WORD(GVL_Ateq.aF6_InputRaw[iIndex][7]);
-
 // Parse WORDs from bytes
 stDevice.stIn.nProgramInUse      := SHL(BYTE_TO_WORD(GVL_Ateq.aF6_InputRaw[iIndex][6]), 8) OR BYTE_TO_WORD(GVL_Ateq.aF6_InputRaw[iIndex][7]);
 stDevice.stIn.nResultsInFifo     := SHL(BYTE_TO_WORD(GVL_Ateq.aF6_InputRaw[iIndex][8]), 8) OR BYTE_TO_WORD(GVL_Ateq.aF6_InputRaw[iIndex][9]);
@@ -94,17 +90,23 @@ END_FOR;
     </Method>
     <Method Name="Update" Id="{174759b4-2266-4e4e-b2f5-6f8751b949e1}">
       <Declaration><![CDATA[METHOD PUBLIC Update
-VAR
-   nInBytes  : UDINT;
-   nOutBytes : UDINT;
+VAR 
+   	nInSize 	: UDINT := SIZEOF(ST_AteqF6_Read);
+	nOutSize 	: UDINT := SIZEOF(ST_AteqF6_Write);
+	nCounter 	: BYTE 	:= 0;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[// Copy Input → Device.stIn
-nInBytes := MEMCPY(ADR(stDevice.stIn), pInputStartAdr, nInSize);
+MEMCPY(		destAddr	:= ADR(stDevice.stIn), 
+		 	srcAddr		:= pInputStartAdr, 
+			n			:= nInSize);
 
 // Copy Device.stOut → Output
-nOutBytes := MEMCPY(pOutputStartAdr, ADR(stDevice.stOut), nOutSize);
+MEMCPY(		destAddr	:= pOutputStartAdr, 
+		 	srcAddr		:= ADR(stDevice.stOut), 
+			n			:= nOutSize);
+
 
 // Heartbeat toggle
 nCounter := nCounter + 1;
@@ -128,13 +130,19 @@ END_IF
     </LineIds>
     <LineIds Name="FB_AteqF6_IoMapper.ParseInBytes">
       <LineId Id="16" Count="9" />
-      <LineId Id="54" Count="2" />
+      <LineId Id="56" Count="0" />
       <LineId Id="26" Count="11" />
       <LineId Id="39" Count="0" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqF6_IoMapper.Update">
-      <LineId Id="111" Count="12" />
+      <LineId Id="111" Count="0" />
+      <LineId Id="132" Count="0" />
+      <LineId Id="135" Count="1" />
+      <LineId Id="113" Count="1" />
+      <LineId Id="138" Count="2" />
+      <LineId Id="134" Count="0" />
+      <LineId Id="116" Count="7" />
       <LineId Id="5" Count="0" />
     </LineIds>
   </POU>

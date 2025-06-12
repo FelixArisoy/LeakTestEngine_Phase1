@@ -13,12 +13,11 @@ VAR
                                               33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,
                                               49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64];
     aTestOutput     : ARRAY[0..63] OF BYTE;
-
-    
     
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[
+//Run Below Tests			
 Test_InputMapping();
 Test_OutputMapping();
 ]]></ST>
@@ -26,21 +25,19 @@ Test_OutputMapping();
     <Method Name="Test_InputMapping" Id="{d1f3064e-0c98-46ee-b01b-a927794569d8}">
       <Declaration><![CDATA[METHOD PUBLIC Test_InputMapping
 VAR
-    pInput : POINTER TO BYTE;
-    pOutput : POINTER TO BYTE;
+   pInput 	: POINTER TO BYTE;
+   pOutput 	: POINTER TO BYTE;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[TEST('InputMapping');
-
-pInput := ADR(aTestInput);
+pInput 	:= ADR(aTestInput);
 pOutput := ADR(aTestOutput);
 
 // Run mapper
-fbTest_AteqF6_IoMapper(	iIndex			:= 1,
+fbTest_AteqF6_IoMapper(	iIndex			:= 0,
 						pInputStartAdr 	:= pInput, 
 						pOutputStartAdr := pOutput, 
 						stDevice 		:= stTest_AteqF6_Device);
-
 // Validate mapped data
 fbTestSuite.AssertEquals_BYTE(	Expected 	:= 1, 
 								Actual 		:= stTest_AteqF6_Device.stIn.aEchoCmd[0],
@@ -48,36 +45,46 @@ fbTestSuite.AssertEquals_BYTE(	Expected 	:= 1,
 fbTestSuite.AssertEquals_BYTE(	Expected	:= 2,
 								Actual		:= stTest_AteqF6_Device.stIn.aEchoCmd[1],
 								Message		:= 'EchoCmd[1] mismatch');
-fbTestSuite.AssertEquals_WORD(	Expected	:= 1794,
+fbTestSuite.AssertEquals_WORD(	Expected	:= 2055,
 								Actual		:= stTest_AteqF6_Device.stIn.nProgramInUse,
 								Message		:= 'ProgramInUse mismatch');
-fbTestSuite.AssertEquals_WORD(	Expected	:= 2056,
+fbTestSuite.AssertEquals_WORD(	Expected	:= 2569,
+								Actual		:= stTest_AteqF6_Device.stIn.nResultsInFifo,
+								Message		:= 'ResultsInFifo mismatch');
+fbTestSuite.AssertEquals_WORD(	Expected	:= 3083,
+								Actual		:= stTest_AteqF6_Device.stIn.nTestType,
+								Message		:= 'TestType mismatch');								
+fbTestSuite.AssertEquals_WORD(	Expected	:= 3597,
 								Actual		:= stTest_AteqF6_Device.stIn.nRealTimeResults,
 								Message		:= 'RealTimeResults mismatch');
-
+fbTestSuite.AssertEquals_WORD(	Expected	:= 4111,
+								Actual		:= stTest_AteqF6_Device.stIn.nProgramStep,
+								Message		:= 'ProgramStep mismatch');
 TEST_FINISHED();]]></ST>
       </Implementation>
     </Method>
     <Method Name="Test_OutputMapping" Id="{f4de2307-dc02-4b4d-847b-42d7be068a06}">
       <Declaration><![CDATA[METHOD PUBLIC Test_OutputMapping
 VAR
-    pInput : POINTER TO BYTE;
-    pOutput : POINTER TO BYTE;
+   pInput 	: POINTER TO BYTE;
+   pOutput 	: POINTER TO BYTE;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[TEST('OutputMapping');
-// Assign known values
+// Assign known values keep on top, need to write it first before Test compares them, otherwise test fails
 stTest_AteqF6_Device.stOut.aCommands[0] := 192; // 0xC0
 stTest_AteqF6_Device.stOut.aCommands[1] := 128; // 0x80
 stTest_AteqF6_Device.stOut.nProgramSelect := 4660; // 0x1234
 
-pInput := ADR(aTestInput);
+pInput 	:= ADR(aTestInput);
 pOutput := ADR(aTestOutput);
 
-fbTest_AteqF6_IoMapper(	iIndex			:= 1,
+// Run mapper
+fbTest_AteqF6_IoMapper(	iIndex			:= 0,
 						pInputStartAdr 	:= pInput, 
 						pOutputStartAdr := pOutput, 
 						stDevice 		:= stTest_AteqF6_Device);
+
 
 // Validate mapped data
 fbTestSuite.AssertEquals_BYTE(	Expected	:= 192,
@@ -87,26 +94,25 @@ fbTestSuite.AssertEquals_BYTE(	Expected	:= 128,
 								Actual 		:= aTestOutput[1],
 								Message		:= 'OutputBuf[1] mismatch');
 fbTestSuite.AssertEquals_BYTE(	Expected	:= 52,
-								Actual		:= aTestOutput[4],
-								Message		:= 'ProgramSelect LSB mismatch');
+								Actual		:= aTestOutput[6],
+								Message		:= 'ProgramSelect HiByte mismatch');
 fbTestSuite.AssertEquals_BYTE(	Expected	:= 18,
-								Actual		:= aTestOutput[5],
-								Message		:= 'ProgramSelect MSB mismatch');
+								Actual		:= aTestOutput[7],
+								Message		:= 'ProgramSelect LoByte mismatch');
 
 TEST_FINISHED();
 ]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_Test_AteqF6_IoMapper">
-      <LineId Id="103" Count="2" />
+      <LineId Id="139" Count="0" />
+      <LineId Id="134" Count="0" />
+      <LineId Id="104" Count="1" />
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_Test_AteqF6_IoMapper.Test_InputMapping">
       <LineId Id="6" Count="0" />
-      <LineId Id="41" Count="0" />
-      <LineId Id="12" Count="4" />
-      <LineId Id="61" Count="0" />
-      <LineId Id="59" Count="1" />
+      <LineId Id="74" Count="6" />
       <LineId Id="40" Count="0" />
       <LineId Id="36" Count="1" />
       <LineId Id="46" Count="1" />
@@ -114,16 +120,23 @@ TEST_FINISHED();
       <LineId Id="48" Count="1" />
       <LineId Id="39" Count="0" />
       <LineId Id="50" Count="1" />
+      <LineId Id="67" Count="1" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="70" Count="1" />
+      <LineId Id="69" Count="0" />
       <LineId Id="34" Count="0" />
       <LineId Id="52" Count="1" />
+      <LineId Id="72" Count="1" />
       <LineId Id="35" Count="0" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_Test_AteqF6_IoMapper.Test_OutputMapping">
       <LineId Id="31" Count="0" />
-      <LineId Id="12" Count="8" />
-      <LineId Id="70" Count="0" />
-      <LineId Id="68" Count="1" />
+      <LineId Id="91" Count="2" />
+      <LineId Id="89" Count="1" />
+      <LineId Id="81" Count="6" />
+      <LineId Id="79" Count="0" />
+      <LineId Id="15" Count="0" />
       <LineId Id="37" Count="0" />
       <LineId Id="44" Count="0" />
       <LineId Id="48" Count="0" />
