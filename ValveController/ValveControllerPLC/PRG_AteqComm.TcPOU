@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="PRG_AteqComm" Id="{a3d4985a-23a4-4261-9530-cafe9c795619}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_AteqComm
+VAR
+    aFbMappers : ARRAY[1..4] OF FB_AteqF6_IoMapper;
+    iIndex     : INT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*
+FOR iIndex := 1 TO nAteqF6_DevCount DO
+    aFbMappers[iIndex](
+        iIndex := iIndex,
+        pInputStart := ADR(aAteqF6_InputRaw[(iIndex - 1) * 64]),
+        pOutputStart := ADR(aAteqF6_OutputRaw[(iIndex - 1) * 64]),
+        stDevice := aAteqF6_Device[iIndex]
+    );
+    aAteqF6_bHeartbeat[iIndex] := aFbMappers[iIndex].bHeartbeat;
+END_FOR
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="PRG_AteqComm">
+      <LineId Id="10" Count="9" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_AteqF6_IoMapper" Id="{a376dbe7-1003-4cb6-a929-84c96ac13f52}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AteqF6_IoMapper
+VAR_INPUT
+    iIndex        : INT;
+    pInputStart   : POINTER TO BYTE;
+    pOutputStart  : POINTER TO BYTE;
+END_VAR
+VAR_IN_OUT
+    stDevice : ST_AteqF6_Device;
+END_VAR
+VAR_OUTPUT
+    bHeartbeat : BOOL;
+END_VAR
+VAR
+    nInSize 	: UDINT := SIZEOF(ST_AteqF6_Read);
+	nOutSize 	: UDINT := SIZEOF(ST_AteqF6_Write);
+    nCounter 	: BYTE 	:= 0;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="bUpdate" Id="{174759b4-2266-4e4e-b2f5-6f8751b949e1}">
+      <Declaration><![CDATA[METHOD PUBLIC bUpdate : BOOL
+VAR
+   nInBytes  : UDINT;
+   nOutBytes : UDINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Copy Input → Device.stIn
+nInBytes := MEMCPY(ADR(stDevice.stIn), pInputStart, nInSize);
+
+// Copy Device.stOut → Output
+nOutBytes := MEMCPY(pOutputStart, ADR(stDevice.stOut), nOutSize);
+
+// Heartbeat toggle
+nCounter := nCounter + 1;
+IF nCounter >= 100 THEN // Every ~2s at 20ms
+    bHeartbeat := NOT bHeartbeat;
+    nCounter := 0;
+END_IF
+
+bUpdate := TRUE;
+]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_AteqF6_IoMapper">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqF6_IoMapper.bUpdate">
+      <LineId Id="111" Count="13" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

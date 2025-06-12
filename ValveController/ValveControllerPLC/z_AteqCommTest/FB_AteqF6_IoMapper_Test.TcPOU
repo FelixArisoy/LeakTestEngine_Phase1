@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_AteqF6_IoMapper_Test" Id="{b608c7ab-a9f5-4d6a-ae95-38172be6353d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AteqF6_IoMapper_Test EXTENDS TcUnit.FB_TestSuite
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+ 
+    fbAteqTestMapper        : FB_AteqF6_IoMapper;
+
+    aTestInput      : ARRAY[0..63] OF BYTE := [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,
+                                              17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,
+                                              33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,
+                                              49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64];
+    aTestOutput     : ARRAY[0..63] OF BYTE;
+
+    stTestDevice    : ST_AteqF6_Device;
+    bInitialHeartbeat 	: BOOL;
+    iLoop           	: INT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[TcUnit.RUN();
+Test_HeartbeatToggle();
+Test_InputMapping();
+Test_OutputMapping();
+]]></ST>
+    </Implementation>
+    <Method Name="Test_HeartbeatToggle" Id="{95ab174f-d903-4b50-bd79-a847c9f7cfc1}">
+      <Declaration><![CDATA[METHOD PUBLIC Test_HeartbeatToggle
+VAR_INPUT
+END_VAR
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('HeartbeatToggle');
+
+// Capture initial heartbeat state
+bInitialHeartbeat := fbAteqTestMapper.bHeartbeat;
+
+FOR iLoop := 1 TO 100 DO
+    fbAteqTestMapper.bUpdate();
+END_FOR
+
+AssertEquals_BOOL(Expected := bInitialHeartbeat, Actual := fbAteqTestMapper.bHeartbeat,  Message := 'Heartbeat did not toggle after 100 calls');
+
+
+TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_InputMapping" Id="{d1f3064e-0c98-46ee-b01b-a927794569d8}">
+      <Declaration><![CDATA[METHOD PUBLIC Test_InputMapping
+VAR
+    pInput : POINTER TO BYTE;
+    pOutput : POINTER TO BYTE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('InputMapping');
+
+pInput := ADR(aTestInput);
+pOutput := ADR(aTestOutput);
+
+// Run mapper
+fbAteqTestMapper(iIndex := 1, pInputStart := pInput, pOutputStart := pOutput, stDevice := stTestDevice);
+
+// Validate mapped data
+AssertEquals_BYTE(1, stTestDevice.stIn.aEchoCmd[0], 'EchoCmd[0] mismatch');
+AssertEquals_BYTE(2, stTestDevice.stIn.aEchoCmd[1], 'EchoCmd[1] mismatch');
+AssertEquals_WORD(1794, stTestDevice.stIn.nProgramInUse, 'ProgramInUse mismatch');
+AssertEquals_WORD(2056, stTestDevice.stIn.nRealTimeResults, 'RealTimeResults mismatch');
+
+TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_OutputMapping" Id="{f4de2307-dc02-4b4d-847b-42d7be068a06}">
+      <Declaration><![CDATA[METHOD PUBLIC Test_OutputMapping
+VAR
+    pInput : POINTER TO BYTE;
+    pOutput : POINTER TO BYTE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('OutputMapping');
+// Assign known values
+stTestDevice.stOut.aCommands[0] := 192; // 0xC0
+stTestDevice.stOut.aCommands[1] := 128; // 0x80
+stTestDevice.stOut.nProgramSelect := 4660; // 0x1234
+
+pInput := ADR(aTestInput);
+pOutput := ADR(aTestOutput);
+
+fbAteqTestMapper(iIndex := 1, pInputStart := pInput, pOutputStart := pOutput, stDevice := stTestDevice);
+
+// Validate mapped data
+AssertEquals_BYTE(192, aTestOutput[0], 'OutputBuf[0] mismatch');
+AssertEquals_BYTE(128, aTestOutput[1], 'OutputBuf[1] mismatch');
+AssertEquals_BYTE(52, aTestOutput[4], 'ProgramSelect LSB mismatch');
+AssertEquals_BYTE(18, aTestOutput[5], 'ProgramSelect MSB mismatch');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_AteqF6_IoMapper_Test">
+      <LineId Id="49" Count="0" />
+      <LineId Id="28" Count="2" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqF6_IoMapper_Test.Test_HeartbeatToggle">
+      <LineId Id="25" Count="3" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="30" Count="4" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqF6_IoMapper_Test.Test_InputMapping">
+      <LineId Id="6" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="12" Count="4" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="36" Count="3" />
+      <LineId Id="34" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqF6_IoMapper_Test.Test_OutputMapping">
+      <LineId Id="31" Count="0" />
+      <LineId Id="12" Count="8" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="48" Count="2" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

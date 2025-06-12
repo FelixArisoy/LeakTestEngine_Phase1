@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <Itf Name="I_ValveBank" Id="{9abff4a5-9dc4-4338-a357-8d967cc6368b}">
+    <Declaration><![CDATA[INTERFACE I_ValveBank EXTENDS IValve
+]]></Declaration>
+    <Method Name="AddValve" Id="{40186191-08b9-4aab-8670-059bfa3bd986}">
+      <Declaration><![CDATA[METHOD AddValve : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="GetValveStats" Id="{cc111834-5512-4f98-b80c-ee2a3f76900a}">
+      <Declaration><![CDATA[METHOD GetValveStats : INT
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="TriggerFromMask" Id="{755f9910-c101-4fb7-90ee-bcba44a6a4a3}">
+      <Declaration><![CDATA[METHOD TriggerFromMask : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

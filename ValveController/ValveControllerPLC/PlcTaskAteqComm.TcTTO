@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <Task Name="PlcTaskAteqComm" Id="{c7c3dd2a-1c4b-463f-9059-6604d77e0d86}">
+    <!--CycleTime in micro seconds.-->
+    <CycleTime>10000</CycleTime>
+    <Priority>10</Priority>
+    <PouCall>
+      <Name>PRG_AteqComm</Name>
+    </PouCall>
+    <PouCall>
+      <Name>PRG_TEST</Name>
+    </PouCall>
+    <TaskFBGuid>{6ad5acdf-9348-4f97-af1c-c0c809d08bd6}</TaskFBGuid>
+    <Fb_init>{95855194-34eb-4c8e-b2f2-7845446490b4}</Fb_init>
+    <Fb_exit>{ecdec34f-276b-4a15-9ee3-b5caac477dfe}</Fb_exit>
+    <CycleUpdate>{4f1967bd-6797-4580-be0f-a8788fa64af9}</CycleUpdate>
+    <PostCycleUpdate>{3edb234b-3a4d-41d2-96e5-c6e7c9406099}</PostCycleUpdate>
+  </Task>
+</TcPlcObject>
