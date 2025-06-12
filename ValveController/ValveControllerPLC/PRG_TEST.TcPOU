@@ -3,7 +3,7 @@
   <POU Name="PRG_TEST" Id="{17166b4e-59dc-4826-b23b-b13d729fc1f3}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_TEST
 VAR
-	
+
 	fbAteqF6_IoMapper_Test : FB_Test_AteqF6_IoMapper;
 	 
 END_VAR
@@ -11,7 +11,7 @@ END_VAR
 
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
+      <ST><![CDATA[TcUnit.RUN();
 fbAteqF6_IoMapper_Test();
 ]]></ST>
     </Implementation>

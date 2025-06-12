@@ -7,6 +7,9 @@
     <PouCall>
       <Name>PRG_AteqComm</Name>
     </PouCall>
+    <PouCall>
+      <Name>PRG_TEST</Name>
+    </PouCall>
     <TaskFBGuid>{6ad5acdf-9348-4f97-af1c-c0c809d08bd6}</TaskFBGuid>
     <Fb_init>{95855194-34eb-4c8e-b2f2-7845446490b4}</Fb_init>
     <Fb_exit>{ecdec34f-276b-4a15-9ee3-b5caac477dfe}</Fb_exit>

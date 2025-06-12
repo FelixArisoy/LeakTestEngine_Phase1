@@ -11,11 +11,11 @@ END_VAR]]></Declaration>
 FOR iIndex := 1 TO nAteqF6_DevCount DO
     aFbMappers[iIndex](
         iIndex := iIndex,
-        pInputStartAdr := ADR(aAteqF6_InputRaw[(iIndex - 1) * 64]),
-        pOutputStartAdr := ADR(aAteqF6_OutputRaw[(iIndex - 1) * 64]),
-        stDevice := aAteqF6_Device[iIndex]
+        pInputStartAdr := ADR(aF6_InputRaw[(iIndex - 1) * 64]),
+        pOutputStartAdr := ADR(aF6_OutputRaw[(iIndex - 1) * 64]),
+        stDevice := aF6_Device[iIndex]
     );
-    aAteqF6_bHeartbeat[iIndex] := aFbMappers[iIndex].bHeartbeat;
+    aF6_bHeartbeat[iIndex] := aFbMappers[iIndex].bHeartbeat;
 END_FOR
 ]]></ST>
     </Implementation>
