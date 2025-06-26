@@ -69,23 +69,23 @@
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="z_AteqCommTest\FB_Test_AteqF6_IoMapper.TcPOU">
+    <Compile Include="z_AteqCommTest\FB_Test_AteqComm.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="z_AteqComm\FB_AteqF6_IoMapper.TcPOU">
+    <Compile Include="z_AteqComm\FB_AteqComm.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="z_AteqComm\GVL_Ateq.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
-    <Compile Include="z_AteqComm\ST_AteqF6_Device.TcDUT">
+    <Compile Include="z_AteqComm\ST_AteqIo.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="z_AteqComm\ST_AteqF6_Read.TcDUT">
+    <Compile Include="z_AteqComm\ST_AteqInRead.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="z_AteqComm\ST_AteqF6_Write.TcDUT">
+    <Compile Include="z_AteqComm\ST_AteqOutWrite.TcDUT">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

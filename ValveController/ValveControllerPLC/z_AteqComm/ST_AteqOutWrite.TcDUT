@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <DUT Name="ST_AteqOutWrite" Id="{f95d188e-1239-4081-a836-c3d8105eeb45}">
+    <Declaration><![CDATA[TYPE ST_AteqOutWrite :
+STRUCT
+//Writing table structure (From PLC To ATEQ)
+	anCommands			: ARRAY[0..1] OF BYTE;       // 00h–01h
+    anReservedOut1		: ARRAY[0..3] OF BYTE;       // 02h–05h Not Used
+    nProgramSelect 		: WORD;                      // 06h–07h Address 06h: Number of the program to be selected. Address 07h = 0
+	nSpecialCycle		: WORD;						 // 08h–09h Address 08h: Special cycle. Address 09h=0
+	anReservedOut2		: ARRAY[0..21] OF BYTE;       // 0Ah–1Fh Reserved    
+
+// Exchange zone: (@: 20h – 9Fh)	
+	anExchangeZone 		: ARRAY[0..127] OF BYTE;   // 20h–9Fh Cycle results exchange zone. Parameters reading and writing exchange zone.
+
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

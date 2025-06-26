@@ -2,14 +2,18 @@
 <TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.67">
 	<DataTypes>
 		<DataType>
-			<Name GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Name>
-			<BitSize>2048</BitSize>
+			<Name GUID="{A7F903DE-DD1B-BD24-8FE7-A1100E84DB40}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..11] OF ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Name>
+			<BitSize>24576</BitSize>
 			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
 			<ArrayInfo>
 				<LBound>0</LBound>
-				<Elements>4</Elements>
+				<Elements>12</Elements>
 			</ArrayInfo>
 			<ArrayInfo Level="1">
+				<LBound>0</LBound>
+				<Elements>4</Elements>
+			</ArrayInfo>
+			<ArrayInfo Level="2">
 				<LBound>0</LBound>
 				<Elements>64</Elements>
 			</ArrayInfo>
@@ -45,22 +49,22 @@
 		</System>
 		<Plc>
 			<Project GUID="{FF505B91-FACF-4A2B-B73E-9C5E3B10185D}" Name="ValveControllerPLC" PrjFilePath="ValveControllerPLC\ValveControllerPLC.plcproj" TmcFilePath="ValveControllerPLC\ValveControllerPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{9C1B11B7-26C9-FD78-D7EB-A6E65A136DD4}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{94DE9C66-8650-5880-C6DA-A74657D20745}">
 					<Name>ValveControllerPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
 						<Name>PlcTaskAteqComm Inputs</Name>
 						<Var>
-							<Name>GVL_Ateq.aF6_InputRaw</Name>
+							<Name>GVL_Ateq.anInputRaw</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Type GUID="{A7F903DE-DD1B-BD24-8FE7-A1100E84DB40}">ARRAY [0..11] OF ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 					</Vars>
 					<Vars VarGrpType="2" AreaNo="1">
 						<Name>PlcTaskAteqComm Outputs</Name>
 						<Var>
-							<Name>GVL_Ateq.aF6_OutputRaw</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_Ateq.anOutputRaw</Name>
+							<Type GUID="{A7F903DE-DD1B-BD24-8FE7-A1100E84DB40}">ARRAY [0..11] OF ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 					</Vars>
 					<Contexts>
@@ -147,6 +151,7 @@ SW Release Version: 3.4.19]]></Comment>
 0x4000 = At least one OutputCR Problemindicator is set
 ]]></Comment>
 							<Type>UINT</Type>
+							<BitOffs>16</BitOffs>
 						</Var>
 					</Vars>
 					<Vars VarGrpType="2">
@@ -156,7 +161,7 @@ SW Release Version: 3.4.19]]></Comment>
 							<Type>UINT</Type>
 						</Var>
 					</Vars>
-					<Profinet DeviceId="257" VendorId="286" FrameOffset="49152" IPAdd="c0a80103" ProtocolType="3" BoxOnDeviceTyp="113" MaxPhysSlotNr="255" AvailableSlots="0..255" InstanceServerPort="50000" InstanceClientPort="50001" InstanceId="1" InstanceNumberOfARs="1" InstanceNumberOfAPIs="1" MinDeviceInterval="32" NrOfGsdmlDap="4" SavePnIoBoxValues="0100" MultipleWriteSupported="true" Phase="1" WatchdogFaktor="3" ReductionRatio="1" SendClockFaktor="32" MaxInputLen="1024" MaxOutputLen="1024" SendClockFactorData="200040008000" SendClockFactorRTC3="200040008000" RedRatio="0100020004000800100020004000800000010002" RedRatioRTC3="01000200040008001000" BoxTypeInfo="Firmware version V3.4.19 - V3.4.x. Fiberoptics Hardware. Supports FastStartup, Identification &amp; Maintenance 1-4, RT and IRT Communication." GSDMLPath="C:\Users\Controls\Desktop\ValveController_Temp\GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml" ImagePath="C:\Users\Controls\Desktop\ValveController_Temp\GSDML-011E-0101-COMXREPNS.bmp" MainFamily="I/O" ProductFamily="PNS" OrderNr="153x.10x" DefaultDNSName="comxrepns" VendorName="Hilscher Gesellschaft für Systemautomation mbH" FamDescription="ProfiNet IO-Device communication module." GraphicFile="GSDML-011E-0101-COMXREPNS" SWVersion="3.4.19" HWVersion="2" AltLanguage="7">
+					<Profinet DeviceId="257" VendorId="286" FrameOffset="49152" Flags="16" IPAdd="c0a80103" ProtocolType="3" BoxOnDeviceTyp="113" MaxPhysSlotNr="255" AvailableSlots="0..255" InstanceServerPort="61000" InstanceClientPort="60000" InstanceId="1" InstanceNumberOfARs="1" InstanceNumberOfAPIs="1" MinDeviceInterval="32" NrOfGsdmlDap="4" SavePnIoBoxValues="0100" MultipleWriteSupported="true" Phase="1" WatchdogFaktor="3" ReductionRatio="16" SendClockFaktor="32" MaxInputLen="1024" MaxOutputLen="1024" SendClockFactorData="200040008000" SendClockFactorRTC3="200040008000" RedRatio="0100020004000800100020004000800000010002" RedRatioRTC3="01000200040008001000" BoxTypeInfo="Firmware version V3.4.19 - V3.4.x. Fiberoptics Hardware. Supports FastStartup, Identification &amp; Maintenance 1-4, RT and IRT Communication." GSDMLPath="C:\Users\Controls\Desktop\ValveController_Temp\GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml" ImagePath="C:\Users\Controls\Desktop\ValveController_Temp\GSDML-011E-0101-COMXREPNS.bmp" MainFamily="I/O" ProductFamily="PNS" OrderNr="153x.10x" DefaultDNSName="comxrepns" VendorName="Hilscher Gesellschaft für Systemautomation mbH" FamDescription="ProfiNet IO-Device communication module." GraphicFile="GSDML-011E-0101-COMXREPNS" SWVersion="3.4.19" HWVersion="2" AltLanguage="7">
 						<UsedGsdmlModule ModuleIdentNumber="4609" ModuleName="DAP Module" InfoText="Firmware version V3.4.19 - V3.4.x. Fiberoptics Hardware. Supports FastStartup, Identification &amp; Maintenance 1-4, RT and IRT Communication." OrderNumber="153x.10x">
 							<Slot>0</Slot>
 						</UsedGsdmlModule>
@@ -757,6 +762,7 @@ Submodule Info: 64 Bytes Input Submodule
 										<Var>
 											<Name>Inputs</Name>
 											<Type GUID="{18071995-0000-0000-0000-000300000040}">ARRAY [0..63] OF BYTE</Type>
+											<BitOffs>32</BitOffs>
 										</Var>
 									</Vars>
 									<Vars VarGrpType="2">
@@ -781,6 +787,7 @@ Submodule Info: 64 Bytes Input Submodule
 										<Var>
 											<Name>Inputs</Name>
 											<Type GUID="{18071995-0000-0000-0000-000300000040}">ARRAY [0..63] OF BYTE</Type>
+											<BitOffs>544</BitOffs>
 										</Var>
 									</Vars>
 									<Vars VarGrpType="2">
@@ -805,6 +812,7 @@ Submodule Info: 64 Bytes Input Submodule
 										<Var>
 											<Name>Inputs</Name>
 											<Type GUID="{18071995-0000-0000-0000-000300000040}">ARRAY [0..63] OF BYTE</Type>
+											<BitOffs>1056</BitOffs>
 										</Var>
 									</Vars>
 									<Vars VarGrpType="2">
@@ -829,6 +837,7 @@ Submodule Info: 64 Bytes Input Submodule
 										<Var>
 											<Name>Inputs</Name>
 											<Type GUID="{18071995-0000-0000-0000-000300000040}">ARRAY [0..63] OF BYTE</Type>
+											<BitOffs>1568</BitOffs>
 										</Var>
 									</Vars>
 									<Vars VarGrpType="2">
@@ -856,6 +865,7 @@ Submodule Info: 64 Bytes Output Submodule
 										<Var>
 											<Name>Outputs</Name>
 											<Type GUID="{18071995-0000-0000-0000-000300000040}">ARRAY [0..63] OF BYTE</Type>
+											<BitOffs>16</BitOffs>
 										</Var>
 									</Vars>
 								</SubModule>
@@ -880,6 +890,7 @@ Submodule Info: 64 Bytes Output Submodule
 										<Var>
 											<Name>Outputs</Name>
 											<Type GUID="{18071995-0000-0000-0000-000300000040}">ARRAY [0..63] OF BYTE</Type>
+											<BitOffs>528</BitOffs>
 										</Var>
 									</Vars>
 								</SubModule>
@@ -904,6 +915,7 @@ Submodule Info: 64 Bytes Output Submodule
 										<Var>
 											<Name>Outputs</Name>
 											<Type GUID="{18071995-0000-0000-0000-000300000040}">ARRAY [0..63] OF BYTE</Type>
+											<BitOffs>1040</BitOffs>
 										</Var>
 									</Vars>
 								</SubModule>
@@ -928,6 +940,7 @@ Submodule Info: 64 Bytes Output Submodule
 										<Var>
 											<Name>Outputs</Name>
 											<Type GUID="{18071995-0000-0000-0000-000300000040}">ARRAY [0..63] OF BYTE</Type>
+											<BitOffs>1552</BitOffs>
 										</Var>
 									</Vars>
 								</SubModule>
@@ -947,14 +960,14 @@ Submodule Info: 64 Bytes Output Submodule
 	<Mappings>
 		<OwnerA Name="TIPC^ValveControllerPLC^ValveControllerPLC Instance">
 			<OwnerB Name="TIID^Device 1 (Profinet Controller)^ateqf6-1">
-				<Link VarA="PlcTaskAteqComm Inputs^GVL_Ateq.aF6_InputRaw[0]" VarB="API^Term 1 (64 Bytes Input)^Subterm 1 (64 Bytes Input)^Inputs^Inputs"/>
-				<Link VarA="PlcTaskAteqComm Inputs^GVL_Ateq.aF6_InputRaw[1]" VarB="API^Term 2 (64 Bytes Input)^Subterm 2 (64 Bytes Input)^Inputs^Inputs"/>
-				<Link VarA="PlcTaskAteqComm Inputs^GVL_Ateq.aF6_InputRaw[2]" VarB="API^Term 3 (64 Bytes Input)^Subterm 3 (64 Bytes Input)^Inputs^Inputs"/>
-				<Link VarA="PlcTaskAteqComm Inputs^GVL_Ateq.aF6_InputRaw[3]" VarB="API^Term 4 (64 Bytes Input)^Subterm 4 (64 Bytes Input)^Inputs^Inputs"/>
-				<Link VarA="PlcTaskAteqComm Outputs^GVL_Ateq.aF6_OutputRaw[0]" VarB="API^Term 5 (64 Bytes Output)^Subterm 5 (64 Bytes Output)^Outputs^Outputs"/>
-				<Link VarA="PlcTaskAteqComm Outputs^GVL_Ateq.aF6_OutputRaw[1]" VarB="API^Term 6 (64 Bytes Output)^Subterm 6 (64 Bytes Output)^Outputs^Outputs"/>
-				<Link VarA="PlcTaskAteqComm Outputs^GVL_Ateq.aF6_OutputRaw[2]" VarB="API^Term 7 (64 Bytes Output)^Subterm 7 (64 Bytes Output)^Outputs^Outputs"/>
-				<Link VarA="PlcTaskAteqComm Outputs^GVL_Ateq.aF6_OutputRaw[3]" VarB="API^Term 8 (64 Bytes Output)^Subterm 8 (64 Bytes Output)^Outputs^Outputs"/>
+				<Link VarA="PlcTaskAteqComm Inputs^GVL_Ateq.anInputRaw[0]" VarB="API^Term 1 (64 Bytes Input)^Subterm 1 (64 Bytes Input)^Inputs^Inputs"/>
+				<Link VarA="PlcTaskAteqComm Inputs^GVL_Ateq.anInputRaw[1]" VarB="API^Term 2 (64 Bytes Input)^Subterm 2 (64 Bytes Input)^Inputs^Inputs"/>
+				<Link VarA="PlcTaskAteqComm Inputs^GVL_Ateq.anInputRaw[2]" VarB="API^Term 3 (64 Bytes Input)^Subterm 3 (64 Bytes Input)^Inputs^Inputs"/>
+				<Link VarA="PlcTaskAteqComm Inputs^GVL_Ateq.anInputRaw[3]" VarB="API^Term 4 (64 Bytes Input)^Subterm 4 (64 Bytes Input)^Inputs^Inputs"/>
+				<Link VarA="PlcTaskAteqComm Outputs^GVL_Ateq.anOutputRaw[0]" VarB="API^Term 5 (64 Bytes Output)^Subterm 5 (64 Bytes Output)^Outputs^Outputs"/>
+				<Link VarA="PlcTaskAteqComm Outputs^GVL_Ateq.anOutputRaw[1]" VarB="API^Term 6 (64 Bytes Output)^Subterm 6 (64 Bytes Output)^Outputs^Outputs"/>
+				<Link VarA="PlcTaskAteqComm Outputs^GVL_Ateq.anOutputRaw[2]" VarB="API^Term 7 (64 Bytes Output)^Subterm 7 (64 Bytes Output)^Outputs^Outputs"/>
+				<Link VarA="PlcTaskAteqComm Outputs^GVL_Ateq.anOutputRaw[3]" VarB="API^Term 8 (64 Bytes Output)^Subterm 8 (64 Bytes Output)^Outputs^Outputs"/>
 			</OwnerB>
 		</OwnerA>
 	</Mappings>

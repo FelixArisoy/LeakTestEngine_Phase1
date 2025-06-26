@@ -4,7 +4,7 @@
     <Declaration><![CDATA[PROGRAM PRG_TEST
 VAR
 
-	fbAteqF6_IoMapper_Test : FB_Test_AteqF6_IoMapper;
+	fbAteqF6_IoMapper_Test : FB_Test_AteqComm;
 	
 END_VAR
 

@@ -3,16 +3,17 @@
   <GVL Name="GVL_Ateq" Id="{8341f924-21b8-4660-ac80-fb81e367c10a}">
     <Declaration><![CDATA[// shared IO variables for one ATEQ device
 VAR_GLOBAL CONSTANT
-    nAteqF6_DevCount : UINT := 4; // Set; based on Total Num of F6 ATEQ devices
+    nAteqF6_DevCount : UINT := 12; // Set; based on Total Num of F6 ATEQ devices
 END_VAR
 
 VAR_GLOBAL
    // Each device has 64 bytes of input/output memory
-    aF6_InputRaw  AT %I* : ARRAY[0..nAteqF6_DevCount - 1] OF ARRAY[0..63] OF BYTE;
-    aF6_OutputRaw AT %Q* : ARRAY[0..nAteqF6_DevCount - 1] OF ARRAY[0..63] OF BYTE;
+    anInputRaw  AT %I* : ARRAY[0..nAteqF6_DevCount - 1] OF ARRAY[0..3] OF ARRAY[0..63] OF BYTE;
+	anOutputRaw AT %Q* : ARRAY[0..nAteqF6_DevCount - 1] OF ARRAY[0..3] OF ARRAY[0..63] OF BYTE;
 
-    aF6_Device    	: ARRAY[0..nAteqF6_DevCount - 1] OF ST_AteqF6_Device;        // Device structures
-    aF6_bHeartbeat 	: ARRAY[0..nAteqF6_DevCount - 1] OF BOOL;                   // Heartbeat status per device
+
+    astDeviceIo    	: ARRAY[0..nAteqF6_DevCount - 1] OF ST_AteqIo;        // Device structures
+    abHeartbeat 	: ARRAY[0..nAteqF6_DevCount - 1] OF BOOL;             // Heartbeat status per device
 END_VAR
 ]]></Declaration>
   </GVL>

@@ -2,9 +2,9 @@
 <TcLicenseInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2011/11/TcLicenseInfo">
 	<LicenseInfo>
 		<SystemId>{FCC2F6B6-880E-7855-4449-D617F9E3962C}</SystemId>
-		<IssueTime>2025-06-11T16:18:00</IssueTime>
-		<ExpireTime>2025-06-19T00:00:00</ExpireTime>
-		<LicenseKey>8a4f9e0b02d60d3b6d101ebf3c9092efdb3eabe4622478d45650673aca85782aae260a42c26011ed787e4efc49f7fac3e112946e98e56530b63e7f081791590ca3f1aa927cab143a1fb20d1bea9d998a67a79267cc8c24d7fa1d2f5d9cc6ec5254018ad1deb5611768e7f213814ad446c7915305dc019cc9ebdfffcc4e1f9d20b5e81637cd1896a2bddba22824f29ef77451ca3a516542fb324e43db4b64537b6a78428c16861b5b7561cc96a5f3b57139d8a5fbd27b78290c144438a5a0ccc1636202435bb27ac61253a8dad50c8c398239d4521c1c6566b4162bb74e531881615da9f9654a13f34d98e968e85825e405878896488ab21ab07bce3a7a16924a</LicenseKey>
+		<IssueTime>2025-06-24T13:36:00</IssueTime>
+		<ExpireTime>2025-07-02T00:00:00</ExpireTime>
+		<LicenseKey>e6505c91d25adbbb86bad7e2ecdb091fef541b3ee5a323979dbfeb9e655503fb2255a12ff26e02c2bebfa91c74a88de7d20cbd0cc203e00e352cb56c9c0ad7962077be4477cbf7af1ba66b1c9332a633e17e6592df86163cec16a0581533997a6d5dfc9a8200a054129b6a6d430cdbab0d21aa96570a1834add58dec4694aa81db2d634eebaaa6a2748b100fc74edd5b3657f89dd4afe59b780f1d54f083cfcb85d865c4652dc9203c2cf38cdb97f16c76f0c06bb8e4d9f63b3eeffe5e1f079e43ec01b69109e3ca630e5f7a11fa4ecedbcbbaa7c13c9395fe0a8b237c38ac38e7ccf50c37e014ff4beb49e0e98b1eb3b72550bbf20ced3c91b8dbbae637a104</LicenseKey>
 		<License>
 			<LicenseId>{4C256767-E6E6-4AF5-BD68-9F7ABAD0C200}</LicenseId>
 			<Name>TC3 ADS</Name>
@@ -24,12 +24,6 @@
 			<LicenseId>{56ADDFFF-32FF-4DC7-A432-0D2D8413616A}</LicenseId>
 			<Name>TC3 Profinet IO-Device</Name>
 			<OrderNo>TF6270</OrderNo>
-		</License>
-		<License>
-			<LicenseId>{EA2D2277-B540-4BF0-A581-CF62D3140F06}</LicenseId>
-			<Name>TC3 Profinet Controller</Name>
-			<OrderNo>TF6271</OrderNo>
-			<Instances>1</Instances>
 		</License>
 	</LicenseInfo>
 </TcLicenseInfo>
