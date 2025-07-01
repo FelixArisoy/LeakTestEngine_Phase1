@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
-  <DUT Name="ST_AteqInRead" Id="{4bdec2e8-abb3-425c-a531-ebad90f3fcff}">
-    <Declaration><![CDATA[TYPE ST_AteqInRead :
+  <DUT Name="ST_AteqRead" Id="{4bdec2e8-abb3-425c-a531-ebad90f3fcff}">
+    <Declaration><![CDATA[TYPE ST_AteqRead :
 STRUCT
 //Reading table structure (From ATEQ To PLC)
 //Results status: (@: 00h – 0Fh)

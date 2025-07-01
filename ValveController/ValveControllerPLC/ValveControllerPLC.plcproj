@@ -82,10 +82,10 @@
     <Compile Include="z_AteqComm\ST_AteqIo.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="z_AteqComm\ST_AteqInRead.TcDUT">
+    <Compile Include="z_AteqComm\ST_AteqRead.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="z_AteqComm\ST_AteqOutWrite.TcDUT">
+    <Compile Include="z_AteqComm\ST_AteqWrite.TcDUT">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

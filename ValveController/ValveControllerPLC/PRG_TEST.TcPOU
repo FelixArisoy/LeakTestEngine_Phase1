@@ -6,12 +6,14 @@ VAR
 
 	fbAteqF6_IoMapper_Test : FB_Test_AteqComm;
 	
+	
 END_VAR
 
 
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[//Start TcUnit and Call Test_FBs
+      <ST><![CDATA[
+//Start TcUnit and Call Test_FBs
 TcUnit.RUN();
 fbAteqF6_IoMapper_Test();
 
@@ -20,7 +22,8 @@ fbAteqF6_IoMapper_Test();
 ]]></ST>
     </Implementation>
     <LineIds Name="PRG_TEST">
-      <LineId Id="29" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="52" Count="0" />
       <LineId Id="41" Count="0" />
       <LineId Id="43" Count="0" />
       <LineId Id="42" Count="0" />
