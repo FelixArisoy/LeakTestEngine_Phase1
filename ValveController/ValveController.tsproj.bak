@@ -2,18 +2,14 @@
 <TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.67">
 	<DataTypes>
 		<DataType>
-			<Name GUID="{A7F903DE-DD1B-BD24-8FE7-A1100E84DB40}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..11] OF ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Name>
-			<BitSize>24576</BitSize>
+			<Name GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Name>
+			<BitSize>2048</BitSize>
 			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
 			<ArrayInfo>
 				<LBound>0</LBound>
-				<Elements>12</Elements>
-			</ArrayInfo>
-			<ArrayInfo Level="1">
-				<LBound>0</LBound>
 				<Elements>4</Elements>
 			</ArrayInfo>
-			<ArrayInfo Level="2">
+			<ArrayInfo Level="1">
 				<LBound>0</LBound>
 				<Elements>64</Elements>
 			</ArrayInfo>
@@ -28,9 +24,9 @@
 			</ArrayInfo>
 		</DataType>
 	</DataTypes>
-	<Project ProjectGUID="{A76AF4C2-744F-4C27-A416-5035FFBECB46}" Target64Bit="true" ShowHideConfigurations="#x6">
+	<Project ProjectGUID="{A76AF4C2-744F-4C27-A416-5035FFBECB46}" TargetNetId="5.76.71.245.1.1" Target64Bit="true" ShowHideConfigurations="#x6">
 		<System>
-			<Settings MaxCpus="4" NonWinCpus="1" Packages="2">
+			<Settings MaxCpus="4">
 				<Cpu CpuId="3"/>
 			</Settings>
 			<Licenses>
@@ -39,32 +35,65 @@
 				</Target>
 			</Licenses>
 			<Tasks>
-				<Task Id="3" Priority="20" CycleTime="100000" AmsPort="350" AdtTasks="true">
+				<Task Id="3" Priority="20" CycleTime="80000" AmsPort="350" AdtTasks="true">
 					<Name>PlcTask</Name>
 				</Task>
-				<Task Id="4" Priority="10" CycleTime="100000" AmsPort="351" AdtTasks="true">
+				<Task Id="4" Priority="10" CycleTime="80000" AmsPort="351" AdtTasks="true">
 					<Name>PlcAteqCommTask</Name>
 				</Task>
 			</Tasks>
 		</System>
 		<Plc>
 			<Project GUID="{FF505B91-FACF-4A2B-B73E-9C5E3B10185D}" Name="ValveControllerPLC" PrjFilePath="ValveControllerPLC\ValveControllerPLC.plcproj" TmcFilePath="ValveControllerPLC\ValveControllerPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{B8A700DA-8481-49FB-F6B1-6D6CE045AD18}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{01163F96-DCB4-19C2-4A7D-28C6DB9AB0EB}">
 					<Name>ValveControllerPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
 						<Name>PlcTaskAteqComm Inputs</Name>
 						<Var>
-							<Name>GVL_Ateq.anInputRaw</Name>
+							<Name>PRG_AteqComm.aAteqComm[0].stAteqRawIo.anInput</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{A7F903DE-DD1B-BD24-8FE7-A1100E84DB40}">ARRAY [0..11] OF ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+						</Var>
+						<Var>
+							<Name>PRG_AteqComm.astAteqRawIo[0].anInput</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 					</Vars>
 					<Vars VarGrpType="2" AreaNo="1">
 						<Name>PlcTaskAteqComm Outputs</Name>
 						<Var>
-							<Name>GVL_Ateq.anOutputRaw</Name>
-							<Type GUID="{A7F903DE-DD1B-BD24-8FE7-A1100E84DB40}">ARRAY [0..11] OF ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>PRG_AteqComm.aAteqComm[0].stAteqRawIo.anOutput</Name>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+						</Var>
+						<Var>
+							<Name>PRG_AteqComm.astAteqRawIo[0].anOutput</Name>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+						</Var>
+					</Vars>
+					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
+						<Name>PlcTask Inputs</Name>
+						<Var>
+							<Name>PRG_TEST.fbTest_AteqComm.fbTestAteqComm.stAteqRawIo.anInput</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+						</Var>
+						<Var>
+							<Name>PRG_TEST.fbTest_AteqComm.stTestAteqRawIo.anInput</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+						</Var>
+					</Vars>
+					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
+						<Name>PlcTask Outputs</Name>
+						<Var>
+							<Name>PRG_TEST.fbTest_AteqComm.fbTestAteqComm.stAteqRawIo.anOutput</Name>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+						</Var>
+						<Var>
+							<Name>PRG_TEST.fbTest_AteqComm.stTestAteqRawIo.anOutput</Name>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 					</Vars>
 					<Contexts>
@@ -75,7 +104,7 @@
 								<OTCID>#x02010040</OTCID>
 							</ManualConfig>
 							<Priority>10</Priority>
-							<CycleTime>10000000</CycleTime>
+							<CycleTime>8000000</CycleTime>
 						</Context>
 						<Context>
 							<Id>1</Id>
@@ -84,7 +113,7 @@
 								<OTCID>#x02010030</OTCID>
 							</ManualConfig>
 							<Priority>20</Priority>
-							<CycleTime>10000000</CycleTime>
+							<CycleTime>8000000</CycleTime>
 						</Context>
 					</Contexts>
 					<TaskPouOids>
@@ -95,16 +124,16 @@
 			</Project>
 		</Plc>
 		<Io>
-			<Device Id="1" Disabled="true" DevType="113" AmsPort="28673" AmsNetId="192.168.22.144.2.1" RemoteName="Device 1 (Profinet Controller)">
+			<Device Id="1" DevType="113" AmsPort="28673" AmsNetId="192.168.22.144.2.1" RemoteName="Device 1 (Profinet Controller)">
 				<Name>Device 1 (Profinet Controller)</Name>
-				<DevData>0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000</DevData>
-				<Image Id="1" AddrType="1" ImageType="3" SizeIn="2" SizeOut="6">
+				<DevData>00000000000000000000000080380100656d300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100780aa8c000ffffff0001054c47f4040000000000000000000000000000000000010aa8c00000000000000000000000000000000000000000</DevData>
+				<Image Id="1" AddrType="1" ImageType="3" SizeIn="260" SizeOut="266">
 					<Name>Image</Name>
 				</Image>
-				<Box Id="2" BoxType="9121">
-					<Name>ateqf6-1</Name>
+				<Box Id="1" BoxType="9121">
+					<Name>ateqf620</Name>
 					<Comment><![CDATA[GSDML Name: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
-Path: C:\Users\Controls\Desktop\ValveController_Temp\
+Path: \\vmware-host\Shared Folders\VMShared\(X)Research\2025_05_ValveControllerOOP\
 VendorName: Hilscher Gesellschaft für Systemautomation mbH
 OrderNumber: 153x.10x
 HW Release Version: 2
@@ -161,8 +190,8 @@ SW Release Version: 3.4.19]]></Comment>
 							<Type>UINT</Type>
 						</Var>
 					</Vars>
-					<Profinet DeviceId="257" VendorId="286" FrameOffset="49152" Flags="16" IPAdd="c0a80103" ProtocolType="3" BoxOnDeviceTyp="113" MaxPhysSlotNr="255" AvailableSlots="0..255" InstanceServerPort="61000" InstanceClientPort="60000" InstanceId="1" InstanceNumberOfARs="1" InstanceNumberOfAPIs="1" MinDeviceInterval="32" NrOfGsdmlDap="4" SavePnIoBoxValues="0100" MultipleWriteSupported="true" Phase="1" WatchdogFaktor="3" ReductionRatio="16" SendClockFaktor="32" MaxInputLen="1024" MaxOutputLen="1024" SendClockFactorData="200040008000" SendClockFactorRTC3="200040008000" RedRatio="0100020004000800100020004000800000010002" RedRatioRTC3="01000200040008001000" BoxTypeInfo="Firmware version V3.4.19 - V3.4.x. Fiberoptics Hardware. Supports FastStartup, Identification &amp; Maintenance 1-4, RT and IRT Communication." GSDMLPath="C:\Users\Controls\Desktop\ValveController_Temp\GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml" ImagePath="C:\Users\Controls\Desktop\ValveController_Temp\GSDML-011E-0101-COMXREPNS.bmp" MainFamily="I/O" ProductFamily="PNS" OrderNr="153x.10x" DefaultDNSName="comxrepns" VendorName="Hilscher Gesellschaft für Systemautomation mbH" FamDescription="ProfiNet IO-Device communication module." GraphicFile="GSDML-011E-0101-COMXREPNS" SWVersion="3.4.19" HWVersion="2" AltLanguage="7">
-						<UsedGsdmlModule ModuleIdentNumber="4609" ModuleName="DAP Module" InfoText="Firmware version V3.4.19 - V3.4.x. Fiberoptics Hardware. Supports FastStartup, Identification &amp; Maintenance 1-4, RT and IRT Communication." OrderNumber="153x.10x">
+					<Profinet DeviceId="257" VendorId="286" FrameOffset="49152" Flags="16" IPAdd="c0a80a0a" ProtocolType="3" BoxOnDeviceTyp="113" MaxPhysSlotNr="255" AvailableSlots="0..255" InstanceServerPort="61000" InstanceClientPort="60000" InstanceId="1" InstanceNumberOfARs="1" InstanceNumberOfAPIs="1" MinDeviceInterval="32" NrOfGsdmlDap="3" SavePnIoBoxValues="0100" MultipleWriteSupported="true" Phase="1" WatchdogFaktor="3" ReductionRatio="8" SendClockFaktor="32" MaxInputLen="1024" MaxOutputLen="1024" SendClockFactorData="200040008000" SendClockFactorRTC3="200040008000" RedRatio="0100020004000800100020004000800000010002" RedRatioRTC3="01000200040008001000" BoxTypeInfo="Firmware version V3.4.19 - V3.4.x. Supports FastStartup, Identification &amp; Maintenance 1-4, RT and IRT Communication." GSDMLPath="\\vmware-host\Shared Folders\VMShared\(X)Research\2025_05_ValveControllerOOP\GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml" ImagePath="\\vmware-host\Shared Folders\VMShared\(X)Research\2025_05_ValveControllerOOP\GSDML-011E-0101-COMXREPNS.bmp" MainFamily="I/O" ProductFamily="PNS" OrderNr="153x.10x" DefaultDNSName="comxrepns" VendorName="Hilscher Gesellschaft für Systemautomation mbH" FamDescription="ProfiNet IO-Device communication module." GraphicFile="GSDML-011E-0101-COMXREPNS" SWVersion="3.4.19" HWVersion="2" AltLanguage="7">
+						<UsedGsdmlModule ModuleIdentNumber="4353" ModuleName="DAP Module" InfoText="Firmware version V3.4.19 - V3.4.x. Supports FastStartup, Identification &amp; Maintenance 1-4, RT and IRT Communication." OrderNumber="153x.10x">
 							<Slot>0</Slot>
 						</UsedGsdmlModule>
 						<UsedGsdmlModule ModuleIdentNumber="20" Id="64byteinput" ModuleName="64 Bytes Input" InfoText="64 Bytes Input Module" ModuleCategory="Input Modules">
@@ -679,7 +708,7 @@ SW Release Version: 3.4.19]]></Comment>
 							<Slot>254</Slot>
 							<Slot>255</Slot>
 						</UsedGsdmlModule>
-						<UsedGsdmlSubModule SubModuleIdentNumber="4608" SubSlotNumber="1" TypeOfSubmodule="3" Id="DIM 3fo" SubModuleName="COMX RE/PNS V3.4.19 - V3.4.x FO" InfoText="Firmware version V3.4.19 - V3.4.x. Fiberoptics Hardware. Supports FastStartup, Identification &amp; Maintenance 1-4, RT and IRT Communication." SubModuleCategory="Device Access Point Modules"/>
+						<UsedGsdmlSubModule SubModuleIdentNumber="4352" SubSlotNumber="1" TypeOfSubmodule="3" Id="DIM 3" SubModuleName="COMX RE/PNS V3.4.19 - V3.4.x" InfoText="Firmware version V3.4.19 - V3.4.x. Supports FastStartup, Identification &amp; Maintenance 1-4, RT and IRT Communication." SubModuleCategory="Device Access Point Modules"/>
 						<UsedGsdmlSubModule SubModuleIdentNumber="19" SubSlotNumber="1" TypeOfSubmodule="3" Id="64byteinput" SubModuleName="64 Bytes Input" InfoText="64 Bytes Input Submodule">
 							<DataItemIn/>
 						</UsedGsdmlSubModule>
@@ -689,16 +718,16 @@ SW Release Version: 3.4.19]]></Comment>
 						<API Id="1">
 							<Name>API</Name>
 							<ImageId>4</ImageId>
-							<Module Id="#x031d000a" DAP="true" ModuleIdentNumber="4609" ModuleInfo="Firmware version V3.4.19 - V3.4.x. Fiberoptics Hardware. Supports FastStartup, Identification &amp; Maintenance 1-4, RT and IRT Communication.">
-								<Name>Term 10 (DAP Module)</Name>
+							<Module Id="#x031d0001" DAP="true" ModuleIdentNumber="4353" ModuleInfo="Firmware version V3.4.19 - V3.4.x. Supports FastStartup, Identification &amp; Maintenance 1-4, RT and IRT Communication.">
+								<Name>Term 1 (DAP Module)</Name>
 								<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
-Module Info: Firmware version V3.4.19 - V3.4.x. Fiberoptics Hardware. Supports FastStartup, Identification & Maintenance 1-4, RT and IRT Communication.
+Module Info: Firmware version V3.4.19 - V3.4.x. Supports FastStartup, Identification & Maintenance 1-4, RT and IRT Communication.
 OrderNumber: 153x.10x]]></Comment>
 								<ImageId>182</ImageId>
-								<SubModule Id="#x031c000c" SubModuleIdentNumber="4608" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="DIM 3fo" AddSubModFlags="60">
-									<Name>Subterm 12 (COMX RE/PNS V3.4.19 - V3.4.x FO)</Name>
+								<SubModule Id="#x031c0001" SubModuleIdentNumber="4352" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="DIM 3" AddSubModFlags="60">
+									<Name>Subterm 1 (COMX RE/PNS V3.4.19 - V3.4.x)</Name>
 									<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
-Submodule Info: Firmware version V3.4.19 - V3.4.x. Fiberoptics Hardware. Supports FastStartup, Identification & Maintenance 1-4, RT and IRT Communication.
+Submodule Info: Firmware version V3.4.19 - V3.4.x. Supports FastStartup, Identification & Maintenance 1-4, RT and IRT Communication.
 ]]></Comment>
 									<ImageId>183</ImageId>
 									<Vars VarGrpType="1">
@@ -708,20 +737,8 @@ Submodule Info: Firmware version V3.4.19 - V3.4.x. Fiberoptics Hardware. Support
 										<Name>Outputs</Name>
 									</Vars>
 								</SubModule>
-								<SubModule Id="#x031c000d" SubModuleIdentNumber="4609" TypeOfSubModule="1" SubSlotNumber="32768" IsFixSubmodule="true" InterfaceData="0503240980003200e80300000000000000000000000040000300000000000000" IrtPropData="00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000">
-									<Name>Subterm 13 (Interface)</Name>
-									<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
-]]></Comment>
-									<ImageId>183</ImageId>
-									<Vars VarGrpType="1">
-										<Name>Inputs</Name>
-									</Vars>
-									<Vars VarGrpType="2">
-										<Name>Outputs</Name>
-									</Vars>
-								</SubModule>
-								<SubModule Id="#x031c000e" SubModuleIdentNumber="4610" TypeOfSubModule="2" SubSlotNumber="32769" IsFixSubmodule="true" PortData="54015c00000000000000000000000000000000000000000000000000">
-									<Name>Subterm 14 (Port 1)</Name>
+								<SubModule Id="#x031c0002" SubModuleIdentNumber="4353" TypeOfSubModule="1" SubSlotNumber="32768" IsFixSubmodule="true" InterfaceData="0503240980003200e80300000000000000000000000040000300000000000000" IrtPropData="00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000">
+									<Name>Subterm 2 (Interface)</Name>
 									<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
 ]]></Comment>
 									<ImageId>183</ImageId>
@@ -732,8 +749,20 @@ Submodule Info: Firmware version V3.4.19 - V3.4.x. Fiberoptics Hardware. Support
 										<Name>Outputs</Name>
 									</Vars>
 								</SubModule>
-								<SubModule Id="#x031c000f" SubModuleIdentNumber="4611" TypeOfSubModule="2" SubSlotNumber="32770" IsFixSubmodule="true" PortData="54015c00000000000000000000000000000000000000000000000000">
-									<Name>Subterm 15 (Port 2)</Name>
+								<SubModule Id="#x031c0003" SubModuleIdentNumber="4354" TypeOfSubModule="2" SubSlotNumber="32769" IsFixSubmodule="true" PortData="54015c00000000000000000000000000000000000000000000000000">
+									<Name>Subterm 3 (Port 1)</Name>
+									<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
+]]></Comment>
+									<ImageId>183</ImageId>
+									<Vars VarGrpType="1">
+										<Name>Inputs</Name>
+									</Vars>
+									<Vars VarGrpType="2">
+										<Name>Outputs</Name>
+									</Vars>
+								</SubModule>
+								<SubModule Id="#x031c0004" SubModuleIdentNumber="4355" TypeOfSubModule="2" SubSlotNumber="32770" IsFixSubmodule="true" PortData="54015c00000000000000000000000000000000000000000000000000">
+									<Name>Subterm 4 (Port 2)</Name>
 									<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
 ]]></Comment>
 									<ImageId>183</ImageId>
@@ -745,14 +774,14 @@ Submodule Info: Firmware version V3.4.19 - V3.4.x. Fiberoptics Hardware. Support
 									</Vars>
 								</SubModule>
 							</Module>
-							<Module Id="#x031d0001" ModuleIdentNumber="20" SlotNumber="1" ModuleInfo="64 Bytes Input Module" ModuleID="64byteinput" DirectDeletable="true">
-								<Name>Term 1 (64 Bytes Input)</Name>
+							<Module Id="#x031d0002" ModuleIdentNumber="20" SlotNumber="1" ModuleInfo="64 Bytes Input Module" ModuleID="64byteinput" DirectDeletable="true">
+								<Name>Term 2 (64 Bytes Input)</Name>
 								<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
 Module Info: 64 Bytes Input Module
 ]]></Comment>
 								<ImageId>182</ImageId>
-								<SubModule Id="#x031c0001" SubModuleIdentNumber="19" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="64byteinput">
-									<Name>Subterm 1 (64 Bytes Input)</Name>
+								<SubModule Id="#x031c0005" SubModuleIdentNumber="19" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="64byteinput">
+									<Name>Subterm 5 (64 Bytes Input)</Name>
 									<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
 Submodule Info: 64 Bytes Input Submodule
 ]]></Comment>
@@ -770,14 +799,14 @@ Submodule Info: 64 Bytes Input Submodule
 									</Vars>
 								</SubModule>
 							</Module>
-							<Module Id="#x031d0002" ModuleIdentNumber="20" SlotNumber="2" ModuleInfo="64 Bytes Input Module" ModuleID="64byteinput" DirectDeletable="true">
-								<Name>Term 2 (64 Bytes Input)</Name>
+							<Module Id="#x031d0003" ModuleIdentNumber="20" SlotNumber="2" ModuleInfo="64 Bytes Input Module" ModuleID="64byteinput" DirectDeletable="true">
+								<Name>Term 3 (64 Bytes Input)</Name>
 								<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
 Module Info: 64 Bytes Input Module
 ]]></Comment>
 								<ImageId>182</ImageId>
-								<SubModule Id="#x031c0002" SubModuleIdentNumber="19" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="64byteinput">
-									<Name>Subterm 2 (64 Bytes Input)</Name>
+								<SubModule Id="#x031c0006" SubModuleIdentNumber="19" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="64byteinput">
+									<Name>Subterm 6 (64 Bytes Input)</Name>
 									<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
 Submodule Info: 64 Bytes Input Submodule
 ]]></Comment>
@@ -795,14 +824,14 @@ Submodule Info: 64 Bytes Input Submodule
 									</Vars>
 								</SubModule>
 							</Module>
-							<Module Id="#x031d0003" ModuleIdentNumber="20" SlotNumber="3" ModuleInfo="64 Bytes Input Module" ModuleID="64byteinput" DirectDeletable="true">
-								<Name>Term 3 (64 Bytes Input)</Name>
+							<Module Id="#x031d0004" ModuleIdentNumber="20" SlotNumber="3" ModuleInfo="64 Bytes Input Module" ModuleID="64byteinput" DirectDeletable="true">
+								<Name>Term 4 (64 Bytes Input)</Name>
 								<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
 Module Info: 64 Bytes Input Module
 ]]></Comment>
 								<ImageId>182</ImageId>
-								<SubModule Id="#x031c0003" SubModuleIdentNumber="19" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="64byteinput">
-									<Name>Subterm 3 (64 Bytes Input)</Name>
+								<SubModule Id="#x031c0007" SubModuleIdentNumber="19" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="64byteinput">
+									<Name>Subterm 7 (64 Bytes Input)</Name>
 									<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
 Submodule Info: 64 Bytes Input Submodule
 ]]></Comment>
@@ -820,14 +849,14 @@ Submodule Info: 64 Bytes Input Submodule
 									</Vars>
 								</SubModule>
 							</Module>
-							<Module Id="#x031d0004" ModuleIdentNumber="20" SlotNumber="4" ModuleInfo="64 Bytes Input Module" ModuleID="64byteinput" DirectDeletable="true">
-								<Name>Term 4 (64 Bytes Input)</Name>
+							<Module Id="#x031d0005" ModuleIdentNumber="20" SlotNumber="4" ModuleInfo="64 Bytes Input Module" ModuleID="64byteinput" DirectDeletable="true">
+								<Name>Term 5 (64 Bytes Input)</Name>
 								<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
 Module Info: 64 Bytes Input Module
 ]]></Comment>
 								<ImageId>182</ImageId>
-								<SubModule Id="#x031c0004" SubModuleIdentNumber="19" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="64byteinput">
-									<Name>Subterm 4 (64 Bytes Input)</Name>
+								<SubModule Id="#x031c0008" SubModuleIdentNumber="19" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="64byteinput">
+									<Name>Subterm 8 (64 Bytes Input)</Name>
 									<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
 Submodule Info: 64 Bytes Input Submodule
 ]]></Comment>
@@ -845,14 +874,14 @@ Submodule Info: 64 Bytes Input Submodule
 									</Vars>
 								</SubModule>
 							</Module>
-							<Module Id="#x031d0005" ModuleIdentNumber="21" SlotNumber="5" ModuleInfo="64 Bytes Output Module" ModuleID="64byteoutput" DirectDeletable="true">
-								<Name>Term 5 (64 Bytes Output)</Name>
+							<Module Id="#x031d0006" ModuleIdentNumber="21" SlotNumber="5" ModuleInfo="64 Bytes Output Module" ModuleID="64byteoutput" DirectDeletable="true">
+								<Name>Term 6 (64 Bytes Output)</Name>
 								<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
 Module Info: 64 Bytes Output Module
 ]]></Comment>
 								<ImageId>182</ImageId>
-								<SubModule Id="#x031c0005" SubModuleIdentNumber="20" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="64byteoutput">
-									<Name>Subterm 5 (64 Bytes Output)</Name>
+								<SubModule Id="#x031c0009" SubModuleIdentNumber="20" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="64byteoutput">
+									<Name>Subterm 9 (64 Bytes Output)</Name>
 									<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
 Submodule Info: 64 Bytes Output Submodule
 ]]></Comment>
@@ -870,14 +899,14 @@ Submodule Info: 64 Bytes Output Submodule
 									</Vars>
 								</SubModule>
 							</Module>
-							<Module Id="#x031d0006" ModuleIdentNumber="21" SlotNumber="6" ModuleInfo="64 Bytes Output Module" ModuleID="64byteoutput" DirectDeletable="true">
-								<Name>Term 6 (64 Bytes Output)</Name>
+							<Module Id="#x031d0007" ModuleIdentNumber="21" SlotNumber="6" ModuleInfo="64 Bytes Output Module" ModuleID="64byteoutput" DirectDeletable="true">
+								<Name>Term 7 (64 Bytes Output)</Name>
 								<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
 Module Info: 64 Bytes Output Module
 ]]></Comment>
 								<ImageId>182</ImageId>
-								<SubModule Id="#x031c0006" SubModuleIdentNumber="20" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="64byteoutput">
-									<Name>Subterm 6 (64 Bytes Output)</Name>
+								<SubModule Id="#x031c000a" SubModuleIdentNumber="20" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="64byteoutput">
+									<Name>Subterm 10 (64 Bytes Output)</Name>
 									<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
 Submodule Info: 64 Bytes Output Submodule
 ]]></Comment>
@@ -895,14 +924,14 @@ Submodule Info: 64 Bytes Output Submodule
 									</Vars>
 								</SubModule>
 							</Module>
-							<Module Id="#x031d0007" ModuleIdentNumber="21" SlotNumber="7" ModuleInfo="64 Bytes Output Module" ModuleID="64byteoutput" DirectDeletable="true">
-								<Name>Term 7 (64 Bytes Output)</Name>
+							<Module Id="#x031d0008" ModuleIdentNumber="21" SlotNumber="7" ModuleInfo="64 Bytes Output Module" ModuleID="64byteoutput" DirectDeletable="true">
+								<Name>Term 8 (64 Bytes Output)</Name>
 								<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
 Module Info: 64 Bytes Output Module
 ]]></Comment>
 								<ImageId>182</ImageId>
-								<SubModule Id="#x031c0007" SubModuleIdentNumber="20" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="64byteoutput">
-									<Name>Subterm 7 (64 Bytes Output)</Name>
+								<SubModule Id="#x031c000b" SubModuleIdentNumber="20" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="64byteoutput">
+									<Name>Subterm 11 (64 Bytes Output)</Name>
 									<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
 Submodule Info: 64 Bytes Output Submodule
 ]]></Comment>
@@ -920,14 +949,14 @@ Submodule Info: 64 Bytes Output Submodule
 									</Vars>
 								</SubModule>
 							</Module>
-							<Module Id="#x031d0008" ModuleIdentNumber="21" SlotNumber="8" ModuleInfo="64 Bytes Output Module" ModuleID="64byteoutput" DirectDeletable="true">
-								<Name>Term 8 (64 Bytes Output)</Name>
+							<Module Id="#x031d0009" ModuleIdentNumber="21" SlotNumber="8" ModuleInfo="64 Bytes Output Module" ModuleID="64byteoutput" DirectDeletable="true">
+								<Name>Term 9 (64 Bytes Output)</Name>
 								<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
 Module Info: 64 Bytes Output Module
 ]]></Comment>
 								<ImageId>182</ImageId>
-								<SubModule Id="#x031c0008" SubModuleIdentNumber="20" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="64byteoutput">
-									<Name>Subterm 8 (64 Bytes Output)</Name>
+								<SubModule Id="#x031c000c" SubModuleIdentNumber="20" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="64byteoutput">
+									<Name>Subterm 12 (64 Bytes Output)</Name>
 									<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
 Submodule Info: 64 Bytes Output Submodule
 ]]></Comment>
@@ -949,8 +978,8 @@ Submodule Info: 64 Bytes Output Submodule
 					</Profinet>
 				</Box>
 				<Profinet PLCPortNr="851" AddPortCount="1">
-					<Ethernet/>
-					<PNController ClientPort="60000" ServerPort="61000" VendorId="288" DeviceId="35" IPData="00000000c0a80101ffffff00c0a80101" SystemName="tc-pncontroller" IRTSendClock="32">
+					<Ethernet DeviceDesc="em0"/>
+					<PNController ClientPort="60000" ServerPort="61000" VendorId="288" DeviceId="35" Flags="32768" IPData="00000000c0a80a02ffffff00c0a80a01" SystemName="tc-pncontroller" IRTSendClock="32">
 						<RTData CableLength="10"/>
 					</PNController>
 				</Profinet>
@@ -958,16 +987,11 @@ Submodule Info: 64 Bytes Output Submodule
 		</Io>
 	</Project>
 	<Mappings>
+		<MappingInfo Identifier="{00000000-2002-0850-0020-500810000403}" Id="#x02030010"/>
 		<OwnerA Name="TIPC^ValveControllerPLC^ValveControllerPLC Instance">
-			<OwnerB Name="TIID^Device 1 (Profinet Controller)^ateqf6-1">
-				<Link VarA="PlcTaskAteqComm Inputs^GVL_Ateq.anInputRaw[0]" VarB="API^Term 1 (64 Bytes Input)^Subterm 1 (64 Bytes Input)^Inputs^Inputs"/>
-				<Link VarA="PlcTaskAteqComm Inputs^GVL_Ateq.anInputRaw[1]" VarB="API^Term 2 (64 Bytes Input)^Subterm 2 (64 Bytes Input)^Inputs^Inputs"/>
-				<Link VarA="PlcTaskAteqComm Inputs^GVL_Ateq.anInputRaw[2]" VarB="API^Term 3 (64 Bytes Input)^Subterm 3 (64 Bytes Input)^Inputs^Inputs"/>
-				<Link VarA="PlcTaskAteqComm Inputs^GVL_Ateq.anInputRaw[3]" VarB="API^Term 4 (64 Bytes Input)^Subterm 4 (64 Bytes Input)^Inputs^Inputs"/>
-				<Link VarA="PlcTaskAteqComm Outputs^GVL_Ateq.anOutputRaw[0]" VarB="API^Term 5 (64 Bytes Output)^Subterm 5 (64 Bytes Output)^Outputs^Outputs"/>
-				<Link VarA="PlcTaskAteqComm Outputs^GVL_Ateq.anOutputRaw[1]" VarB="API^Term 6 (64 Bytes Output)^Subterm 6 (64 Bytes Output)^Outputs^Outputs"/>
-				<Link VarA="PlcTaskAteqComm Outputs^GVL_Ateq.anOutputRaw[2]" VarB="API^Term 7 (64 Bytes Output)^Subterm 7 (64 Bytes Output)^Outputs^Outputs"/>
-				<Link VarA="PlcTaskAteqComm Outputs^GVL_Ateq.anOutputRaw[3]" VarB="API^Term 8 (64 Bytes Output)^Subterm 8 (64 Bytes Output)^Outputs^Outputs"/>
+			<OwnerB Name="TIID^Device 1 (Profinet Controller)^ateqf620">
+				<Link VarA="PlcTaskAteqComm Inputs^PRG_AteqComm.aAteqComm[0].stAteqRawIo.anInput[0]" VarB="API^Term 2 (64 Bytes Input)^Subterm 5 (64 Bytes Input)^Inputs^Inputs"/>
+				<Link VarA="PlcTaskAteqComm Outputs^PRG_AteqComm.aAteqComm[0].stAteqRawIo.anOutput[0]" VarB="API^Term 6 (64 Bytes Output)^Subterm 9 (64 Bytes Output)^Outputs^Outputs"/>
 			</OwnerB>
 		</OwnerA>
 	</Mappings>

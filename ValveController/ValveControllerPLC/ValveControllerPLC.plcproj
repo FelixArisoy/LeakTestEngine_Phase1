@@ -79,13 +79,31 @@
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
-    <Compile Include="z_AteqComm\ST_AteqIo.TcDUT">
+    <Compile Include="z_AteqComm\ST_AteqBitmap.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="z_AteqComm\ST_AteqErrorCode.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="z_AteqComm\ST_AteqMappedIo.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="z_AteqComm\ST_AteqRawIo.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="z_AteqComm\ST_AteqRead.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="z_AteqComm\ST_AteqEcho.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="z_AteqComm\ST_AteqWrite.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="z_AteqComm\ST_AteqCommands.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="z_AteqComm\ST_AteqRealtimeTestResults.TcDUT">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

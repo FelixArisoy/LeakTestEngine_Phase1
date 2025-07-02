@@ -13,6 +13,7 @@ STRUCT
 // Exchange zone: (@: 20h – 9Fh)	
 	anExchangeZone 		: ARRAY[0..127] OF BYTE;   // 20h–9Fh Cycle results exchange zone. Parameters reading and writing exchange zone.
 
+	stCommands			: ST_AteqCommands;	
 END_STRUCT
 END_TYPE
 ]]></Declaration>

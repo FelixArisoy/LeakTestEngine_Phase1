@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <DUT Name="ST_AteqErrorCode" Id="{ca34406b-f405-4d37-a2b3-a9b3cb2956fb}">
+    <Declaration><![CDATA[TYPE ST_AteqErrorCode :
+STRUCT
+	
+	 (* Byte 0 - 02h *)
+    bErrReset                  : BOOL; // Bit 0
+    bErrStart                  : BOOL; // Bit 1
+    bErrSpecialCycle           : BOOL; // Bit 2
+    bErrProgramSelect          : BOOL; // Bit 3
+    bErrReadFifo               : BOOL; // Bit 4
+    bErrReadParams             : BOOL; // Bit 5
+    bErrWriteParams            : BOOL; // Bit 6
+    bErrResetFifo              : BOOL; // Bit 7
+
+    (* Byte 1 - 03h *)
+    bErrReadConfig             : BOOL; // Bit 0
+    bErrReadExtMenu            : BOOL; // Bit 1
+    bErrReadFunctionBits       : BOOL; // Bit 2
+    bErrWriteExtMenu           : BOOL; // Bit 3
+    bErrWriteFunctionBits      : BOOL; // Bit 4
+    bErrReadProgramName        : BOOL; // Bit 5
+    bErrWriteProgramName       : BOOL; // Bit 6
+    bErrReadLastResult         : BOOL; // Bit 7
+	
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

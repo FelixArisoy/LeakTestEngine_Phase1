@@ -3,28 +3,30 @@
   <POU Name="PRG_AteqComm" Id="{a3d4985a-23a4-4261-9530-cafe9c795619}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_AteqComm
 VAR
-    aFbMappers : ARRAY[1..4] OF FB_AteqComm;
-    iIndex     : UINT;
+	nDeviceIndex    : UINT;
+	
+    aAteqComm    	: ARRAY[0..GVL_Ateq.nAteqDeviceCount-1] OF FB_AteqComm;
+    astAteqMappedIo : ARRAY[0..GVL_Ateq.nAteqDeviceCount-1] OF ST_AteqMappedIo;
+	astAteqRawIo    : ARRAY[0..GVL_Ateq.nAteqDeviceCount-1] OF ST_AteqRawIo;
+
+    
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[(*
-FOR iIndex := 1 TO nAteqF6_DevCount DO
-    aFbMappers[iIndex](
-        iDeviceIndex := iIndex,
-        pInputStartAdr := ADR(aF6_InputRaw[(iIndex - 1) * 64]),
-        pOutputStartAdr := ADR(aF6_OutputRaw[(iIndex - 1) * 64]),
-        stDevice := aF6_Device[iIndex]
+      <ST><![CDATA[
+FOR nDeviceIndex := 0 TO GVL_Ateq.nAteqDeviceCount - 1 DO
+    aAteqComm[nDeviceIndex](
+        nDeviceIndex     	:= nDeviceIndex,
+        pRawInputStartAdr   := ADR(astAteqRawIo[nDeviceIndex].anInput),
+        pRawOutputStartAdr  := ADR(astAteqRawIo[nDeviceIndex].anOutput),
+        stAteqMappedIo      := astAteqMappedIo[nDeviceIndex],
+       // bHeartbeat       := GVL_Ateq.abHeartbeat[nDeviceIndex]
     );
-    aF6_bHeartbeat[iIndex] := aFbMappers[iIndex].bHeartbeat;
 END_FOR
-*)
 ]]></ST>
     </Implementation>
     <LineIds Name="PRG_AteqComm">
-      <LineId Id="10" Count="2" />
-      <LineId Id="25" Count="0" />
-      <LineId Id="14" Count="5" />
-      <LineId Id="30" Count="0" />
+      <LineId Id="95" Count="0" />
+      <LineId Id="84" Count="8" />
       <LineId Id="5" Count="0" />
     </LineIds>
   </POU>

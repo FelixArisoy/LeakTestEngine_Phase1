@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <TcLicenseInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2011/11/TcLicenseInfo">
 	<LicenseInfo>
-		<SystemId>{FCC2F6B6-880E-7855-4449-D617F9E3962C}</SystemId>
-		<IssueTime>2025-06-24T13:36:00</IssueTime>
-		<ExpireTime>2025-07-02T00:00:00</ExpireTime>
-		<LicenseKey>e6505c91d25adbbb86bad7e2ecdb091fef541b3ee5a323979dbfeb9e655503fb2255a12ff26e02c2bebfa91c74a88de7d20cbd0cc203e00e352cb56c9c0ad7962077be4477cbf7af1ba66b1c9332a633e17e6592df86163cec16a0581533997a6d5dfc9a8200a054129b6a6d430cdbab0d21aa96570a1834add58dec4694aa81db2d634eebaaa6a2748b100fc74edd5b3657f89dd4afe59b780f1d54f083cfcb85d865c4652dc9203c2cf38cdb97f16c76f0c06bb8e4d9f63b3eeffe5e1f079e43ec01b69109e3ca630e5f7a11fa4ecedbcbbaa7c13c9395fe0a8b237c38ac38e7ccf50c37e014ff4beb49e0e98b1eb3b72550bbf20ced3c91b8dbbae637a104</LicenseKey>
+		<SystemId>{53D62CDD-E9A3-0EF9-9441-A3D836E609DF}</SystemId>
+		<IssueTime>2025-07-01T15:54:00</IssueTime>
+		<ExpireTime>2025-07-09T00:00:00</ExpireTime>
+		<LicenseKey>d8a4fcf3053ecc4fc5d0924e7d73bf340ee299946f7b23e623de02f2c404d6dc758961b5c79abf2c6658b5289775b13b5b938e71f76700a5f2b05bd1cc6c16ee5770e5b7356a799619b456693359153bb8b44289c57d9b63809fdd652583f8cdde4a2fa7fc1a621c0674f166f316beb3208680713ef2c3ec1db5a046e0e7c9617d72adbc31780cd785c7a5466305d7756b8dcabab2d8494a7743252b7ad25a2a50ac62ddd4c529ff9f6c5751b480aa4732eb65d6df11359b54995adcf584c7043fe27a041b09f9e10928cfb36d443d313f80dcafdaf0111bf2b9b4e24901556f66126c6d9e1ad984ed863c9878fdf69364a3afc6f0afb81ec0c55682dcd44f3f</LicenseKey>
 		<License>
 			<LicenseId>{4C256767-E6E6-4AF5-BD68-9F7ABAD0C200}</LicenseId>
 			<Name>TC3 ADS</Name>
@@ -24,6 +24,12 @@
 			<LicenseId>{56ADDFFF-32FF-4DC7-A432-0D2D8413616A}</LicenseId>
 			<Name>TC3 Profinet IO-Device</Name>
 			<OrderNo>TF6270</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{EA2D2277-B540-4BF0-A581-CF62D3140F06}</LicenseId>
+			<Name>TC3 Profinet Controller</Name>
+			<OrderNo>TF6271</OrderNo>
+			<Instances>1</Instances>
 		</License>
 	</LicenseInfo>
 </TcLicenseInfo>

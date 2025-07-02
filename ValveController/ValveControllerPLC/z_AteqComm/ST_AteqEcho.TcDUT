@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <DUT Name="ST_AteqEcho" Id="{80c41e36-cd47-4d38-b0ee-934383f0bb01}">
+    <Declaration><![CDATA[TYPE ST_AteqEcho :
+STRUCT
+	
+    (* Byte 0 - 00h *)
+    bEchoReset                 : BOOL; // Bit 0
+    bEchoStart                 : BOOL; // Bit 1
+    bEchoSpecialCycle          : BOOL; // Bit 2
+    bEchoProgramSelect         : BOOL; // Bit 3
+    bEchoReadFifo              : BOOL; // Bit 4
+    bEchoReadParams            : BOOL; // Bit 5
+    bEchoWriteParams           : BOOL; // Bit 6
+    bEchoResetFifo             : BOOL; // Bit 7
+
+    (* Byte 1 - 01h *)
+    bEchoReadConfig            : BOOL; // Bit 0
+    bEchoReadExtMenu           : BOOL; // Bit 1
+    bEchoReadFunctionBits      : BOOL; // Bit 2
+    bEchoWriteExtMenu          : BOOL; // Bit 3
+    bEchoWriteFunctionBits     : BOOL; // Bit 4
+    bEchoReadProgramName       : BOOL; // Bit 5
+    bEchoWriteProgramName      : BOOL; // Bit 6
+    bEchoReadLastResult        : BOOL; // Bit 7
+	
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

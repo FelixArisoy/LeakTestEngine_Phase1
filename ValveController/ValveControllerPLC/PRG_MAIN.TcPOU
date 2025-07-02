@@ -3,6 +3,7 @@
   <POU Name="PRG_MAIN" Id="{075ea502-c30b-43b0-8467-21d133ac9e69}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_MAIN
 VAR
+
 	
 END_VAR
 ]]></Declaration>

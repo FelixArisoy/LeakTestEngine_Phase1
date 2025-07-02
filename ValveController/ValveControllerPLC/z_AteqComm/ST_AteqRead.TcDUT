@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
-  <DUT Name="ST_AteqRead" Id="{4bdec2e8-abb3-425c-a531-ebad90f3fcff}">
+  <DUT Name="ST_AteqRead" Id="{8a4137b9-3dbd-462a-bd9d-b82ade66909a}">
     <Declaration><![CDATA[TYPE ST_AteqRead :
 STRUCT
+	
 //Reading table structure (From ATEQ To PLC)
 //Results status: (@: 00h – 0Fh)
 	anEchoSignals 		: ARRAY[0..1] OF BYTE;     // 00h–01h
@@ -23,6 +24,9 @@ STRUCT
 // Exchange zone: (@: 20h – 9Fh)	
 	anExchangeZone 		: ARRAY[0..127] OF BYTE;   // 20h–9Fh Cycle results exchange zone. Parameters reading and writing exchange zone.
 
+	stEcho         			: ST_AteqEcho;
+    stErrorCode      		: ST_AteqErrorCode;
+    stRealtimeTestResults   : ST_AteqRealtimeTestResults;
 END_STRUCT
 END_TYPE
 ]]></Declaration>
