@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="PRG_TEST" Id="{17166b4e-59dc-4826-b23b-b13d729fc1f3}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_TEST
+VAR
+
+	fbTest_AteqComm : FB_Test_AteqComm;
+	
+	
+END_VAR
+
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Start TcUnit and Call Test_FBs
+TcUnit.RUN();
+fbTest_AteqComm();
+
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="PRG_TEST">
+      <LineId Id="80" Count="5" />
+      <LineId Id="25" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
