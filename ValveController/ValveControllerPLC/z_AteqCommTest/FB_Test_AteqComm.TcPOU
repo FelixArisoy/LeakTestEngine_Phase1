@@ -5,23 +5,16 @@
 VAR
  
 	fbTestSuite			: TcUnit.FB_TestSuite;
+	
+	nDeviceIndex 		: UINT	:= 0;	
     fbTestAteqComm		: FB_AteqComm;
-	stTestAteqMappedIo	: ST_AteqMappedIo;
 	stTestAteqRawIo		: ST_AteqRawIo;
+	stTestAteqMappedIo	: ST_AteqMappedIo;
 	
-	pRawInput			: POINTER TO BYTE;
-	pRawOutput			: POINTER TO BYTE;
-	
-	nDeviceIndex 	: UINT	:= 0;	
-	aTestInput      : ARRAY[0..3] OF ARRAY [0..63] OF BYTE;
-    
-
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
-
-					
+      <ST><![CDATA[					
 //Run Below Tests	
 Test_InputMap();
 Test_OutputMap();
@@ -32,7 +25,7 @@ Test_OutputMap();
 VAR
 	nIndex1 : INT;
 	nIndex2	: BYTE;
-	
+	nIndex3	: BYTE;
 	
 	nPressureCurValueTestBuffer	: REAL;
     nPressureCurValueTestInput 	: DWORD;
@@ -44,81 +37,143 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[TEST('InputMapping');
-// Assign known values; keep on top, need to write it first before Test compares them, otherwise test fails
-FOR nIndex1 := 0 TO 256 DO	
-	aTestInput [nIndex1/64][nIndex1 MOD 64]  := INT_TO_BYTE(nIndex1+1);
+
+// Clear all inputs
+FOR nIndex1 := 0 TO 255 DO
+	stTestAteqRawIo.anInput[nIndex1 / 64][nIndex1 MOD 64] := 0;
 END_FOR
 
-pRawInput		:= ADR(aTestInput[0][0]);
-pRawOutput		:= ADR(stTestAteqRawIo.anOutput[0][0]);
-// Run mapper
-fbTestAteqComm(		nDeviceIndex			:= nDeviceIndex,
-					pRawInputStartAdr 		:= pRawInput, 
-					pRawOutputStartAdr 		:= pRawOutput, 
-					stAteqMappedIo 			:= stTestAteqMappedIo	
-			);
-					
-// Validate mapped data
-// Basic header zone (00h – 0Fh)
-fbTestSuite.AssertEquals_BYTE(	Expected := 1,  Actual := stTestAteqMappedIo.stRead.anEchoSignals[0],	Message := 'EchoSignals[0] mismatch');
-fbTestSuite.AssertEquals_BYTE(	Expected := 2,  Actual := stTestAteqMappedIo.stRead.anEchoSignals[1],	Message := 'EchoSignals[1] mismatch');
+// Test each bit in Echo Byte 0
+stTestAteqRawIo.anInput[0][0] := 16#FF;
+fbTestAteqComm(nDeviceIndex := nDeviceIndex, stRawIo := stTestAteqRawIo, stMappedIo := stTestAteqMappedIo);
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stEcho.bReset, 'Echo.bReset mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stEcho.bStart, 'Echo.bStart mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stEcho.bSpecialCycle, 'Echo.bSpecialCycle mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stEcho.bProgramSelect, 'Echo.bProgramSelect mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stEcho.bReadFifo, 'Echo.bReadFifo mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stEcho.bReadParams, 'Echo.bReadParams mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stEcho.bWriteParams, 'Echo.bWriteParams mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stEcho.bResetFifo, 'Echo.bResetFifo mismatch');
 
-fbTestSuite.AssertEquals_BYTE(	Expected := 3,  Actual := stTestAteqMappedIo.stRead.anErrorCode[0],	Message := 'ErrorCode[0] mismatch');
-fbTestSuite.AssertEquals_BYTE(	Expected := 4,  Actual := stTestAteqMappedIo.stRead.anErrorCode[1],	Message := 'ErrorCode[1] mismatch');
+// Echo Byte 1
+stTestAteqRawIo.anInput[0][1] := 16#FF;
+fbTestAteqComm(nDeviceIndex := nDeviceIndex, stRawIo := stTestAteqRawIo, stMappedIo := stTestAteqMappedIo);
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stEcho.bReadConfig, 'Echo.bReadConfig mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stEcho.bReadExtMenu, 'Echo.bReadExtMenu mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stEcho.bReadFunctionBits, 'Echo.bReadFunctionBits mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stEcho.bWriteExtMenu, 'Echo.bWriteExtMenu mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stEcho.bWriteFunctionBits, 'Echo.bWriteFunctionBits mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stEcho.bReadProgramName, 'Echo.bReadProgramName mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stEcho.bWriteProgramName, 'Echo.bWriteProgramName mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stEcho.bReadLastResult, 'Echo.bReadLastResult mismatch');
 
-fbTestSuite.AssertEquals_BYTE(	Expected := 5,  Actual := stTestAteqMappedIo.stRead.anReservedIn[0],	Message := 'ReservedIn[0] mismatch');
-fbTestSuite.AssertEquals_BYTE(	Expected := 6,  Actual := stTestAteqMappedIo.stRead.anReservedIn[1],	Message := 'ReservedIn[1] mismatch');
+// Error Bytes
+stTestAteqRawIo.anInput[0][2] := 16#FF;
+stTestAteqRawIo.anInput[0][3] := 16#FF;
+fbTestAteqComm(nDeviceIndex := nDeviceIndex, stRawIo := stTestAteqRawIo, stMappedIo := stTestAteqMappedIo);
+// Byte 0
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stErrorCode.bReset, 'ErrorCode.bReset mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stErrorCode.bStart, 'ErrorCode.bStart mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stErrorCode.bSpecialCycle, 'ErrorCode.bSpecialCycle mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stErrorCode.bProgramSelect, 'ErrorCode.bProgramSelect mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stErrorCode.bReadFifo, 'ErrorCode.bReadFifo mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stErrorCode.bReadParams, 'ErrorCode.bReadParams mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stErrorCode.bWriteParams, 'ErrorCode.bWriteParams mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stErrorCode.bResetFifo, 'ErrorCode.bResetFifo mismatch');
+// Byte 1
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stErrorCode.bReadConfig, 'ErrorCode.bReadConfig mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stErrorCode.bReadExtMenu, 'ErrorCode.bReadExtMenu mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stErrorCode.bReadFunctionBits, 'ErrorCode.bReadFunctionBits mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stErrorCode.bWriteExtMenu, 'ErrorCode.bWriteExtMenu mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stErrorCode.bWriteFunctionBits, 'ErrorCode.bWriteFunctionBits mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stErrorCode.bReadProgramName, 'ErrorCode.bReadProgramName mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stErrorCode.bWriteProgramName, 'ErrorCode.bWriteProgramName mismatch');
+fbTestSuite.AssertEquals_BOOL(TRUE, stTestAteqMappedIo.stRead.stErrorCode.bReadLastResult, 'ErrorCode.bReadLastResult mismatch');
 
-// WORDs (combine two bytes: high byte << 8 + low byte)
+// Reserved input bytes
+stTestAteqRawIo.anInput[0][4] := 5;
+stTestAteqRawIo.anInput[0][5] := 6;
+// Program, FIFO, Test Type words
+stTestAteqRawIo.anInput[0][6] := 7;
+stTestAteqRawIo.anInput[0][7] := 8;
+stTestAteqRawIo.anInput[0][8] := 9;
+stTestAteqRawIo.anInput[0][9] := 10;
+stTestAteqRawIo.anInput[0][10] := 11;
+stTestAteqRawIo.anInput[0][11] := 12;
 
-fbTestSuite.AssertEquals_WORD(	Expected := 16#0708,	Actual := stTestAteqMappedIo.stRead.nProgramInUse,	Message := 'ProgramInUse mismatch'); 		// 07h–08h
-fbTestSuite.AssertEquals_WORD(	Expected := 16#090A,	Actual := stTestAteqMappedIo.stRead.nResultsInFifo,	Message := 'ResultsInFifo mismatch');		// 09h–0Ah
-fbTestSuite.AssertEquals_WORD(	Expected := 16#0B0C,	Actual := stTestAteqMappedIo.stRead.nTestType,		Message := 'TestType mismatch');			// 0Bh–0Ch
+// Real-time test results
+stTestAteqRawIo.anInput[0][12] := 16#FF;
+stTestAteqRawIo.anInput[0][13] := 16#03;
+// Program Step
+stTestAteqRawIo.anInput[0][14] := 15;
+stTestAteqRawIo.anInput[0][15] := 16;
 
-fbTestSuite.AssertEquals_BYTE(	Expected := 13, Actual := stTestAteqMappedIo.stRead.nRealTimeResults[0], Message := 'RealTimeResults[0] mismatch');
-fbTestSuite.AssertEquals_BYTE(	Expected := 14, Actual := stTestAteqMappedIo.stRead.nRealTimeResults[1], Message := 'RealTimeResults[1] mismatch');
+// Pressure (DWORD)
+stTestAteqRawIo.anInput[0][16] := 17;
+stTestAteqRawIo.anInput[0][17] := 18;
+stTestAteqRawIo.anInput[0][18] := 19;
+stTestAteqRawIo.anInput[0][19] := 20;
+// PressureUnitCode (DWORD)
+stTestAteqRawIo.anInput[0][20] := 21;
+stTestAteqRawIo.anInput[0][21] := 22;
+stTestAteqRawIo.anInput[0][22] := 23;
+stTestAteqRawIo.anInput[0][23] := 24;
+// Leak (DWORD)
+stTestAteqRawIo.anInput[0][24] := 25;
+stTestAteqRawIo.anInput[0][25] := 26;
+stTestAteqRawIo.anInput[0][26] := 27;
+stTestAteqRawIo.anInput[0][27] := 28;
+// LeakUnitCode (DWORD)
+stTestAteqRawIo.anInput[0][28] := 29;
+stTestAteqRawIo.anInput[0][29] := 30;
+stTestAteqRawIo.anInput[0][30] := 31;
+stTestAteqRawIo.anInput[0][31] := 32;
 
-fbTestSuite.AssertEquals_WORD(	Expected := 16#0F10, 	Actual := stTestAteqMappedIo.stRead.nProgramStep,	Message := 'ProgramStep mismatch'); 			// 0Eh–0Fh
+// ExchangeZone from 32 onward
+FOR nIndex2 := 0 TO 127 DO
+	stTestAteqRawIo.anInput[(32 + nIndex2) / 64][(32 + nIndex2) MOD 64] := 33 + nIndex2;
+END_FOR
 
+// Run final mapping
+fbTestAteqComm(
+					nDeviceIndex 	:= nDeviceIndex, 
+					stRawIo 		:= stTestAteqRawIo, 
+					stMappedIo 		:= stTestAteqMappedIo);
 
-// Convert DWORD Test values to REAL and Test
+// Validate final values
+fbTestSuite.AssertEquals_WORD(16#0708, stTestAteqMappedIo.stRead.nProgramInUse, 'ProgramInUse mismatch');
+fbTestSuite.AssertEquals_WORD(16#090A, stTestAteqMappedIo.stRead.nResultsInFifo, 'ResultsInFifo mismatch');
+fbTestSuite.AssertEquals_WORD(16#0B0C, stTestAteqMappedIo.stRead.nTestType, 'TestType mismatch');
+fbTestSuite.AssertEquals_WORD(16#0F10, stTestAteqMappedIo.stRead.nProgramStep, 'ProgramStep mismatch');
 
+// PressureCurValue
 nPressureCurValueTestInput := 16#14131211;
 MEMCPY(ADR(nPressureCurValueTestBuffer), ADR(nPressureCurValueTestInput), SIZEOF(nPressureCurValueTestBuffer));
+fbTestSuite.AssertEquals_REAL(nPressureCurValueTestBuffer, stTestAteqMappedIo.stRead.nPressureCurValue, 0, 'PressureCurValue mismatch');
 
-fbTestSuite.AssertEquals_REAL(	Expected 	:= nPressureCurValueTestBuffer,  
-								Actual 		:= stTestAteqMappedIo.stRead.nPressureCurValue,
-								Delta		:= 0, 
-								Message 	:= 'PressureCurValue mismatch');								// 10h–13h
+// PressureUnitCode
+fbTestSuite.AssertEquals_DWORD(16#18171615, stTestAteqMappedIo.stRead.nPressureUnitCode, 'PressureUnitCode mismatch');
 
-fbTestSuite.AssertEquals_DWORD(	Expected 	:= 16#18171615,  
-								Actual 		:= stTestAteqMappedIo.stRead.nPressureUnitCode,	
-								Message 	:= 'PressureUnitCode mismatch');								// 14h–17h
-
-nLeakCurValueTestInput := 16#1C1B1A09;
+// LeakCurValue
+nLeakCurValueTestInput := 16#1C1B1A19;
 MEMCPY(ADR(nLeakCurValueTestBuffer), ADR(nLeakCurValueTestInput), SIZEOF(nLeakCurValueTestBuffer));
+fbTestSuite.AssertEquals_REAL(nLeakCurValueTestBuffer, stTestAteqMappedIo.stRead.nLeakCurValue, 0, 'LeakCurValue mismatch');
 
-fbTestSuite.AssertEquals_REAL(	Expected 	:= nLeakCurValueTestBuffer,  
-								Actual 		:= stTestAteqMappedIo.stRead.nLeakCurValue,	
-								Delta		:= 0,
-								Message 	:= 'LeakCurValue mismatch');									// 18h–1Bh
+// LeakUnitCode
+fbTestSuite.AssertEquals_DWORD(16#201F1E1D, stTestAteqMappedIo.stRead.nLeakUnitCode, 'LeakUnitCode mismatch');
 
-fbTestSuite.AssertEquals_DWORD(	Expected 	:= 16#201F1E1D,  
-								Actual 		:= stTestAteqMappedIo.stRead.nLeakUnitCode,	
-								Message 	:= 'LeakUnitCode mismatch');									// 1Ch–1Fh
+// ExchangeZone
+FOR nIndex3 := 0 TO 127 DO
+	
+fbTestSuite.AssertEquals_BYTE(
+									Expected 	:= 33 + nIndex3,
+									Actual 		:= stTestAteqMappedIo.stRead.anExchangeZone[nIndex3],
+									Message 	:= CONCAT(CONCAT('ExchangeZone[', INT_TO_STRING(nIndex3)), '] mismatch')
+	);
+END_FOR
 
-// Exchange Zone: 128 bytes (20h – 9Fh = byte 33 to 160)
-
-	FOR nIndex2 := 0 TO 127 DO
-		fbTestSuite.AssertEquals_BYTE(
-			Expected := 33 + nIndex2,
-			Actual   := stTestAteqMappedIo.stRead.anExchangeZone[nIndex2],
-			Message  := CONCAT(CONCAT('ExchangeZone[', BYTE_TO_STRING(nIndex2)), '] mismatch')
-		);
-	END_FOR;
-
-
-TEST_FINISHED();]]></ST>
+TEST_FINISHED();
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="Test_OutputMap" Id="{f4de2307-dc02-4b4d-847b-42d7be068a06}">
@@ -132,103 +187,107 @@ VAR
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[TEST('OutputMapping');
-// Assign known values; keep on top, need to write it first before Test compares them, otherwise test fails
-stTestAteqMappedIo.stWrite.anCommands[0]		:=	1;
-stTestAteqMappedIo.stWrite.anCommands[1]		:=	2;
 
-stTestAteqMappedIo.stWrite.anReservedOut1[0]	:=	3;
-stTestAteqMappedIo.stWrite.anReservedOut1[1]	:=	4;
-stTestAteqMappedIo.stWrite.anReservedOut1[2]	:=	5;
-stTestAteqMappedIo.stWrite.anReservedOut1[3]	:=	6;
+// Set known values to command bits
+stTestAteqMappedIo.stWrite.stCommands.bReset               := TRUE;
+stTestAteqMappedIo.stWrite.stCommands.bStart               := TRUE;
+stTestAteqMappedIo.stWrite.stCommands.bSpecialCycle        := TRUE;
+stTestAteqMappedIo.stWrite.stCommands.bProgramSelect       := TRUE;
+stTestAteqMappedIo.stWrite.stCommands.bReadFifoResults     := TRUE;
+stTestAteqMappedIo.stWrite.stCommands.bReadParameters      := TRUE;
+stTestAteqMappedIo.stWrite.stCommands.bWriteParameters     := TRUE;
+stTestAteqMappedIo.stWrite.stCommands.bResetFifo           := TRUE;
+stTestAteqMappedIo.stWrite.stCommands.bReadInstrumentConfig := TRUE;
+stTestAteqMappedIo.stWrite.stCommands.bReadConfig          := TRUE;
+stTestAteqMappedIo.stWrite.stCommands.bReadFunctionBits    := TRUE;
+stTestAteqMappedIo.stWrite.stCommands.bWriteExtMenu        := TRUE;
+stTestAteqMappedIo.stWrite.stCommands.bWriteFunctionBits   := TRUE;
+stTestAteqMappedIo.stWrite.stCommands.bReadProgramName     := TRUE;
+stTestAteqMappedIo.stWrite.stCommands.bWriteProgramName    := TRUE;
+stTestAteqMappedIo.stWrite.stCommands.bReadLastResult      := TRUE;
 
-stTestAteqMappedIo.stWrite.nProgramSelect 	:= 2055; 	//16#0708
-stTestAteqMappedIo.stWrite.nSpecialCycle 	:= 2569; 	//16#090A
+// ReservedOut1
+stTestAteqMappedIo.stWrite.anReservedOut1[0] := 16#A1;
+stTestAteqMappedIo.stWrite.anReservedOut1[1] := 16#A2;
+stTestAteqMappedIo.stWrite.anReservedOut1[2] := 16#A3;
+stTestAteqMappedIo.stWrite.anReservedOut1[3] := 16#A4;
 
+// ProgramSelect and SpecialCycle
+stTestAteqMappedIo.stWrite.nProgramSelect := 16#1122;
+stTestAteqMappedIo.stWrite.nSpecialCycle := 16#3344;
+
+// ReservedOut2
 FOR nIndex1 := 0 TO 21 DO
-	stTestAteqMappedIo.stWrite.anReservedOut2[nIndex1] := 11 + nIndex1;
+    stTestAteqMappedIo.stWrite.anReservedOut2[nIndex1] := 16#50 + nIndex1;
 END_FOR
 
+// ExchangeZone
 FOR nIndex2 := 0 TO 127 DO
-	stTestAteqMappedIo.stWrite.anExchangeZone[nIndex2] := 33 + nIndex2;
+    stTestAteqMappedIo.stWrite.anExchangeZone[nIndex2] := 16#C0 + nIndex2;
 END_FOR
 
-pRawInput		:= ADR(aTestInput[0][0]);
-pRawOutput		:= ADR(stTestAteqRawIo.anOutput[0][0]);
-// Run mapper
-fbTestAteqComm(		nDeviceIndex			:= nDeviceIndex,
-					pRawInputStartAdr 		:= pRawInput, 
-					pRawOutputStartAdr 		:= pRawOutput, 
-					stAteqMappedIo 			:= stTestAteqMappedIo	
-			);
+// Run FB (assumes aTestOutput is linked to stTestAteqRawIo.anOutput)
+fbTestAteqComm(
+    nDeviceIndex := nDeviceIndex,
+    stRawIo      := stTestAteqRawIo,
+    stMappedIo   := stTestAteqMappedIo
+);
 
+// Validate output bytes
+fbTestSuite.AssertEquals_BYTE(Expected := 16#FF, Actual := stTestAteqRawIo.anOutput[0][0], Message := 'CommandByte0 mismatch');
+fbTestSuite.AssertEquals_BYTE(Expected := 16#FF, Actual := stTestAteqRawIo.anOutput[0][1], Message := 'CommandByte1 mismatch');
 
-// Validate mapped data
-// Basic output structure (00h–1Fh)
-fbTestSuite.AssertEquals_BYTE(	Expected := 1,  Actual := stTestAteqRawIo.anOutput[0][0],	Message := 'Commands[0] mismatch');
-fbTestSuite.AssertEquals_BYTE(	Expected := 2,  Actual := stTestAteqRawIo.anOutput[0][1],	Message := 'Commands[1] mismatch');
+// ReservedOut1
+fbTestSuite.AssertEquals_BYTE(Expected := 16#A1, Actual := stTestAteqRawIo.anOutput[0][2], Message := 'ReservedOut1[0] mismatch');
+fbTestSuite.AssertEquals_BYTE(Expected := 16#A2, Actual := stTestAteqRawIo.anOutput[0][3], Message := 'ReservedOut1[1] mismatch');
+fbTestSuite.AssertEquals_BYTE(Expected := 16#A3, Actual := stTestAteqRawIo.anOutput[0][4], Message := 'ReservedOut1[2] mismatch');
+fbTestSuite.AssertEquals_BYTE(Expected := 16#A4, Actual := stTestAteqRawIo.anOutput[0][5], Message := 'ReservedOut1[3] mismatch');
 
-fbTestSuite.AssertEquals_BYTE(	Expected := 3,  Actual := stTestAteqRawIo.anOutput[0][2],	Message := 'ReservedOut1[0] mismatch');
-fbTestSuite.AssertEquals_BYTE(	Expected := 4,  Actual := stTestAteqRawIo.anOutput[0][3],	Message := 'ReservedOut1[1] mismatch');
-fbTestSuite.AssertEquals_BYTE(	Expected := 5,  Actual := stTestAteqRawIo.anOutput[0][4],	Message := 'ReservedOut1[2] mismatch');
-fbTestSuite.AssertEquals_BYTE(	Expected := 6,  Actual := stTestAteqRawIo.anOutput[0][5],	Message := 'ReservedOut1[3] mismatch');
+// ProgramSelect = 0x1122 → 0x22 (low), 0x11 (high)
+fbTestSuite.AssertEquals_BYTE(Expected := 16#22, Actual := stTestAteqRawIo.anOutput[0][6], Message := 'ProgramSelect[LowByte] mismatch');
+fbTestSuite.AssertEquals_BYTE(Expected := 16#11, Actual := stTestAteqRawIo.anOutput[0][7], Message := 'ProgramSelect[HighByte] mismatch');
 
-fbTestSuite.AssertEquals_BYTE(	Expected := 7,  Actual := stTestAteqRawIo.anOutput[0][6],	Message := 'ProgramSelect MSB mismatch');
-fbTestSuite.AssertEquals_BYTE(	Expected := 8,  Actual := stTestAteqRawIo.anOutput[0][7],	Message := 'ProgramSelect LSB mismatch');
+// SpecialCycle = 0x3344 → 0x44 (low), 0x33 (high)
+fbTestSuite.AssertEquals_BYTE(Expected := 16#44, Actual := stTestAteqRawIo.anOutput[0][8], Message := 'SpecialCycle[LowByte] mismatch');
+fbTestSuite.AssertEquals_BYTE(Expected := 16#33, Actual := stTestAteqRawIo.anOutput[0][9], Message := 'SpecialCycle[HighByte] mismatch');
 
-fbTestSuite.AssertEquals_WORD(	Expected := 9,  Actual := stTestAteqRawIo.anOutput[0][8],	Message := 'SpecialCycle MSB mismatch'); 
-fbTestSuite.AssertEquals_WORD(	Expected := 10, Actual := stTestAteqRawIo.anOutput[0][9],	Message := 'SpecialCycle LSB mismatch');
+// ReservedOut2
+FOR nIndex3 := 0 TO 21 DO
+    fbTestSuite.AssertEquals_BYTE(
+        Expected := 16#50 + nIndex3,
+        Actual   := stTestAteqRawIo.anOutput[0][10 + nIndex3],
+        Message  := CONCAT(CONCAT('ReservedOut2[', INT_TO_STRING(nIndex3)), '] mismatch')
+    );
+END_FOR
 
-// ReservedOut2: 0Ah–1Fh = byte[10] to byte[31] → values 11 to 32
-
-	FOR nIndex3 := 0 TO 21 DO
-		fbTestSuite.AssertEquals_BYTE(
-			Expected := 11 + nIndex3,
-			Actual   := stTestAteqRawIo.anOutput[0][10 + nIndex3],
-			Message  := CONCAT(CONCAT('ReservedOut2[', INT_TO_STRING(nIndex3)), '] mismatch')
-		);
-	END_FOR;
-
-
-// Exchange Zone: 128 bytes from 20h–9Fh → values 33 to 160
-
-	FOR nIndex4 := 0 TO 127 DO
-		fbTestSuite.AssertEquals_BYTE(
-			Expected := 33 + nIndex4,
-			Actual   := stTestAteqRawIo.anOutput[(32 + nIndex4) / 64][(32 + nIndex4) MOD 64], 
-			Message  := CONCAT(CONCAT('ExchangeZone[', INT_TO_STRING(nIndex4)), '] mismatch')
-		);
-	END_FOR;
-
+// ExchangeZone (128 bytes from byte index 32 onward)
+FOR nIndex4 := 0 TO 127 DO
+    fbTestSuite.AssertEquals_BYTE(
+        Expected := 16#C0 + nIndex4,
+        Actual   := stTestAteqRawIo.anOutput[(32 + nIndex4) / 64][(32 + nIndex4) MOD 64],
+        Message  := CONCAT(CONCAT('ExchangeZone[', INT_TO_STRING(nIndex4)), '] mismatch')
+    );
+END_FOR
 
 TEST_FINISHED();
 ]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_Test_AteqComm">
-      <LineId Id="442" Count="0" />
-      <LineId Id="441" Count="0" />
       <LineId Id="434" Count="0" />
       <LineId Id="392" Count="2" />
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_Test_AteqComm.Test_InputMap">
-      <LineId Id="294" Count="4" />
-      <LineId Id="371" Count="0" />
-      <LineId Id="385" Count="0" />
-      <LineId Id="305" Count="0" />
-      <LineId Id="380" Count="4" />
-      <LineId Id="372" Count="1" />
-      <LineId Id="311" Count="59" />
+      <LineId Id="670" Count="99" />
+      <LineId Id="817" Count="2" />
+      <LineId Id="770" Count="25" />
+      <LineId Id="803" Count="0" />
+      <LineId Id="796" Count="6" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_Test_AteqComm.Test_OutputMap">
-      <LineId Id="221" Count="0" />
-      <LineId Id="278" Count="18" />
-      <LineId Id="321" Count="1" />
-      <LineId Id="297" Count="0" />
-      <LineId Id="316" Count="4" />
-      <LineId Id="315" Count="0" />
-      <LineId Id="231" Count="40" />
+      <LineId Id="330" Count="83" />
       <LineId Id="75" Count="0" />
     </LineIds>
   </POU>

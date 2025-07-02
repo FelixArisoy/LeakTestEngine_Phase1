@@ -4,18 +4,18 @@
     <Declaration><![CDATA[TYPE ST_AteqRealtimeTestResults :
 STRUCT
 	   (* Byte 0 - 0Ch *)
-    bResultPass                : BOOL; // Bit 0
-    bResultFailPart            : BOOL; // Bit 1
-    bResultFailRef             : BOOL; // Bit 2
-    bResultAlarm               : BOOL; // Bit 3
-    bResultPressureErr         : BOOL; // Bit 4
-    bResultCycleEnd            : BOOL; // Bit 5
-    bResultRecoverable         : BOOL; // Bit 6
-    bResultCalibErr            : BOOL; // Bit 7
+    bPass                : BOOL; // Bit 0
+    bFailPart            : BOOL; // Bit 1
+    bFailRef             : BOOL; // Bit 2
+    bAlarm               : BOOL; // Bit 3
+    bPressureEror         : BOOL; // Bit 4
+    bCycleEnd            : BOOL; // Bit 5
+    bRecoverable         : BOOL; // Bit 6
+    bCalibEror            : BOOL; // Bit 7
 
     (* Byte 1 - 0Dh *)
-    bResultCalibCheckErr       : BOOL; // Bit 0
-    bResultATRFault            : BOOL; // Bit 1
+    bCalibCheckEror       : BOOL; // Bit 0
+    bATRFault            : BOOL; // Bit 1
     bReserved2                 : BOOL; // Bit 2
     bReserved3                 : BOOL; // Bit 3
     bReserved4                 : BOOL; // Bit 4

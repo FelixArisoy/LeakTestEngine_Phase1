@@ -5,28 +5,27 @@
 VAR
 	nDeviceIndex    : UINT;
 	
-    aAteqComm    	: ARRAY[0..GVL_Ateq.nAteqDeviceCount-1] OF FB_AteqComm;
-    astAteqMappedIo : ARRAY[0..GVL_Ateq.nAteqDeviceCount-1] OF ST_AteqMappedIo;
-	astAteqRawIo    : ARRAY[0..GVL_Ateq.nAteqDeviceCount-1] OF ST_AteqRawIo;
+    astAteqCommDevice   : ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF FB_AteqComm;
+    astAteqMappedIo 	: ARRAY[0..GVL_Ateq.nMaxDeviceCount - 1] OF ST_AteqMappedIo;
+	astAteqRawIo   		: ARRAY[0..GVL_Ateq.nMaxDeviceCount - 1] OF ST_AteqRawIo;
 
-    
+   //stAteqEcho: ST_AteqEcho;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
-FOR nDeviceIndex := 0 TO GVL_Ateq.nAteqDeviceCount - 1 DO
-    aAteqComm[nDeviceIndex](
-        nDeviceIndex     	:= nDeviceIndex,
-        pRawInputStartAdr   := ADR(astAteqRawIo[nDeviceIndex].anInput),
-        pRawOutputStartAdr  := ADR(astAteqRawIo[nDeviceIndex].anOutput),
-        stAteqMappedIo      := astAteqMappedIo[nDeviceIndex],
-       // bHeartbeat       := GVL_Ateq.abHeartbeat[nDeviceIndex]
-    );
+      <ST><![CDATA[FOR nDeviceIndex := 0 TO GVL_Ateq.nMaxDeviceCount - 1 DO
+   
+	astAteqCommDevice[nDeviceIndex](
+        							nDeviceIndex    := nDeviceIndex,
+        							stRawIo			:= astAteqRawIo[nDeviceIndex],
+        							stMappedIo		:= astAteqMappedIo[nDeviceIndex]
+    							);
+								
 END_FOR
-]]></ST>
+
+//stAteqEcho.bProgramSelect := astAteqMappedIo[0].stRead.stEcho.bProgramSelect ;]]></ST>
     </Implementation>
     <LineIds Name="PRG_AteqComm">
-      <LineId Id="95" Count="0" />
-      <LineId Id="84" Count="8" />
+      <LineId Id="136" Count="9" />
       <LineId Id="5" Count="0" />
     </LineIds>
   </POU>

@@ -1,32 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
   <POU Name="FB_AteqComm" Id="{a376dbe7-1003-4cb6-a929-84c96ac13f52}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_AteqComm
+    <Declaration><![CDATA[FUNCTION_BLOCK INTERNAL FB_AteqComm
 VAR_INPUT
-	nDeviceIndex	: UINT;
-    pRawInputStartAdr  : POINTER TO BYTE; // Used in Update to MEMCPY in Struct vars
-    pRawOutputStartAdr : POINTER TO BYTE;
-	pRawInput			: POINTER TO BYTE;
-	pRawOutput			: POINTER TO BYTE;
+	nDeviceIndex		: UINT;
 END_VAR
 VAR_IN_OUT
-    stAteqMappedIo : ST_AteqMappedIo;
+	stRawIo 			: ST_AteqRawIo;
+    stMappedIo 			: ST_AteqMappedIo;
 END_VAR
 VAR_OUTPUT
     
 END_VAR
 VAR
-	bHeartbeat 		: BOOL;
-	stAteqRawIo 	: ST_AteqRawIo;
-    nModuleIndex	: UINT;
+	pRawInputStartAdr  	: POINTER TO BYTE; // Used in Update to MEMCPY in Struct vars
+    pRawOutputStartAdr 	: POINTER TO BYTE;
+	bHeartbeat 			: BOOL;	
+    //nModuleIndex		: UINT;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[M_OutputMap();
+      <ST><![CDATA[pRawInputStartAdr   := ADR(stRawIo.anInput);
+pRawOutputStartAdr  := ADR(stRawIo.anOutput);
+
+M_OutputMap();
 M_InputMap();
 M_Update();]]></ST>
     </Implementation>
     <Method Name="M_InputMap" Id="{94ae9230-e4e6-4b89-b299-6e4cade93c2c}">
-      <Declaration><![CDATA[METHOD PUBLIC M_InputMap
+      <Declaration><![CDATA[METHOD PRIVATE M_InputMap
 VAR
 	nIndex1 : INT;
 	anPressureCurValueBuffer 	: ARRAY [0..3] OF BYTE;
@@ -44,214 +45,215 @@ END_VAR
       <Implementation>
         <ST><![CDATA[// Copy 2-byte arrays
 // Direct read from stAteqRawIo
-byEcho0     := stAteqRawIo.anInput[0][0];  // 00h
-byEcho1     := stAteqRawIo.anInput[0][1];  // 01h
-byError0    := stAteqRawIo.anInput[0][2];  // 02h
-byError1    := stAteqRawIo.anInput[0][3];  // 03h
-byResult0   := stAteqRawIo.anInput[0][12]; // 0Ch
-byResult1   := stAteqRawIo.anInput[0][13]; // 0Dh
+byEcho0     := stRawIo.anInput[0][0];  // 00h
+byEcho1     := stRawIo.anInput[0][1];  // 01h
+byError0    := stRawIo.anInput[0][2];  // 02h
+byError1    := stRawIo.anInput[0][3];  // 03h
+byResult0   := stRawIo.anInput[0][12]; // 0Ch
+byResult1   := stRawIo.anInput[0][13]; // 0Dh
 
 // -------- 00h - 01h: Decode Echo Status --------
-stAteqMappedIo.stRead.stEcho.bEchoReset             := (byEcho0 AND 16#01) <> 0;
-stAteqMappedIo.stRead.stEcho.bEchoStart             := (byEcho0 AND 16#02) <> 0;
-stAteqMappedIo.stRead.stEcho.bEchoSpecialCycle      := (byEcho0 AND 16#04) <> 0;
-stAteqMappedIo.stRead.stEcho.bEchoProgramSelect     := (byEcho0 AND 16#08) <> 0;
-stAteqMappedIo.stRead.stEcho.bEchoReadFifo          := (byEcho0 AND 16#10) <> 0;
-stAteqMappedIo.stRead.stEcho.bEchoReadParams        := (byEcho0 AND 16#20) <> 0;
-stAteqMappedIo.stRead.stEcho.bEchoWriteParams       := (byEcho0 AND 16#40) <> 0;
-stAteqMappedIo.stRead.stEcho.bEchoResetFifo         := (byEcho0 AND 16#80) <> 0;
+stMappedIo.stRead.stEcho.bReset             := (byEcho0 AND 16#01) <> 0;
+stMappedIo.stRead.stEcho.bStart             := (byEcho0 AND 16#02) <> 0;
+stMappedIo.stRead.stEcho.bSpecialCycle      := (byEcho0 AND 16#04) <> 0;
+stMappedIo.stRead.stEcho.bProgramSelect     := (byEcho0 AND 16#08) <> 0;
+stMappedIo.stRead.stEcho.bReadFifo          := (byEcho0 AND 16#10) <> 0;
+stMappedIo.stRead.stEcho.bReadParams        := (byEcho0 AND 16#20) <> 0;
+stMappedIo.stRead.stEcho.bWriteParams       := (byEcho0 AND 16#40) <> 0;
+stMappedIo.stRead.stEcho.bResetFifo         := (byEcho0 AND 16#80) <> 0;
 
-stAteqMappedIo.stRead.stEcho.bEchoReadConfig        := (byEcho1 AND 16#01) <> 0;
-stAteqMappedIo.stRead.stEcho.bEchoReadExtMenu       := (byEcho1 AND 16#02) <> 0;
-stAteqMappedIo.stRead.stEcho.bEchoReadFunctionBits  := (byEcho1 AND 16#04) <> 0;
-stAteqMappedIo.stRead.stEcho.bEchoWriteExtMenu      := (byEcho1 AND 16#08) <> 0;
-stAteqMappedIo.stRead.stEcho.bEchoWriteFunctionBits := (byEcho1 AND 16#10) <> 0;
-stAteqMappedIo.stRead.stEcho.bEchoReadProgramName   := (byEcho1 AND 16#20) <> 0;
-stAteqMappedIo.stRead.stEcho.bEchoWriteProgramName  := (byEcho1 AND 16#40) <> 0;
-stAteqMappedIo.stRead.stEcho.bEchoReadLastResult    := (byEcho1 AND 16#80) <> 0;
+stMappedIo.stRead.stEcho.bReadConfig        := (byEcho1 AND 16#01) <> 0;
+stMappedIo.stRead.stEcho.bReadExtMenu       := (byEcho1 AND 16#02) <> 0;
+stMappedIo.stRead.stEcho.bReadFunctionBits  := (byEcho1 AND 16#04) <> 0;
+stMappedIo.stRead.stEcho.bWriteExtMenu      := (byEcho1 AND 16#08) <> 0;
+stMappedIo.stRead.stEcho.bWriteFunctionBits := (byEcho1 AND 16#10) <> 0;
+stMappedIo.stRead.stEcho.bReadProgramName   := (byEcho1 AND 16#20) <> 0;
+stMappedIo.stRead.stEcho.bWriteProgramName  := (byEcho1 AND 16#40) <> 0;
+stMappedIo.stRead.stEcho.bReadLastResult    := (byEcho1 AND 16#80) <> 0;
 
 // -------- 02h - 03h: Decode Error Codes --------
-stAteqMappedIo.stRead.stErrorCode.bErrReset             := (byError0 AND 16#01) <> 0;
-stAteqMappedIo.stRead.stErrorCode.bErrStart             := (byError0 AND 16#02) <> 0;
-stAteqMappedIo.stRead.stErrorCode.bErrSpecialCycle      := (byError0 AND 16#04) <> 0;
-stAteqMappedIo.stRead.stErrorCode.bErrProgramSelect     := (byError0 AND 16#08) <> 0;
-stAteqMappedIo.stRead.stErrorCode.bErrReadFifo          := (byError0 AND 16#10) <> 0;
-stAteqMappedIo.stRead.stErrorCode.bErrReadParams        := (byError0 AND 16#20) <> 0;
-stAteqMappedIo.stRead.stErrorCode.bErrWriteParams       := (byError0 AND 16#40) <> 0;
-stAteqMappedIo.stRead.stErrorCode.bErrResetFifo         := (byError0 AND 16#80) <> 0;
+stMappedIo.stRead.stErrorCode.bReset             := (byError0 AND 16#01) <> 0;
+stMappedIo.stRead.stErrorCode.bStart             := (byError0 AND 16#02) <> 0;
+stMappedIo.stRead.stErrorCode.bSpecialCycle      := (byError0 AND 16#04) <> 0;
+stMappedIo.stRead.stErrorCode.bProgramSelect     := (byError0 AND 16#08) <> 0;
+stMappedIo.stRead.stErrorCode.bReadFifo          := (byError0 AND 16#10) <> 0;
+stMappedIo.stRead.stErrorCode.bReadParams        := (byError0 AND 16#20) <> 0;
+stMappedIo.stRead.stErrorCode.bWriteParams       := (byError0 AND 16#40) <> 0;
+stMappedIo.stRead.stErrorCode.bResetFifo         := (byError0 AND 16#80) <> 0;
 
-stAteqMappedIo.stRead.stErrorCode.bErrReadConfig        := (byError1 AND 16#01) <> 0;
-stAteqMappedIo.stRead.stErrorCode.bErrReadExtMenu       := (byError1 AND 16#02) <> 0;
-stAteqMappedIo.stRead.stErrorCode.bErrReadFunctionBits  := (byError1 AND 16#04) <> 0;
-stAteqMappedIo.stRead.stErrorCode.bErrWriteExtMenu      := (byError1 AND 16#08) <> 0;
-stAteqMappedIo.stRead.stErrorCode.bErrWriteFunctionBits := (byError1 AND 16#10) <> 0;
-stAteqMappedIo.stRead.stErrorCode.bErrReadProgramName   := (byError1 AND 16#20) <> 0;
-stAteqMappedIo.stRead.stErrorCode.bErrWriteProgramName  := (byError1 AND 16#40) <> 0;
-stAteqMappedIo.stRead.stErrorCode.bErrReadLastResult    := (byError1 AND 16#80) <> 0;
+stMappedIo.stRead.stErrorCode.bReadConfig        := (byError1 AND 16#01) <> 0;
+stMappedIo.stRead.stErrorCode.bReadExtMenu       := (byError1 AND 16#02) <> 0;
+stMappedIo.stRead.stErrorCode.bReadFunctionBits  := (byError1 AND 16#04) <> 0;
+stMappedIo.stRead.stErrorCode.bWriteExtMenu      := (byError1 AND 16#08) <> 0;
+stMappedIo.stRead.stErrorCode.bWriteFunctionBits := (byError1 AND 16#10) <> 0;
+stMappedIo.stRead.stErrorCode.bReadProgramName   := (byError1 AND 16#20) <> 0;
+stMappedIo.stRead.stErrorCode.bWriteProgramName  := (byError1 AND 16#40) <> 0;
+stMappedIo.stRead.stErrorCode.bReadLastResult    := (byError1 AND 16#80) <> 0;
 
 
-stAteqMappedIo.stRead.anReservedIn[0]	:= stAteqRawIo.anInput[0][4];
-stAteqMappedIo.stRead.anReservedIn[1]	:= stAteqRawIo.anInput[0][5];
+stMappedIo.stRead.anReservedIn[0]	:= stRawIo.anInput[0][4];
+stMappedIo.stRead.anReservedIn[1]	:= stRawIo.anInput[0][5];
 
 // Parse WORDs from bytes
-stAteqMappedIo.stRead.nProgramInUse		:= SHL(BYTE_TO_WORD(stAteqRawIo.anInput[0][6]), 8) OR BYTE_TO_WORD(stAteqRawIo.anInput[0][7]);
-stAteqMappedIo.stRead.nResultsInFifo	:= SHL(BYTE_TO_WORD(stAteqRawIo.anInput[0][8]), 8) OR BYTE_TO_WORD(stAteqRawIo.anInput[0][9]);
-stAteqMappedIo.stRead.nTestType			:= SHL(BYTE_TO_WORD(stAteqRawIo.anInput[0][10]), 8) OR BYTE_TO_WORD(stAteqRawIo.anInput[0][11]);
+stMappedIo.stRead.nProgramInUse		:= SHL(BYTE_TO_WORD(stRawIo.anInput[0][6]), 8) OR BYTE_TO_WORD(stRawIo.anInput[0][7]);
+stMappedIo.stRead.nResultsInFifo	:= SHL(BYTE_TO_WORD(stRawIo.anInput[0][8]), 8) OR BYTE_TO_WORD(stRawIo.anInput[0][9]);
+stMappedIo.stRead.nTestType			:= SHL(BYTE_TO_WORD(stRawIo.anInput[0][10]), 8) OR BYTE_TO_WORD(stRawIo.anInput[0][11]);
 
 // -------- 0Ch - 0Dh: Decode Real-Time Test Results --------
-stAteqMappedIo.stRead.stRealtimeTestResults.bResultPass            := (byResult0 AND 16#01) <> 0;
-stAteqMappedIo.stRead.stRealtimeTestResults.bResultFailPart        := (byResult0 AND 16#02) <> 0;
-stAteqMappedIo.stRead.stRealtimeTestResults.bResultFailRef         := (byResult0 AND 16#04) <> 0;
-stAteqMappedIo.stRead.stRealtimeTestResults.bResultAlarm           := (byResult0 AND 16#08) <> 0;
-stAteqMappedIo.stRead.stRealtimeTestResults.bResultPressureErr     := (byResult0 AND 16#10) <> 0;
-stAteqMappedIo.stRead.stRealtimeTestResults.bResultCycleEnd        := (byResult0 AND 16#20) <> 0;
-stAteqMappedIo.stRead.stRealtimeTestResults.bResultRecoverable     := (byResult0 AND 16#40) <> 0;
-stAteqMappedIo.stRead.stRealtimeTestResults.bResultCalibErr        := (byResult0 AND 16#80) <> 0;
+stMappedIo.stRead.stRealtimeTestResults.bPass            := (byResult0 AND 16#01) <> 0;
+stMappedIo.stRead.stRealtimeTestResults.bFailPart        := (byResult0 AND 16#02) <> 0;
+stMappedIo.stRead.stRealtimeTestResults.bFailRef         := (byResult0 AND 16#04) <> 0;
+stMappedIo.stRead.stRealtimeTestResults.bAlarm           := (byResult0 AND 16#08) <> 0;
+stMappedIo.stRead.stRealtimeTestResults.bPressureEror     := (byResult0 AND 16#10) <> 0;
+stMappedIo.stRead.stRealtimeTestResults.bCycleEnd        := (byResult0 AND 16#20) <> 0;
+stMappedIo.stRead.stRealtimeTestResults.bRecoverable     := (byResult0 AND 16#40) <> 0;
+stMappedIo.stRead.stRealtimeTestResults.bCalibEror        := (byResult0 AND 16#80) <> 0;
 
-stAteqMappedIo.stRead.stRealtimeTestResults.bResultCalibCheckErr   := (byResult1 AND 16#01) <> 0;
-stAteqMappedIo.stRead.stRealtimeTestResults.bResultATRFault        := (byResult1 AND 16#02) <> 0;
+stMappedIo.stRead.stRealtimeTestResults.bCalibCheckEror   := (byResult1 AND 16#01) <> 0;
+stMappedIo.stRead.stRealtimeTestResults.bATRFault        := (byResult1 AND 16#02) <> 0;
 
-stAteqMappedIo.stRead.nProgramStep	:= SHL(BYTE_TO_WORD(stAteqRawIo.anInput[0][14]), 8) OR BYTE_TO_WORD(stAteqRawIo.anInput[0][15]);
+stMappedIo.stRead.nProgramStep	:= SHL(BYTE_TO_WORD(stRawIo.anInput[0][14]), 8) OR BYTE_TO_WORD(stRawIo.anInput[0][15]);
 
 // Assign the 4 bytes from the raw PressureCurValue input
-anPressureCurValueBuffer [0] := stAteqRawIo.anInput[0][16];
-anPressureCurValueBuffer [1] :=	stAteqRawIo.anInput[0][17];
-anPressureCurValueBuffer [2] :=	stAteqRawIo.anInput[0][18];
-anPressureCurValueBuffer [3] :=	stAteqRawIo.anInput[0][19];
+anPressureCurValueBuffer [0] := stRawIo.anInput[0][16];
+anPressureCurValueBuffer [1] :=	stRawIo.anInput[0][17];
+anPressureCurValueBuffer [2] :=	stRawIo.anInput[0][18];
+anPressureCurValueBuffer [3] :=	stRawIo.anInput[0][19];
 
-anPressureUnitCodeBuffer [0] := stAteqRawIo.anInput[0][20];
-anPressureUnitCodeBuffer [1] :=	stAteqRawIo.anInput[0][21];
-anPressureUnitCodeBuffer [2] :=	stAteqRawIo.anInput[0][22];
-anPressureUnitCodeBuffer [3] :=	stAteqRawIo.anInput[0][23];
+anPressureUnitCodeBuffer [0] := stRawIo.anInput[0][20];
+anPressureUnitCodeBuffer [1] :=	stRawIo.anInput[0][21];
+anPressureUnitCodeBuffer [2] :=	stRawIo.anInput[0][22];
+anPressureUnitCodeBuffer [3] :=	stRawIo.anInput[0][23];
 
-anLeakCurValueBuffer [0] := stAteqRawIo.anInput[0][24];
-anLeakCurValueBuffer [1] :=	stAteqRawIo.anInput[0][25];
-anLeakCurValueBuffer [2] :=	stAteqRawIo.anInput[0][26];
-anLeakCurValueBuffer [3] :=	stAteqRawIo.anInput[0][27];
+anLeakCurValueBuffer [0] := stRawIo.anInput[0][24];
+anLeakCurValueBuffer [1] :=	stRawIo.anInput[0][25];
+anLeakCurValueBuffer [2] :=	stRawIo.anInput[0][26];
+anLeakCurValueBuffer [3] :=	stRawIo.anInput[0][27];
 
-anLeakUnitCodeBuffer [0] := stAteqRawIo.anInput[0][28];
-anLeakUnitCodeBuffer [1] :=	stAteqRawIo.anInput[0][29];
-anLeakUnitCodeBuffer [2] :=	stAteqRawIo.anInput[0][30];
-anLeakUnitCodeBuffer [3] :=	stAteqRawIo.anInput[0][31];
+anLeakUnitCodeBuffer [0] := stRawIo.anInput[0][28];
+anLeakUnitCodeBuffer [1] :=	stRawIo.anInput[0][29];
+anLeakUnitCodeBuffer [2] :=	stRawIo.anInput[0][30];
+anLeakUnitCodeBuffer [3] :=	stRawIo.anInput[0][31];
 
 // Copy into REAL and DWORD vars from Buffer adr to Destination Adr of the ST_AteqInRead
-MEMCPY(ADR(stAteqMappedIo.stRead.nPressureCurValue), ADR(anPressureCurValueBuffer), SIZEOF(stAteqMappedIo.stRead.nPressureCurValue));
+MEMCPY(ADR(stMappedIo.stRead.nPressureCurValue), ADR(anPressureCurValueBuffer), SIZEOF(stMappedIo.stRead.nPressureCurValue));
 
-MEMCPY(ADR(stAteqMappedIo.stRead.nPressureUnitCode), ADR(anPressureUnitCodeBuffer), SIZEOF(stAteqMappedIo.stRead.nPressureUnitCode));
+MEMCPY(ADR(stMappedIo.stRead.nPressureUnitCode), ADR(anPressureUnitCodeBuffer), SIZEOF(stMappedIo.stRead.nPressureUnitCode));
 
-MEMCPY(ADR(stAteqMappedIo.stRead.nLeakCurValue), ADR(anLeakCurValueBuffer), SIZEOF(stAteqMappedIo.stRead.nLeakCurValue));
+MEMCPY(ADR(stMappedIo.stRead.nLeakCurValue), ADR(anLeakCurValueBuffer), SIZEOF(stMappedIo.stRead.nLeakCurValue));
 
-MEMCPY(ADR(stAteqMappedIo.stRead.nLeakUnitCode), ADR(anLeakUnitCodeBuffer), SIZEOF(stAteqMappedIo.stRead.nLeakUnitCode));
+MEMCPY(ADR(stMappedIo.stRead.nLeakUnitCode), ADR(anLeakUnitCodeBuffer), SIZEOF(stMappedIo.stRead.nLeakUnitCode));
 
 // Exchange Zone: 128 bytes (20h – 9Fh = byte 33 to 160)
 
 //################ Need byte module break
 	FOR nIndex1 := 0 TO 127 DO
-		stAteqMappedIo.stRead.anExchangeZone[nIndex1] := stAteqRawIo.anInput[(32 + nIndex1) / 64][(32 + nIndex1) MOD 64];
+		stMappedIo.stRead.anExchangeZone[nIndex1] := stRawIo.anInput[(32 + nIndex1) / 64][(32 + nIndex1) MOD 64];
 	END_FOR;
 ]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_OutputMap" Id="{51d42db0-b220-416b-bd6a-3a29c1b8bffe}">
-      <Declaration><![CDATA[METHOD PUBLIC M_OutputMap
+      <Declaration><![CDATA[METHOD PRIVATE M_OutputMap
 VAR
 	nIndex1	: INT;
 	nIndex2 : INT;
 	
-	byCommand0, byCommand1 : BYTE;
+	nCommand0 : BYTE;
+	nCommand1 : BYTE; 
 END_VAR
 
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-// ----- Build byte 0 (00h - Command Byte 0) -----
-byCommand0 := 0;
-IF stAteqMappedIo.stWrite.stCommands.bReset THEN
-    byCommand0 := byCommand0 OR 16#01;
+        <ST><![CDATA[// ----- Build byte 0 (00h - Command Byte 0) -----
+
+IF stMappedIo.stWrite.stCommands.bReset THEN
+    nCommand0 := nCommand0 OR 16#01;
 END_IF;
-IF stAteqMappedIo.stWrite.stCommands.bStart THEN
-    byCommand0 := byCommand0 OR 16#02;
+IF stMappedIo.stWrite.stCommands.bStart THEN
+    nCommand0 := nCommand0 OR 16#02;
 END_IF;
-IF stAteqMappedIo.stWrite.stCommands.bSpecialCycle THEN
-    byCommand0 := byCommand0 OR 16#04;
+IF stMappedIo.stWrite.stCommands.bSpecialCycle THEN
+    nCommand0 := nCommand0 OR 16#04;
 END_IF;
-IF stAteqMappedIo.stWrite.stCommands.bProgramSelect THEN
-    byCommand0 := byCommand0 OR 16#08;
+IF stMappedIo.stWrite.stCommands.bProgramSelect THEN
+    nCommand0 := nCommand0 OR 16#08;
 END_IF;
-IF stAteqMappedIo.stWrite.stCommands.bReadFifoResults THEN
-    byCommand0 := byCommand0 OR 16#10;
+IF stMappedIo.stWrite.stCommands.bReadFifoResults THEN
+    nCommand0 := nCommand0 OR 16#10;
 END_IF;
-IF stAteqMappedIo.stWrite.stCommands.bReadParameters THEN
-    byCommand0 := byCommand0 OR 16#20;
+IF stMappedIo.stWrite.stCommands.bReadParameters THEN
+    nCommand0 := nCommand0 OR 16#20;
 END_IF;
-IF stAteqMappedIo.stWrite.stCommands.bWriteParameters THEN
-    byCommand0 := byCommand0 OR 16#40;
+IF stMappedIo.stWrite.stCommands.bWriteParameters THEN
+    nCommand0 := nCommand0 OR 16#40;
 END_IF;
-IF stAteqMappedIo.stWrite.stCommands.bResetFifo THEN
-    byCommand0 := byCommand0 OR 16#80;
+IF stMappedIo.stWrite.stCommands.bResetFifo THEN
+    nCommand0 := nCommand0 OR 16#80;
 END_IF;
 
 // ----- Build byte 1 (01h - Command Byte 1) -----
-byCommand1 := 0;
-IF stAteqMappedIo.stWrite.stCommands.bReadInstrumentConfig THEN
-    byCommand1 := byCommand1 OR 16#01;
+IF stMappedIo.stWrite.stCommands.bReadInstrumentConfig THEN
+    nCommand1 := nCommand1 OR 16#01;
 END_IF;
-IF stAteqMappedIo.stWrite.stCommands.bReadConfig THEN
-    byCommand1 := byCommand1 OR 16#02;
+IF stMappedIo.stWrite.stCommands.bReadConfig THEN
+    nCommand1 := nCommand1 OR 16#02;
 END_IF;
-IF stAteqMappedIo.stWrite.stCommands.bReadFunctionBits THEN
-    byCommand1 := byCommand1 OR 16#04;
+IF stMappedIo.stWrite.stCommands.bReadFunctionBits THEN
+    nCommand1 := nCommand1 OR 16#04;
 END_IF;
-IF stAteqMappedIo.stWrite.stCommands.bWriteExtMenu THEN
-    byCommand1 := byCommand1 OR 16#08;
+IF stMappedIo.stWrite.stCommands.bWriteExtMenu THEN
+    nCommand1 := nCommand1 OR 16#08;
 END_IF;
-IF stAteqMappedIo.stWrite.stCommands.bWriteFunctionBits THEN
-    byCommand1 := byCommand1 OR 16#10;
+IF stMappedIo.stWrite.stCommands.bWriteFunctionBits THEN
+    nCommand1 := nCommand1 OR 16#10;
 END_IF;
-IF stAteqMappedIo.stWrite.stCommands.bReadProgramName THEN
-    byCommand1 := byCommand1 OR 16#20;
+IF stMappedIo.stWrite.stCommands.bReadProgramName THEN
+    nCommand1 := nCommand1 OR 16#20;
 END_IF;
-IF stAteqMappedIo.stWrite.stCommands.bWriteProgramName THEN
-    byCommand1 := byCommand1 OR 16#40;
+IF stMappedIo.stWrite.stCommands.bWriteProgramName THEN
+    nCommand1 := nCommand1 OR 16#40;
 END_IF;
-IF stAteqMappedIo.stWrite.stCommands.bReadLastResult THEN
-    byCommand1 := byCommand1 OR 16#80;
+IF stMappedIo.stWrite.stCommands.bReadLastResult THEN
+    nCommand1 := nCommand1 OR 16#80;
 END_IF;
 
-// ----- Write to raw output array -----
-stAteqRawIo.anOutput[0][0] := byCommand0;
-stAteqRawIo.anOutput[0][1] := byCommand1;
+// Assign to MappedIO
+stMappedIo.stWrite.anCommands[0] := nCommand0;
+stMappedIo.stWrite.anCommands[1] := nCommand1;
 
+// Map mappedIO to raw IO
+stRawIo.anOutput[0][0] := nCommand0;
+stRawIo.anOutput[0][1] := nCommand1;
 
-// Copy reserved bytes
-stAteqRawIo.anOutput[0][2] := stAteqMappedIo.stWrite.anReservedOut1[0];
-stAteqRawIo.anOutput[0][3] := stAteqMappedIo.stWrite.anReservedOut1[1];
-stAteqRawIo.anOutput[0][4] := stAteqMappedIo.stWrite.anReservedOut1[2];
-stAteqRawIo.anOutput[0][5] := stAteqMappedIo.stWrite.anReservedOut1[3];
+// Reserved output bytes
+stRawIo.anOutput[0][2] := stMappedIo.stWrite.anReservedOut1[0];
+stRawIo.anOutput[0][3] := stMappedIo.stWrite.anReservedOut1[1];
+stRawIo.anOutput[0][4] := stMappedIo.stWrite.anReservedOut1[2];
+stRawIo.anOutput[0][5] := stMappedIo.stWrite.anReservedOut1[3];
 
-// Split WORD into 2 bytes (big-endian)
-// Little-endian: Low byte first
-stAteqRawIo.anOutput[0][6] := WORD_TO_BYTE(stAteqMappedIo.stWrite.nProgramSelect AND 16#00FF);  // Low byte
-stAteqRawIo.anOutput[0][7] := WORD_TO_BYTE(SHR(stAteqMappedIo.stWrite.nProgramSelect, 8));      // High byte
+// Program Select (WORD to bytes, little-endian)
+stRawIo.anOutput[0][6] := WORD_TO_BYTE(stMappedIo.stWrite.nProgramSelect AND 16#00FF);
+stRawIo.anOutput[0][7] := WORD_TO_BYTE(SHR(stMappedIo.stWrite.nProgramSelect, 8));
 
-stAteqRawIo.anOutput[0][8] := WORD_TO_BYTE(stAteqMappedIo.stWrite.nSpecialCycle AND 16#00FF);   // Low byte
-stAteqRawIo.anOutput[0][9] := WORD_TO_BYTE(SHR(stAteqMappedIo.stWrite.nSpecialCycle, 8));       // High byte
+// Special Cycle (WORD to bytes, little-endian)
+stRawIo.anOutput[0][8] := WORD_TO_BYTE(stMappedIo.stWrite.nSpecialCycle AND 16#00FF);
+stRawIo.anOutput[0][9] := WORD_TO_BYTE(SHR(stMappedIo.stWrite.nSpecialCycle, 8));
 
-
-// Copy parameter bytes
+// Copy ReservedOut2
 FOR nIndex1 := 0 TO 21 DO
-    stAteqRawIo.anOutput[0][10 + nIndex1] := stAteqMappedIo.stWrite.anReservedOut2[nIndex1];
+    stRawIo.anOutput[0][10 + nIndex1] := stMappedIo.stWrite.anReservedOut2[nIndex1];
 END_FOR;
 
-//################ Need byte module break
-FOR nIndex1 := 0 TO 127 DO  
-    stAteqRawIo.anOutput[(32 + nIndex1) / 64][(32 + nIndex1) MOD 64] := stAteqMappedIo.stWrite.anExchangeZone[nIndex1];
+// Exchange Zone (byte-matrix to 2D array)
+FOR nIndex1 := 0 TO 127 DO
+    stRawIo.anOutput[(32 + nIndex1) / 64][(32 + nIndex1) MOD 64] := stMappedIo.stWrite.anExchangeZone[nIndex1];
 END_FOR;
 ]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_Update" Id="{174759b4-2266-4e4e-b2f5-6f8751b949e1}">
-      <Declaration><![CDATA[METHOD PUBLIC M_Update
+      <Declaration><![CDATA[METHOD PRIVATE M_Update
 VAR    	
 	nCounter 	: BYTE 	:= 0;
 	
@@ -260,15 +262,15 @@ END_VAR
       <Implementation>
         <ST><![CDATA[
 // Copy Input → Device.stIn
-MEMCPY(		destAddr	:= ADR(stAteqRawIo.anInput[0][0]), 
+MEMCPY(		destAddr	:= ADR(stRawIo.anInput[0][0]), 
 		 	srcAddr		:= pRawInputStartAdr, 
-			n			:= SIZEOF(stAteqRawIo.anInput[0][0])
+			n			:= SIZEOF(stRawIo.anInput[0][0])
 		);
 
 // Copy Device.stOut → Output
 MEMCPY(		destAddr	:= pRawOutputStartAdr, 
-		 	srcAddr		:= ADR(stAteqRawIo.anOutput[0][0]), 
-			n			:= SIZEOF(stAteqRawIo.anOutput[0][0])
+		 	srcAddr		:= ADR(stRawIo.anOutput[0][0]), 
+			n			:= SIZEOF(stRawIo.anOutput[0][0])
 		);
 
 
@@ -283,6 +285,8 @@ END_IF
       </Implementation>
     </Method>
     <LineIds Name="FB_AteqComm">
+      <LineId Id="169" Count="0" />
+      <LineId Id="167" Count="1" />
       <LineId Id="105" Count="1" />
       <LineId Id="27" Count="0" />
     </LineIds>
@@ -296,9 +300,7 @@ END_IF
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqComm.M_OutputMap">
-      <LineId Id="194" Count="0" />
-      <LineId Id="228" Count="56" />
-      <LineId Id="196" Count="25" />
+      <LineId Id="567" Count="83" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqComm.M_Update">

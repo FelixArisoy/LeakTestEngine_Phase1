@@ -13,8 +13,8 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[//Start TcUnit and Call Test_FBs
-//TcUnit.RUN();
-//fbTest_AteqComm();
+TcUnit.RUN();
+fbTest_AteqComm();
 
 
 

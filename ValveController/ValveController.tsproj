@@ -24,9 +24,9 @@
 			</ArrayInfo>
 		</DataType>
 	</DataTypes>
-	<Project ProjectGUID="{A76AF4C2-744F-4C27-A416-5035FFBECB46}" TargetNetId="5.76.71.245.1.1" Target64Bit="true" ShowHideConfigurations="#x6">
+	<Project ProjectGUID="{A76AF4C2-744F-4C27-A416-5035FFBECB46}" Target64Bit="true" ShowHideConfigurations="#x6">
 		<System>
-			<Settings MaxCpus="4">
+			<Settings MaxCpus="4" NonWinCpus="1" Packages="2">
 				<Cpu CpuId="3"/>
 			</Settings>
 			<Licenses>
@@ -45,37 +45,13 @@
 		</System>
 		<Plc>
 			<Project GUID="{FF505B91-FACF-4A2B-B73E-9C5E3B10185D}" Name="ValveControllerPLC" PrjFilePath="ValveControllerPLC\ValveControllerPLC.plcproj" TmcFilePath="ValveControllerPLC\ValveControllerPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{01163F96-DCB4-19C2-4A7D-28C6DB9AB0EB}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{6D4C83D5-FB9F-5EA6-4B6F-5F3838239488}">
 					<Name>ValveControllerPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
 						<Name>PlcTaskAteqComm Inputs</Name>
 						<Var>
-							<Name>PRG_AteqComm.aAteqComm[0].stAteqRawIo.anInput</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
 							<Name>PRG_AteqComm.astAteqRawIo[0].anInput</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-					</Vars>
-					<Vars VarGrpType="2" AreaNo="1">
-						<Name>PlcTaskAteqComm Outputs</Name>
-						<Var>
-							<Name>PRG_AteqComm.aAteqComm[0].stAteqRawIo.anOutput</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_AteqComm.astAteqRawIo[0].anOutput</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-					</Vars>
-					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
-						<Name>PlcTask Inputs</Name>
-						<Var>
-							<Name>PRG_TEST.fbTest_AteqComm.fbTestAteqComm.stAteqRawIo.anInput</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
@@ -85,10 +61,10 @@
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 					</Vars>
-					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
-						<Name>PlcTask Outputs</Name>
+					<Vars VarGrpType="2" AreaNo="1">
+						<Name>PlcTaskAteqComm Outputs</Name>
 						<Var>
-							<Name>PRG_TEST.fbTest_AteqComm.fbTestAteqComm.stAteqRawIo.anOutput</Name>
+							<Name>PRG_AteqComm.astAteqRawIo[0].anOutput</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
@@ -124,10 +100,10 @@
 			</Project>
 		</Plc>
 		<Io>
-			<Device Id="1" DevType="113" AmsPort="28673" AmsNetId="192.168.22.144.2.1" RemoteName="Device 1 (Profinet Controller)">
+			<Device Id="1" Disabled="true" DevType="113" AmsPort="28673" AmsNetId="192.168.22.144.2.1" RemoteName="Device 1 (Profinet Controller)">
 				<Name>Device 1 (Profinet Controller)</Name>
-				<DevData>00000000000000000000000080380100656d300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100780aa8c000ffffff0001054c47f4040000000000000000000000000000000000010aa8c00000000000000000000000000000000000000000</DevData>
-				<Image Id="1" AddrType="1" ImageType="3" SizeIn="260" SizeOut="266">
+				<DevData>00000000000000000000000000000000656d300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100780aa8c000ffffff0001054c47f4040000000000000000000000000000000000010aa8c00000000000000000000000000000000000000000</DevData>
+				<Image Id="1" AddrType="1" ImageType="3" SizeIn="2" SizeOut="6">
 					<Name>Image</Name>
 				</Image>
 				<Box Id="1" BoxType="9121">
@@ -987,11 +963,16 @@ Submodule Info: 64 Bytes Output Submodule
 		</Io>
 	</Project>
 	<Mappings>
-		<MappingInfo Identifier="{00000000-2002-0850-0020-500810000403}" Id="#x02030010"/>
 		<OwnerA Name="TIPC^ValveControllerPLC^ValveControllerPLC Instance">
 			<OwnerB Name="TIID^Device 1 (Profinet Controller)^ateqf620">
-				<Link VarA="PlcTaskAteqComm Inputs^PRG_AteqComm.aAteqComm[0].stAteqRawIo.anInput[0]" VarB="API^Term 2 (64 Bytes Input)^Subterm 5 (64 Bytes Input)^Inputs^Inputs"/>
-				<Link VarA="PlcTaskAteqComm Outputs^PRG_AteqComm.aAteqComm[0].stAteqRawIo.anOutput[0]" VarB="API^Term 6 (64 Bytes Output)^Subterm 9 (64 Bytes Output)^Outputs^Outputs"/>
+				<Link VarA="PlcTaskAteqComm Inputs^PRG_AteqComm.astAteqRawIo[0].anInput[0]" VarB="API^Term 2 (64 Bytes Input)^Subterm 5 (64 Bytes Input)^Inputs^Inputs"/>
+				<Link VarA="PlcTaskAteqComm Inputs^PRG_AteqComm.astAteqRawIo[0].anInput[1]" VarB="API^Term 3 (64 Bytes Input)^Subterm 6 (64 Bytes Input)^Inputs^Inputs"/>
+				<Link VarA="PlcTaskAteqComm Inputs^PRG_AteqComm.astAteqRawIo[0].anInput[2]" VarB="API^Term 4 (64 Bytes Input)^Subterm 7 (64 Bytes Input)^Inputs^Inputs"/>
+				<Link VarA="PlcTaskAteqComm Inputs^PRG_AteqComm.astAteqRawIo[0].anInput[3]" VarB="API^Term 5 (64 Bytes Input)^Subterm 8 (64 Bytes Input)^Inputs^Inputs"/>
+				<Link VarA="PlcTaskAteqComm Outputs^PRG_AteqComm.astAteqRawIo[0].anOutput[0]" VarB="API^Term 6 (64 Bytes Output)^Subterm 9 (64 Bytes Output)^Outputs^Outputs"/>
+				<Link VarA="PlcTaskAteqComm Outputs^PRG_AteqComm.astAteqRawIo[0].anOutput[1]" VarB="API^Term 7 (64 Bytes Output)^Subterm 10 (64 Bytes Output)^Outputs^Outputs"/>
+				<Link VarA="PlcTaskAteqComm Outputs^PRG_AteqComm.astAteqRawIo[0].anOutput[2]" VarB="API^Term 8 (64 Bytes Output)^Subterm 11 (64 Bytes Output)^Outputs^Outputs"/>
+				<Link VarA="PlcTaskAteqComm Outputs^PRG_AteqComm.astAteqRawIo[0].anOutput[3]" VarB="API^Term 9 (64 Bytes Output)^Subterm 12 (64 Bytes Output)^Outputs^Outputs"/>
 			</OwnerB>
 		</OwnerA>
 	</Mappings>
