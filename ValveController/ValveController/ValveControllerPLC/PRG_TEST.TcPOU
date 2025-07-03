@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="PRG_TEST" Id="{17166b4e-59dc-4826-b23b-b13d729fc1f3}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_TEST
+VAR
+
+	fbTest_AteqComm : FB_Test_AteqComm;
+	
+	bStartTests         : BOOL := FALSE;   // <- Set this to TRUE to start tests
+	bTestsRunning       : BOOL := FALSE;
+	bTestsFinished      : BOOL := FALSE;
+END_VAR
+
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Start TcUnit and Call Test_FBs
+//TcUnit.RUN();
+//fbTest_AteqComm();
+
+
+// Start TCUnit and your test FB only once
+IF bStartTests AND NOT bTestsRunning THEN
+	TcUnit.RUN();                   // Starts TCUnit framework
+	fbTest_AteqComm();              // Your test suite FB
+	bTestsRunning := TRUE;
+	bStartTests := FALSE;
+END_IF
+
+// Wait for test suite to complete
+IF bTestsRunning AND fbTest_AteqComm.fbTestSuite.AreAllTestsFinished() THEN
+	// Test cycle complete
+	bTestsRunning := FALSE;
+	bTestsFinished := TRUE;
+END_IF
+]]></ST>
+    </Implementation>
+    <LineIds Name="PRG_TEST">
+      <LineId Id="80" Count="2" />
+      <LineId Id="99" Count="0" />
+      <LineId Id="122" Count="14" />
+      <LineId Id="25" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

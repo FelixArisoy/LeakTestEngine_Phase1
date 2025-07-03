@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_LeakTester" Id="{8d80e9d5-1c82-40d0-9db4-b193c6d348d1}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_LeakTester IMPLEMENTS I_LeakTester
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="ParamRead" Id="{4883de8a-6c73-42a0-a2e1-ec4689d0afc5}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD ParamRead
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ParamWrite" Id="{b5d71b41-70dc-484c-b001-2324bc8bf155}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD ParamWrite
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="PollResult" Id="{93b9b3ea-8a1b-49a8-a1e2-581217cffea1}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD PollResult : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ProgramSelect" Id="{2bfc00f6-6b89-47be-afac-8f9673ddd020}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD ProgramSelect : INT
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ProgramStart" Id="{0ba957ed-38a8-4e73-8123-eb3af5b8d31e}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD ProgramStart : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ProgramStop" Id="{55be82be-20a5-45e6-8f17-50be61f6dd34}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD ProgramStop : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Zero" Id="{fdea39eb-dbff-442c-a634-1b374c255bbd}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD Zero : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_LeakTester">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LeakTester.ParamRead">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LeakTester.ParamWrite">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LeakTester.PollResult">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LeakTester.ProgramSelect">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LeakTester.ProgramStart">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LeakTester.ProgramStop">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LeakTester.Zero">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

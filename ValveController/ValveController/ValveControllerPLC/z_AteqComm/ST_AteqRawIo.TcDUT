@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <DUT Name="ST_AteqRawIo" Id="{cdde02e3-1829-498a-a052-47ee278fd929}">
+    <Declaration><![CDATA[TYPE ST_AteqRawIo :
+STRUCT
+
+   // Each device has 64 bytes of input/output memory
+    anInput  AT %I* : ARRAY[0..3] OF ARRAY[0..63] OF BYTE;
+	anOutput AT %Q* : ARRAY[0..3] OF ARRAY[0..63] OF BYTE;
+
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_Valve" Id="{80e7d0b3-dfac-4a5a-948d-086d420c2f8a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Valve IMPLEMENTS I_Valve
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="CmdClose" Id="{1d16d4c9-6a39-44b9-8565-d407aaf3c08c}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD CmdClose : BOOL (*Closes the Valve*)
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="CmdOpen" Id="{a47b2e7e-6fcc-450a-be9b-01c5b6f5eb05}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD CmdOpen : BOOL (*Opens the Valve*)
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsClosed" Id="{7c95474c-71b9-49cc-9865-a556154c6204}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD IsClosed : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsOpened" Id="{9ec97de6-5a3f-413f-bb42-7a4ae7406d98}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD IsOpened : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Valve">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.CmdClose">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.CmdOpen">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.IsClosed">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.IsOpened">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

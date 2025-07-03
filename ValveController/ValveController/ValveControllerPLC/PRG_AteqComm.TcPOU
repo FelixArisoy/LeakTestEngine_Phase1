@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="PRG_AteqComm" Id="{a3d4985a-23a4-4261-9530-cafe9c795619}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_AteqComm
+VAR
+	nDeviceIndex    : UINT;
+	
+    astAteqComm   		: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF FB_AteqComm;
+    astAteqMappedIo 	: ARRAY[0..GVL_Ateq.nMaxDeviceCount - 1] OF ST_AteqMappedIo;
+	astAteqRawIo   		: ARRAY[0..GVL_Ateq.nMaxDeviceCount - 1] OF ST_AteqRawIo;
+
+   //stAteqEcho: ST_AteqEcho;
+   
+   	bCommandSent     : BOOL := FALSE;
+	tStartTime       : TIME;
+	tResponseTime    : TIME;
+	bEchoReceived    : BOOL := FALSE;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[FOR nDeviceIndex := 0 TO GVL_Ateq.nMaxDeviceCount - 1 DO
+   
+	astAteqComm[nDeviceIndex](
+        							nDeviceIndex    := nDeviceIndex,
+        							stRawIo			:= astAteqRawIo[nDeviceIndex],
+        							stMappedIo		:= astAteqMappedIo[nDeviceIndex]
+    							);
+								
+END_FOR
+
+//stAteqEcho.bProgramSelect := astAteqMappedIo[0].stRead.stEcho.bProgramSelect ;
+
+// Response DEBUG
+
+// --- Trigger start command once ---
+IF NOT bCommandSent THEN
+	astAteqMappedIo[0].stWrite.stCommands.bStart := TRUE;  // Set command
+	tStartTime := T#0S + TIME();                   // Record current time
+	bCommandSent := TRUE;
+END_IF
+
+// --- Check for Echo response ---
+IF bCommandSent AND NOT bEchoReceived AND astAteqMappedIo[0].stRead.stEcho.bStart THEN
+	tResponseTime := TIME() - tStartTime;
+	bEchoReceived := TRUE;
+
+	// Optional: Reset start flag after test
+	astAteqMappedIo[0].stWrite.stCommands.bStart := FALSE;
+END_IF
+]]></ST>
+    </Implementation>
+    <LineIds Name="PRG_AteqComm">
+      <LineId Id="136" Count="9" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="156" Count="0" />
+      <LineId Id="162" Count="16" />
+      <LineId Id="155" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
