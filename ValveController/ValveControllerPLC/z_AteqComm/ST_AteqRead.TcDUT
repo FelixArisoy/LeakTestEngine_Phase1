@@ -6,13 +6,16 @@ STRUCT
 	
 //Reading table structure (From ATEQ To PLC)
 //Results status: (@: 00h – 0Fh)
-	anEchoSignals 		: ARRAY[0..1] OF BYTE;     // 00h–01h
-    anErrorCode 		: ARRAY[0..1] OF BYTE;     // 02h–03h
+	//anEchoSignals 	: ARRAY[0..1] OF BYTE;     // 00h–01h
+    //anErrorCode 		: ARRAY[0..1] OF BYTE;
+	stEcho         		: ST_AteqEcho;				// 00h–01h Echo bitmap
+    stErrorCode      	: ST_AteqErrorCode;			// 02h–03h ErrorCode bitmap
     anReservedIn 		: ARRAY[0..1] OF BYTE;     // 04h–05h Not Used
     nProgramInUse 		: WORD;                    // 06h–07h Current program in use
     nResultsInFifo   	: WORD;                    // 08h–09h Number of results in FIFO (quantity of available results recorded in the FIFO).
     nTestType 			: WORD;                    // 0Ah–0Bh Type of test in progress
-    nRealTimeResults	: ARRAY[0..1] OF BYTE;     // 0Ch–0Dh Real time test results
+    //nRealTimeResults	: ARRAY[0..1] OF BYTE;     // 0Ch–0Dh Real time test results
+	stRealtimeTestResults   : ST_AteqRealtimeTestResults;	// 0Ch–0Dh Real time test results bitmap
     nProgramStep  		: WORD;                    // 0Eh–0Fh Program step in progress
     
 //Real time measurements: (@: 10h – 1Fh)
@@ -24,9 +27,8 @@ STRUCT
 // Exchange zone: (@: 20h – 9Fh)	
 	anExchangeZone 		: ARRAY[0..127] OF BYTE;   // 20h–9Fh Cycle results exchange zone. Parameters reading and writing exchange zone.
 
-	stEcho         			: ST_AteqEcho;
-    stErrorCode      		: ST_AteqErrorCode;
-    stRealtimeTestResults   : ST_AteqRealtimeTestResults;
+	
+    
 END_STRUCT
 END_TYPE
 ]]></Declaration>
