@@ -24,9 +24,9 @@
 			</ArrayInfo>
 		</DataType>
 	</DataTypes>
-	<Project ProjectGUID="{A76AF4C2-744F-4C27-A416-5035FFBECB46}" Target64Bit="true" ShowHideConfigurations="#x6">
+	<Project ProjectGUID="{A76AF4C2-744F-4C27-A416-5035FFBECB46}" TargetNetId="5.76.71.245.1.1" Target64Bit="true" ShowHideConfigurations="#x6">
 		<System>
-			<Settings MaxCpus="4" NonWinCpus="1" Packages="2">
+			<Settings MaxCpus="4">
 				<Cpu CpuId="3"/>
 			</Settings>
 			<Licenses>
@@ -45,7 +45,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{FF505B91-FACF-4A2B-B73E-9C5E3B10185D}" Name="ValveControllerPLC" PrjFilePath="ValveControllerPLC\ValveControllerPLC.plcproj" TmcFilePath="ValveControllerPLC\ValveControllerPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{E645D818-D898-21E2-177C-A3FA5698629D}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{9B786B4C-0006-4515-1C88-21AFD560AB88}">
 					<Name>ValveControllerPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">

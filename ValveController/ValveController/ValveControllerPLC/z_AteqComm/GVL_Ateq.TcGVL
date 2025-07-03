@@ -4,17 +4,12 @@
     <Declaration><![CDATA[// shared IO variables for one ATEQ device
 VAR_GLOBAL CONSTANT
     nMaxDeviceCount : UINT := 1; // Set; based on Total Num of F6 ATEQ devices
+	//eEndianness_LittleEndian : E_Endianness := E_Endianness.LittleEndian;
+    //eEndianness_BigEndian    : E_Endianness := E_Endianness.BigEndian;
 END_VAR
 
 VAR_GLOBAL
- (*  // Each device has 64 bytes of input/output memory
-    anInputRaw  AT %I* : ARRAY[0..nAteqDeviceCount - 1] OF ARRAY[0..3] OF ARRAY[0..63] OF BYTE;
-	anOutput AT %Q* : ARRAY[0..nAteqDeviceCount - 1] OF ARRAY[0..3] OF ARRAY[0..63] OF BYTE;
-
-
-    astDeviceIo    	: ARRAY[0..nAteqDeviceCount - 1] OF ST_AteqIo;        // Device structures
-    abHeartbeat 	: ARRAY[0..nAteqDeviceCount - 1] OF BOOL;             // Heartbeat status per device
-	*)
+	eDeviceEndianSetTo : E_Endianness;
 END_VAR
 ]]></Declaration>
   </GVL>

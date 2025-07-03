@@ -72,12 +72,18 @@
     <Compile Include="z_AteqCommTest\FB_Test_AteqComm.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="z_AteqComm\E_Endianness.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="z_AteqComm\FB_AteqComm.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="z_AteqComm\GVL_Ateq.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="z_AteqComm\I_AteqComm.TcIO">
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="z_AteqComm\ST_AteqBitmap.TcDUT">
       <SubType>Code</SubType>

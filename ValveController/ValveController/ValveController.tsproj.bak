@@ -24,9 +24,9 @@
 			</ArrayInfo>
 		</DataType>
 	</DataTypes>
-	<Project ProjectGUID="{A76AF4C2-744F-4C27-A416-5035FFBECB46}" Target64Bit="true" ShowHideConfigurations="#x6">
+	<Project ProjectGUID="{A76AF4C2-744F-4C27-A416-5035FFBECB46}" TargetNetId="5.76.71.245.1.1" Target64Bit="true" ShowHideConfigurations="#x6">
 		<System>
-			<Settings MaxCpus="4" NonWinCpus="1" Packages="2">
+			<Settings MaxCpus="4">
 				<Cpu CpuId="3"/>
 			</Settings>
 			<Licenses>
@@ -45,7 +45,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{FF505B91-FACF-4A2B-B73E-9C5E3B10185D}" Name="ValveControllerPLC" PrjFilePath="ValveControllerPLC\ValveControllerPLC.plcproj" TmcFilePath="ValveControllerPLC\ValveControllerPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{307E2C69-0541-EA3B-CC8A-45242AFFA314}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{E92877D2-BA8E-9FDF-0FBA-0BB2450D99E6}">
 					<Name>ValveControllerPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
@@ -102,7 +102,7 @@
 		<Io>
 			<Device Id="1" DevType="113" AmsPort="28673" AmsNetId="192.168.22.144.2.1" RemoteName="Device 1 (Profinet Controller)">
 				<Name>Device 1 (Profinet Controller)</Name>
-				<DevData>00000000000000000000000000000000656d300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100780aa8c000ffffff0001054c47f4040000000000000000000000000000000000010aa8c00000000000000000000000000000000000000000</DevData>
+				<DevData>00000000000000000000000080380100656d300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100780aa8c000ffffff0001054c47f4040000000000000000000000000000000000010aa8c00000000000000000000000000000000000000000</DevData>
 				<Image Id="1" AddrType="1" ImageType="3" SizeIn="260" SizeOut="266">
 					<Name>Image</Name>
 				</Image>
@@ -963,6 +963,7 @@ Submodule Info: 64 Bytes Output Submodule
 		</Io>
 	</Project>
 	<Mappings>
+		<MappingInfo Identifier="{00000000-2002-0850-0020-500810000403}" Id="#x02030010"/>
 		<OwnerA Name="TIPC^ValveControllerPLC^ValveControllerPLC Instance">
 			<OwnerB Name="TIID^Device 1 (Profinet Controller)^ateqf620">
 				<Link VarA="PlcTaskAteqComm Inputs^PRG_AteqComm.astAteqRawIo[0].anInput[0]" VarB="API^Term 2 (64 Bytes Input)^Subterm 5 (64 Bytes Input)^Inputs^Inputs"/>

@@ -8,51 +8,117 @@ VAR
     astAteqComm   		: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF FB_AteqComm;
     astAteqMappedIo 	: ARRAY[0..GVL_Ateq.nMaxDeviceCount - 1] OF ST_AteqMappedIo;
 	astAteqRawIo   		: ARRAY[0..GVL_Ateq.nMaxDeviceCount - 1] OF ST_AteqRawIo;
+	abCurrentHeartbeatState			: ARRAY[0..GVL_Ateq.nMaxDeviceCount - 1] OF BOOL;
+  
+    bCommandSent       : BOOL := FALSE;
+    bEchoReceived      : BOOL := FALSE;
+    tStartTime         : TIME;
+    tResponseTime      : TIME;
 
-   //stAteqEcho: ST_AteqEcho;
-   
-   	bCommandSent     : BOOL := FALSE;
-	tStartTime       : TIME;
-	tResponseTime    : TIME;
-	bEchoReceived    : BOOL := FALSE;
+    //variables for delay and array storage:
+    fbDelayBetweenTriggers : TON;
+    tDelayTimeBetweenTriggers : TIME := T#1S; // Adjust this as needed (e.g., 1 second)
+
+    aResponseTimes     : ARRAY[0..99] OF TIME; // Array to store response times (e.g., 100 entries)
+    nResponseIndex     : INT := 0;             // Index for the array
+    bTestActive        : BOOL := FALSE;        // Master switch to start/stop the test sequence
+    bDelayFinished     : BOOL := FALSE;        // Flag to indicate delay completion
+    bTriggerReady      : BOOL := TRUE;         // Flag to indicate next trigger is ready
+
+	
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[FOR nDeviceIndex := 0 TO GVL_Ateq.nMaxDeviceCount - 1 DO
+      <ST><![CDATA[
+FOR nDeviceIndex := 0 TO GVL_Ateq.nMaxDeviceCount - 1 DO
    
 	astAteqComm[nDeviceIndex](
         							nDeviceIndex    := nDeviceIndex,
         							stRawIo			:= astAteqRawIo[nDeviceIndex],
         							stMappedIo		:= astAteqMappedIo[nDeviceIndex]
     							);
-								
+	
+	abCurrentHeartbeatState	[nDeviceIndex] := astAteqComm[nDeviceIndex].M_Update();	
+
+
 END_FOR
 
-//stAteqEcho.bProgramSelect := astAteqMappedIo[0].stRead.stEcho.bProgramSelect ;
+
 
 // Response DEBUG
 
-// --- Trigger start command once ---
-IF NOT bCommandSent THEN
-	astAteqMappedIo[0].stWrite.stCommands.bStart := TRUE;  // Set command
-	tStartTime := T#0S + TIME();                   // Record current time
-	bCommandSent := TRUE;
+// Master switch to start/stop the response time measurement sequence
+// Set bTestActive to TRUE from HMI, another part of your code, or a button to start the sequence.
+// Set bTestActive to FALSE to stop it.
+IF bTestActive THEN
+
+    // --- State 1: Send Command (Trigger) ---
+    // Only send the command if not already sent and the delay for the next trigger has finished
+    IF NOT bCommandSent AND bDelayFinished THEN
+       
+		astAteqMappedIo[0].stWrite.stCommands.bStart := TRUE; // Set command
+		
+        tStartTime 		:= T#0S + TIME();                          // Record current time
+        bCommandSent 	:= TRUE;
+        bEchoReceived 	:= FALSE;                               // Reset echo flag for new measurement
+        bDelayFinished 	:= FALSE;                              // Reset delay finished flag
+        bTriggerReady 	:= FALSE;                               // Indicate that trigger is sent
+    END_IF
+
+    // --- State 2: Check for Echo response ---
+    IF bCommandSent AND NOT bEchoReceived AND astAteqMappedIo[0].stRead.stEcho.bStart THEN
+        
+		tResponseTime := TIME() - tStartTime;
+        bEchoReceived := TRUE;
+
+        // Store the response time in the array
+        IF nResponseIndex < SIZEOF(aResponseTimes)/SIZEOF(aResponseTimes[0]) THEN // Check array bounds
+            aResponseTimes[nResponseIndex] := tResponseTime;
+            nResponseIndex := nResponseIndex + 1;
+        ELSE
+            // Handle array full condition (e.g., reset index, log error, stop test)
+            // For now, let's stop the test if array is full
+            bTestActive := FALSE;
+            // You might want to add a log message here or trigger an alarm
+        END_IF
+
+        // Reset command and prepare for next cycle
+        astAteqMappedIo[0].stWrite.stCommands.bStart := FALSE;
+        bCommandSent := FALSE;
+        // Now, start the delay before the next trigger
+        bTriggerReady := FALSE; // Ensure delay timer starts
+    END_IF
+
+    // --- State 3: Delay Between Triggers ---
+    // Start the delay timer once a command has been sent and we are waiting for the next trigger
+    fbDelayBetweenTriggers(IN := NOT bTriggerReady, PT := tDelayTimeBetweenTriggers);
+
+    // Once the delay timer is done, set bDelayFinished to allow the next trigger
+    IF fbDelayBetweenTriggers.Q THEN
+        bDelayFinished := TRUE;
+        bTriggerReady := TRUE; // Allow next trigger
+        fbDelayBetweenTriggers(IN := FALSE); // Reset the timer
+    END_IF
+
+ELSE // bTestActive is FALSE (test is not running)
+    // Ensure everything is reset when the test is not active
+    bCommandSent := FALSE;
+    bEchoReceived := FALSE;
+    astAteqMappedIo[0].stWrite.stCommands.bStart := FALSE;
+    fbDelayBetweenTriggers(IN := FALSE);
+    bDelayFinished := TRUE; // Ready for test to start
+    bTriggerReady := TRUE;  // Ready to send first trigger when bTestActive becomes TRUE
 END_IF
 
-// --- Check for Echo response ---
-IF bCommandSent AND NOT bEchoReceived AND astAteqMappedIo[0].stRead.stEcho.bStart THEN
-	tResponseTime := TIME() - tStartTime;
-	bEchoReceived := TRUE;
-
-	// Optional: Reset start flag after test
-	astAteqMappedIo[0].stWrite.stCommands.bStart := FALSE;
-END_IF
 ]]></ST>
     </Implementation>
     <LineIds Name="PRG_AteqComm">
-      <LineId Id="136" Count="9" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="156" Count="0" />
-      <LineId Id="162" Count="16" />
+      <LineId Id="492" Count="0" />
+      <LineId Id="407" Count="8" />
+      <LineId Id="491" Count="0" />
+      <LineId Id="488" Count="0" />
+      <LineId Id="416" Count="1" />
+      <LineId Id="487" Count="0" />
+      <LineId Id="420" Count="65" />
       <LineId Id="155" Count="0" />
     </LineIds>
   </POU>
