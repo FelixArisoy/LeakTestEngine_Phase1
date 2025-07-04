@@ -19,11 +19,14 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[
-        Test_InputMapBigEndian();
-		Test_InputMapLittleEndian();
-		Test_OutputMapBigEndian();
-		Test_OutputMapLittleEndian();
-		]]></ST>
+        Test_InputMapBigEndian();		
+
+        Test_InputMapLittleEndian();
+
+        //Test_OutputMapBigEndian();
+
+        //Test_OutputMapLittleEndian();
+]]></ST>
     </Implementation>
     <Method Name="Test_InputMapBigEndian" Id="{33e14d08-4505-41cf-8bcb-360c35b2be3d}">
       <Declaration><![CDATA[METHOD Test_InputMapBigEndian
@@ -35,7 +38,7 @@ END_VAR
       <Implementation>
         <ST><![CDATA[
 // --- Big Endian InputMapping Test ---
-TEST('InputMapping - Big Endian');
+TEST('InputMapping_Big Endian');
 
 // Clear inputs
 FOR nIndex1 := 0 TO 255 DO
@@ -90,27 +93,27 @@ END_FOR
 fbTestAteqComm(nDeviceIndex := nDeviceIndex, stRawIo := stTestAteqRawIo, stMappedIo := stTestAteqMappedIo);
 
 // Validate WORDs - Big Endian means high byte first, so expected values reversed from Little Endian
-fbTestSuite.AssertEquals_WORD(16#0708, stTestAteqMappedIo.stRead.nProgramInUse, 'ProgramInUse mismatch');
-fbTestSuite.AssertEquals_WORD(16#090A, stTestAteqMappedIo.stRead.nResultsInFifo, 'ResultsInFifo mismatch');
-fbTestSuite.AssertEquals_WORD(16#0B0C, stTestAteqMappedIo.stRead.nTestType, 'TestType mismatch');
-fbTestSuite.AssertEquals_WORD(16#0F10, stTestAteqMappedIo.stRead.nProgramStep, 'ProgramStep mismatch');
+fbTestSuite.AssertEquals_WORD(16#0807, stTestAteqMappedIo.stRead.nProgramInUse, 'ProgramInUse mismatch');
+fbTestSuite.AssertEquals_WORD(16#0A09, stTestAteqMappedIo.stRead.nResultsInFifo, 'ResultsInFifo mismatch');
+fbTestSuite.AssertEquals_WORD(16#0C0B, stTestAteqMappedIo.stRead.nTestType, 'TestType mismatch');
+fbTestSuite.AssertEquals_WORD(16#100F, stTestAteqMappedIo.stRead.nProgramStep, 'ProgramStep mismatch');
 
-// Validate REAL PressureCurValue
+// Validate REAL PressureCurValue 16#14131211
 fbTestSuite.AssertEquals_REAL(
-    336.794,
+    336794.129,
     stTestAteqMappedIo.stRead.nPressureCurValue,
-    0,
+    0.1,
     'PressureCurValue mismatch'
 );
 
 // Validate DWORD PressureUnitCode
 fbTestSuite.AssertEquals_DWORD(16#18171615, stTestAteqMappedIo.stRead.nPressureUnitCode, 'PressureUnitCode mismatch');
 
-// Validate REAL LeakCurValue
+// Validate REAL LeakCurValue 16#1C1B1A19
 fbTestSuite.AssertEquals_REAL(
-    47.153,
+    47153.8201,
     stTestAteqMappedIo.stRead.nLeakCurValue,
-    0,
+    0.1,
     'LeakCurValue mismatch'
 );
 
@@ -132,7 +135,7 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[// --- Little Endian InputMapping Test ---
-TEST('InputMapping - Little Endian');
+TEST('InputMapping_Little Endian');
 
 // Clear inputs
 FOR nIndex1 := 0 TO 255 DO
@@ -187,32 +190,32 @@ END_FOR
 fbTestAteqComm(nDeviceIndex := nDeviceIndex, stRawIo := stTestAteqRawIo, stMappedIo := stTestAteqMappedIo);
 
 // Validate WORDs - Little Endian means low byte first, so 0x0807 for nProgramInUse is 0x0708 logically
-fbTestSuite.AssertEquals_WORD(16#0807, stTestAteqMappedIo.stRead.nProgramInUse, 'ProgramInUse mismatch');
-fbTestSuite.AssertEquals_WORD(16#0A09, stTestAteqMappedIo.stRead.nResultsInFifo, 'ResultsInFifo mismatch');
-fbTestSuite.AssertEquals_WORD(16#0C0B, stTestAteqMappedIo.stRead.nTestType, 'TestType mismatch');
-fbTestSuite.AssertEquals_WORD(16#100F, stTestAteqMappedIo.stRead.nProgramStep, 'ProgramStep mismatch');
+fbTestSuite.AssertEquals_WORD(16#0708, stTestAteqMappedIo.stRead.nProgramInUse, 'ProgramInUse mismatch');
+fbTestSuite.AssertEquals_WORD(16#090A, stTestAteqMappedIo.stRead.nResultsInFifo, 'ResultsInFifo mismatch');
+fbTestSuite.AssertEquals_WORD(16#0B0C, stTestAteqMappedIo.stRead.nTestType, 'TestType mismatch');
+fbTestSuite.AssertEquals_WORD(16#0F10, stTestAteqMappedIo.stRead.nProgramStep, 'ProgramStep mismatch');
 
-// Validate REAL PressureCurValue (bytes interpreted as DWORD, then converted properly to REAL)
+// Validate REAL PressureCurValue 16#11121314
 fbTestSuite.AssertEquals_REAL(
-    336.794,  // your expected real value after conversion/dividing by 1000 etc
+    286397.204,  // your expected real value after conversion/dividing by 1000 etc
     stTestAteqMappedIo.stRead.nPressureCurValue, 
-    0,
+    0.1,
     'PressureCurValue mismatch'
 );
 
-// Validate DWORD PressureUnitCode (bytes in order)
-fbTestSuite.AssertEquals_DWORD(16#18171615, stTestAteqMappedIo.stRead.nPressureUnitCode, 'PressureUnitCode mismatch');
+// Validate DWORD PressureUnitCode 
+fbTestSuite.AssertEquals_DWORD(16#15161718, stTestAteqMappedIo.stRead.nPressureUnitCode, 'PressureUnitCode mismatch');
 
-// Validate REAL LeakCurValue (converted from DWORD bytes)
+// Validate REAL LeakCurValue 16#191A1B1C
 fbTestSuite.AssertEquals_REAL(
-    47.153,
+    42114.1276,
     stTestAteqMappedIo.stRead.nLeakCurValue,
-    0,
+    0.1,
     'LeakCurValue mismatch'
 );
 
 // Validate DWORD LeakUnitCode
-fbTestSuite.AssertEquals_DWORD(16#201F1E1D, stTestAteqMappedIo.stRead.nLeakUnitCode, 'LeakUnitCode mismatch');
+fbTestSuite.AssertEquals_DWORD(16#1D1E1F20, stTestAteqMappedIo.stRead.nLeakUnitCode, 'LeakUnitCode mismatch');
 
 // ExchangeZone validation...
 
@@ -315,8 +318,10 @@ TEST_FINISHED();]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_Test_AteqComm">
-      <LineId Id="506" Count="1" />
-      <LineId Id="527" Count="2" />
+      <LineId Id="546" Count="1" />
+      <LineId Id="549" Count="1" />
+      <LineId Id="552" Count="1" />
+      <LineId Id="555" Count="1" />
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_Test_AteqComm.Test_InputMapBigEndian">

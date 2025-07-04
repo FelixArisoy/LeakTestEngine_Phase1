@@ -3,7 +3,7 @@
   <GVL Name="GVL_Ateq" Id="{8341f924-21b8-4660-ac80-fb81e367c10a}">
     <Declaration><![CDATA[// shared IO variables for one ATEQ device
 VAR_GLOBAL CONSTANT
-    nMaxDeviceCount : UINT := 10; // Set; based on Total Num of F6 ATEQ devices
+    nMaxDeviceCount : UINT := 1; // Set; based on Total Num of F6 ATEQ devices
 	//eEndianness_LittleEndian : E_Endianness := E_Endianness.LittleEndian;
     //eEndianness_BigEndian    : E_Endianness := E_Endianness.BigEndian;
 END_VAR
