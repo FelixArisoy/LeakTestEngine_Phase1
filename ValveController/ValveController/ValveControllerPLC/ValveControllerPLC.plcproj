@@ -69,47 +69,53 @@
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="z_AteqCommTest\FB_Test_AteqComm.TcPOU">
+    <Compile Include="z_AteqTest\FB_Test_AteqControl.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="z_AteqComm\E_Endianness.TcDUT">
+    <Compile Include="z_AteqTest\FB_Test_AteqComm.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="z_AteqComm\FB_AteqComm.TcPOU">
+    <Compile Include="z_Ateq\E_Endianness.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="z_AteqComm\GVL_Ateq.TcGVL">
+    <Compile Include="z_Ateq\FB_AteqComm.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="z_Ateq\FB_AteqControl.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="z_Ateq\GVL_Ateq.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
-    <Compile Include="z_AteqComm\I_AteqComm.TcIO">
+    <Compile Include="z_Ateq\I_AteqComm.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="z_AteqComm\ST_AteqBitmap.TcDUT">
+    <Compile Include="z_Ateq\ST_AteqBitmap.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="z_AteqComm\ST_AteqErrorCode.TcDUT">
+    <Compile Include="z_Ateq\ST_AteqErrorCode.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="z_AteqComm\ST_AteqMappedIo.TcDUT">
+    <Compile Include="z_Ateq\ST_AteqMappedIo.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="z_AteqComm\ST_AteqRawIo.TcDUT">
+    <Compile Include="z_Ateq\ST_AteqRawIo.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="z_AteqComm\ST_AteqRead.TcDUT">
+    <Compile Include="z_Ateq\ST_AteqRead.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="z_AteqComm\ST_AteqEcho.TcDUT">
+    <Compile Include="z_Ateq\ST_AteqEcho.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="z_AteqComm\ST_AteqWrite.TcDUT">
+    <Compile Include="z_Ateq\ST_AteqWrite.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="z_AteqComm\ST_AteqCommands.TcDUT">
+    <Compile Include="z_Ateq\ST_AteqCommands.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="z_AteqComm\ST_AteqRealtimeTestResults.TcDUT">
+    <Compile Include="z_Ateq\ST_AteqRealtimeTestResults.TcDUT">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -121,8 +127,8 @@
     <Folder Include="3_LeakTester" />
     <Folder Include="4_Sequence" />
     <Folder Include="0_Interfaces" />
-    <Folder Include="z_AteqCommTest" />
-    <Folder Include="z_AteqComm" />
+    <Folder Include="z_AteqTest" />
+    <Folder Include="z_Ateq" />
     <Folder Include="VISUs" />
   </ItemGroup>
   <ItemGroup>

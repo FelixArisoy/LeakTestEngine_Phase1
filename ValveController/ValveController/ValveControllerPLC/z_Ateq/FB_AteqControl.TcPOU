@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_AteqControl" Id="{7f132da6-4770-42a7-a01e-2190c92a7cb5}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AteqControl
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="M_Step0_EndOfCycle" Id="{b04f85e3-71d8-4a0a-85c4-a7d81e40b5da}">
+      <Declaration><![CDATA[METHOD M_Step0_EndOfCycle : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Step1_ProgramSelect" Id="{ed085787-69c3-49af-bafc-b6231c97203b}">
+      <Declaration><![CDATA[METHOD M_Step1_ProgramSelect : WORD
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Step2_ResetFIFO" Id="{e5e3d7eb-8a0e-438e-b348-3260d1df3646}">
+      <Declaration><![CDATA[METHOD M_Step2_ResetFIFO : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Step3_StartCycle" Id="{dc3e862b-59ef-4348-99f3-143cfa70b0d3}">
+      <Declaration><![CDATA[METHOD M_Step3_StartCycle : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Step4_LiveStructRead" Id="{16af38ec-c898-490a-955b-6ba21c027b5b}">
+      <Declaration><![CDATA[METHOD M_Step4_LiveStructRead : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Step5_ResultsRead" Id="{2054c92b-1ced-43ca-841d-1eb7413d7b93}">
+      <Declaration><![CDATA[METHOD M_Step5_ResultsRead : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Step6_FIFOResultRead" Id="{a4da92be-42aa-4d81-9611-d19c3d40a306}">
+      <Declaration><![CDATA[METHOD M_Step6_FIFOResultRead : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_AteqControl">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqControl.M_Step0_EndOfCycle">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqControl.M_Step1_ProgramSelect">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqControl.M_Step2_ResetFIFO">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqControl.M_Step3_StartCycle">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqControl.M_Step4_LiveStructRead">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqControl.M_Step5_ResultsRead">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqControl.M_Step6_FIFOResultRead">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
