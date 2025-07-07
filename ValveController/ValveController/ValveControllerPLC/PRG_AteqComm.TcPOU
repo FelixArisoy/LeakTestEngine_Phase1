@@ -8,7 +8,6 @@ VAR
     astAteqComm   		: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF FB_AteqComm;
     astAteqMappedIo 	: ARRAY[0..GVL_Ateq.nMaxDeviceCount - 1] OF ST_AteqMappedIo;
 	astAteqRawIo   		: ARRAY[0..GVL_Ateq.nMaxDeviceCount - 1] OF ST_AteqRawIo;
-	abCurrentHeartbeatState			: ARRAY[0..GVL_Ateq.nMaxDeviceCount - 1] OF BOOL;
   
     bCommandSent       : BOOL := FALSE;
     bEchoReceived      : BOOL := FALSE;
@@ -26,9 +25,12 @@ VAR
     bTriggerReady      : BOOL := TRUE;         // Flag to indicate next trigger is ready
 
 	
+	fbAteqControl		: FB_AteqControl;
+	bRunAteqSequence	: BOOL;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[
+
 FOR nDeviceIndex := 0 TO GVL_Ateq.nMaxDeviceCount - 1 DO
    
 	astAteqComm[nDeviceIndex](
@@ -37,12 +39,14 @@ FOR nDeviceIndex := 0 TO GVL_Ateq.nMaxDeviceCount - 1 DO
         							stMappedIo		:= astAteqMappedIo[nDeviceIndex]
     							);
 	
-	abCurrentHeartbeatState	[nDeviceIndex] := astAteqComm[nDeviceIndex].M_Update();	
-
-
 END_FOR
 
+//Debug Ateq Auto Sequence
 
+IF bRunAteqSequence THEN
+	fbAteqControl(stMappedIo := astAteqMappedIo[0]);
+	fbAteqControl.M_Sequence();
+END_IF
 
 // Response DEBUG
 
@@ -112,12 +116,15 @@ END_IF
 ]]></ST>
     </Implementation>
     <LineIds Name="PRG_AteqComm">
-      <LineId Id="492" Count="0" />
-      <LineId Id="407" Count="8" />
-      <LineId Id="491" Count="0" />
-      <LineId Id="488" Count="0" />
-      <LineId Id="416" Count="1" />
+      <LineId Id="524" Count="1" />
+      <LineId Id="407" Count="7" />
+      <LineId Id="416" Count="0" />
+      <LineId Id="521" Count="0" />
+      <LineId Id="417" Count="0" />
+      <LineId Id="522" Count="0" />
       <LineId Id="487" Count="0" />
+      <LineId Id="526" Count="0" />
+      <LineId Id="518" Count="1" />
       <LineId Id="420" Count="65" />
       <LineId Id="155" Count="0" />
     </LineIds>

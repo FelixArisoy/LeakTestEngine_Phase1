@@ -42,9 +42,6 @@
     <Compile Include="2_ValveBank\FB_ValveBank.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_LeakTester\FB_LeakTester.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="4_Sequence\FB_HexDecoder.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -53,6 +50,57 @@
     </Compile>
     <Compile Include="4_Sequence\FB_TextFile.TcPOU">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\AteqComm\E_DeviceEndianness.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\AteqComm\ST_Commands.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\AteqComm\ST_Echo.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\AteqComm\ST_ErrorCode.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\AteqComm\ST_AteqMappedIo.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\AteqComm\ST_AteqRawIo.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\AteqComm\ST_AteqRead.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\AteqComm\ST_RealtimeTestResults.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\AteqComm\ST_AteqWrite.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\AteqControl\E_AteqSequence.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\AteqControl\E_CommandStatus.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\AteqControl\ST_AteqResultsDecoded.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\AteqControl\ST_AteqResultsRaw.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GVLs\GVL_Ateq.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="GVLs\GVL_AteqSpecialCycle.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="GVLs\GVL_System.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
     </Compile>
     <Compile Include="PlcTaskAteqComm.TcTTO">
       <SubType>Code</SubType>
@@ -75,52 +123,17 @@
     <Compile Include="z_AteqTest\FB_Test_AteqComm.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="z_Ateq\E_Endianness.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="z_Ateq\FB_AteqComm.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="z_Ateq\FB_AteqControl.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="z_Ateq\GVL_Ateq.TcGVL">
-      <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
-    </Compile>
-    <Compile Include="z_Ateq\I_AteqComm.TcIO">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="z_Ateq\ST_AteqBitmap.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="z_Ateq\ST_AteqErrorCode.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="z_Ateq\ST_AteqMappedIo.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="z_Ateq\ST_AteqRawIo.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="z_Ateq\ST_AteqRead.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="z_Ateq\ST_AteqEcho.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="z_Ateq\ST_AteqWrite.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="z_Ateq\ST_AteqCommands.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="z_Ateq\ST_AteqRealtimeTestResults.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DUTs" />
+    <Folder Include="DUTs\AteqComm" />
+    <Folder Include="DUTs\AteqControl" />
     <Folder Include="GVLs" />
     <Folder Include="1_Controller" />
     <Folder Include="2_ValveBank" />

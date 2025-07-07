@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <DUT Name="E_CommandStatus" Id="{156ee2bd-c863-40c9-9647-6f25eaa354f0}">
+    <Declaration><![CDATA[TYPE E_CommandStatus :
+(
+    CMD_IDLE,
+	CMD_START,
+    CMD_IN_PROGRESS,
+    CMD_DONE,
+    CMD_ERROR,
+    CMD_TIMEOUT
+);
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

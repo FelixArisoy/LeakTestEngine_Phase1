@@ -8,9 +8,11 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[//Update System time in every Task Cycle
+GVL_System.nTime := Tc2_System.F_GetSystemTime();]]></ST>
     </Implementation>
     <LineIds Name="PRG_MAIN">
+      <LineId Id="8" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
   </POU>

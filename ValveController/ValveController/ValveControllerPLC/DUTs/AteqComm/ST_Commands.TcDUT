@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
-  <DUT Name="ST_AteqCommands" Id="{b1936584-ffcc-4a62-8179-6b1a04071057}">
-    <Declaration><![CDATA[TYPE ST_AteqCommands :
+  <DUT Name="ST_Commands" Id="{b1936584-ffcc-4a62-8179-6b1a04071057}">
+    <Declaration><![CDATA[TYPE ST_Commands :
 STRUCT
 
     (* Byte 0 - 00h *)

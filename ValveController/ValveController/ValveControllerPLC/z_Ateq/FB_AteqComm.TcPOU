@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
   <POU Name="FB_AteqComm" Id="{a376dbe7-1003-4cb6-a929-84c96ac13f52}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK INTERNAL FB_AteqComm IMPLEMENTS I_AteqComm
+    <Declaration><![CDATA[FUNCTION_BLOCK INTERNAL FB_AteqComm
 VAR_INPUT
 	nDeviceIndex		: UINT;
 END_VAR
@@ -25,7 +25,7 @@ pRawOutputStartAdr  := ADR(stRawIo.anOutput);
 //M_HeartBeat();
 M_InputMap();
 M_OutputMap();
-M_Update();
+
 ]]></ST>
     </Implementation>
     <Method Name="M_InputMap" Id="{94ae9230-e4e6-4b89-b299-6e4cade93c2c}">
@@ -53,7 +53,7 @@ END_VAR
 
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[// Copy 2-byte arrays
+        <ST><![CDATA[
 // Direct read from stAteqRawIo
 byEcho0     := stRawIo.anInput[0][0];  // 00h
 byEcho1     := stRawIo.anInput[0][1];  // 01h
@@ -61,6 +61,12 @@ byError0    := stRawIo.anInput[0][2];  // 02h
 byError1    := stRawIo.anInput[0][3];  // 03h
 byResult0   := stRawIo.anInput[0][12]; // 0Ch
 byResult1   := stRawIo.anInput[0][13]; // 0Dh
+
+// Copy bytes into buffers
+stMappedIo.stRead.anEcho[0] 		:= byEcho0;
+stMappedIo.stRead.anEcho[1] 		:= byEcho1;
+stMappedIo.stRead.anErrorCode[0] 	:= byError0;
+stMappedIo.stRead.anErrorCode[1] 	:= byError1;
 
 // -------- 00h - 01h: Decode Echo Status --------
 stMappedIo.stRead.stEcho.bReset             := (byEcho0 AND 16#01) <> 0;
@@ -105,14 +111,14 @@ stMappedIo.stRead.anReservedIn[0]	:= stRawIo.anInput[0][4];
 stMappedIo.stRead.anReservedIn[1]	:= stRawIo.anInput[0][5];
 
 	CASE  GVL_Ateq.eDeviceEndianSetTo OF
-		E_Endianness.LittleEndian: // Little Endian
+		E_DeviceEndianness.LittleEndian: // Little Endian
 		// Parse WORDs from bytes
 		stMappedIo.stRead.nProgramInUse		:= SHL(BYTE_TO_WORD(stRawIo.anInput[0][6]), 8) OR BYTE_TO_WORD(stRawIo.anInput[0][7]);
 		stMappedIo.stRead.nResultsInFifo	:= SHL(BYTE_TO_WORD(stRawIo.anInput[0][8]), 8) OR BYTE_TO_WORD(stRawIo.anInput[0][9]);
 		stMappedIo.stRead.nTestType			:= SHL(BYTE_TO_WORD(stRawIo.anInput[0][10]), 8) OR BYTE_TO_WORD(stRawIo.anInput[0][11]);
 		stMappedIo.stRead.nProgramStep		:= SHL(BYTE_TO_WORD(stRawIo.anInput[0][14]), 8) OR BYTE_TO_WORD(stRawIo.anInput[0][15]);
 
-		E_Endianness.BigEndian: // Big Endian
+		E_DeviceEndianness.BigEndian: // Big Endian
 		stMappedIo.stRead.nProgramInUse		:= BYTE_TO_WORD(stRawIo.anInput[0][6]) 	OR SHL(BYTE_TO_WORD(stRawIo.anInput[0][7]), 8);
 		stMappedIo.stRead.nResultsInFifo	:= BYTE_TO_WORD(stRawIo.anInput[0][8]) 	OR SHL(BYTE_TO_WORD(stRawIo.anInput[0][9]), 8);
 		stMappedIo.stRead.nTestType			:= BYTE_TO_WORD(stRawIo.anInput[0][10]) OR SHL(BYTE_TO_WORD(stRawIo.anInput[0][11]), 8);
@@ -159,7 +165,7 @@ anLeakUnitCodeBuffer [3] :=	stRawIo.anInput[0][31];
 // Copy into REAL and DWORD vars from Buffer adr to Destination Adr of the ST_AteqInRead
 // --- Endianness-aware conversion for 4-byte values (DWORD and REAL) ---
 CASE GVL_Ateq.eDeviceEndianSetTo OF
-    E_Endianness.BigEndian: // ATEQ sends LSB first (Byte0, Byte1, Byte2, Byte3)
+    E_DeviceEndianness.BigEndian: // ATEQ sends LSB first (Byte0, Byte1, Byte2, Byte3)
         // Reconstruct DWORDs from buffers for Little Endian
         nPressureCurValueBuffer := 
             BYTE_TO_DWORD(anPressureCurValueBuffer[0]) 		OR
@@ -185,7 +191,7 @@ CASE GVL_Ateq.eDeviceEndianSetTo OF
             SHL(BYTE_TO_DWORD(anLeakUnitCodeBuffer[2]), 16) OR
             SHL(BYTE_TO_DWORD(anLeakUnitCodeBuffer[3]), 24);
 
-    E_Endianness.LittleEndian: // ATEQ sends MSB first (Byte3, Byte2, Byte1, Byte0)
+    E_DeviceEndianness.LittleEndian: // ATEQ sends MSB first (Byte3, Byte2, Byte1, Byte0)
         // Reconstruct DWORDs from buffers for Big Endian
         nPressureCurValueBuffer := 
             SHL(BYTE_TO_DWORD(anPressureCurValueBuffer[0]), 24) OR
@@ -310,7 +316,7 @@ stRawIo.anOutput[0][4] := stMappedIo.stWrite.anReservedOut1[2];
 stRawIo.anOutput[0][5] := stMappedIo.stWrite.anReservedOut1[3];
 
 CASE  GVL_Ateq.eDeviceEndianSetTo OF
-	E_Endianness.LittleEndian: //little-endian
+	E_DeviceEndianness.LittleEndian: //little-endian
 	// Program Select
 	stRawIo.anOutput[0][6] := WORD_TO_BYTE(stMappedIo.stWrite.nProgramSelect AND 16#00FF);
 	stRawIo.anOutput[0][7] := WORD_TO_BYTE(SHR(stMappedIo.stWrite.nProgramSelect, 8));
@@ -318,7 +324,7 @@ CASE  GVL_Ateq.eDeviceEndianSetTo OF
 	stRawIo.anOutput[0][8] := WORD_TO_BYTE(stMappedIo.stWrite.nSpecialCycle AND 16#00FF);
 	stRawIo.anOutput[0][9] := WORD_TO_BYTE(SHR(stMappedIo.stWrite.nSpecialCycle, 8));
 	
-	E_Endianness.BigEndian: // big-endian
+	E_DeviceEndianness.BigEndian: // big-endian
 	// Program Select 
 	stRawIo.anOutput[0][6] := WORD_TO_BYTE(SHR(stMappedIo.stWrite.nProgramSelect, 8));
 	stRawIo.anOutput[0][7] := WORD_TO_BYTE(stMappedIo.stWrite.nProgramSelect AND 16#00FF);
@@ -340,44 +346,6 @@ END_FOR;
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_Update" Id="{c768d2bc-a296-4b7a-8f5f-984c71da0e36}">
-      <Declaration><![CDATA[METHOD M_Update : BOOL
-VAR    	
-    fbHeartbeatToggleTimer : TON; 
-
-END_VAR
-
-
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[(*
-// Copy Input → Device.stIn
-MEMCPY(		destAddr	:= ADR(stRawIo.anInput[0][0]), 
-		 	srcAddr		:= pRawInputStartAdr, 
-			n			:= SIZEOF(stRawIo.anInput)
-		);
-
-// Copy Device.stOut → Output
-MEMCPY(		destAddr	:= pRawOutputStartAdr, 
-		 	srcAddr		:= ADR(stRawIo.anOutput[0][0]), 
-			n			:= SIZEOF(stRawIo.anOutput)
-		);
-*)
-// The logic for the heartbeat timer
-// The timer will turn ON after T#2S when its IN is TRUE.
-// We want to toggle every 2 seconds, so we'll toggle the IN.
-// This is a common pattern for generating a continuous pulse.
-
-fbHeartbeatToggleTimer(IN := NOT bHeartbeat, PT := T#1S); // Use the FB's bHeartbeat
-
-IF fbHeartbeatToggleTimer.Q THEN
-    bHeartbeat := NOT bHeartbeat; // Toggle the FB's bHeartbeat
-    fbHeartbeatToggleTimer(IN := FALSE); // Reset the timer
-END_IF
-
-M_Update := bHeartbeat; // Return the FB's bHeartbeat state]]></ST>
-      </Implementation>
-    </Method>
     <LineIds Name="FB_AteqComm">
       <LineId Id="169" Count="0" />
       <LineId Id="167" Count="0" />
@@ -389,7 +357,13 @@ M_Update := bHeartbeat; // Return the FB's bHeartbeat state]]></ST>
       <LineId Id="204" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqComm.M_InputMap">
-      <LineId Id="1312" Count="158" />
+      <LineId Id="1514" Count="0" />
+      <LineId Id="1313" Count="6" />
+      <LineId Id="1515" Count="1" />
+      <LineId Id="1320" Count="0" />
+      <LineId Id="1518" Count="2" />
+      <LineId Id="1517" Count="0" />
+      <LineId Id="1321" Count="149" />
       <LineId Id="1485" Count="6" />
       <LineId Id="1477" Count="7" />
       <LineId Id="5" Count="0" />
@@ -410,12 +384,6 @@ M_Update := bHeartbeat; // Return the FB's bHeartbeat state]]></ST>
       <LineId Id="662" Count="0" />
       <LineId Id="640" Count="10" />
       <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_AteqComm.M_Update">
-      <LineId Id="63" Count="11" />
-      <LineId Id="76" Count="5" />
-      <LineId Id="98" Count="6" />
-      <LineId Id="4" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

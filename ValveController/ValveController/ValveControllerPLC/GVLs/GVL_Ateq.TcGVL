@@ -4,12 +4,15 @@
     <Declaration><![CDATA[// shared IO variables for one ATEQ device
 VAR_GLOBAL CONSTANT
     nMaxDeviceCount : UINT := 1; // Set; based on Total Num of F6 ATEQ devices
-	//eEndianness_LittleEndian : E_Endianness := E_Endianness.LittleEndian;
-    //eEndianness_BigEndian    : E_Endianness := E_Endianness.BigEndian;
+	tCommandTimeout	: TIME := T#5S; //Sets AteqControl CmdHandlerMethod Timeout
+
+
 END_VAR
 
 VAR_GLOBAL
-	eDeviceEndianSetTo : E_Endianness;
+	eDeviceEndianSetTo 	: E_DeviceEndianness;
+	
+
 END_VAR
 ]]></Declaration>
   </GVL>

@@ -1,103 +1,379 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
   <POU Name="FB_AteqControl" Id="{7f132da6-4770-42a7-a01e-2190c92a7cb5}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_AteqControl
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AteqControl IMPLEMENTS I_LeakTester
 VAR_INPUT
+   //TriggerTest 	: BOOL;         // Rising edge to start a test
+END_VAR
+VAR_IN_OUT
+    stMappedIo   	: ST_AteqMappedIo; 
+//Mapped Io Exchange zone will be passing the data to ResultRaw Struct then FB will decode it to ResultDecoded Struct. 
+//Properties will pass the decoded data to outside of the FB
 END_VAR
 VAR_OUTPUT
+   //TestFinished 	: BOOL;
 END_VAR
 VAR
+	dtDateTime			: DT;
+	nSpecialCycleId		: WORD; //  AutoZero h08
+	stResultsRaw		: ST_AteqResultsRaw;
+	stLastResults		: ST_AteqResultsDecoded;
+    astFIFO				: ARRAY[0..7] OF ST_AteqResultsDecoded;
+	
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[
+
+]]></ST>
     </Implementation>
-    <Method Name="M_Step0_EndOfCycle" Id="{b04f85e3-71d8-4a0a-85c4-a7d81e40b5da}">
-      <Declaration><![CDATA[METHOD M_Step0_EndOfCycle : BOOL
-VAR_INPUT
+    <Method Name="M_CommandHandler" Id="{56a501ea-a269-47d7-a142-013486e4bf60}">
+      <Declaration><![CDATA[METHOD PRIVATE M_CommandHandler : E_CommandStatus
+VAR_IN_OUT
+	bCmd			: BOOL; // Cmd Tobe started from ST_Commands
+    bCmdStart       : BOOL; // Start Cmd bit binding from ST_Commands	
 END_VAR
+VAR_INPUT   
+    bCmdEcho        : BOOL; // Command echo bit from ATEQ
+    bCmdError       : BOOL; // Error code bit from ATEQ
+END_VAR
+
+VAR
+	tTimeout        : TIME := GVL_Ateq.tCommandTimeout; //GLOBAL Constant
+	tCmdStartTime   : TIME; // Time tracking
+    currentTime		: TIME;
+	bCmdInProgress  : BOOL; // Check fieldbus: 16#FFFF = In progress
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Default
+M_CommandHandler := CMD_IDLE;
+currentTime := TIME(); // system time
+
+CASE M_CommandHandler OF
+
+	CMD_IDLE:
+		IF bCmdStart THEN
+			M_CommandHandler := CMD_START;
+			tCmdStartTime := currentTime;
+		END_IF
+
+	CMD_START:
+		IF stMappedIo.stRead.anErrorCode[0] = 16#FF AND stMappedIo.stRead.anErrorCode[1] = 16#FF THEN
+			M_CommandHandler := CMD_IN_PROGRESS;
+		END_IF
+
+	CMD_IN_PROGRESS:
+		IF (currentTime - tCmdStartTime) > tTimeout THEN
+			bCmdStart 	:= FALSE;
+			bCmd 		:= FALSE;
+			M_CommandHandler := CMD_TIMEOUT;
+
+		ELSIF	bCmdEcho = bCmd AND
+			   	stMappedIo.stRead.anErrorCode[0] = 0 AND
+			   	stMappedIo.stRead.anErrorCode[1] = 0 THEN
+
+			bCmdStart 	:= FALSE;
+			bCmd 		:= FALSE;
+			M_CommandHandler := CMD_DONE;
+
+		END_IF
+
+	CMD_DONE:
+		// Nothing to do, hold for logic above to act on done
+		;
+
+	CMD_ERROR:
+		;
+		
+	CMD_TIMEOUT:
+		
+		IF bCmdError = bCmd THEN
+			M_CommandHandler := CMD_ERROR;
+		ELSE
+			M_CommandHandler := CMD_TIMEOUT;
+		END_IF
+			
+
+END_CASE
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_ParamRead" Id="{e5267fc8-c940-466e-9918-6092a897a7f1}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD M_ParamRead
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_Step1_ProgramSelect" Id="{ed085787-69c3-49af-bafc-b6231c97203b}">
-      <Declaration><![CDATA[METHOD M_Step1_ProgramSelect : WORD
-VAR_INPUT
-END_VAR
+    <Method Name="M_ParamWrite" Id="{efef9bf2-d12a-4715-8734-c95ea8380a79}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD M_ParamWrite
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_Step2_ResetFIFO" Id="{e5e3d7eb-8a0e-438e-b348-3260d1df3646}">
-      <Declaration><![CDATA[METHOD M_Step2_ResetFIFO : BOOL
-VAR_INPUT
-END_VAR
+    <Method Name="M_ProgramSelect" Id="{3f180883-986e-4f1d-b18a-91a389fa3ca6}">
+      <Declaration><![CDATA[METHOD M_ProgramSelect : WORD
+VAR
+	bComplete 	: BOOL;
+	bFaulted	: BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+stMappedIo.stWrite.nProgramSelect := M_ProgramSelect;
+
+	IF stMappedIo.stWrite.nProgramSelect >= 0 THEN
+		stMappedIo.stWrite.stCommands.bProgramSelect := TRUE;
+	END_IF
+
+	IF stMappedIo.stRead.anErrorCode[0] = 16#FF AND stMappedIo.stRead.anErrorCode[1] = 16#FF THEN // Command in Progress
+	
+
+		IF stMappedIo.stRead.stEcho.bProgramSelect = TRUE AND stMappedIo.stRead.anErrorCode[0] = 0 AND stMappedIo.stRead.anErrorCode[1] = 0 THEN //Command is correctly carried out.
+			
+		IF stMappedIo.stRead.nProgramInUse = stMappedIo.stWrite.nProgramSelect THEN
+			
+			stMappedIo.stWrite.stCommands.bProgramSelect := FALSE;
+			stMappedIo.stWrite.nProgramSelect := 0;
+			bComplete := TRUE;
+			
+		END_IF
+		END_IF
+		
+	ELSIF stMappedIo.stRead.stErrorCode.bProgramSelect = TRUE THEN
+		
+		stMappedIo.stWrite.stCommands.bProgramSelect := FALSE;
+		bFaulted := TRUE;
+
+	END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_ProgramStart" Id="{df77a28a-31ae-4bb7-aada-fdddd0be9668}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD M_ProgramStart : BOOL
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_Step3_StartCycle" Id="{dc3e862b-59ef-4348-99f3-143cfa70b0d3}">
-      <Declaration><![CDATA[METHOD M_Step3_StartCycle : BOOL
-VAR_INPUT
-END_VAR
+    <Method Name="M_ProgramStop" Id="{51ab5878-5f1c-4ed6-a65b-d0c7eb8bf13c}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD M_ProgramStop : BOOL
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_Step4_LiveStructRead" Id="{16af38ec-c898-490a-955b-6ba21c027b5b}">
-      <Declaration><![CDATA[METHOD M_Step4_LiveStructRead : BOOL
-VAR_INPUT
-END_VAR
+    <Method Name="M_ReadFIFO" Id="{2bd2f2bf-d1e5-497c-8c97-5c4c719656ec}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD M_ReadFIFO : BOOL
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_Step5_ResultsRead" Id="{2054c92b-1ced-43ca-841d-1eb7413d7b93}">
-      <Declaration><![CDATA[METHOD M_Step5_ResultsRead : BOOL
-VAR_INPUT
-END_VAR
+    <Method Name="M_ReadLastResult" Id="{bca66d8f-b4be-4355-b92b-b0dac3f24c0c}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD M_ReadLastResult : BOOL
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_Step6_FIFOResultRead" Id="{a4da92be-42aa-4d81-9611-d19c3d40a306}">
-      <Declaration><![CDATA[METHOD M_Step6_FIFOResultRead : BOOL
-VAR_INPUT
-END_VAR
+    <Method Name="M_ResetFIFO" Id="{d2dd068a-bc41-4e1b-8fe3-37e11fad9b4b}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD M_ResetFIFO : BOOL
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
+    <Method Name="M_Sequence" Id="{470ae35c-cda6-49a5-a2ba-29d25da98e8a}">
+      <Declaration><![CDATA[METHOD M_Sequence : BOOL
+VAR
+	    eSeqState   : E_AteqSequence;
+		eCmdStatus	: E_CommandStatus;
+		
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[    (*
+
+	CASE eSeqState OF
+		
+    IDLE:
+        // waiting trigger
+	PROGRAM_SELECT:
+		// Optional if not manually selected
+	RESET_FIFO:
+		// Must Reset before Running Programs for good functioning
+		
+	AUTO_ZERO:*)	// auto-zero special cycle
+	nSpecialCycleId := GVL_AteqSpecialCycle.PiezoAutoZeroReg2; // identifier for special cycle Auto Zero
+	eCmdStatus := M_SpecialCycle();  // Call method and get Cmd Status result
+
+		IF eCmdStatus = CMD_ERROR THEN
+			stMappedIo.stWrite.stCommands.bReset := TRUE;
+			// Optionally: Retry or go to error handling state
+			eSeqState := AUTO_ZERO; // retry
+
+		ELSIF eCmdStatus = CMD_DONE THEN
+			eSeqState := START_CYCLE;
+		END_IF
+		;
+(*		
+	START_CYCLE:
+        // punch start
+            
+        eSeqState := LIVE_READING;
+		
+	LIVE_READING: // Live values
+	
+    END_OF_CYCLE: // Wait End Of Cycle = 1
+	
+	TIME_STAMP: // Test Time stamp
+	
+    READ_LAST_RESULT: // read last result
+	
+	READ_FIFO: // Not used for now
+	
+    DONE: // wait reset
+        IF NOT bTriggerTest THEN
+            eSeqState := END_OF_CYCLE;
+            bTestFinished := FALSE;
+        END_IF
+		
+    END_CASE
+	
+	*)]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_SpecialCycle" Id="{d187d757-2cbf-4176-839b-3ef7d7928184}">
+      <Declaration><![CDATA[METHOD M_SpecialCycle : E_CommandStatus
+VAR
+
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+stMappedIo.stWrite.nSpecialCycle 				:= nSpecialCycleId;
+stMappedIo.stWrite.stCommands.bSpecialCycle 	:= TRUE;
+stMappedIo.stWrite.stCommands.bStart 			:= TRUE;
+
+
+	
+	M_SpecialCycle := M_CommandHandler	(	bCmd 		:= stMappedIo.stWrite.stCommands.bSpecialCycle,
+						bCmdStart 	:= stMappedIo.stWrite.stCommands.bStart,
+						bCmdEcho	:= stMappedIo.stRead.stEcho.bSpecialCycle,
+						bCmdError	:= stMappedIo.stRead.stErrorCode.bSpecialCycle
+					);
+
+	
+
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="P_SystemDateTime" Id="{edbff775-b379-4408-8922-353bd74d8226}">
+      <Declaration><![CDATA[PROPERTY P_SystemDateTime : DT]]></Declaration>
+      <Get Name="Get" Id="{e8fbd260-46bb-4198-bba6-59c4a737ee81}">
+        <Declaration><![CDATA[VAR
+
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[dtDateTime := ULINT_TO_DT(GVL_System.nTime);
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
     <LineIds Name="FB_AteqControl">
+      <LineId Id="127" Count="1" />
       <LineId Id="9" Count="0" />
     </LineIds>
-    <LineIds Name="FB_AteqControl.M_Step0_EndOfCycle">
+    <LineIds Name="FB_AteqControl.M_CommandHandler">
+      <LineId Id="326" Count="29" />
+      <LineId Id="357" Count="20" />
       <LineId Id="5" Count="0" />
     </LineIds>
-    <LineIds Name="FB_AteqControl.M_Step1_ProgramSelect">
-      <LineId Id="5" Count="0" />
+    <LineIds Name="FB_AteqControl.M_ParamRead">
+      <LineId Id="4" Count="0" />
     </LineIds>
-    <LineIds Name="FB_AteqControl.M_Step2_ResetFIFO">
-      <LineId Id="5" Count="0" />
+    <LineIds Name="FB_AteqControl.M_ParamWrite">
+      <LineId Id="4" Count="0" />
     </LineIds>
-    <LineIds Name="FB_AteqControl.M_Step3_StartCycle">
-      <LineId Id="5" Count="0" />
+    <LineIds Name="FB_AteqControl.M_ProgramSelect">
+      <LineId Id="8" Count="0" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="12" Count="1" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="29" Count="2" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="24" Count="0" />
     </LineIds>
-    <LineIds Name="FB_AteqControl.M_Step4_LiveStructRead">
-      <LineId Id="5" Count="0" />
+    <LineIds Name="FB_AteqControl.M_ProgramStart">
+      <LineId Id="4" Count="0" />
     </LineIds>
-    <LineIds Name="FB_AteqControl.M_Step5_ResultsRead">
-      <LineId Id="5" Count="0" />
+    <LineIds Name="FB_AteqControl.M_ProgramStop">
+      <LineId Id="4" Count="0" />
     </LineIds>
-    <LineIds Name="FB_AteqControl.M_Step6_FIFOResultRead">
-      <LineId Id="5" Count="0" />
+    <LineIds Name="FB_AteqControl.M_ReadFIFO">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqControl.M_ReadLastResult">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqControl.M_ResetFIFO">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqControl.M_Sequence">
+      <LineId Id="138" Count="0" />
+      <LineId Id="188" Count="0" />
+      <LineId Id="187" Count="0" />
+      <LineId Id="139" Count="7" />
+      <LineId Id="148" Count="15" />
+      <LineId Id="166" Count="0" />
+      <LineId Id="168" Count="17" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="189" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_AteqControl.M_SpecialCycle">
+      <LineId Id="55" Count="0" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="5" Count="1" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="46" Count="2" />
+      <LineId Id="43" Count="1" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="52" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqControl.P_SystemDateTime.Get">
+      <LineId Id="6" Count="0" />
+      <LineId Id="2" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

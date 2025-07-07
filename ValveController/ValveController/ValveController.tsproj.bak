@@ -45,63 +45,13 @@
 		</System>
 		<Plc>
 			<Project GUID="{FF505B91-FACF-4A2B-B73E-9C5E3B10185D}" Name="ValveControllerPLC" PrjFilePath="ValveControllerPLC\ValveControllerPLC.plcproj" TmcFilePath="ValveControllerPLC\ValveControllerPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{EEAE6545-2217-FB9F-7311-92D584DD3BAC}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{5F877986-0450-9650-86C4-5EB28433B292}">
 					<Name>ValveControllerPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
 						<Name>PlcTaskAteqComm Inputs</Name>
 						<Var>
 							<Name>PRG_AteqComm.astAteqRawIo[0].anInput</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_AteqComm.astAteqRawIo[1].anInput</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_AteqComm.astAteqRawIo[2].anInput</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_AteqComm.astAteqRawIo[3].anInput</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_AteqComm.astAteqRawIo[4].anInput</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_AteqComm.astAteqRawIo[5].anInput</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_AteqComm.astAteqRawIo[6].anInput</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_AteqComm.astAteqRawIo[7].anInput</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_AteqComm.astAteqRawIo[8].anInput</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_AteqComm.astAteqRawIo[9].anInput</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_TEST.fbTest_AteqComm.stTestAteqRawIo.anInput</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
@@ -112,42 +62,17 @@
 							<Name>PRG_AteqComm.astAteqRawIo[0].anOutput</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
+					</Vars>
+					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
+						<Name>PlcTask Inputs</Name>
 						<Var>
-							<Name>PRG_AteqComm.astAteqRawIo[1].anOutput</Name>
+							<Name>PRG_TEST.fbTest_AteqComm.stTestAteqRawIo.anInput</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
-						<Var>
-							<Name>PRG_AteqComm.astAteqRawIo[2].anOutput</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_AteqComm.astAteqRawIo[3].anOutput</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_AteqComm.astAteqRawIo[4].anOutput</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_AteqComm.astAteqRawIo[5].anOutput</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_AteqComm.astAteqRawIo[6].anOutput</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_AteqComm.astAteqRawIo[7].anOutput</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_AteqComm.astAteqRawIo[8].anOutput</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_AteqComm.astAteqRawIo[9].anOutput</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
+					</Vars>
+					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
+						<Name>PlcTask Outputs</Name>
 						<Var>
 							<Name>PRG_TEST.fbTest_AteqComm.stTestAteqRawIo.anOutput</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>

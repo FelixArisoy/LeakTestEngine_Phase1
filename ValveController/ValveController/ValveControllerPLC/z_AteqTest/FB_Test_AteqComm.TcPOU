@@ -45,7 +45,7 @@ FOR nIndex1 := 0 TO 255 DO
 	stTestAteqRawIo.anInput[nIndex1 / 64][nIndex1 MOD 64] := 0;
 END_FOR
 
-GVL_Ateq.eDeviceEndianSetTo := E_Endianness.BigEndian;
+GVL_Ateq.eDeviceEndianSetTo := E_DeviceEndianness.BigEndian;
 
 // Reuse the **same** byte order inputs (low byte first in index 6)
 stTestAteqRawIo.anInput[0][6] := 16#07;  // ProgramInUse Low byte
@@ -142,7 +142,7 @@ FOR nIndex1 := 0 TO 255 DO
 	stTestAteqRawIo.anInput[nIndex1 / 64][nIndex1 MOD 64] := 0;
 END_FOR
 
-GVL_Ateq.eDeviceEndianSetTo := E_Endianness.LittleEndian;
+GVL_Ateq.eDeviceEndianSetTo := E_DeviceEndianness.LittleEndian;
 
 // Setup bytes (same order for both tests - low byte first)
 stTestAteqRawIo.anInput[0][6] := 16#07;  // ProgramInUse Low byte
@@ -232,7 +232,7 @@ END_VAR
       <Implementation>
         <ST><![CDATA[// -------- Big Endian Test --------
 TEST('OutputMapping_BigEndian');
-GVL_Ateq.eDeviceEndianSetTo := E_Endianness.BigEndian;
+GVL_Ateq.eDeviceEndianSetTo := E_DeviceEndianness.BigEndian;
 
 stTestAteqMappedIo.stWrite.nProgramSelect := 16#1122;
 stTestAteqMappedIo.stWrite.nSpecialCycle := 16#3344;
@@ -256,7 +256,7 @@ VAR
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[TEST('OutputMapping_LittleEndian');
-GVL_Ateq.eDeviceEndianSetTo := E_Endianness.LittleEndian;
+GVL_Ateq.eDeviceEndianSetTo := E_DeviceEndianness.LittleEndian;
 
 // Set known values
 stTestAteqMappedIo.stWrite.stCommands.bReset               := TRUE;
