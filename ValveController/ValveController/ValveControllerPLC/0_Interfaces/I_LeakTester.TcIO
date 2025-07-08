@@ -51,8 +51,8 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
-    <Method Name="M_zSequence" Id="{c62b52d9-88f7-441c-b964-c57a050aa619}">
-      <Declaration><![CDATA[METHOD M_zSequence : BOOL
+    <Method Name="M_zSequenceState" Id="{c62b52d9-88f7-441c-b964-c57a050aa619}">
+      <Declaration><![CDATA[METHOD M_zSequenceState : E_AteqSequence
 VAR_INPUT
 END_VAR
 ]]></Declaration>

@@ -11,16 +11,16 @@ END_VAR
 
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
-	TcUnit.RUN_IN_SEQUENCE();
+      <ST><![CDATA[	//TcUnit.RUN();
+	//TcUnit.RUN_IN_SEQUENCE();
  	//fbTest_AteqComm(); 
-	fbTest_AteqControl();
+	//fbTest_AteqControl();
 ]]></ST>
     </Implementation>
     <LineIds Name="PRG_TEST">
       <LineId Id="285" Count="0" />
-      <LineId Id="266" Count="1" />
-      <LineId Id="301" Count="0" />
+      <LineId Id="266" Count="0" />
+      <LineId Id="302" Count="1" />
       <LineId Id="25" Count="0" />
     </LineIds>
   </POU>

@@ -1,20 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
   <POU Name="FB_Test_AteqComm" Id="{b608c7ab-a9f5-4d6a-ae95-38172be6353d}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_Test_AteqComm
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Test_AteqComm EXTENDS TcUnit.FB_TestSuite
 VAR
  
-	fbTestSuite			: TcUnit.FB_TestSuite;
+	//fbTestSuite			: TcUnit.FB_TestSuite;
 	
 	nDeviceIndex 		: UINT	:= 0;	
     fbTestAteqComm		: FB_AteqComm;
 	stTestAteqRawIo		: ST_AteqRawIo;
 	stTestAteqMappedIo	: ST_AteqMappedIo;
 	  
-
-	result : BOOL;
-	state : INT := 0;  // To keep track of which test to run
-    done  : BOOL := FALSE;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -23,9 +19,9 @@ END_VAR
 
         Test_InputMapLittleEndian();
 
-        //Test_OutputMapBigEndian();
+        Test_OutputMapBigEndian();
 
-        //Test_OutputMapLittleEndian();
+        Test_OutputMapLittleEndian();
 ]]></ST>
     </Implementation>
     <Method Name="Test_InputMapBigEndian" Id="{33e14d08-4505-41cf-8bcb-360c35b2be3d}">
@@ -93,13 +89,13 @@ END_FOR
 fbTestAteqComm(nDeviceIndex := nDeviceIndex, stRawIo := stTestAteqRawIo, stMappedIo := stTestAteqMappedIo);
 
 // Validate WORDs - Big Endian means high byte first, so expected values reversed from Little Endian
-fbTestSuite.AssertEquals_WORD(16#0807, stTestAteqMappedIo.stRead.nProgramInUse, 'ProgramInUse mismatch');
-fbTestSuite.AssertEquals_WORD(16#0A09, stTestAteqMappedIo.stRead.nResultsInFifo, 'ResultsInFifo mismatch');
-fbTestSuite.AssertEquals_WORD(16#0C0B, stTestAteqMappedIo.stRead.nTestType, 'TestType mismatch');
-fbTestSuite.AssertEquals_WORD(16#100F, stTestAteqMappedIo.stRead.nProgramStep, 'ProgramStep mismatch');
+AssertEquals_WORD(16#0807, stTestAteqMappedIo.stRead.nProgramInUse, 'ProgramInUse mismatch');
+AssertEquals_WORD(16#0A09, stTestAteqMappedIo.stRead.nResultsInFifo, 'ResultsInFifo mismatch');
+AssertEquals_WORD(16#0C0B, stTestAteqMappedIo.stRead.nTestType, 'TestType mismatch');
+AssertEquals_WORD(16#100F, stTestAteqMappedIo.stRead.nProgramStep, 'ProgramStep mismatch');
 
 // Validate REAL PressureCurValue 16#14131211
-fbTestSuite.AssertEquals_REAL(
+AssertEquals_REAL(
     336794.129,
     stTestAteqMappedIo.stRead.nPressureCurValue,
     0.1,
@@ -107,10 +103,10 @@ fbTestSuite.AssertEquals_REAL(
 );
 
 // Validate DWORD PressureUnitCode
-fbTestSuite.AssertEquals_DWORD(16#18171615, stTestAteqMappedIo.stRead.nPressureUnitCode, 'PressureUnitCode mismatch');
+AssertEquals_DWORD(16#18171615, stTestAteqMappedIo.stRead.nPressureUnitCode, 'PressureUnitCode mismatch');
 
 // Validate REAL LeakCurValue 16#1C1B1A19
-fbTestSuite.AssertEquals_REAL(
+AssertEquals_REAL(
     47153.8201,
     stTestAteqMappedIo.stRead.nLeakCurValue,
     0.1,
@@ -118,7 +114,7 @@ fbTestSuite.AssertEquals_REAL(
 );
 
 // Validate DWORD LeakUnitCode
-fbTestSuite.AssertEquals_DWORD(16#201F1E1D, stTestAteqMappedIo.stRead.nLeakUnitCode, 'LeakUnitCode mismatch');
+AssertEquals_DWORD(16#201F1E1D, stTestAteqMappedIo.stRead.nLeakUnitCode, 'LeakUnitCode mismatch');
 
 TEST_FINISHED();
 ]]></ST>
@@ -190,13 +186,13 @@ END_FOR
 fbTestAteqComm(nDeviceIndex := nDeviceIndex, stRawIo := stTestAteqRawIo, stMappedIo := stTestAteqMappedIo);
 
 // Validate WORDs - Little Endian means low byte first, so 0x0807 for nProgramInUse is 0x0708 logically
-fbTestSuite.AssertEquals_WORD(16#0708, stTestAteqMappedIo.stRead.nProgramInUse, 'ProgramInUse mismatch');
-fbTestSuite.AssertEquals_WORD(16#090A, stTestAteqMappedIo.stRead.nResultsInFifo, 'ResultsInFifo mismatch');
-fbTestSuite.AssertEquals_WORD(16#0B0C, stTestAteqMappedIo.stRead.nTestType, 'TestType mismatch');
-fbTestSuite.AssertEquals_WORD(16#0F10, stTestAteqMappedIo.stRead.nProgramStep, 'ProgramStep mismatch');
+AssertEquals_WORD(16#0708, stTestAteqMappedIo.stRead.nProgramInUse, 'ProgramInUse mismatch');
+AssertEquals_WORD(16#090A, stTestAteqMappedIo.stRead.nResultsInFifo, 'ResultsInFifo mismatch');
+AssertEquals_WORD(16#0B0C, stTestAteqMappedIo.stRead.nTestType, 'TestType mismatch');
+AssertEquals_WORD(16#0F10, stTestAteqMappedIo.stRead.nProgramStep, 'ProgramStep mismatch');
 
 // Validate REAL PressureCurValue 16#11121314
-fbTestSuite.AssertEquals_REAL(
+AssertEquals_REAL(
     286397.204,  // your expected real value after conversion/dividing by 1000 etc
     stTestAteqMappedIo.stRead.nPressureCurValue, 
     0.1,
@@ -204,10 +200,10 @@ fbTestSuite.AssertEquals_REAL(
 );
 
 // Validate DWORD PressureUnitCode 
-fbTestSuite.AssertEquals_DWORD(16#15161718, stTestAteqMappedIo.stRead.nPressureUnitCode, 'PressureUnitCode mismatch');
+AssertEquals_DWORD(16#15161718, stTestAteqMappedIo.stRead.nPressureUnitCode, 'PressureUnitCode mismatch');
 
 // Validate REAL LeakCurValue 16#191A1B1C
-fbTestSuite.AssertEquals_REAL(
+AssertEquals_REAL(
     42114.1276,
     stTestAteqMappedIo.stRead.nLeakCurValue,
     0.1,
@@ -215,7 +211,7 @@ fbTestSuite.AssertEquals_REAL(
 );
 
 // Validate DWORD LeakUnitCode
-fbTestSuite.AssertEquals_DWORD(16#1D1E1F20, stTestAteqMappedIo.stRead.nLeakUnitCode, 'LeakUnitCode mismatch');
+AssertEquals_DWORD(16#1D1E1F20, stTestAteqMappedIo.stRead.nLeakUnitCode, 'LeakUnitCode mismatch');
 
 // ExchangeZone validation...
 
@@ -234,16 +230,16 @@ END_VAR
 TEST('OutputMapping_BigEndian');
 GVL_Ateq.eDeviceEndianSetTo := E_DeviceEndianness.BigEndian;
 
-stTestAteqMappedIo.stWrite.nProgramSelect := 16#1122;
-stTestAteqMappedIo.stWrite.nSpecialCycle := 16#3344;
+stTestAteqMappedIo.stWrite.nProgramSelect := 16#2211;
+stTestAteqMappedIo.stWrite.nSpecialCycle := 16#4433;
 
 // Re-run same FB call to update mapping for big endian
 fbTestAteqComm(nDeviceIndex := nDeviceIndex, stRawIo := stTestAteqRawIo, stMappedIo := stTestAteqMappedIo);
 
-fbTestSuite.AssertEquals_BYTE(16#11, stTestAteqRawIo.anOutput[0][6], 'BigEndian: ProgramSelect[HighByte] mismatch');
-fbTestSuite.AssertEquals_BYTE(16#22, stTestAteqRawIo.anOutput[0][7], 'BigEndian: ProgramSelect[LowByte] mismatch');
-fbTestSuite.AssertEquals_BYTE(16#33, stTestAteqRawIo.anOutput[0][8], 'BigEndian: SpecialCycle[HighByte] mismatch');
-fbTestSuite.AssertEquals_BYTE(16#44, stTestAteqRawIo.anOutput[0][9], 'BigEndian: SpecialCycle[LowByte] mismatch');
+AssertEquals_BYTE(16#11, stTestAteqRawIo.anOutput[0][6], 'BigEndian: ProgramSelect[HighByte] mismatch');
+AssertEquals_BYTE(16#22, stTestAteqRawIo.anOutput[0][7], 'BigEndian: ProgramSelect[LowByte] mismatch');
+AssertEquals_BYTE(16#33, stTestAteqRawIo.anOutput[0][8], 'BigEndian: SpecialCycle[HighByte] mismatch');
+AssertEquals_BYTE(16#44, stTestAteqRawIo.anOutput[0][9], 'BigEndian: SpecialCycle[LowByte] mismatch');
 
 TEST_FINISHED();
 ]]></ST>
@@ -281,8 +277,8 @@ stTestAteqMappedIo.stWrite.anReservedOut1[1] := 162;
 stTestAteqMappedIo.stWrite.anReservedOut1[2] := 163;
 stTestAteqMappedIo.stWrite.anReservedOut1[3] := 164;
 
-stTestAteqMappedIo.stWrite.nProgramSelect := 16#1122;
-stTestAteqMappedIo.stWrite.nSpecialCycle := 16#3344;
+stTestAteqMappedIo.stWrite.nProgramSelect := 16#2211;
+stTestAteqMappedIo.stWrite.nSpecialCycle := 16#4433;
 
 FOR nIndex := 0 TO 21 DO
     stTestAteqMappedIo.stWrite.anReservedOut2[nIndex] := 80 + nIndex;
@@ -293,25 +289,25 @@ END_FOR
 
 fbTestAteqComm(nDeviceIndex := nDeviceIndex, stRawIo := stTestAteqRawIo, stMappedIo := stTestAteqMappedIo);
 
-fbTestSuite.AssertEquals_BYTE(255, stTestAteqRawIo.anOutput[0][0], 'CommandByte0 mismatch');
-fbTestSuite.AssertEquals_BYTE(255, stTestAteqRawIo.anOutput[0][1], 'CommandByte1 mismatch');
+AssertEquals_BYTE(255, stTestAteqRawIo.anOutput[0][0], 'CommandByte0 mismatch');
+AssertEquals_BYTE(255, stTestAteqRawIo.anOutput[0][1], 'CommandByte1 mismatch');
 
-fbTestSuite.AssertEquals_BYTE(161, stTestAteqRawIo.anOutput[0][2], 'ReservedOut1[0] mismatch');
-fbTestSuite.AssertEquals_BYTE(162, stTestAteqRawIo.anOutput[0][3], 'ReservedOut1[1] mismatch');
-fbTestSuite.AssertEquals_BYTE(163, stTestAteqRawIo.anOutput[0][4], 'ReservedOut1[2] mismatch');
-fbTestSuite.AssertEquals_BYTE(164, stTestAteqRawIo.anOutput[0][5], 'ReservedOut1[3] mismatch');
+AssertEquals_BYTE(161, stTestAteqRawIo.anOutput[0][2], 'ReservedOut1[0] mismatch');
+AssertEquals_BYTE(162, stTestAteqRawIo.anOutput[0][3], 'ReservedOut1[1] mismatch');
+AssertEquals_BYTE(163, stTestAteqRawIo.anOutput[0][4], 'ReservedOut1[2] mismatch');
+AssertEquals_BYTE(164, stTestAteqRawIo.anOutput[0][5], 'ReservedOut1[3] mismatch');
 
-fbTestSuite.AssertEquals_BYTE(16#22, stTestAteqRawIo.anOutput[0][6], 'ProgramSelect[LowByte] mismatch');
-fbTestSuite.AssertEquals_BYTE(16#11, stTestAteqRawIo.anOutput[0][7], 'ProgramSelect[HighByte] mismatch');
-fbTestSuite.AssertEquals_BYTE(16#44, stTestAteqRawIo.anOutput[0][8], 'SpecialCycle[LowByte] mismatch');
-fbTestSuite.AssertEquals_BYTE(16#33, stTestAteqRawIo.anOutput[0][9], 'SpecialCycle[HighByte] mismatch');
+AssertEquals_BYTE(16#22, stTestAteqRawIo.anOutput[0][6], 'ProgramSelect[LowByte] mismatch');
+AssertEquals_BYTE(16#11, stTestAteqRawIo.anOutput[0][7], 'ProgramSelect[HighByte] mismatch');
+AssertEquals_BYTE(16#44, stTestAteqRawIo.anOutput[0][8], 'SpecialCycle[LowByte] mismatch');
+AssertEquals_BYTE(16#33, stTestAteqRawIo.anOutput[0][9], 'SpecialCycle[HighByte] mismatch');
 
 FOR nIndex := 0 TO 21 DO
-    fbTestSuite.AssertEquals_BYTE(80 + nIndex, stTestAteqRawIo.anOutput[0][10 + nIndex], CONCAT(CONCAT('ReservedOut2[', INT_TO_STRING(nIndex)), '] mismatch'));
+    AssertEquals_BYTE(80 + nIndex, stTestAteqRawIo.anOutput[0][10 + nIndex], CONCAT(CONCAT('ReservedOut2[', INT_TO_STRING(nIndex)), '] mismatch'));
 END_FOR
 
 FOR nIndex := 0 TO 127 DO
-    fbTestSuite.AssertEquals_BYTE(192 + nIndex, stTestAteqRawIo.anOutput[(32 + nIndex) / 64][(32 + nIndex) MOD 64], CONCAT(CONCAT('ExchangeZone[', INT_TO_STRING(nIndex)), '] mismatch'));
+    AssertEquals_BYTE(192 + nIndex, stTestAteqRawIo.anOutput[(32 + nIndex) / 64][(32 + nIndex) MOD 64], CONCAT(CONCAT('ExchangeZone[', INT_TO_STRING(nIndex)), '] mismatch'));
 END_FOR
 
 TEST_FINISHED();]]></ST>
@@ -334,7 +330,8 @@ TEST_FINISHED();]]></ST>
     </LineIds>
     <LineIds Name="FB_Test_AteqComm.Test_OutputMapBigEndian">
       <LineId Id="6" Count="2" />
-      <LineId Id="19" Count="1" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="25" Count="0" />
       <LineId Id="9" Count="0" />
       <LineId Id="21" Count="0" />
       <LineId Id="10" Count="8" />

@@ -29,9 +29,7 @@ VAR
 	bRunAteqSequence	: BOOL;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
-
-FOR nDeviceIndex := 0 TO GVL_Ateq.nMaxDeviceCount - 1 DO
+      <ST><![CDATA[FOR nDeviceIndex := 0 TO GVL_Ateq.nMaxDeviceCount - 1 DO
    
 	astAteqComm[nDeviceIndex](
         							nDeviceIndex    := nDeviceIndex,
@@ -44,8 +42,14 @@ END_FOR
 //Debug Ateq Auto Sequence
 
 IF bRunAteqSequence THEN
-	fbAteqControl(stMappedIo := astAteqMappedIo[0]);
+	 fbAteqControl(stIo := astAteqMappedIo[0]);
 END_IF
+
+
+
+
+
+
 
 // Response DEBUG
 
@@ -107,7 +111,6 @@ ELSE // bTestActive is FALSE (test is not running)
     // Ensure everything is reset when the test is not active
     bCommandSent := FALSE;
     bEchoReceived := FALSE;
-    //astAteqMappedIo[0].stWrite.stCommands.bStart := FALSE;
     fbDelayBetweenTriggers(IN := FALSE);
     bDelayFinished := TRUE; // Ready for test to start
     bTriggerReady := TRUE;  // Ready to send first trigger when bTestActive becomes TRUE
@@ -116,18 +119,7 @@ END_IF
 ]]></ST>
     </Implementation>
     <LineIds Name="PRG_AteqComm">
-      <LineId Id="524" Count="1" />
-      <LineId Id="407" Count="7" />
-      <LineId Id="416" Count="0" />
-      <LineId Id="521" Count="0" />
-      <LineId Id="417" Count="0" />
-      <LineId Id="522" Count="0" />
-      <LineId Id="487" Count="0" />
-      <LineId Id="526" Count="0" />
-      <LineId Id="519" Count="0" />
-      <LineId Id="420" Count="5" />
-      <LineId Id="527" Count="0" />
-      <LineId Id="426" Count="59" />
+      <LineId Id="538" Count="86" />
       <LineId Id="155" Count="0" />
     </LineIds>
   </POU>

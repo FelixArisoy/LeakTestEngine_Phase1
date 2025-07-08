@@ -6,7 +6,7 @@ VAR_INPUT
    //TriggerTest 	: BOOL;         // Rising edge to start a test
 END_VAR
 VAR_IN_OUT
-    stMappedIo   	: ST_AteqMappedIo; 
+    stIo   	: ST_AteqMappedIo; 
 //Mapped Io Exchange zone will be passing the data to ResultRaw Struct then FB will decode it to ResultDecoded Struct. 
 //Properties will pass the decoded data to outside of the FB
 END_VAR
@@ -24,11 +24,11 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[
-M_zSequence();
+M_zSequenceState();
 ]]></ST>
     </Implementation>
     <Method Name="M_CommandHandler" Id="{56a501ea-a269-47d7-a142-013486e4bf60}">
-      <Declaration><![CDATA[METHOD PRIVATE M_CommandHandler : E_CommandStatus
+      <Declaration><![CDATA[METHOD M_CommandHandler : E_CommandStatus
 VAR_IN_OUT
 	bCmd			: BOOL; // Cmd Tobe started from ST_Commands
     
@@ -39,7 +39,7 @@ VAR_INPUT
 END_VAR
 
 VAR
-	tTimeout        : TIME := GVL_Ateq.tCommandTimeout; //GLOBAL Constant
+	tCmdTimeout     : TIME := GVL_Ateq.tCommandTimeout; //GLOBAL Constant
 	tCmdStartTime   : TIME; // Time tracking
     currentTime		: TIME;
 	bCmdInProgress  : BOOL; // Check fieldbus: 16#FFFF = In progress
@@ -52,25 +52,25 @@ currentTime 		:= DT_TO_TIME(P_SystemDateTime); // system time
 CASE M_CommandHandler OF
 
 	CMD_IDLE:
-		IF stMappedIo.stRead.stRealtimeTestResults.bCycleEnd AND bCmd THEN
+		IF bCmd THEN
 			M_CommandHandler := CMD_START;
 			tCmdStartTime := currentTime;
 		END_IF
 
 	CMD_START:
-		IF stMappedIo.stRead.anErrorCode[0] = 16#FF AND stMappedIo.stRead.anErrorCode[1] = 16#FF THEN
+		IF stIo.stRead.anErrorCode[0] = 16#FF AND stIo.stRead.anErrorCode[1] = 16#FF THEN
 			M_CommandHandler := CMD_IN_PROGRESS;
 		END_IF
 
 	CMD_IN_PROGRESS:
-		IF (currentTime - tCmdStartTime) > tTimeout THEN
+		IF (currentTime - tCmdStartTime) > tCmdTimeout THEN
 			
 			bCmd 		:= FALSE;
 			M_CommandHandler := CMD_TIMEOUT;
 
 		ELSIF	bCmdEcho = bCmd AND 						//CMD executed successfully
-			   	stMappedIo.stRead.anErrorCode[0] = 0 AND
-			   	stMappedIo.stRead.anErrorCode[1] = 0 THEN
+			   	stIo.stRead.anErrorCode[0] = 0 AND
+			   	stIo.stRead.anErrorCode[1] = 0 THEN
 
 			
 			bCmd 		:= FALSE;
@@ -123,9 +123,9 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
 
-	M_ProgramSelect := M_CommandHandler	(	bCmd 		:= stMappedIo.stWrite.stCommands.bProgramSelect,
-											bCmdEcho	:= stMappedIo.stRead.stEcho.bProgramSelect,
-											bCmdError	:= stMappedIo.stRead.stErrorCode.bProgramSelect
+	M_ProgramSelect := M_CommandHandler	(	bCmd 		:= stIo.stWrite.stCommands.bProgramSelect,
+											bCmdEcho	:= stIo.stRead.stEcho.bProgramSelect,
+											bCmdError	:= stIo.stRead.stErrorCode.bProgramSelect
 										);]]></ST>
       </Implementation>
     </Method>
@@ -136,9 +136,9 @@ END_VAR]]></Declaration>
         <ST><![CDATA[	
 
 
-	M_ProgramStart := M_CommandHandler	(	bCmd 		:= stMappedIo.stWrite.stCommands.bStart,
-											bCmdEcho	:= stMappedIo.stRead.stEcho.bStart,
-											bCmdError	:= stMappedIo.stRead.stErrorCode.bStart
+	M_ProgramStart := M_CommandHandler	(	bCmd 		:= stIo.stWrite.stCommands.bStart,
+											bCmdEcho	:= stIo.stRead.stEcho.bStart,
+											bCmdError	:= stIo.stRead.stErrorCode.bStart
 										);
 ]]></ST>
       </Implementation>
@@ -174,12 +174,12 @@ VAR
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
-stMappedIo.stWrite.nSpecialCycle 				:= nSpecialCycleId;
+stIo.stWrite.nSpecialCycle 				:= nSpecialCycleId;
 
 	
-	M_SpecialCycle := M_CommandHandler	(	bCmd 		:= stMappedIo.stWrite.stCommands.bSpecialCycle,
-											bCmdEcho	:= stMappedIo.stRead.stEcho.bSpecialCycle,
-											bCmdError	:= stMappedIo.stRead.stErrorCode.bSpecialCycle
+	M_SpecialCycle := M_CommandHandler	(	bCmd 		:= stIo.stWrite.stCommands.bSpecialCycle,
+											bCmdEcho	:= stIo.stRead.stEcho.bSpecialCycle,
+											bCmdError	:= stIo.stRead.stErrorCode.bSpecialCycle
 										);
 
 	
@@ -188,10 +188,9 @@ stMappedIo.stWrite.nSpecialCycle 				:= nSpecialCycleId;
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_zSequence" Id="{470ae35c-cda6-49a5-a2ba-29d25da98e8a}">
-      <Declaration><![CDATA[METHOD M_zSequence : BOOL
+    <Method Name="M_zSequenceState" Id="{470ae35c-cda6-49a5-a2ba-29d25da98e8a}">
+      <Declaration><![CDATA[METHOD M_zSequenceState : E_AteqSequence
 VAR
-	    eSeqState   : E_AteqSequence;
 		eCmdStatus	: E_CommandStatus;
 		
 		tStepDelay 	: TON;
@@ -199,15 +198,15 @@ VAR
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[eSeqState := AUTO_ZERO;
+        <ST><![CDATA[M_zSequenceState := AUTO_ZERO;
 
-	CASE eSeqState OF
+	CASE M_zSequenceState OF
 		
     IDLE: // waiting trigger
-		IF stMappedIo.stRead.stRealtimeTestResults.bCycleEnd THEN
+		IF stIo.stRead.stRealtimeTestResults.bCycleEnd THEN
 			//stMappedIo.stWrite.stCommands.bStart := TRUE;
             //stMappedIo.stWrite.stCommands.bReset := FALSE;
-			eSeqState := RESET_FIFO;
+			M_zSequenceState := RESET_FIFO;
 		END_IF
 	PROGRAM_SELECT:
 		// Optional if not manually selected
@@ -216,59 +215,59 @@ END_VAR
 		
 	AUTO_ZERO:
     	nSpecialCycleId := GVL_AteqSpecialCycle.PiezoAutoZeroReg2;
-    	stMappedIo.stWrite.stCommands.bStart := TRUE;
-		stMappedIo.stWrite.stCommands.bSpecialCycle		:= TRUE;
+    	stIo.stWrite.stCommands.bStart := TRUE;
+		stIo.stWrite.stCommands.bSpecialCycle		:= TRUE;
 
     	eCmdStatus := M_SpecialCycle(); // Call method and get Cmd Status result
 
     CASE eCmdStatus OF
         CMD_ERROR:
-            stMappedIo.stWrite.stCommands.bStart := FALSE;
-            stMappedIo.stWrite.stCommands.bReset := TRUE;
-            eSeqState := AUTO_ZERO; // retry
+            stIo.stWrite.stCommands.bStart := FALSE;
+            stIo.stWrite.stCommands.bReset := TRUE;
+            M_zSequenceState := AUTO_ZERO; // retry
         CMD_DONE:
-            stMappedIo.stWrite.stCommands.bStart := FALSE;
-            stMappedIo.stWrite.stCommands.bReset := FALSE;
-			stMappedIo.stWrite.stCommands.bSpecialCycle		:= FALSE;
+            stIo.stWrite.stCommands.bStart := FALSE;
+            stIo.stWrite.stCommands.bReset := FALSE;
+			stIo.stWrite.stCommands.bSpecialCycle		:= FALSE;
             
             bWait := TRUE;
             tStepDelay(IN := bWait, PT := T#10S); // adjust delay time as needed
 
             IF tStepDelay.Q THEN
                 bWait := FALSE;
-                eSeqState := START_CYCLE;
+                M_zSequenceState := START_CYCLE;
             END_IF
     END_CASE
 		
 	START_CYCLE: // Program start
-        stMappedIo.stWrite.stCommands.bStart := TRUE;
+        stIo.stWrite.stCommands.bStart := TRUE;
 		eCmdStatus 	:= M_ProgramStart();
 		
 	CASE eCmdStatus OF
         CMD_ERROR:
-            stMappedIo.stWrite.stCommands.bStart := FALSE;
-            stMappedIo.stWrite.stCommands.bReset := TRUE;
-            eSeqState := START_CYCLE; // retry
+            stIo.stWrite.stCommands.bStart := FALSE;
+            stIo.stWrite.stCommands.bReset := TRUE;
+            M_zSequenceState := START_CYCLE; // retry
         CMD_DONE:
-            stMappedIo.stWrite.stCommands.bStart := FALSE;
-            stMappedIo.stWrite.stCommands.bReset := FALSE;
+            stIo.stWrite.stCommands.bStart := FALSE;
+            stIo.stWrite.stCommands.bReset := FALSE;
             
             bWait := TRUE;
             tStepDelay(IN := bWait, PT := T#10S); // adjust delay time as needed
 
             IF tStepDelay.Q THEN
                 bWait := FALSE;
-                eSeqState 	:= LIVE_READING;
+                M_zSequenceState 	:= LIVE_READING;
             END_IF
     END_CASE
         
 		
 	LIVE_READING: // Monitor live values
 		
-		IF stMappedIo.stRead.stRealtimeTestResults.bCycleEnd THEN
-			stMappedIo.stWrite.stCommands.bStart := FALSE;
-            stMappedIo.stWrite.stCommands.bReset := FALSE;
-			eSeqState := END_OF_CYCLE;
+		IF stIo.stRead.stRealtimeTestResults.bCycleEnd THEN
+			stIo.stWrite.stCommands.bStart := FALSE;
+            stIo.stWrite.stCommands.bReset := FALSE;
+			M_zSequenceState := END_OF_CYCLE;
 		END_IF
 		
     END_OF_CYCLE: // Wait End Of Cycle = 1
@@ -305,10 +304,7 @@ END_VAR
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_CommandHandler">
-      <LineId Id="326" Count="18" />
-      <LineId Id="382" Count="0" />
-      <LineId Id="346" Count="9" />
-      <LineId Id="357" Count="20" />
+      <LineId Id="399" Count="50" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ParamRead">
@@ -351,34 +347,9 @@ END_VAR
       <LineId Id="50" Count="0" />
       <LineId Id="52" Count="0" />
     </LineIds>
-    <LineIds Name="FB_AteqControl.M_zSequence">
-      <LineId Id="138" Count="0" />
-      <LineId Id="188" Count="0" />
-      <LineId Id="187" Count="0" />
-      <LineId Id="139" Count="1" />
-      <LineId Id="246" Count="3" />
-      <LineId Id="245" Count="0" />
-      <LineId Id="142" Count="4" />
-      <LineId Id="201" Count="2" />
-      <LineId Id="250" Count="0" />
-      <LineId Id="204" Count="10" />
-      <LineId Id="251" Count="0" />
-      <LineId Id="215" Count="0" />
-      <LineId Id="217" Count="6" />
-      <LineId Id="160" Count="2" />
-      <LineId Id="166" Count="0" />
-      <LineId Id="224" Count="1" />
-      <LineId Id="227" Count="15" />
-      <LineId Id="226" Count="0" />
-      <LineId Id="168" Count="3" />
-      <LineId Id="198" Count="0" />
-      <LineId Id="243" Count="1" />
-      <LineId Id="196" Count="1" />
-      <LineId Id="195" Count="0" />
-      <LineId Id="172" Count="8" />
-      <LineId Id="184" Count="1" />
-      <LineId Id="4" Count="0" />
-      <LineId Id="189" Count="1" />
+    <LineIds Name="FB_AteqControl.M_zSequenceState">
+      <LineId Id="260" Count="84" />
+      <LineId Id="190" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.P_SystemDateTime.Get">
       <LineId Id="6" Count="0" />

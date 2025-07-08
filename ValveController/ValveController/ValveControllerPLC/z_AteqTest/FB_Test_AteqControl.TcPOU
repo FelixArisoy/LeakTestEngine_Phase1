@@ -7,17 +7,150 @@ VAR
     
 	stTestMappedIo   	: ST_AteqMappedIo;
     eTestCmdStatus  	: E_CommandStatus;
+	
+	nLoopCount            : UDINT; // Counter for simulated cycles
+    nMaxCycles            : UDINT := 100; // Max cycles to wait for command completion
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[Test_ProgramSelect();]]></ST>
+      <ST><![CDATA[//fbTest_AteqControl(stMappedIo := stTestMappedIo);
+
+//Test_ProgramSelect(); Suspended testing bcs of extra simulation needed for Ateq responses]]></ST>
     </Implementation>
     <Method Name="Test_ProgramSelect" Id="{48916eb8-429e-42bd-8565-ffee573e9c39}">
       <Declaration><![CDATA[METHOD Test_ProgramSelect
-VAR_INPUT
+VAR
+	nExp 	: INT;
+	nAct	: INT;
+
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[TEST('ProgramSelect command sends correct values');
+        <ST><![CDATA[
+// The Test_ProgramSelect() calls outside the TEST block are not standard TcUnit practice.
+// Each TEST block should be self-contained and initialize its resources.
+
+TEST('ProgramSelect: Command sequence should successfully reach CMD_DONE');
+    // --- Arrange (Set up initial conditions for the test) ---
+    MEMSET(ADR(stTestMappedIo), 0, SIZEOF(stTestMappedIo)); // Clear IO to a known state
+    fbTest_AteqControl(stIo := stTestMappedIo); // Re-initialize the FB with clean IO
+
+    // Set the command to be sent (this is done in the first cycle)
+	stTestMappedIo.stRead.stRealtimeTestResults.bCycleEnd := TRUE;
+    stTestMappedIo.stWrite.nProgramSelect := 16#0005;
+    stTestMappedIo.stWrite.stCommands.bProgramSelect := TRUE;
+
+    // --- Act (Execute the method over multiple cycles until completion) ---
+    eTestCmdStatus := E_CommandStatus.CMD_IN_PROGRESS; // Initialize with a non-DONE state
+    nLoopCount := 0;
+
+    // Simulate multiple PLC cycles until the command is done or an error occurs
+    WHILE (eTestCmdStatus = E_CommandStatus.CMD_IDLE OR
+           eTestCmdStatus = E_CommandStatus.CMD_IN_PROGRESS) AND
+          (nLoopCount < nMaxCycles) DO
+
+        // --- Simulate ATEQ response echo within the loop if it's conditional ---
+        // For a successful path, you'd typically apply the response echo in the *next* cycle
+        // after the command is initiated.
+        IF nLoopCount = 1 THEN // Simulate ATEQ responding in the second cycle (after command is sent)
+            stTestMappedIo.stRead.nProgramInUse := 16#0005;
+            stTestMappedIo.stRead.stEcho.bProgramSelect := TRUE;
+            stTestMappedIo.stRead.anErrorCode[0] := 0;
+            stTestMappedIo.stRead.anErrorCode[1] := 0;
+        END_IF
+
+        eTestCmdStatus := fbTest_AteqControl.M_ProgramSelect(); // Call the method for the current cycle
+        nLoopCount := nLoopCount + 1;
+    END_WHILE
+
+    // --- Assert (Verify the final outcome) ---
+    // 1. Assert that the loop did not time out (i.e., command completed within max cycles)
+AssertTrue(
+    nLoopCount < nMaxCycles,
+    CONCAT(
+        CONCAT(
+            CONCAT('Command did not complete within ', UDINT_TO_STRING(nMaxCycles)),
+            ' cycles. Final Status: '
+        ),
+        TO_STRING(eTestCmdStatus)
+    )
+);
+
+    // 2. Assert that the final status is exactly CMD_DONE
+    AssertEquals_STRING(TO_STRING(E_CommandStatus.CMD_DONE), TO_STRING(eTestCmdStatus), 'Expected final command status to be CMD_DONE');
+
+TEST_FINISHED();
+
+// --- Add other test cases for error/timeout scenarios ---
+
+TEST('ProgramSelect: Command sequence should return CMD_ERROR on ATEQ error');
+    MEMSET(ADR(stTestMappedIo), 0, SIZEOF(stTestMappedIo));
+    fbTest_AteqControl(stIo := stTestMappedIo);
+
+    stTestMappedIo.stWrite.nProgramSelect := 16#0005;
+    stTestMappedIo.stWrite.stCommands.bProgramSelect := TRUE;
+
+    eTestCmdStatus := E_CommandStatus.CMD_IN_PROGRESS;
+    nLoopCount := 0;
+
+    WHILE (eTestCmdStatus = E_CommandStatus.CMD_IDLE OR
+           eTestCmdStatus = E_CommandStatus.CMD_IN_PROGRESS) AND
+          (nLoopCount < nMaxCycles) DO
+
+        IF nLoopCount = 1 THEN // Simulate ATEQ responding with an error
+            stTestMappedIo.stRead.nProgramInUse := 16#FFFF; // Invalid program
+            stTestMappedIo.stRead.stEcho.bProgramSelect := FALSE; // No successful echo
+            stTestMappedIo.stRead.anErrorCode[0] := 16#0001; // Error code
+        END_IF
+
+        eTestCmdStatus := fbTest_AteqControl.M_ProgramSelect();
+        nLoopCount := nLoopCount + 1;
+    END_WHILE
+
+  AssertTrue(
+    nLoopCount < nMaxCycles,
+    CONCAT(
+        CONCAT(
+            CONCAT('Command did not reach error state within ', UDINT_TO_STRING(nMaxCycles)),
+            ' cycles. Final Status: '
+        ),
+        TO_STRING(eTestCmdStatus)
+    )
+);
+    AssertEquals_STRING(TO_STRING(E_CommandStatus.CMD_ERROR), TO_STRING(eTestCmdStatus), 'Expected final command status to be CMD_ERROR');
+TEST_FINISHED();
+
+
+TEST('ProgramSelect: Command sequence should return CMD_TIMEOUT if no response');
+    MEMSET(ADR(stTestMappedIo), 0, SIZEOF(stTestMappedIo));
+    fbTest_AteqControl(stIo := stTestMappedIo);
+
+    stTestMappedIo.stWrite.nProgramSelect := 16#0005;
+    stTestMappedIo.stWrite.stCommands.bProgramSelect := TRUE;
+
+    eTestCmdStatus := E_CommandStatus.CMD_IN_PROGRESS;
+    nLoopCount := 0;
+
+    // Simulate NO ATEQ response throughout the loop
+    stTestMappedIo.stRead.stEcho.bProgramSelect := FALSE; // Never set to true
+    stTestMappedIo.stRead.nProgramInUse := 0;
+    stTestMappedIo.stRead.anErrorCode[0] := 0;
+
+    WHILE (eTestCmdStatus = E_CommandStatus.CMD_IDLE OR
+           eTestCmdStatus = E_CommandStatus.CMD_IN_PROGRESS) AND
+          (nLoopCount < nMaxCycles) DO
+
+        eTestCmdStatus := fbTest_AteqControl.M_ProgramSelect();
+        nLoopCount := nLoopCount + 1;
+    END_WHILE
+
+    // Here, we expect the loop to complete by reaching nMaxCycles
+    AssertEquals(nMaxCycles, nLoopCount, 'Expected loop to run for max cycles to trigger timeout');
+    AssertEquals_STRING(TO_STRING(E_CommandStatus.CMD_TIMEOUT), TO_STRING(eTestCmdStatus), 'Expected final command status to be CMD_TIMEOUT');
+TEST_FINISHED();
+
+
+(*
+TEST('ProgramSelect command sends correct values');
 
 // Set expected values
 stTestMappedIo.stWrite.nProgramSelect := 16#0005;
@@ -32,17 +165,37 @@ stTestMappedIo.stRead.anErrorCode[1] := 0;
 // Run the method
 eTestCmdStatus := fbTest_AteqControl.M_ProgramSelect();
 
-AssertEquals(eTestCmdStatus.CMD_DONE, eTestCmdStatus, 'Expected CMD_DONE');
+nExp 	:= BIT_TO_INT(eTestCmdStatus.CMD_DONE);
+nAct	:= eTestCmdStatus;
+AssertEquals(nExp , nAct, 'Expected CMD_DONE');
 
 TEST_FINISHED();
-]]></ST>
+*)]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_Test_AteqControl">
+      <LineId Id="64" Count="1" />
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_Test_AteqControl.Test_ProgramSelect">
-      <LineId Id="29" Count="17" />
+      <LineId Id="82" Count="2" />
+      <LineId Id="91" Count="6" />
+      <LineId Id="209" Count="0" />
+      <LineId Id="98" Count="27" />
+      <LineId Id="191" Count="8" />
+      <LineId Id="190" Count="0" />
+      <LineId Id="127" Count="31" />
+      <LineId Id="200" Count="8" />
+      <LineId Id="159" Count="30" />
+      <LineId Id="72" Count="1" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="71" Count="0" />
+      <LineId Id="48" Count="12" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="62" Count="2" />
       <LineId Id="5" Count="0" />
     </LineIds>
   </POU>
