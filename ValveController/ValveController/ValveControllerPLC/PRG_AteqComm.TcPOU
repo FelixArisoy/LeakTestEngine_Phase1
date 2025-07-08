@@ -45,7 +45,6 @@ END_FOR
 
 IF bRunAteqSequence THEN
 	fbAteqControl(stMappedIo := astAteqMappedIo[0]);
-	fbAteqControl.M_Sequence();
 END_IF
 
 // Response DEBUG
@@ -53,6 +52,7 @@ END_IF
 // Master switch to start/stop the response time measurement sequence
 // Set bTestActive to TRUE from HMI, another part of your code, or a button to start the sequence.
 // Set bTestActive to FALSE to stop it.
+
 IF bTestActive THEN
 
     // --- State 1: Send Command (Trigger) ---
@@ -107,7 +107,7 @@ ELSE // bTestActive is FALSE (test is not running)
     // Ensure everything is reset when the test is not active
     bCommandSent := FALSE;
     bEchoReceived := FALSE;
-    astAteqMappedIo[0].stWrite.stCommands.bStart := FALSE;
+    //astAteqMappedIo[0].stWrite.stCommands.bStart := FALSE;
     fbDelayBetweenTriggers(IN := FALSE);
     bDelayFinished := TRUE; // Ready for test to start
     bTriggerReady := TRUE;  // Ready to send first trigger when bTestActive becomes TRUE
@@ -124,8 +124,10 @@ END_IF
       <LineId Id="522" Count="0" />
       <LineId Id="487" Count="0" />
       <LineId Id="526" Count="0" />
-      <LineId Id="518" Count="1" />
-      <LineId Id="420" Count="65" />
+      <LineId Id="519" Count="0" />
+      <LineId Id="420" Count="5" />
+      <LineId Id="527" Count="0" />
+      <LineId Id="426" Count="59" />
       <LineId Id="155" Count="0" />
     </LineIds>
   </POU>

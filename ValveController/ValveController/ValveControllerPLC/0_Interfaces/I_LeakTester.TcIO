@@ -4,61 +4,55 @@
     <Declaration><![CDATA[INTERFACE I_LeakTester
 ]]></Declaration>
     <Method Name="M_ParamRead" Id="{dd1a2b7d-afd6-4855-a0e0-7c5b0529ee85}">
-      <Declaration><![CDATA[METHOD M_ParamRead
+      <Declaration><![CDATA[METHOD M_ParamRead : E_CommandStatus
 VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
     <Method Name="M_ParamWrite" Id="{72d1014f-f399-4c8d-8448-b0684740ba6a}">
-      <Declaration><![CDATA[METHOD M_ParamWrite
+      <Declaration><![CDATA[METHOD M_ParamWrite : E_CommandStatus
 VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
     <Method Name="M_ProgramSelect" Id="{43d225e0-fa30-4fcd-8a64-f5b6d7d6c0d4}">
-      <Declaration><![CDATA[METHOD M_ProgramSelect : WORD	
+      <Declaration><![CDATA[METHOD M_ProgramSelect : E_CommandStatus
 VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
     <Method Name="M_ProgramStart" Id="{132e840a-bb15-4b5f-9e0d-5674cd4aeb00}">
-      <Declaration><![CDATA[METHOD M_ProgramStart : BOOL
-VAR_INPUT
-END_VAR
-]]></Declaration>
-    </Method>
-    <Method Name="M_ProgramStop" Id="{d3b7b948-b761-49f1-aa69-0745f97b8d65}">
-      <Declaration><![CDATA[METHOD M_ProgramStop : BOOL
+      <Declaration><![CDATA[METHOD M_ProgramStart : E_CommandStatus
 VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
     <Method Name="M_ReadFIFO" Id="{757275d7-f42a-4d21-bc4e-223a328a0d76}">
-      <Declaration><![CDATA[METHOD M_ReadFIFO : BOOL
+      <Declaration><![CDATA[METHOD M_ReadFIFO : E_CommandStatus
 VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
     <Method Name="M_ReadLastResult" Id="{1510bfb2-7ba5-4f86-8ab1-818ef87a63dc}">
-      <Declaration><![CDATA[METHOD M_ReadLastResult : BOOL
+      <Declaration><![CDATA[METHOD M_ReadLastResult : E_CommandStatus
 VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
     <Method Name="M_ResetFIFO" Id="{1c2e1ce6-ed4a-4283-a7dc-16a8e0fbb99e}">
-      <Declaration><![CDATA[METHOD M_ResetFIFO : BOOL
-VAR_INPUT
-END_VAR
-]]></Declaration>
-    </Method>
-    <Method Name="M_Sequence" Id="{c62b52d9-88f7-441c-b964-c57a050aa619}">
-      <Declaration><![CDATA[METHOD M_Sequence : BOOL
+      <Declaration><![CDATA[METHOD M_ResetFIFO : E_CommandStatus
 VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
     <Method Name="M_SpecialCycle" Id="{f48f037a-19d8-4b38-a6ce-b9b99cc25769}">
       <Declaration><![CDATA[METHOD M_SpecialCycle : E_CommandStatus
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="M_zSequence" Id="{c62b52d9-88f7-441c-b964-c57a050aa619}">
+      <Declaration><![CDATA[METHOD M_zSequence : BOOL
 VAR_INPUT
 END_VAR
 ]]></Declaration>

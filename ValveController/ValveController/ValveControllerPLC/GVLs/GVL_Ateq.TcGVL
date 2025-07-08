@@ -4,13 +4,13 @@
     <Declaration><![CDATA[// shared IO variables for one ATEQ device
 VAR_GLOBAL CONSTANT
     nMaxDeviceCount : UINT := 1; // Set; based on Total Num of F6 ATEQ devices
-	tCommandTimeout	: TIME := T#5S; //Sets AteqControl CmdHandlerMethod Timeout
+	tCommandTimeout	: TIME := T#30S; //Sets AteqControl CmdHandlerMethod Timeout
 
 
 END_VAR
 
 VAR_GLOBAL
-	eDeviceEndianSetTo 	: E_DeviceEndianness;
+	eDeviceEndianSetTo 	: E_DeviceEndianness := E_DeviceEndianness.BigEndian; // Temp Set Profinet testing ATEQ
 	
 
 END_VAR

@@ -316,7 +316,7 @@ stRawIo.anOutput[0][4] := stMappedIo.stWrite.anReservedOut1[2];
 stRawIo.anOutput[0][5] := stMappedIo.stWrite.anReservedOut1[3];
 
 CASE  GVL_Ateq.eDeviceEndianSetTo OF
-	E_DeviceEndianness.LittleEndian: //little-endian
+	E_DeviceEndianness.BigEndian: //little-endian
 	// Program Select
 	stRawIo.anOutput[0][6] := WORD_TO_BYTE(stMappedIo.stWrite.nProgramSelect AND 16#00FF);
 	stRawIo.anOutput[0][7] := WORD_TO_BYTE(SHR(stMappedIo.stWrite.nProgramSelect, 8));
@@ -324,7 +324,7 @@ CASE  GVL_Ateq.eDeviceEndianSetTo OF
 	stRawIo.anOutput[0][8] := WORD_TO_BYTE(stMappedIo.stWrite.nSpecialCycle AND 16#00FF);
 	stRawIo.anOutput[0][9] := WORD_TO_BYTE(SHR(stMappedIo.stWrite.nSpecialCycle, 8));
 	
-	E_DeviceEndianness.BigEndian: // big-endian
+	E_DeviceEndianness.LittleEndian: // big-endian
 	// Program Select 
 	stRawIo.anOutput[0][6] := WORD_TO_BYTE(SHR(stMappedIo.stWrite.nProgramSelect, 8));
 	stRawIo.anOutput[0][7] := WORD_TO_BYTE(stMappedIo.stWrite.nProgramSelect AND 16#00FF);
