@@ -3,6 +3,13 @@
   <Itf Name="I_LeakTester" Id="{11a10af9-8b0f-41e4-8632-69cc6e80ba3c}">
     <Declaration><![CDATA[INTERFACE I_LeakTester
 ]]></Declaration>
+    <Method Name="M_AutoTestSequence" Id="{c62b52d9-88f7-441c-b964-c57a050aa619}">
+      <Declaration><![CDATA[METHOD M_AutoTestSequence
+VAR
+	
+END_VAR
+]]></Declaration>
+    </Method>
     <Method Name="M_ParamRead" Id="{dd1a2b7d-afd6-4855-a0e0-7c5b0529ee85}">
       <Declaration><![CDATA[METHOD M_ParamRead : E_CommandStatus
 VAR_INPUT
@@ -48,14 +55,11 @@ END_VAR
     <Method Name="M_SpecialCycle" Id="{f48f037a-19d8-4b38-a6ce-b9b99cc25769}">
       <Declaration><![CDATA[METHOD M_SpecialCycle : E_CommandStatus
 VAR_INPUT
+    nSpecialCycleId			: WORD; // Input for the special cycle ID (GVL_AteqSpecialCycle.PiezoAutoZeroReg2 for AutoZero 16#08)
 END_VAR
-]]></Declaration>
-    </Method>
-    <Method Name="M_zSequenceState" Id="{c62b52d9-88f7-441c-b964-c57a050aa619}">
-      <Declaration><![CDATA[METHOD M_zSequenceState : E_AteqSequence
-VAR_INPUT
-END_VAR
-]]></Declaration>
+VAR
+   
+END_VAR]]></Declaration>
     </Method>
   </Itf>
 </TcPlcObject>

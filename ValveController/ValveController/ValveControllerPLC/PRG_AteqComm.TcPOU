@@ -27,6 +27,9 @@ VAR
 	
 	fbAteqControl		: FB_AteqControl;
 	bRunAteqSequence	: BOOL;
+	bAutoSequenceDone	: BOOL;
+	abDebug      		: ARRAY[0..9] OF BOOL;
+	nCounter			: DINT;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[FOR nDeviceIndex := 0 TO GVL_Ateq.nMaxDeviceCount - 1 DO
@@ -39,16 +42,27 @@ END_VAR]]></Declaration>
 	
 END_FOR
 
-//Debug Ateq Auto Sequence
-
 IF bRunAteqSequence THEN
-	 fbAteqControl(stIo := astAteqMappedIo[0]);
+    // This single line executes the FB_AteqControl's main implementation
+    // (which contains your M_AutoTestSequence logic)
+    fbAteqControl(
+        bRunAutoTestSequence := TRUE,         // Connect your external start signal
+        nProgramNumber       := 0,            // Connect your program number input (if it exists)
+        stIo                 := astAteqMappedIo[0] // Pass the IN_OUT reference for ATEQ I/O
+    );
+
+ELSIF NOT bRunAteqSequence THEN
+// This is to keep FB's "alive" even when not "active".
+   fbAteqControl(
+		bRunAutoTestSequence := FALSE,
+		nProgramNumber       := 0,
+		stIo                 := astAteqMappedIo[0]
+  );
 END_IF
 
-
-
-
-
+bAutoSequenceDone	:= fbAteqControl.bAutoTestSequenceDone;
+abDebug      		:= fbAteqControl.abDebug1;
+nCounter			:= fbAteqControl.nCounter;
 
 
 // Response DEBUG
@@ -119,7 +133,10 @@ END_IF
 ]]></ST>
     </Implementation>
     <LineIds Name="PRG_AteqComm">
-      <LineId Id="538" Count="86" />
+      <LineId Id="538" Count="9" />
+      <LineId Id="652" Count="9" />
+      <LineId Id="664" Count="5" />
+      <LineId Id="553" Count="71" />
       <LineId Id="155" Count="0" />
     </LineIds>
   </POU>

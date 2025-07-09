@@ -36,7 +36,7 @@ TEST('ProgramSelect: Command sequence should successfully reach CMD_DONE');
 
     // Set the command to be sent (this is done in the first cycle)
 	stTestMappedIo.stRead.stRealtimeTestResults.bCycleEnd := TRUE;
-    stTestMappedIo.stWrite.nProgramSelect := 16#0005;
+    stTestMappedIo.stWrite.nProgramNumber := 16#0005;
     stTestMappedIo.stWrite.stCommands.bProgramSelect := TRUE;
 
     // --- Act (Execute the method over multiple cycles until completion) ---
@@ -86,7 +86,7 @@ TEST('ProgramSelect: Command sequence should return CMD_ERROR on ATEQ error');
     MEMSET(ADR(stTestMappedIo), 0, SIZEOF(stTestMappedIo));
     fbTest_AteqControl(stIo := stTestMappedIo);
 
-    stTestMappedIo.stWrite.nProgramSelect := 16#0005;
+    stTestMappedIo.stWrite.nProgramNumber := 16#0005;
     stTestMappedIo.stWrite.stCommands.bProgramSelect := TRUE;
 
     eTestCmdStatus := E_CommandStatus.CMD_IN_PROGRESS;
@@ -124,7 +124,7 @@ TEST('ProgramSelect: Command sequence should return CMD_TIMEOUT if no response')
     MEMSET(ADR(stTestMappedIo), 0, SIZEOF(stTestMappedIo));
     fbTest_AteqControl(stIo := stTestMappedIo);
 
-    stTestMappedIo.stWrite.nProgramSelect := 16#0005;
+    stTestMappedIo.stWrite.nProgramNumber := 16#0005;
     stTestMappedIo.stWrite.stCommands.bProgramSelect := TRUE;
 
     eTestCmdStatus := E_CommandStatus.CMD_IN_PROGRESS;

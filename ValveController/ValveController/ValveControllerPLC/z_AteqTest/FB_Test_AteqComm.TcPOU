@@ -230,7 +230,7 @@ END_VAR
 TEST('OutputMapping_BigEndian');
 GVL_Ateq.eDeviceEndianSetTo := E_DeviceEndianness.BigEndian;
 
-stTestAteqMappedIo.stWrite.nProgramSelect := 16#2211;
+stTestAteqMappedIo.stWrite.nProgramNumber := 16#2211;
 stTestAteqMappedIo.stWrite.nSpecialCycle := 16#4433;
 
 // Re-run same FB call to update mapping for big endian
@@ -259,7 +259,7 @@ stTestAteqMappedIo.stWrite.stCommands.bReset               := TRUE;
 stTestAteqMappedIo.stWrite.stCommands.bStart               := TRUE;
 stTestAteqMappedIo.stWrite.stCommands.bSpecialCycle        := TRUE;
 stTestAteqMappedIo.stWrite.stCommands.bProgramSelect       := TRUE;
-stTestAteqMappedIo.stWrite.stCommands.bReadFifoResults     := TRUE;
+stTestAteqMappedIo.stWrite.stCommands.bReadFIFO     := TRUE;
 stTestAteqMappedIo.stWrite.stCommands.bReadParameters      := TRUE;
 stTestAteqMappedIo.stWrite.stCommands.bWriteParameters     := TRUE;
 stTestAteqMappedIo.stWrite.stCommands.bResetFifo           := TRUE;
@@ -277,7 +277,7 @@ stTestAteqMappedIo.stWrite.anReservedOut1[1] := 162;
 stTestAteqMappedIo.stWrite.anReservedOut1[2] := 163;
 stTestAteqMappedIo.stWrite.anReservedOut1[3] := 164;
 
-stTestAteqMappedIo.stWrite.nProgramSelect := 16#2211;
+stTestAteqMappedIo.stWrite.nProgramNumber := 16#2211;
 stTestAteqMappedIo.stWrite.nSpecialCycle := 16#4433;
 
 FOR nIndex := 0 TO 21 DO

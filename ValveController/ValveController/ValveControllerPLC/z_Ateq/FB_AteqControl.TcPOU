@@ -3,114 +3,273 @@
   <POU Name="FB_AteqControl" Id="{7f132da6-4770-42a7-a01e-2190c92a7cb5}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_AteqControl IMPLEMENTS I_LeakTester
 VAR_INPUT
-   //TriggerTest 	: BOOL;         // Rising edge to start a test
+   bRunAutoTestSequence 	: BOOL;         // Rising edge to start an automatic test sequence
+   nProgramNumber 			: WORD; // Input for the program number to select
+   
 END_VAR
 VAR_IN_OUT
     stIo   	: ST_AteqMappedIo; 
-//Mapped Io Exchange zone will be passing the data to ResultRaw Struct then FB will decode it to ResultDecoded Struct. 
-//Properties will pass the decoded data to outside of the FB
+    //Mapped Io Exchange zone will be passing the data to ResultRaw Struct then FB will decode it to ResultDecoded Struct. 
+    //Properties will pass the decoded data to outside of the FB
 END_VAR
 VAR_OUTPUT
-   //TestFinished 	: BOOL;
+   bAutoTestSequenceDone : BOOL := TRUE; // Indicates completion of the auto sequence
+   abDebug             : ARRAY[0..9] OF BOOL;
+   abDebug1             : ARRAY[0..9] OF BOOL;
+   nCounter				: DINT;
 END_VAR
 VAR
+	// Internal variables for FB_AteqControl
 	
-	nSpecialCycleId		: WORD; //  AutoZero h08
 	stResultsRaw		: ST_AteqResultsRaw;
 	stLastResults		: ST_AteqResultsDecoded;
     astFIFO				: ARRAY[0..7] OF ST_AteqResultsDecoded;
-	
+
+    // State variable for the automatic test sequence
+    eAutoSequenceState 	: E_AutoTestState := E_AutoTestState.IDLE; // Initialize to IDLE
+
+    // Internal timers/flags for sequence management
+    tStepDelay : TON; // Timer for various step delays/timeouts
+    tAbortDelay : TON; 
+    bWait 				: BOOL;
+    
+    // Debug flags
+   
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Main call for the automatic test sequence
+M_AutoTestSequence();
+// You can add other monitoring or manual command calls here if needed,
+// but the sequence method should be the primary driver.]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{f90f68ec-27ab-45f4-bcaf-6d232744dbd4}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
 END_VAR
 ]]></Declaration>
-    <Implementation>
-      <ST><![CDATA[
-M_zSequenceState();
-]]></ST>
-    </Implementation>
-    <Method Name="M_CommandHandler" Id="{56a501ea-a269-47d7-a142-013486e4bf60}">
-      <Declaration><![CDATA[METHOD M_CommandHandler : E_CommandStatus
-VAR_IN_OUT
-	bCmd			: BOOL; // Cmd Tobe started from ST_Commands
-    
-END_VAR
-VAR_INPUT   
-    bCmdEcho        : BOOL; // Command echo bit from ATEQ
-    bCmdError       : BOOL; // Error code bit from ATEQ
-END_VAR
-
+      <Implementation>
+        <ST><![CDATA[// Initialize internal state variables to a known default state
+eAutoSequenceState := E_AutoTestState.IDLE;
+bAutoTestSequenceDone := TRUE;
+bWait := FALSE;
+tStepDelay(IN := FALSE); // Ensure timer is off initially]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_AutoTestSequence" Id="{470ae35c-cda6-49a5-a2ba-29d25da98e8a}">
+      <Declaration><![CDATA[METHOD M_AutoTestSequence
 VAR
-	tCmdTimeout     : TIME := GVL_Ateq.tCommandTimeout; //GLOBAL Constant
-	tCmdStartTime   : TIME; // Time tracking
-    currentTime		: TIME;
-	bCmdInProgress  : BOOL; // Check fieldbus: 16#FFFF = In progress
+    eCmdStatusLocal : E_CommandStatus; // Local variable to hold command status
+	fbR_TRIG_RunSequence : R_TRIG;
+	i : INT;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[// Default
-M_CommandHandler 	:= CMD_IDLE;
-currentTime 		:= DT_TO_TIME(P_SystemDateTime); // system time
+        <ST><![CDATA[// Detect rising edge of bRunAutoTestSequence to initiate the sequence
+fbR_TRIG_RunSequence(CLK := bRunAutoTestSequence);
 
-CASE M_CommandHandler OF
+// Control the start of the sequence
+IF fbR_TRIG_RunSequence.Q AND eAutoSequenceState = E_AutoTestState.IDLE THEN
+    bAutoTestSequenceDone := FALSE; // Reset done flag
+    eAutoSequenceState := E_AutoTestState.WAIT_READY; // Start the sequence
+END_IF
 
-	CMD_IDLE:
-		IF bCmd THEN
-			M_CommandHandler := CMD_START;
-			tCmdStartTime := currentTime;
-		END_IF
+// Abort logic: If bRunAutoTestSequence goes FALSE while sequence is running
+// (and not already in an IDLE/DONE state), reset to IDLE after a short delay.
+IF NOT bRunAutoTestSequence AND eAutoSequenceState <> E_AutoTestState.IDLE AND eAutoSequenceState <> E_AutoTestState.TEST_DONE AND eAutoSequenceState <> E_AutoTestState.ERROR_SEQUENCE THEN
+    eAutoSequenceState := E_AutoTestState.ABORTING; // Go to an aborting state
+    tAbortDelay(IN := TRUE, PT := T#500MS); // Give some time for commands to settle
+END_IF
 
-	CMD_START:
-		IF stIo.stRead.anErrorCode[0] = 16#FF AND stIo.stRead.anErrorCode[1] = 16#FF THEN
-			M_CommandHandler := CMD_IN_PROGRESS;
-		END_IF
+// Always call the timers
+tStepDelay(IN := tStepDelay.IN, PT := tStepDelay.PT); // Keep timer running based on its IN status
+tAbortDelay(IN := tAbortDelay.IN, PT := tAbortDelay.PT);
 
-	CMD_IN_PROGRESS:
-		IF (currentTime - tCmdStartTime) > tCmdTimeout THEN
-			
-			bCmd 		:= FALSE;
-			M_CommandHandler := CMD_TIMEOUT;
+CASE eAutoSequenceState OF
+    E_AutoTestState.IDLE:
+        // Waiting for bRunAutoTestSequence to go TRUE
+        // All debugs should be FALSE here if starting clean
+        FOR i := 0 TO 9 DO abDebug[i] := FALSE; END_FOR;
+        bAutoTestSequenceDone := FALSE; // Ensure done flag is off
 
-		ELSIF	bCmdEcho = bCmd AND 						//CMD executed successfully
-			   	stIo.stRead.anErrorCode[0] = 0 AND
-			   	stIo.stRead.anErrorCode[1] = 0 THEN
+    E_AutoTestState.ABORTING: // New state for clean abortion
+        // Wait for the abort delay to complete
+        IF tAbortDelay.Q THEN
+            eAutoSequenceState := E_AutoTestState.IDLE; // Finally return to IDLE
+            tAbortDelay(IN := FALSE); // Reset abort timer
+            // Optionally, add logic here to forcefully stop any running ATEQ command if possible
+            // e.g., stIo.stWrite.stCommands.bStopTest := TRUE; // for a scan
+        END_IF;
 
-			
-			bCmd 		:= FALSE;
-			M_CommandHandler := CMD_DONE;
+    E_AutoTestState.WAIT_READY: // Wait until ATEQ is ready (e.g., CycleEnd is TRUE)
+        // Start timeout for this step if not already running
+        IF NOT tStepDelay.IN THEN
+            tStepDelay(IN := TRUE, PT := T#30S); // Max wait time for ready
+        END_IF
 
-		END_IF
+        IF stIo.stRead.stRealtimeTestResults.bCycleEnd THEN // ATEQ indicates it's finished its last cycle
+            eAutoSequenceState := E_AutoTestState.RESET_FIFO;
+            tStepDelay(IN := FALSE); // Reset timer upon successful transition
+            abDebug[0] := TRUE;
+        ELSIF tStepDelay.Q THEN // Timeout if ATEQ never becomes ready
+            eAutoSequenceState := E_AutoTestState.ERROR_SEQUENCE;
+            tStepDelay(IN := FALSE); // Reset timer on error transition
+            abDebug[9] := TRUE;
+        END_IF;
 
-	CMD_DONE:
-		// Nothing to do, hold for logic above to act on done
-		;
+    E_AutoTestState.RESET_FIFO: // Clear FIFO
+        eCmdStatusLocal := M_ResetFIFO(); // Call the M_ResetFIFO method, which internally calls fbCmdHandler
+        abDebug[1] := TRUE;
 
-	CMD_ERROR:
-		;
-		
-	CMD_TIMEOUT:
-		
-		IF bCmdError = bCmd THEN
-			M_CommandHandler := CMD_ERROR;
-		ELSE
-			M_CommandHandler := CMD_TIMEOUT;
-		END_IF
-			
+        IF eCmdStatusLocal = E_CommandStatus.CMD_IDLE THEN
+            stIo.stWrite.stCommands.bResetFIFO := TRUE; // SET THE TRIGGER HIGH for one scan
+        END_IF
+        	
+		(*	IF stIo.stRead.nResultsInFifo = 0 THEN
+				stIo.stWrite.stCommands.bResetFIFO := FALSE; 
+				eAutoSequenceState := E_AutoTestState.AUTO_ZERO;
+			END_IF*)
+        CASE eCmdStatusLocal OF
+            E_CommandStatus.CMD_DONE:
+                // FB_CommandHandler has managed stIo.stWrite.stCommands.bResetFIFO := FALSE and handled its internal delay.
+                eAutoSequenceState := E_AutoTestState.AUTO_ZERO;
+                tStepDelay(IN := FALSE); // Ensure tStepDelay is off before next state (if used for other purposes)
+            
+            E_CommandStatus.CMD_ERROR, E_CommandStatus.CMD_TIMEOUT:
+                eAutoSequenceState := E_AutoTestState.ERROR_SEQUENCE;
+                abDebug[2] := TRUE;
+        END_CASE;
 
-END_CASE
+    E_AutoTestState.AUTO_ZERO: // Perform Auto Zero (Special Cycle ID 16#08 for Piezo Auto Zero Reg 2)
+        eCmdStatusLocal := M_SpecialCycle(nSpecialCycleId := GVL_AteqSpecialCycle.PiezoAutoZeroReg2);
+        abDebug[3] := TRUE;
 
-]]></ST>
+        // **Corrected: This provides the rising edge trigger for M_SpecialCycle**
+        IF eCmdStatusLocal = E_CommandStatus.CMD_IDLE THEN
+            stIo.stWrite.stCommands.bSpecialCycle := TRUE; // SET THE TRIGGER HIGH for one scan
+        END_IF
+
+        CASE eCmdStatusLocal OF
+            E_CommandStatus.CMD_DONE:
+                // Command is done, now wait for ATEQ internal stabilization
+                IF NOT tStepDelay.IN THEN // Start the delay only if not already running
+                    tStepDelay(IN := TRUE, PT := T#10S); // Example: ATEQ internal stabilization delay
+                END_IF
+
+                IF tStepDelay.Q THEN // Delay time has elapsed
+                    eAutoSequenceState := E_AutoTestState.PROGRAM_SELECT;
+                    tStepDelay(IN := FALSE); // Reset timer for next use
+                END_IF
+            
+            E_CommandStatus.CMD_ERROR, E_CommandStatus.CMD_TIMEOUT:
+                eAutoSequenceState := E_AutoTestState.ERROR_SEQUENCE;
+                abDebug[4] := TRUE;
+                tStepDelay(IN := FALSE); // Reset timer on error
+        END_CASE;
+
+    E_AutoTestState.PROGRAM_SELECT: // Select the test program (assuming Program 1 for example)
+        eCmdStatusLocal := M_ProgramSelect(); // This method might take a program number as input
+        abDebug[5] := TRUE;
+
+        // **Corrected: This provides the rising edge trigger for M_ProgramSelect**
+        IF eCmdStatusLocal = E_CommandStatus.CMD_IDLE THEN
+            stIo.stWrite.stCommands.bProgramSelect := TRUE; // SET THE TRIGGER HIGH for one scan
+        END_IF
+
+        CASE eCmdStatusLocal OF
+            E_CommandStatus.CMD_DONE:
+                eAutoSequenceState := E_AutoTestState.START_PROGRAM;
+                tStepDelay(IN := FALSE); // Ensure tStepDelay is off
+            
+            E_CommandStatus.CMD_ERROR, E_CommandStatus.CMD_TIMEOUT:
+                eAutoSequenceState := E_AutoTestState.ERROR_SEQUENCE;
+                abDebug[6] := TRUE;
+        END_CASE;
+
+    E_AutoTestState.START_PROGRAM: // Start the test program
+        eCmdStatusLocal := M_ProgramStart();
+        abDebug[7] := TRUE;
+
+        // **Corrected: This provides the rising edge trigger for M_ProgramStart**
+        IF eCmdStatusLocal = E_CommandStatus.CMD_IDLE THEN
+            stIo.stWrite.stCommands.bStart := TRUE; // SET THE TRIGGER HIGH for one scan
+        END_IF
+
+        CASE eCmdStatusLocal OF
+            E_CommandStatus.CMD_DONE:
+                eAutoSequenceState := E_AutoTestState.WAIT_COMPLETION;
+                tStepDelay(IN := FALSE); // Reset timer before starting wait for completion
+            
+            E_CommandStatus.CMD_ERROR, E_CommandStatus.CMD_TIMEOUT:
+                eAutoSequenceState := E_AutoTestState.ERROR_SEQUENCE;
+                abDebug[8] := TRUE;
+        END_CASE;
+
+    E_AutoTestState.WAIT_COMPLETION: // Wait for program completion (ATEQ signals via bCycleEnd)
+        // Start timeout for this step if not already running
+        IF NOT tStepDelay.IN THEN
+            tStepDelay(IN := TRUE, PT := T#60S); // Max test duration
+        END_IF
+        
+        IF stIo.stRead.stRealtimeTestResults.bCycleEnd THEN
+            eAutoSequenceState := E_AutoTestState.READ_LAST_RESULT;
+            tStepDelay(IN := FALSE); // Reset timer upon successful completion
+        ELSIF tStepDelay.Q THEN // Timeout waiting for cycle end
+            eAutoSequenceState := E_AutoTestState.ERROR_SEQUENCE;
+            tStepDelay(IN := FALSE); // Reset timer on error transition
+        END_IF;
+        
+    E_AutoTestState.READ_LAST_RESULT: // Retrieve and store test results
+        eCmdStatusLocal := M_ReadLastResult(); // This method should handle writing to stLastResults
+        
+        // **Corrected: This provides the rising edge trigger for M_ReadLastResult**
+        IF eCmdStatusLocal = E_CommandStatus.CMD_IDLE THEN
+            stIo.stWrite.stCommands.bReadLastResult := TRUE; // SET THE TRIGGER HIGH for one scan
+        END_IF
+
+        CASE eCmdStatusLocal OF
+            E_CommandStatus.CMD_DONE:
+                // stLastResults is now updated by M_ReadLastResult (ensure this logic is inside M_ReadLastResult or its FB)
+                eAutoSequenceState := E_AutoTestState.TEST_DONE;
+                tStepDelay(IN := FALSE); // Ensure timer is off
+            
+            E_CommandStatus.CMD_ERROR, E_CommandStatus.CMD_TIMEOUT:
+                eAutoSequenceState := E_AutoTestState.ERROR_SEQUENCE;
+        END_CASE;
+
+    E_AutoTestState.TEST_DONE: // Sequence completed successfully
+        bAutoTestSequenceDone := TRUE; // Set output flag
+        eAutoSequenceState := E_AutoTestState.IDLE; // Go back to IDLE, waiting for next trigger
+        // All timers should already be off when entering IDLE.
+
+    E_AutoTestState.ERROR_SEQUENCE: // Handle errors in the sequence
+        // You can add more detailed error handling here (e.g., specific error codes, logging)
+        bAutoTestSequenceDone := FALSE; // Indicate failure
+        // Ensure all timers are reset on error
+        tStepDelay(IN := FALSE);
+        tAbortDelay(IN := FALSE); // If for some reason an abort was active when error occurred
+
+        // Allow resetting the error state by turning off bRunAutoTestSequence externally
+        IF NOT bRunAutoTestSequence THEN
+            eAutoSequenceState := E_AutoTestState.IDLE; // Go back to IDLE
+        END_IF
+END_CASE]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_ParamRead" Id="{e5267fc8-c940-466e-9918-6092a897a7f1}">
-      <Declaration><![CDATA[{warning 'add method implementation '}
-METHOD M_ParamRead : E_CommandStatus
-]]></Declaration>
+      <Declaration><![CDATA[METHOD M_ParamRead : E_CommandStatus
+VAR
+   fbCmdHandler : FB_AteqCmdHandler;
+END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_ParamWrite" Id="{efef9bf2-d12a-4715-8734-c95ea8380a79}">
-      <Declaration><![CDATA[{warning 'add method implementation '}
-METHOD M_ParamWrite : E_CommandStatus
-]]></Declaration>
+      <Declaration><![CDATA[METHOD M_ParamWrite : E_CommandStatus
+VAR
+   fbCmdHandler : FB_AteqCmdHandler;
+END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[]]></ST>
       </Implementation>
@@ -118,172 +277,157 @@ METHOD M_ParamWrite : E_CommandStatus
     <Method Name="M_ProgramSelect" Id="{3f180883-986e-4f1d-b18a-91a389fa3ca6}">
       <Declaration><![CDATA[METHOD M_ProgramSelect : E_CommandStatus
 VAR
-
+   fbCmdHandler : FB_AteqCmdHandler;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
+        <ST><![CDATA[stIo.stWrite.nProgramNumber := nProgramNumber; // Set the program number register
 
-	M_ProgramSelect := M_CommandHandler	(	bCmd 		:= stIo.stWrite.stCommands.bProgramSelect,
-											bCmdEcho	:= stIo.stRead.stEcho.bProgramSelect,
-											bCmdError	:= stIo.stRead.stErrorCode.bProgramSelect
-										);]]></ST>
+fbCmdHandler(
+   					bCmdEcho    := stIo.stRead.stEcho.bProgramSelect,
+    				bCmdError   := stIo.stRead.stErrorCode.bProgramSelect,
+					bCmdTrigger := stIo.stWrite.stCommands.bProgramSelect,
+					stIo_Ref	:= StIo,
+					eStatus		=> M_ProgramSelect
+);
+
+(*
+// Clear the program number if needed
+IF M_ProgramSelect = CMD_DONE OR M_ProgramSelect = CMD_ERROR OR M_ProgramSelect = CMD_TIMEOUT THEN
+    stIo.stWrite.nProgramNumber := 0; 
+END_IF
+*)]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_ProgramStart" Id="{df77a28a-31ae-4bb7-aada-fdddd0be9668}">
       <Declaration><![CDATA[METHOD M_ProgramStart : E_CommandStatus
-]]></Declaration>
+VAR
+   fbCmdHandler : FB_AteqCmdHandler;
+END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[	
 
-
-	M_ProgramStart := M_CommandHandler	(	bCmd 		:= stIo.stWrite.stCommands.bStart,
-											bCmdEcho	:= stIo.stRead.stEcho.bStart,
-											bCmdError	:= stIo.stRead.stErrorCode.bStart
-										);
-]]></ST>
+fbCmdHandler(
+   					bCmdEcho    := stIo.stRead.stEcho.bStart,
+    				bCmdError   := stIo.stRead.stErrorCode.bStart,
+					bCmdTrigger := stIo.stWrite.stCommands.bStart,
+					stIo_Ref	:= StIo,
+					eStatus		=> M_ProgramStart
+);]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_ReadFIFO" Id="{2bd2f2bf-d1e5-497c-8c97-5c4c719656ec}">
-      <Declaration><![CDATA[{warning 'add method implementation '}
-METHOD M_ReadFIFO : E_CommandStatus
-]]></Declaration>
+      <Declaration><![CDATA[METHOD M_ReadFIFO : E_CommandStatus
+VAR
+     fbCmdHandler : FB_AteqCmdHandler;
+END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[// This command also might simply trigger a data update from FIFO.
+// Assuming it does have a command bit and echo/error bits for consistency.
+
+fbCmdHandler(
+   					bCmdEcho    := stIo.stRead.stEcho.bReadFIFO,
+    				bCmdError   := stIo.stRead.stErrorCode.bReadFIFO,
+					bCmdTrigger := stIo.stWrite.stCommands.bReadFIFO,
+					stIo_Ref	:= StIo,
+					eStatus		=> M_ReadFIFO
+);
+(*//////////////////// DEBUG HERE /////////////////////////
+// If command is done, decode and store the FIFO result
+IF M_ReadFIFO = CMD_DONE THEN
+    // Assuming FIFO results come from a specific part of stIo.stRead
+    // and you have a mechanism to store them in astFIFO.
+    // Example: astFIFO[nFIFO_WritePointer] := DecodeAteqRawResults(stIo.stRead.stRawFIFOResult);
+    // You'd need a FIFO write pointer and logic to manage the array
+    // This decoding logic needs to be fully implemented.
+END_IF
+*)]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_ReadLastResult" Id="{bca66d8f-b4be-4355-b92b-b0dac3f24c0c}">
-      <Declaration><![CDATA[{warning 'add method implementation '}
-METHOD M_ReadLastResult : E_CommandStatus
-]]></Declaration>
+      <Declaration><![CDATA[METHOD M_ReadLastResult : E_CommandStatus
+VAR
+    fbCmdHandler : FB_AteqCmdHandler;
+END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[// This command might not follow the full handshake, but rather simply triggers a data update.
+// Assuming it does have a command bit and echo/error bits for consistency.
+
+fbCmdHandler(
+   					bCmdEcho    := stIo.stRead.stEcho.bReadLastResult,
+    				bCmdError   := stIo.stRead.stErrorCode.bReadLastResult,
+					bCmdTrigger := stIo.stWrite.stCommands.bReadLastResult,
+					stIo_Ref	:= StIo,
+					eStatus		=> M_ReadLastResult
+);
+
+
+
+(* /////////////////DEBUG HERE//////////////////
+// If command is done, decode the raw results
+IF M_ReadLastResult = CMD_DONE THEN
+    // Decode stIo.stRead.stRawResults into stLastResults here
+    // Example: stLastResults.fPressure := stIo.stRead.stRawResults.nPressure * 0.001;
+    // This decoding logic needs to be fully implemented based on ST_AteqMappedIo and ST_AteqResultsDecoded
+    // For now, it's a placeholder.
+    stLastResults.nProgramNumber := stIo.stRead.anTestResults[0]; // Example mapping
+    stLastResults.fResultPressure := INT_TO_REAL(stIo.stRead.anTestResults[1]) * 0.001; // Example with scaling
+    // Set pass/fail status based on stIo.stRead.stRealtimeTestResults.bPass / bFail
+END_IF
+*)]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_ResetFIFO" Id="{d2dd068a-bc41-4e1b-8fe3-37e11fad9b4b}">
-      <Declaration><![CDATA[{warning 'add method implementation '}
-METHOD M_ResetFIFO : E_CommandStatus
+      <Declaration><![CDATA[METHOD M_ResetFIFO : E_CommandStatus
+VAR
+    fbCmdHandler : FB_AteqCmdHandler;
+	
+END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[// This method solely encapsulates the FB_CommandHandler call for ResetFIFO.
+// The 'bCmdTrigger' parameter is an IN_OUT. This means:
+// 1. The value of stIo.stWrite.stCommands.bResetFIFO is passed IN.
+// 2. FB_CommandHandler then internally manages this variable (setting it FALSE when done/error/timeout).
+// 3. The new value is passed back OUT to stIo.stWrite.stCommands.bResetFIFO.
+
+fbCmdHandler(
+    bCmdEcho        := stIo.stRead.stEcho.bResetFIFO,
+    bCmdError       := stIo.stRead.stErrorCode.bResetFIFO,
+    bCmdTrigger     := stIo.stWrite.stCommands.bResetFIFO, // This is the IN_OUT - FB_CommandHandler will manage it
+    stIo_Ref        := stIo 
+);
+
+M_ResetFIFO := fbCmdHandler.eStatus; // Return the status from the FB_CommandHandler instance
+
+abDebug1 	:= fbCmdHandler.abDebug;
+nCounter	:= fbCmdHandler.nCounter;]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_SpecialCycle" Id="{d187d757-2cbf-4176-839b-3ef7d7928184}">
       <Declaration><![CDATA[METHOD M_SpecialCycle : E_CommandStatus
+VAR_INPUT
+    nSpecialCycleId			: WORD; // Input for the special cycle ID (GVL_AteqSpecialCycle.PiezoAutoZeroReg2 for AutoZero 16#08)
+END_VAR
 VAR
-
+   fbCmdHandler : FB_AteqCmdHandler;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-stIo.stWrite.nSpecialCycle 				:= nSpecialCycleId;
+        <ST><![CDATA[stIo.stWrite.nSpecialCycle := nSpecialCycleId; // Set the special cycle ID register
 
-	
-	M_SpecialCycle := M_CommandHandler	(	bCmd 		:= stIo.stWrite.stCommands.bSpecialCycle,
-											bCmdEcho	:= stIo.stRead.stEcho.bSpecialCycle,
-											bCmdError	:= stIo.stRead.stErrorCode.bSpecialCycle
-										);
+fbCmdHandler(
+   					bCmdEcho    := stIo.stRead.stEcho.bSpecialCycle,
+    				bCmdError   := stIo.stRead.stErrorCode.bSpecialCycle,
+					bCmdTrigger := stIo.stWrite.stCommands.bSpecialCycle,
+					stIo_Ref	:= StIo,
+					eStatus		=> M_SpecialCycle
+);
 
-	
+// If the command is DONE or ERROR/TIMEOUT, clear the special cycle ID to prevent re-triggering
+// or accidental setting if the command bit is accidentally re-asserted.
 
-
-]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="M_zSequenceState" Id="{470ae35c-cda6-49a5-a2ba-29d25da98e8a}">
-      <Declaration><![CDATA[METHOD M_zSequenceState : E_AteqSequence
-VAR
-		eCmdStatus	: E_CommandStatus;
-		
-		tStepDelay 	: TON;
-    	bWait      	: BOOL;
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[M_zSequenceState := AUTO_ZERO;
-
-	CASE M_zSequenceState OF
-		
-    IDLE: // waiting trigger
-		IF stIo.stRead.stRealtimeTestResults.bCycleEnd THEN
-			//stMappedIo.stWrite.stCommands.bStart := TRUE;
-            //stMappedIo.stWrite.stCommands.bReset := FALSE;
-			M_zSequenceState := RESET_FIFO;
-		END_IF
-	PROGRAM_SELECT:
-		// Optional if not manually selected
-	RESET_FIFO:
-		// Must Reset before Running Programs for good functioning
-		
-	AUTO_ZERO:
-    	nSpecialCycleId := GVL_AteqSpecialCycle.PiezoAutoZeroReg2;
-    	stIo.stWrite.stCommands.bStart := TRUE;
-		stIo.stWrite.stCommands.bSpecialCycle		:= TRUE;
-
-    	eCmdStatus := M_SpecialCycle(); // Call method and get Cmd Status result
-
-    CASE eCmdStatus OF
-        CMD_ERROR:
-            stIo.stWrite.stCommands.bStart := FALSE;
-            stIo.stWrite.stCommands.bReset := TRUE;
-            M_zSequenceState := AUTO_ZERO; // retry
-        CMD_DONE:
-            stIo.stWrite.stCommands.bStart := FALSE;
-            stIo.stWrite.stCommands.bReset := FALSE;
-			stIo.stWrite.stCommands.bSpecialCycle		:= FALSE;
-            
-            bWait := TRUE;
-            tStepDelay(IN := bWait, PT := T#10S); // adjust delay time as needed
-
-            IF tStepDelay.Q THEN
-                bWait := FALSE;
-                M_zSequenceState := START_CYCLE;
-            END_IF
-    END_CASE
-		
-	START_CYCLE: // Program start
-        stIo.stWrite.stCommands.bStart := TRUE;
-		eCmdStatus 	:= M_ProgramStart();
-		
-	CASE eCmdStatus OF
-        CMD_ERROR:
-            stIo.stWrite.stCommands.bStart := FALSE;
-            stIo.stWrite.stCommands.bReset := TRUE;
-            M_zSequenceState := START_CYCLE; // retry
-        CMD_DONE:
-            stIo.stWrite.stCommands.bStart := FALSE;
-            stIo.stWrite.stCommands.bReset := FALSE;
-            
-            bWait := TRUE;
-            tStepDelay(IN := bWait, PT := T#10S); // adjust delay time as needed
-
-            IF tStepDelay.Q THEN
-                bWait := FALSE;
-                M_zSequenceState 	:= LIVE_READING;
-            END_IF
-    END_CASE
-        
-		
-	LIVE_READING: // Monitor live values
-		
-		IF stIo.stRead.stRealtimeTestResults.bCycleEnd THEN
-			stIo.stWrite.stCommands.bStart := FALSE;
-            stIo.stWrite.stCommands.bReset := FALSE;
-			M_zSequenceState := END_OF_CYCLE;
-		END_IF
-		
-    END_OF_CYCLE: // Wait End Of Cycle = 1
-	
-	TIME_STAMP: // Test Time stamp
-	
-    READ_LAST_RESULT: // read last result
-	
-	READ_FIFO: // Not used for now
-	
-    DONE: // wait reset
-       
-		
-    END_CASE
-	
-]]></ST>
+IF M_SpecialCycle = CMD_DONE OR M_SpecialCycle = CMD_ERROR OR M_SpecialCycle = CMD_TIMEOUT THEN
+    stIo.stWrite.nSpecialCycle := 0; //Default
+END_IF]]></ST>
       </Implementation>
     </Method>
     <Property Name="P_SystemDateTime" Id="{edbff775-b379-4408-8922-353bd74d8226}">
@@ -294,18 +438,29 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[P_SystemDateTime := ULINT_TO_DT(GVL_System.nTime);
+          <ST><![CDATA[P_SystemDateTime := TIME_TO_DT(GVL_HW.nSystemTime);
 ]]></ST>
         </Implementation>
       </Get>
     </Property>
     <LineIds Name="FB_AteqControl">
-      <LineId Id="127" Count="1" />
+      <LineId Id="250" Count="2" />
       <LineId Id="9" Count="0" />
     </LineIds>
-    <LineIds Name="FB_AteqControl.M_CommandHandler">
-      <LineId Id="399" Count="50" />
-      <LineId Id="5" Count="0" />
+    <LineIds Name="FB_AteqControl.FB_init">
+      <LineId Id="8" Count="3" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqControl.M_AutoTestSequence">
+      <LineId Id="837" Count="24" />
+      <LineId Id="1023" Count="0" />
+      <LineId Id="863" Count="28" />
+      <LineId Id="893" Count="4" />
+      <LineId Id="1025" Count="0" />
+      <LineId Id="1028" Count="0" />
+      <LineId Id="1026" Count="1" />
+      <LineId Id="898" Count="123" />
+      <LineId Id="190" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ParamRead">
       <LineId Id="4" Count="0" />
@@ -314,42 +469,55 @@ END_VAR
       <LineId Id="4" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ProgramSelect">
-      <LineId Id="41" Count="2" />
-      <LineId Id="45" Count="1" />
+      <LineId Id="64" Count="3" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="77" Count="2" />
+      <LineId Id="70" Count="2" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="73" Count="1" />
       <LineId Id="24" Count="0" />
+      <LineId Id="75" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ProgramStart">
       <LineId Id="5" Count="0" />
-      <LineId Id="11" Count="1" />
-      <LineId Id="10" Count="0" />
-      <LineId Id="7" Count="2" />
-      <LineId Id="4" Count="0" />
+      <LineId Id="24" Count="6" />
+      <LineId Id="23" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ReadFIFO">
+      <LineId Id="10" Count="1" />
+      <LineId Id="27" Count="6" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="17" Count="7" />
       <LineId Id="4" Count="0" />
+      <LineId Id="26" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ReadLastResult">
+      <LineId Id="10" Count="1" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="29" Count="5" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="36" Count="1" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="17" Count="9" />
       <LineId Id="4" Count="0" />
+      <LineId Id="28" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ResetFIFO">
-      <LineId Id="4" Count="0" />
+      <LineId Id="43" Count="12" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="62" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_SpecialCycle">
-      <LineId Id="55" Count="0" />
-      <LineId Id="54" Count="0" />
-      <LineId Id="37" Count="0" />
-      <LineId Id="45" Count="0" />
-      <LineId Id="49" Count="0" />
-      <LineId Id="47" Count="1" />
-      <LineId Id="43" Count="1" />
-      <LineId Id="41" Count="0" />
+      <LineId Id="65" Count="0" />
+      <LineId Id="81" Count="6" />
       <LineId Id="8" Count="0" />
       <LineId Id="50" Count="0" />
+      <LineId Id="71" Count="1" />
+      <LineId Id="75" Count="0" />
+      <LineId Id="73" Count="1" />
       <LineId Id="52" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_AteqControl.M_zSequenceState">
-      <LineId Id="260" Count="84" />
-      <LineId Id="190" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.P_SystemDateTime.Get">
       <LineId Id="6" Count="0" />

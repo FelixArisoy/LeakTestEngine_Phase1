@@ -9,7 +9,7 @@ STRUCT
     bStart                     : BOOL; // Bit 1
     bSpecialCycle              : BOOL; // Bit 2
     bProgramSelect             : BOOL; // Bit 3
-    bReadFifoResults           : BOOL; // Bit 4
+    bReadFIFO           		: BOOL; // Bit 4
     bReadParameters            : BOOL; // Bit 5
     bWriteParameters           : BOOL; // Bit 6
     bResetFifo                 : BOOL; // Bit 7

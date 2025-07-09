@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <DUT Name="E_AutoTestState" Id="{e53874a6-2496-4372-b4ca-6316841d2cde}">
+    <Declaration><![CDATA[TYPE E_AutoTestState :
+(	
+    IDLE := 0,             // Auto sequence is idle, waiting for trigger
+    WAIT_READY := 1,       // Waiting for ATEQ to be in a ready state
+    RESET_FIFO := 2,       // Executing FIFO clear command
+    PROGRAM_SELECT := 3,   // Selecting test program (if applicable)
+    AUTO_ZERO := 4,        // Executing Auto Zero command
+    START_PROGRAM := 5,    // Starting the test program
+    WAIT_COMPLETION := 6,  // Waiting for test program to finish
+    READ_LAST_RESULT := 7, // Reading the last test result
+    READ_FIFO_RESULTS := 8,// Reading FIFO results (if multiple)
+    TEST_DONE := 9,        // Auto sequence completed successfully
+    ERROR_SEQUENCE := 10,   // An error occurred within the auto sequence
+	ABORTING := 11
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

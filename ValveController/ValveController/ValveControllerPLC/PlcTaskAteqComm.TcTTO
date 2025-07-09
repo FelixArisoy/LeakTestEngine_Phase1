@@ -2,7 +2,7 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
   <Task Name="PlcTaskAteqComm" Id="{c7c3dd2a-1c4b-463f-9059-6604d77e0d86}">
     <!--CycleTime in micro seconds.-->
-    <CycleTime>8000</CycleTime>
+    <CycleTime>4000</CycleTime>
     <Priority>10</Priority>
     <PouCall>
       <Name>PRG_AteqComm</Name>

@@ -9,7 +9,7 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[//Update System time in every Task Cycle
-GVL_System.nTime := Tc2_System.F_GetSystemTime();]]></ST>
+GVL_HW.nSystemTime := ULINT_TO_TIME(Tc2_System.F_GetSystemTime());]]></ST>
     </Implementation>
     <LineIds Name="PRG_MAIN">
       <LineId Id="8" Count="0" />

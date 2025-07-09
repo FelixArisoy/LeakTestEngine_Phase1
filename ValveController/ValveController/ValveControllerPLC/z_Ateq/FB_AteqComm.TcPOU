@@ -73,10 +73,10 @@ stMappedIo.stRead.stEcho.bReset             := (byEcho0 AND 16#01) <> 0;
 stMappedIo.stRead.stEcho.bStart             := (byEcho0 AND 16#02) <> 0;
 stMappedIo.stRead.stEcho.bSpecialCycle      := (byEcho0 AND 16#04) <> 0;
 stMappedIo.stRead.stEcho.bProgramSelect     := (byEcho0 AND 16#08) <> 0;
-stMappedIo.stRead.stEcho.bReadFifo          := (byEcho0 AND 16#10) <> 0;
+stMappedIo.stRead.stEcho.bReadFIFO          := (byEcho0 AND 16#10) <> 0;
 stMappedIo.stRead.stEcho.bReadParams        := (byEcho0 AND 16#20) <> 0;
 stMappedIo.stRead.stEcho.bWriteParams       := (byEcho0 AND 16#40) <> 0;
-stMappedIo.stRead.stEcho.bResetFifo         := (byEcho0 AND 16#80) <> 0;
+stMappedIo.stRead.stEcho.bResetFIFO         := (byEcho0 AND 16#80) <> 0;
 
 stMappedIo.stRead.stEcho.bReadConfig        := (byEcho1 AND 16#01) <> 0;
 stMappedIo.stRead.stEcho.bReadExtMenu       := (byEcho1 AND 16#02) <> 0;
@@ -92,10 +92,10 @@ stMappedIo.stRead.stErrorCode.bReset             := (byError0 AND 16#01) <> 0;
 stMappedIo.stRead.stErrorCode.bStart             := (byError0 AND 16#02) <> 0;
 stMappedIo.stRead.stErrorCode.bSpecialCycle      := (byError0 AND 16#04) <> 0;
 stMappedIo.stRead.stErrorCode.bProgramSelect     := (byError0 AND 16#08) <> 0;
-stMappedIo.stRead.stErrorCode.bReadFifo          := (byError0 AND 16#10) <> 0;
+stMappedIo.stRead.stErrorCode.bReadFIFO          := (byError0 AND 16#10) <> 0;
 stMappedIo.stRead.stErrorCode.bReadParams        := (byError0 AND 16#20) <> 0;
 stMappedIo.stRead.stErrorCode.bWriteParams       := (byError0 AND 16#40) <> 0;
-stMappedIo.stRead.stErrorCode.bResetFifo         := (byError0 AND 16#80) <> 0;
+stMappedIo.stRead.stErrorCode.bResetFIFO         := (byError0 AND 16#80) <> 0;
 
 stMappedIo.stRead.stErrorCode.bReadConfig        := (byError1 AND 16#01) <> 0;
 stMappedIo.stRead.stErrorCode.bReadExtMenu       := (byError1 AND 16#02) <> 0;
@@ -262,7 +262,7 @@ END_IF;
 IF stMappedIo.stWrite.stCommands.bProgramSelect THEN
     nCommand0 := nCommand0 OR 16#08;
 END_IF;
-IF stMappedIo.stWrite.stCommands.bReadFifoResults THEN
+IF stMappedIo.stWrite.stCommands.bReadFIFO THEN
     nCommand0 := nCommand0 OR 16#10;
 END_IF;
 IF stMappedIo.stWrite.stCommands.bReadParameters THEN
@@ -318,16 +318,16 @@ stRawIo.anOutput[0][5] := stMappedIo.stWrite.anReservedOut1[3];
 CASE  GVL_Ateq.eDeviceEndianSetTo OF
 	E_DeviceEndianness.BigEndian: //little-endian
 	// Program Select
-	stRawIo.anOutput[0][6] := WORD_TO_BYTE(stMappedIo.stWrite.nProgramSelect AND 16#00FF);
-	stRawIo.anOutput[0][7] := WORD_TO_BYTE(SHR(stMappedIo.stWrite.nProgramSelect, 8));
+	stRawIo.anOutput[0][6] := WORD_TO_BYTE(stMappedIo.stWrite.nProgramNumber AND 16#00FF);
+	stRawIo.anOutput[0][7] := WORD_TO_BYTE(SHR(stMappedIo.stWrite.nProgramNumber, 8));
 	// Special Cycle
 	stRawIo.anOutput[0][8] := WORD_TO_BYTE(stMappedIo.stWrite.nSpecialCycle AND 16#00FF);
 	stRawIo.anOutput[0][9] := WORD_TO_BYTE(SHR(stMappedIo.stWrite.nSpecialCycle, 8));
 	
 	E_DeviceEndianness.LittleEndian: // big-endian
 	// Program Select 
-	stRawIo.anOutput[0][6] := WORD_TO_BYTE(SHR(stMappedIo.stWrite.nProgramSelect, 8));
-	stRawIo.anOutput[0][7] := WORD_TO_BYTE(stMappedIo.stWrite.nProgramSelect AND 16#00FF);
+	stRawIo.anOutput[0][6] := WORD_TO_BYTE(SHR(stMappedIo.stWrite.nProgramNumber, 8));
+	stRawIo.anOutput[0][7] := WORD_TO_BYTE(stMappedIo.stWrite.nProgramNumber AND 16#00FF);
 	// Special Cycle
 	stRawIo.anOutput[0][8] := WORD_TO_BYTE(SHR(stMappedIo.stWrite.nSpecialCycle, 8) );
 	stRawIo.anOutput[0][9] := WORD_TO_BYTE(stMappedIo.stWrite.nSpecialCycle AND 16#00FF);

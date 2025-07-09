@@ -78,7 +78,7 @@
     <Compile Include="DUTs\AteqComm\ST_AteqWrite.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\AteqControl\E_AteqSequence.TcDUT">
+    <Compile Include="DUTs\AteqControl\E_AutoTestState.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\AteqControl\E_CommandStatus.TcDUT">
@@ -98,7 +98,7 @@
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
-    <Compile Include="GVLs\GVL_System.TcGVL">
+    <Compile Include="GVLs\GVL_HW.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
@@ -121,6 +121,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="z_AteqTest\FB_Test_AteqComm.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="z_Ateq\FB_AteqCmdHandler.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="z_Ateq\FB_AteqComm.TcPOU">
