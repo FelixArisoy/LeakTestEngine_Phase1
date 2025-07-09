@@ -3,13 +3,14 @@
   <DUT Name="E_CommandStatus" Id="{156ee2bd-c863-40c9-9647-6f25eaa354f0}">
     <Declaration><![CDATA[TYPE E_CommandStatus :
 (
-    CMD_IDLE := 0,         // No command active, ready for new command
-    CMD_START := 1,        // Command bit just set, waiting for ATEQ acknowledgment
-    CMD_IN_PROGRESS := 2,  // ATEQ has acknowledged, command is running
-    CMD_DONE := 3,         // Command completed successfully by ATEQ
-    CMD_ERROR := 4,        // Command completed with an error from ATEQ
-    CMD_TIMEOUT := 5,      // Command did not complete within expected time
-    CMD_WAIT_BEFORE_IDLE := 6 // NEW: Delay state before returning to IDLE
+    CMD_IDLE,         // No command active, ready for new command
+    CMD_START,        // Command bit just set, waiting for ATEQ acknowledgment
+    CMD_IN_PROGRESS,  // ATEQ has acknowledged, command is running
+	CMD_WAIT_CYCLE_END,
+    CMD_SENT,         // Command received successfully by ATEQ
+    CMD_ERROR,        // Command completed with an error from ATEQ
+    CMD_TIMEOUT,      // Command did not complete within expected time
+    CMD_EXECUTED // NEW: Delay state before returning to IDLE
 );
 END_TYPE]]></Declaration>
   </DUT>

@@ -28,7 +28,7 @@ VAR
 	fbAteqControl		: FB_AteqControl;
 	bRunAteqSequence	: BOOL;
 	bAutoSequenceDone	: BOOL;
-	abDebug      		: ARRAY[0..9] OF BOOL;
+	abDebug      		: ARRAY[0..15] OF BOOL;
 	nCounter			: DINT;
 	stIoDebug			: ST_AteqMappedIo;
 END_VAR]]></Declaration>

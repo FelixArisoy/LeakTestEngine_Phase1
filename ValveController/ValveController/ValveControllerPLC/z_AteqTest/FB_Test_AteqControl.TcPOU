@@ -25,8 +25,7 @@ VAR
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-// The Test_ProgramSelect() calls outside the TEST block are not standard TcUnit practice.
+        <ST><![CDATA[// The Test_ProgramSelect() calls outside the TEST block are not standard TcUnit practice.
 // Each TEST block should be self-contained and initialize its resources.
 
 TEST('ProgramSelect: Command sequence should successfully reach CMD_DONE');
@@ -76,7 +75,7 @@ AssertTrue(
 );
 
     // 2. Assert that the final status is exactly CMD_DONE
-    AssertEquals_STRING(TO_STRING(E_CommandStatus.CMD_DONE), TO_STRING(eTestCmdStatus), 'Expected final command status to be CMD_DONE');
+    AssertEquals_STRING(TO_STRING(E_CommandStatus.CMD_SENT), TO_STRING(eTestCmdStatus), 'Expected final command status to be CMD_DONE');
 
 TEST_FINISHED();
 
@@ -178,24 +177,7 @@ TEST_FINISHED();
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_Test_AteqControl.Test_ProgramSelect">
-      <LineId Id="82" Count="2" />
-      <LineId Id="91" Count="6" />
-      <LineId Id="209" Count="0" />
-      <LineId Id="98" Count="27" />
-      <LineId Id="191" Count="8" />
-      <LineId Id="190" Count="0" />
-      <LineId Id="127" Count="31" />
-      <LineId Id="200" Count="8" />
-      <LineId Id="159" Count="30" />
-      <LineId Id="72" Count="1" />
-      <LineId Id="70" Count="0" />
-      <LineId Id="47" Count="0" />
-      <LineId Id="71" Count="0" />
-      <LineId Id="48" Count="12" />
-      <LineId Id="68" Count="0" />
-      <LineId Id="61" Count="0" />
-      <LineId Id="69" Count="0" />
-      <LineId Id="62" Count="2" />
+      <LineId Id="216" Count="143" />
       <LineId Id="5" Count="0" />
     </LineIds>
   </POU>

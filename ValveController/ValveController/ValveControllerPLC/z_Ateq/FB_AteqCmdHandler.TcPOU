@@ -12,7 +12,7 @@ VAR_IN_OUT
 END_VAR
 VAR_OUTPUT
     eStatus         : E_CommandStatus; // Current status of this command handler instance
-	abDebug         : ARRAY[0..9] OF BOOL; //Debug Remove
+	abDebug         : ARRAY[0..15] OF BOOL; //Debug Remove
 	nCounter		: DINT; //Debug Remove
 	stIoDebug		: ST_AteqMappedIo; //Debug Remove
 END_VAR
@@ -20,128 +20,122 @@ VAR
 	eCurrentState   		: E_CommandStatus; // Internal state of this FB instance
     tCmdTimeout     		: TON; // Timer for overall command timeout (e.g., 5 seconds)
     tInterCommandDelay		: TON; // Timer for short delay after completion/error/timeout
-    cInterCommandDelayTime 	: TIME := T#15S; // Configurable delay for inter-command spacing
+    //cInterCommandDelayTime 	: TIME; // Configurable delay for inter-command spacing
     
 	bSuccessConditionDetected : BOOL; 
-    fbTrigCmdDone 		: R_TRIG; 
-   	fbR_TRIG_CmdTrigger : R_TRIG;
+     
+   	fbR_TRIG_CmdTrigger 	: R_TRIG;
+	fbR_TRIG_ErrorCodeFFFF	: R_TRIG;
+	//fbR_TRIG_CmdDone 		: R_TRIG;
 	 
+	i : INT;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
-stIoDebug := stIo_Ref; 
-bSuccessConditionDetected := (stIo_Ref.stRead.anErrorCode[0] = 0 AND stIo_Ref.stRead.anErrorCode[1] = 0);
-// Evaluate the R_TRIG once per scan, outside the CASE statement for reliable behavior
-fbTrigCmdDone(CLK := bSuccessConditionDetected);
-
-// Overall Command Timeout Timer - Active when a command is in progress or starting
-tCmdTimeout(IN := eCurrentState = E_CommandStatus.CMD_START OR eCurrentState = E_CommandStatus.CMD_IN_PROGRESS, PT := GVL_Ateq.tCommandTimeout);
-
-
+      <ST><![CDATA[fbR_TRIG_ErrorCodeFFFF(CLK := (stIo_Ref.stRead.anErrorCode[0] = 16#FF AND stIo_Ref.stRead.anErrorCode[1] = 16#FF));
+FOR i := 0 TO 15 DO
+	abDebug[i] := 0;
+	i := i + 1;
+END_FOR
 CASE eCurrentState OF
+
     E_CommandStatus.CMD_IDLE:
         eStatus := E_CommandStatus.CMD_IDLE;
-		fbR_TRIG_CmdTrigger(CLK := bCmdTrigger);
-		
-        IF fbR_TRIG_CmdTrigger.Q THEN // Rising edge detection is implicit: only enter if bCmdTrigger goes from FALSE to TRUE
+        fbR_TRIG_CmdTrigger(CLK := bCmdTrigger);
+
+        IF fbR_TRIG_CmdTrigger.Q THEN
             eCurrentState := E_CommandStatus.CMD_START;
-            
-            tCmdTimeout(IN := TRUE); // Start the overall command timeout
-            fbTrigCmdDone(CLK := FALSE); // Resetting the R_TRIG to prepare for new command
-            
-            abDebug[0] := TRUE; // This should be TRUE on the first scan into CMD_START
+            tCmdTimeout(IN := TRUE);
+            //fbR_TRIG_CmdDone(CLK := FALSE);
+            abDebug[0] := TRUE;
         END_IF
 
     E_CommandStatus.CMD_START:
         eStatus := E_CommandStatus.CMD_START;
-		
-        // Check for ATEQ acknowledgment.
-        IF (stIo_Ref.stRead.anErrorCode[0] = 16#FF AND stIo_Ref.stRead.anErrorCode[1] = 16#FF) THEN
+
+        IF fbR_TRIG_ErrorCodeFFFF.Q THEN
             eCurrentState := E_CommandStatus.CMD_IN_PROGRESS;
-			
-            abDebug[1] := TRUE; // Set when transitioning via anErrorCode=FFFF
-        ELSIF bCmdEcho THEN 
-            eCurrentState := E_CommandStatus.CMD_IN_PROGRESS;
-			
-            abDebug[1] := TRUE; // Set when transitioning via bCmdEcho
-        ELSIF tCmdTimeout.Q THEN // Timeout if no acknowledgment received quickly
-            bCmdTrigger := FALSE; // Drop trigger on timeout
+            abDebug[1] := TRUE;
+
+        ELSIF tCmdTimeout.Q THEN
+            bCmdTrigger 	:= FALSE;
+            eCurrentState 	:= E_CommandStatus.CMD_TIMEOUT;
+            //fbR_TRIG_CmdDone(CLK := FALSE);
+            abDebug[2] := TRUE;
+        END_IF
+
+    E_CommandStatus.CMD_IN_PROGRESS:
+        eStatus := E_CommandStatus.CMD_IN_PROGRESS;
+
+        // True error (not transient FFFF)
+        IF bCmdError AND NOT (stIo_Ref.stRead.anErrorCode[0] = 16#FF AND stIo_Ref.stRead.anErrorCode[1] = 16#FF) THEN
+            bCmdTrigger := FALSE;
+            eCurrentState := E_CommandStatus.CMD_ERROR;
+            //fbR_TRIG_CmdDone(CLK := FALSE);
+            abDebug[3] := TRUE;
+
+        ELSIF tCmdTimeout.Q THEN
+            bCmdTrigger := FALSE;
             eCurrentState := E_CommandStatus.CMD_TIMEOUT;
-			
-            fbTrigCmdDone(CLK := FALSE); 
-            abDebug[2] := TRUE; 
-        END_IF
-        
+            //fbR_TRIG_CmdDone(CLK := FALSE);
+            abDebug[4] := TRUE;
 
-   E_CommandStatus.CMD_IN_PROGRESS:
-        eStatus :=	E_CommandStatus.CMD_IN_PROGRESS;
-        
-        IF tCmdTimeout.Q THEN 
-            bCmdTrigger 	:= FALSE; 
-            eCurrentState	:= E_CommandStatus.CMD_TIMEOUT;
-			
-            fbTrigCmdDone(CLK := FALSE); 
-            abDebug[3] := TRUE; 
-            
-        ELSIF bCmdError THEN 
-            bCmdTrigger 	:= FALSE; 
-            eCurrentState 	:= E_CommandStatus.CMD_ERROR;
-			
-            fbTrigCmdDone(CLK := FALSE); 
-            abDebug[4] := TRUE; 
-            
-        ELSIF fbTrigCmdDone.Q THEN 
-            bCmdTrigger 	:= FALSE; 
-            eCurrentState 	:= E_CommandStatus.CMD_DONE;
-			
-            abDebug[5] := TRUE; 
-            
+        // Wait for execution to begin (bCycleEnd = FALSE), then go to WAIT_CYCLE_END
+        ELSIF bCmdEcho AND NOT stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd THEN
+            eCurrentState := E_CommandStatus.CMD_WAIT_CYCLE_END;
+            abDebug[5] := TRUE;
         END_IF
 
-    E_CommandStatus.CMD_DONE:
-        eStatus :=E_CommandStatus.CMD_DONE;
-        IF NOT bCmdTrigger THEN 
-            eCurrentState := E_CommandStatus.CMD_WAIT_BEFORE_IDLE; 
-            
-            tCmdTimeout(IN := FALSE); 
-            abDebug[6] := TRUE; 
+    E_CommandStatus.CMD_WAIT_CYCLE_END:
+        eStatus := E_CommandStatus.CMD_WAIT_CYCLE_END;
+
+        IF tCmdTimeout.Q THEN
+            bCmdTrigger := FALSE;
+            eCurrentState := E_CommandStatus.CMD_TIMEOUT;
+            abDebug[6] := TRUE;
+
+        ELSIF stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd THEN
+            bCmdTrigger := FALSE;
+            eCurrentState := E_CommandStatus.CMD_SENT;
+            abDebug[7] := TRUE;
+        END_IF
+
+    E_CommandStatus.CMD_SENT:
+        eStatus := E_CommandStatus.CMD_SENT;
+
+        IF NOT bCmdTrigger THEN
+            eCurrentState := E_CommandStatus.CMD_EXECUTED;
+            tCmdTimeout(IN := FALSE);
+            //fbR_TRIG_CmdDone(CLK := TRUE);
+            abDebug[8] := TRUE;
         END_IF
 
     E_CommandStatus.CMD_ERROR:
         eStatus := E_CommandStatus.CMD_ERROR;
-		
-        IF NOT bCmdTrigger AND NOT bCmdError THEN 
-            eCurrentState := E_CommandStatus.CMD_WAIT_BEFORE_IDLE; 
-            
-            tCmdTimeout(IN := FALSE); 
-            abDebug[7] := TRUE; 
-        END_IF
-        
-    E_CommandStatus.CMD_TIMEOUT:
-        eStatus := E_CommandStatus.CMD_TIMEOUT;
-		
-        IF NOT bCmdTrigger THEN 
-            eCurrentState := E_CommandStatus.CMD_WAIT_BEFORE_IDLE; 
-            
-            tCmdTimeout(IN := FALSE); 
-            abDebug[8] := TRUE; 
+
+        IF NOT bCmdTrigger AND NOT bCmdError THEN
+            eCurrentState := E_CommandStatus.CMD_IDLE;
+            tCmdTimeout(IN := FALSE);
+            abDebug[9] := TRUE;
         END_IF
 
-   E_CommandStatus.CMD_WAIT_BEFORE_IDLE:
-        eStatus := E_CommandStatus.CMD_WAIT_BEFORE_IDLE; 
-        
-        IF NOT tInterCommandDelay.IN THEN
-            tInterCommandDelay(IN := TRUE, PT := cInterCommandDelayTime); 
+    E_CommandStatus.CMD_TIMEOUT:
+        eStatus := E_CommandStatus.CMD_TIMEOUT;
+
+        IF NOT bCmdTrigger THEN
+            eCurrentState := E_CommandStatus.CMD_IDLE;
+            tCmdTimeout(IN := FALSE);
+			abDebug[10] := TRUE;
         END_IF
+
+    E_CommandStatus.CMD_EXECUTED:
+        eStatus := E_CommandStatus.CMD_EXECUTED;
+
+            	eCurrentState := E_CommandStatus.CMD_IDLE;
+				
+				abDebug[11] := TRUE;
         
-        IF tInterCommandDelay.Q THEN 
-            eCurrentState := E_CommandStatus.CMD_IDLE;// Return to IDLE
-            tInterCommandDelay(IN := FALSE); 
-            fbTrigCmdDone(CLK := FALSE); 
-            abDebug[9] := TRUE; 
-        END_IF
-		
-END_CASE]]></ST>
+END_CASE
+]]></ST>
     </Implementation>
     <Method Name="FB_init" Id="{3b45f400-ed48-41f8-9e24-6a151811e592}">
       <Declaration><![CDATA[METHOD FB_init : BOOL
@@ -158,37 +152,37 @@ END_VAR
 eCurrentState 		:= E_CommandStatus.CMD_IDLE; 
 nCounter 			:= nCounter + 1; // Debug Remove
 
-tCmdTimeout(IN := FALSE); 
-tInterCommandDelay(IN := FALSE);
-fbTrigCmdDone(CLK := FALSE); 
+tCmdTimeout(IN := FALSE, PT := T#3S); 
+tInterCommandDelay(IN := FALSE, PT := T#3S);
+
+fbR_TRIG_CmdTrigger(CLK := FALSE);
+fbR_TRIG_ErrorCodeFFFF(CLK := FALSE);
+//fbR_TRIG_CmdDone(CLK := FALSE); 
 
 FB_init := TRUE; // Indicate successful initialization]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_AteqCmdHandler">
-      <LineId Id="708" Count="29" />
-      <LineId Id="819" Count="0" />
-      <LineId Id="738" Count="2" />
-      <LineId Id="818" Count="0" />
-      <LineId Id="741" Count="3" />
-      <LineId Id="817" Count="0" />
-      <LineId Id="745" Count="10" />
-      <LineId Id="820" Count="0" />
-      <LineId Id="756" Count="5" />
-      <LineId Id="821" Count="0" />
-      <LineId Id="762" Count="5" />
-      <LineId Id="822" Count="0" />
-      <LineId Id="768" Count="46" />
+      <LineId Id="1575" Count="1" />
+      <LineId Id="1685" Count="0" />
+      <LineId Id="1687" Count="0" />
+      <LineId Id="1686" Count="0" />
+      <LineId Id="1577" Count="87" />
+      <LineId Id="1682" Count="0" />
+      <LineId Id="1665" Count="3" />
+      <LineId Id="1672" Count="1" />
+      <LineId Id="1679" Count="0" />
+      <LineId Id="1683" Count="0" />
+      <LineId Id="1680" Count="1" />
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqCmdHandler.FB_init">
-      <LineId Id="29" Count="0" />
-      <LineId Id="31" Count="0" />
-      <LineId Id="15" Count="0" />
-      <LineId Id="20" Count="0" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="16" Count="2" />
-      <LineId Id="30" Count="0" />
+      <LineId Id="40" Count="6" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="51" Count="0" />
       <LineId Id="7" Count="0" />
     </LineIds>
   </POU>
