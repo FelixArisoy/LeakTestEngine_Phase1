@@ -12,22 +12,24 @@ VAR_IN_OUT
 END_VAR
 VAR_OUTPUT
     eStatus         : E_CommandStatus; // Current status of this command handler instance
-	abDebug         : ARRAY[0..9] OF BOOL;
-	nCounter	: DINT;
+	abDebug         : ARRAY[0..9] OF BOOL; //Debug Remove
+	nCounter		: DINT; //Debug Remove
+	stIoDebug		: ST_AteqMappedIo; //Debug Remove
 END_VAR
 VAR
-    tCmdTimeout     : TON; // Timer for overall command timeout (e.g., 5 seconds)
-    tInterCommandDelay: TON; // Timer for short delay after completion/error/timeout
-    eCurrentState   : E_CommandStatus; // Internal state of this FB instance
-    cInterCommandDelayTime : TIME := T#15S; // Configurable delay for inter-command spacing
+	eCurrentState   		: E_CommandStatus; // Internal state of this FB instance
+    tCmdTimeout     		: TON; // Timer for overall command timeout (e.g., 5 seconds)
+    tInterCommandDelay		: TON; // Timer for short delay after completion/error/timeout
+    cInterCommandDelayTime 	: TIME := T#15S; // Configurable delay for inter-command spacing
     
-    // NEW: R_TRIG for capturing momentary success condition
-    fbTrigCmdDone : R_TRIG; 
-    bSuccessConditionDetected : BOOL; // Intermediate flag for clarity
+	bSuccessConditionDetected : BOOL; 
+    fbTrigCmdDone 		: R_TRIG; 
+   	fbR_TRIG_CmdTrigger : R_TRIG;
 	 
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[// Calculate the success condition (anErrorCode = 0) once per scan
+      <ST><![CDATA[
+stIoDebug := stIo_Ref; 
 bSuccessConditionDetected := (stIo_Ref.stRead.anErrorCode[0] = 0 AND stIo_Ref.stRead.anErrorCode[1] = 0);
 // Evaluate the R_TRIG once per scan, outside the CASE statement for reliable behavior
 fbTrigCmdDone(CLK := bSuccessConditionDetected);
@@ -35,15 +37,13 @@ fbTrigCmdDone(CLK := bSuccessConditionDetected);
 // Overall Command Timeout Timer - Active when a command is in progress or starting
 tCmdTimeout(IN := eCurrentState = E_CommandStatus.CMD_START OR eCurrentState = E_CommandStatus.CMD_IN_PROGRESS, PT := GVL_Ateq.tCommandTimeout);
 
-// Inter-Command Delay Timer - Active only in CMD_WAIT_BEFORE_IDLE
-// Note: This timer's IN should typically be controlled by the state logic, not fixed to FALSE here.
-// I've moved its activation to CMD_WAIT_BEFORE_IDLE below.
-// tInterCommandDelay(IN := FALSE); // REMOVED THIS LINE, managed in CMD_WAIT_BEFORE_IDLE
 
 CASE eCurrentState OF
     E_CommandStatus.CMD_IDLE:
         eStatus := E_CommandStatus.CMD_IDLE;
-        IF bCmdTrigger THEN // Rising edge detection is implicit: only enter if bCmdTrigger goes from FALSE to TRUE
+		fbR_TRIG_CmdTrigger(CLK := bCmdTrigger);
+		
+        IF fbR_TRIG_CmdTrigger.Q THEN // Rising edge detection is implicit: only enter if bCmdTrigger goes from FALSE to TRUE
             eCurrentState := E_CommandStatus.CMD_START;
             
             tCmdTimeout(IN := TRUE); // Start the overall command timeout
@@ -54,83 +54,93 @@ CASE eCurrentState OF
 
     E_CommandStatus.CMD_START:
         eStatus := E_CommandStatus.CMD_START;
+		
         // Check for ATEQ acknowledgment.
         IF (stIo_Ref.stRead.anErrorCode[0] = 16#FF AND stIo_Ref.stRead.anErrorCode[1] = 16#FF) THEN
             eCurrentState := E_CommandStatus.CMD_IN_PROGRESS;
+			
             abDebug[1] := TRUE; // Set when transitioning via anErrorCode=FFFF
-        ELSIF bCmdEcho THEN // **CRITICAL FIX: RE-ADDED THIS ACKNOWLEDGMENT CHECK**
+        ELSIF bCmdEcho THEN 
             eCurrentState := E_CommandStatus.CMD_IN_PROGRESS;
+			
             abDebug[1] := TRUE; // Set when transitioning via bCmdEcho
         ELSIF tCmdTimeout.Q THEN // Timeout if no acknowledgment received quickly
             bCmdTrigger := FALSE; // Drop trigger on timeout
             eCurrentState := E_CommandStatus.CMD_TIMEOUT;
-            fbTrigCmdDone(CLK := FALSE); // Reset R_TRIG on timeout
-            abDebug[2] := TRUE; // Set when timeout in CMD_START
+			
+            fbTrigCmdDone(CLK := FALSE); 
+            abDebug[2] := TRUE; 
         END_IF
-        // No ELSE here, it stays in CMD_START until one of the above conditions is met
-
-    E_CommandStatus.CMD_IN_PROGRESS:
-        eStatus := E_CommandStatus.CMD_IN_PROGRESS;
         
-        IF tCmdTimeout.Q THEN // Overall command timeout
-            bCmdTrigger := FALSE; 
-            eCurrentState := E_CommandStatus.CMD_TIMEOUT;
-            fbTrigCmdDone(CLK := FALSE); // Reset R_TRIG on timeout
-            abDebug[3] := TRUE; // Set when timeout in CMD_IN_PROGRESS
+
+   E_CommandStatus.CMD_IN_PROGRESS:
+        eStatus :=	E_CommandStatus.CMD_IN_PROGRESS;
+        
+        IF tCmdTimeout.Q THEN 
+            bCmdTrigger 	:= FALSE; 
+            eCurrentState	:= E_CommandStatus.CMD_TIMEOUT;
+			
+            fbTrigCmdDone(CLK := FALSE); 
+            abDebug[3] := TRUE; 
             
-        ELSIF bCmdError THEN // Specific command error detected by ATEQ
-            bCmdTrigger := FALSE; 
-            eCurrentState := E_CommandStatus.CMD_ERROR;
-            fbTrigCmdDone(CLK := FALSE); // Reset R_TRIG on error
-            abDebug[4] := TRUE; // Set when bCmdError is TRUE
+        ELSIF bCmdError THEN 
+            bCmdTrigger 	:= FALSE; 
+            eCurrentState 	:= E_CommandStatus.CMD_ERROR;
+			
+            fbTrigCmdDone(CLK := FALSE); 
+            abDebug[4] := TRUE; 
             
-        ELSIF fbTrigCmdDone.Q THEN // **CRITICAL FIX: Use R_TRIG for SUCCESS (anErrorCode=0)**
-            bCmdTrigger := FALSE; // PLC MUST SET ITS TRIGGER TO FALSE NOW
-            eCurrentState := E_CommandStatus.CMD_DONE;
-            abDebug[5] := TRUE; // Set when command successfully completed
-            // No explicit fbTrigCmdDone(CLK := FALSE) needed here, it will be reset in CMD_IDLE or if command aborts.
+        ELSIF fbTrigCmdDone.Q THEN 
+            bCmdTrigger 	:= FALSE; 
+            eCurrentState 	:= E_CommandStatus.CMD_DONE;
+			
+            abDebug[5] := TRUE; 
+            
         END_IF
 
     E_CommandStatus.CMD_DONE:
-        eStatus := E_CommandStatus.CMD_DONE;
-        IF NOT bCmdTrigger THEN // Ensure the PLC has released the command trigger
-            eCurrentState := E_CommandStatus.CMD_WAIT_BEFORE_IDLE; // Transition to wait state
+        eStatus :=E_CommandStatus.CMD_DONE;
+        IF NOT bCmdTrigger THEN 
+            eCurrentState := E_CommandStatus.CMD_WAIT_BEFORE_IDLE; 
             
-            tCmdTimeout(IN := FALSE); // Reset overall command timeout timer (it's done)
-            abDebug[6] := TRUE; // Set when successfully entering CMD_WAIT_BEFORE_IDLE
+            tCmdTimeout(IN := FALSE); 
+            abDebug[6] := TRUE; 
         END_IF
 
     E_CommandStatus.CMD_ERROR:
         eStatus := E_CommandStatus.CMD_ERROR;
-        IF NOT bCmdTrigger AND NOT bCmdError THEN // Wait for PLC trigger to be off AND ATEQ error bit to clear
-            eCurrentState := E_CommandStatus.CMD_WAIT_BEFORE_IDLE; // Transition to wait state
+		
+        IF NOT bCmdTrigger AND NOT bCmdError THEN 
+            eCurrentState := E_CommandStatus.CMD_WAIT_BEFORE_IDLE; 
             
-            tCmdTimeout(IN := FALSE); // Reset overall command timeout timer (it's done)
-            abDebug[7] := TRUE; // Set when successfully entering CMD_WAIT_BEFORE_IDLE after error
+            tCmdTimeout(IN := FALSE); 
+            abDebug[7] := TRUE; 
         END_IF
         
     E_CommandStatus.CMD_TIMEOUT:
         eStatus := E_CommandStatus.CMD_TIMEOUT;
-        IF NOT bCmdTrigger THEN // Wait for PLC trigger to be off
-            eCurrentState := E_CommandStatus.CMD_WAIT_BEFORE_IDLE; // Transition to wait state
+		
+        IF NOT bCmdTrigger THEN 
+            eCurrentState := E_CommandStatus.CMD_WAIT_BEFORE_IDLE; 
             
-            tCmdTimeout(IN := FALSE); // Reset overall command timeout timer (it's done)
-            abDebug[8] := TRUE; // Set when successfully entering CMD_WAIT_BEFORE_IDLE after timeout
+            tCmdTimeout(IN := FALSE); 
+            abDebug[8] := TRUE; 
         END_IF
 
-    E_CommandStatus.CMD_WAIT_BEFORE_IDLE:
-        eStatus := E_CommandStatus.CMD_WAIT_BEFORE_IDLE; // Output this status during the delay
-        // **CRITICAL FIX: Start the inter-command delay timer here if not already running**
+   E_CommandStatus.CMD_WAIT_BEFORE_IDLE:
+        eStatus := E_CommandStatus.CMD_WAIT_BEFORE_IDLE; 
+        
         IF NOT tInterCommandDelay.IN THEN
             tInterCommandDelay(IN := TRUE, PT := cInterCommandDelayTime); 
         END_IF
         
-        IF tInterCommandDelay.Q THEN // Delay time has elapsed
-            //eCurrentState := E_CommandStatus.CMD_IDLE; // Return to IDLE
-            tInterCommandDelay(IN := FALSE); // Reset inter-command delay timer
-            fbTrigCmdDone(CLK := FALSE); // Ensure R_TRIG is reset when returning to IDLE
-            abDebug[9] := TRUE; // Set when transitioning back to IDLE
+        IF tInterCommandDelay.Q THEN 
+            eCurrentState := E_CommandStatus.CMD_IDLE;// Return to IDLE
+            tInterCommandDelay(IN := FALSE); 
+            fbTrigCmdDone(CLK := FALSE); 
+            abDebug[9] := TRUE; 
         END_IF
+		
 END_CASE]]></ST>
     </Implementation>
     <Method Name="FB_init" Id="{3b45f400-ed48-41f8-9e24-6a151811e592}">
@@ -143,22 +153,42 @@ END_VAR
 
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[eCurrentState := E_CommandStatus.CMD_IDLE; // Initialize state on FB instance creation/reset
-nCounter := nCounter + 1;
-tCmdTimeout(IN := FALSE); // Ensure timer is off initially
-tInterCommandDelay(IN := FALSE); // Ensure new timer is off initially
-fbTrigCmdDone(CLK := FALSE); // Ensure R_TRIG is reset initially
+        <ST><![CDATA[// Initialize state on FB instance creation/reset
+
+eCurrentState 		:= E_CommandStatus.CMD_IDLE; 
+nCounter 			:= nCounter + 1; // Debug Remove
+
+tCmdTimeout(IN := FALSE); 
+tInterCommandDelay(IN := FALSE);
+fbTrigCmdDone(CLK := FALSE); 
+
 FB_init := TRUE; // Indicate successful initialization]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_AteqCmdHandler">
-      <LineId Id="542" Count="103" />
+      <LineId Id="708" Count="29" />
+      <LineId Id="819" Count="0" />
+      <LineId Id="738" Count="2" />
+      <LineId Id="818" Count="0" />
+      <LineId Id="741" Count="3" />
+      <LineId Id="817" Count="0" />
+      <LineId Id="745" Count="10" />
+      <LineId Id="820" Count="0" />
+      <LineId Id="756" Count="5" />
+      <LineId Id="821" Count="0" />
+      <LineId Id="762" Count="5" />
+      <LineId Id="822" Count="0" />
+      <LineId Id="768" Count="46" />
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqCmdHandler.FB_init">
+      <LineId Id="29" Count="0" />
+      <LineId Id="31" Count="0" />
       <LineId Id="15" Count="0" />
       <LineId Id="20" Count="0" />
+      <LineId Id="32" Count="0" />
       <LineId Id="16" Count="2" />
+      <LineId Id="30" Count="0" />
       <LineId Id="7" Count="0" />
     </LineIds>
   </POU>
