@@ -28,9 +28,9 @@ VAR
 	fbAteqControl		: FB_AteqControl;
 	bRunAteqSequence	: BOOL;
 	bAutoSequenceDone	: BOOL;
-	abDebug      		: ARRAY[0..15] OF BOOL;
-	nCounter			: DINT;
-	stIoDebug			: ST_AteqMappedIo;
+	
+
+
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[FOR nDeviceIndex := 0 TO GVL_Ateq.nMaxDeviceCount - 1 DO
@@ -61,10 +61,8 @@ ELSIF NOT bRunAteqSequence THEN
   );
 END_IF
 
-bAutoSequenceDone	:= fbAteqControl.bAutoTestSequenceDone;
-abDebug      		:= fbAteqControl.abDebug1;
-nCounter			:= fbAteqControl.nCounter;
-stIoDebug			:= fbAteqControl.stIoDebug;
+bAutoSequenceDone	:= fbAteqControl.bAutoSequenceDone;
+
 
 
 // Response DEBUG
@@ -135,12 +133,8 @@ END_IF
 ]]></ST>
     </Implementation>
     <LineIds Name="PRG_AteqComm">
-      <LineId Id="538" Count="9" />
-      <LineId Id="652" Count="9" />
-      <LineId Id="664" Count="5" />
-      <LineId Id="553" Count="4" />
-      <LineId Id="700" Count="0" />
-      <LineId Id="558" Count="66" />
+      <LineId Id="860" Count="28" />
+      <LineId Id="891" Count="67" />
       <LineId Id="155" Count="0" />
     </LineIds>
   </POU>

@@ -2,22 +2,24 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
   <POU Name="FB_AteqCmdHandler" Id="{736e6d42-ec43-485f-bfa6-1943d6a22849}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_AteqCmdHandler
-VAR_INPUT
-    bCmdEcho        : BOOL; // Command echo bit from ATEQ (TRUE while active)
+VAR_INPUT    
+	bCmdEcho        : BOOL; // Command echo bit from ATEQ (TRUE while active)
     bCmdError       : BOOL; // Error code bit from ATEQ
 END_VAR
 VAR_IN_OUT
+	bResetRequest	: BOOL;
     bCmdTrigger     : BOOL; // The actual command bit from stIo.stWrite.stCommands (will be set FALSE by this FB)
     stIo_Ref        : ST_AteqMappedIo; // Reference to the entire mapped I/O structure for ATEQ status checks
 END_VAR
 VAR_OUTPUT
-    eStatus         : E_CommandStatus; // Current status of this command handler instance
-	abDebug         : ARRAY[0..15] OF BOOL; //Debug Remove
+    eStatus         : E_AteqHandshake; // Current status of this command handler instance
+	bResetDone		: BOOL; //Reset Complete Flag used in Auto Sequence Method mainly
+	abDebug         : ARRAY[0..19] OF BOOL; //Debug Remove
 	nCounter		: DINT; //Debug Remove
 	stIoDebug		: ST_AteqMappedIo; //Debug Remove
 END_VAR
 VAR
-	eCurrentState   		: E_CommandStatus; // Internal state of this FB instance
+	eCurrentState   		: E_AteqHandshake; // Internal state of this FB instance
     tCmdTimeout     		: TON; // Timer for overall command timeout (e.g., 5 seconds)
     tInterCommandDelay		: TON; // Timer for short delay after completion/error/timeout
     //cInterCommandDelayTime 	: TIME; // Configurable delay for inter-command spacing
@@ -29,111 +31,149 @@ VAR
 	//fbR_TRIG_CmdDone 		: R_TRIG;
 	 
 	i : INT;
+	
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[fbR_TRIG_ErrorCodeFFFF(CLK := (stIo_Ref.stRead.anErrorCode[0] = 16#FF AND stIo_Ref.stRead.anErrorCode[1] = 16#FF));
-FOR i := 0 TO 15 DO
+      <ST><![CDATA[		FOR i := 0 TO 15 DO //debug remove
 	abDebug[i] := 0;
 	i := i + 1;
 END_FOR
+
+
+
+fbR_TRIG_ErrorCodeFFFF(CLK := (stIo_Ref.stRead.anErrorCode[0] = 16#FF AND stIo_Ref.stRead.anErrorCode[1] = 16#FF));
+
 CASE eCurrentState OF
 
-    E_CommandStatus.CMD_IDLE:
-        eStatus := E_CommandStatus.CMD_IDLE;
-        fbR_TRIG_CmdTrigger(CLK := bCmdTrigger);
-
-        IF fbR_TRIG_CmdTrigger.Q THEN
-            eCurrentState := E_CommandStatus.CMD_START;
+    E_AteqHandshake.CMD_IDLE:
+        eStatus := E_AteqHandshake.CMD_IDLE;
+		
+		IF bResetDone THEN
+			bResetRequest := FALSE;
+        END_IF;
+		
+        IF fbR_TRIG_CmdTrigger(CLK := bCmdTrigger).Q THEN
+            eCurrentState := E_AteqHandshake.CMD_START;
             tCmdTimeout(IN := TRUE);
             //fbR_TRIG_CmdDone(CLK := FALSE);
             abDebug[0] := TRUE;
         END_IF
 
-    E_CommandStatus.CMD_START:
-        eStatus := E_CommandStatus.CMD_START;
+		
+		
+    E_AteqHandshake.CMD_START:
+	    bResetDone := FALSE;  // pulse
+        eStatus := E_AteqHandshake.CMD_START;
 
         IF fbR_TRIG_ErrorCodeFFFF.Q THEN
-            eCurrentState := E_CommandStatus.CMD_IN_PROGRESS;
+            eCurrentState := E_AteqHandshake.CMD_IN_PROGRESS;
             abDebug[1] := TRUE;
 
         ELSIF tCmdTimeout.Q THEN
             bCmdTrigger 	:= FALSE;
-            eCurrentState 	:= E_CommandStatus.CMD_TIMEOUT;
+            eCurrentState 	:= E_AteqHandshake.CMD_TIMEOUT;
             //fbR_TRIG_CmdDone(CLK := FALSE);
             abDebug[2] := TRUE;
         END_IF
 
-    E_CommandStatus.CMD_IN_PROGRESS:
-        eStatus := E_CommandStatus.CMD_IN_PROGRESS;
+		
+		
+    E_AteqHandshake.CMD_IN_PROGRESS:
+        eStatus := E_AteqHandshake.CMD_IN_PROGRESS;
 
         // True error (not transient FFFF)
         IF bCmdError AND NOT (stIo_Ref.stRead.anErrorCode[0] = 16#FF AND stIo_Ref.stRead.anErrorCode[1] = 16#FF) THEN
             bCmdTrigger := FALSE;
-            eCurrentState := E_CommandStatus.CMD_ERROR;
-            //fbR_TRIG_CmdDone(CLK := FALSE);
+            eCurrentState := E_AteqHandshake.CMD_ERROR;
+            
             abDebug[3] := TRUE;
 
         ELSIF tCmdTimeout.Q THEN
             bCmdTrigger := FALSE;
-            eCurrentState := E_CommandStatus.CMD_TIMEOUT;
-            //fbR_TRIG_CmdDone(CLK := FALSE);
+            eCurrentState := E_AteqHandshake.CMD_TIMEOUT;
+            
             abDebug[4] := TRUE;
 
         // Wait for execution to begin (bCycleEnd = FALSE), then go to WAIT_CYCLE_END
         ELSIF bCmdEcho AND NOT stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd THEN
-            eCurrentState := E_CommandStatus.CMD_WAIT_CYCLE_END;
+            eCurrentState := E_AteqHandshake.CMD_WAIT_CYCLE_END;
+			
             abDebug[5] := TRUE;
         END_IF
 
-    E_CommandStatus.CMD_WAIT_CYCLE_END:
-        eStatus := E_CommandStatus.CMD_WAIT_CYCLE_END;
+		
+		
+    E_AteqHandshake.CMD_WAIT_CYCLE_END:
+        eStatus := E_AteqHandshake.CMD_WAIT_CYCLE_END;
 
         IF tCmdTimeout.Q THEN
             bCmdTrigger := FALSE;
-            eCurrentState := E_CommandStatus.CMD_TIMEOUT;
+            eCurrentState := E_AteqHandshake.CMD_TIMEOUT;
             abDebug[6] := TRUE;
 
         ELSIF stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd THEN
-            bCmdTrigger := FALSE;
-            eCurrentState := E_CommandStatus.CMD_SENT;
+            eCurrentState := E_AteqHandshake.CMD_SENT;
             abDebug[7] := TRUE;
         END_IF
 
-    E_CommandStatus.CMD_SENT:
-        eStatus := E_CommandStatus.CMD_SENT;
-
-        IF NOT bCmdTrigger THEN
-            eCurrentState := E_CommandStatus.CMD_EXECUTED;
+		
+		
+    E_AteqHandshake.CMD_SENT:
+        eStatus := E_AteqHandshake.CMD_SENT;
+		bCmdTrigger := FALSE;
+        IF NOT bCmdTrigger AND (stIo_Ref.stRead.anErrorCode[0] = 0 AND stIo_Ref.stRead.anErrorCode[1] = 0) THEN
+            eCurrentState := E_AteqHandshake.CMD_EXECUTED;
             tCmdTimeout(IN := FALSE);
-            //fbR_TRIG_CmdDone(CLK := TRUE);
+            
             abDebug[8] := TRUE;
         END_IF
 
-    E_CommandStatus.CMD_ERROR:
-        eStatus := E_CommandStatus.CMD_ERROR;
 
-        IF NOT bCmdTrigger AND NOT bCmdError THEN
-            eCurrentState := E_CommandStatus.CMD_IDLE;
-            tCmdTimeout(IN := FALSE);
+	E_AteqHandshake.CMD_EXECUTED:
+        eStatus := E_AteqHandshake.CMD_EXECUTED;
+
+		IF bResetRequest THEN
+			eCurrentState := E_AteqHandshake.CMD_RESET;
+				
+			abDebug[11] := TRUE;
+		END_IF
+       
+		
+		
+    E_AteqHandshake.CMD_ERROR:
+        eStatus := E_AteqHandshake.CMD_ERROR;
+
+        IF bResetRequest THEN
+            eCurrentState := E_AteqHandshake.CMD_RESET;
+            
             abDebug[9] := TRUE;
         END_IF
 
-    E_CommandStatus.CMD_TIMEOUT:
-        eStatus := E_CommandStatus.CMD_TIMEOUT;
+		
+		
+    E_AteqHandshake.CMD_TIMEOUT:
+        eStatus := E_AteqHandshake.CMD_TIMEOUT;
 
-        IF NOT bCmdTrigger THEN
-            eCurrentState := E_CommandStatus.CMD_IDLE;
-            tCmdTimeout(IN := FALSE);
+        IF bResetRequest THEN
+            eCurrentState := E_AteqHandshake.CMD_RESET;
+            
 			abDebug[10] := TRUE;
         END_IF
 
-    E_CommandStatus.CMD_EXECUTED:
-        eStatus := E_CommandStatus.CMD_EXECUTED;
+		
 
-            	eCurrentState := E_CommandStatus.CMD_IDLE;
-				
-				abDebug[11] := TRUE;
-        
+	E_AteqHandshake.CMD_RESET:
+        // Clear internal stuff
+        bCmdTrigger := FALSE;
+        tCmdTimeout(IN := FALSE);
+        tInterCommandDelay(IN := FALSE);
+		
+        //reset outputs
+        stIo_Ref.stWrite.anCommands[0] := 0; 
+		stIo_Ref.stWrite.anCommands[1] := 0;
+		
+        bResetDone := TRUE;
+        eCurrentState := CMD_IDLE;			
 END_CASE
 ]]></ST>
     </Implementation>
@@ -149,7 +189,7 @@ END_VAR
       <Implementation>
         <ST><![CDATA[// Initialize state on FB instance creation/reset
 
-eCurrentState 		:= E_CommandStatus.CMD_IDLE; 
+eCurrentState 		:= E_AteqHandshake.CMD_IDLE; 
 nCounter 			:= nCounter + 1; // Debug Remove
 
 tCmdTimeout(IN := FALSE, PT := T#3S); 
@@ -163,17 +203,60 @@ FB_init := TRUE; // Indicate successful initialization]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_AteqCmdHandler">
-      <LineId Id="1575" Count="1" />
-      <LineId Id="1685" Count="0" />
-      <LineId Id="1687" Count="0" />
+      <LineId Id="1788" Count="3" />
+      <LineId Id="1785" Count="2" />
+      <LineId Id="1575" Count="0" />
       <LineId Id="1686" Count="0" />
-      <LineId Id="1577" Count="87" />
+      <LineId Id="1577" Count="2" />
+      <LineId Id="1759" Count="0" />
+      <LineId Id="1762" Count="0" />
+      <LineId Id="1764" Count="0" />
+      <LineId Id="1780" Count="0" />
+      <LineId Id="1763" Count="0" />
+      <LineId Id="1767" Count="0" />
+      <LineId Id="1583" Count="5" />
+      <LineId Id="1716" Count="0" />
+      <LineId Id="1589" Count="0" />
+      <LineId Id="1717" Count="0" />
+      <LineId Id="1590" Count="0" />
+      <LineId Id="1782" Count="0" />
+      <LineId Id="1591" Count="11" />
+      <LineId Id="1718" Count="0" />
+      <LineId Id="1603" Count="0" />
+      <LineId Id="1719" Count="0" />
+      <LineId Id="1604" Count="18" />
+      <LineId Id="1774" Count="0" />
+      <LineId Id="1623" Count="1" />
+      <LineId Id="1720" Count="0" />
+      <LineId Id="1625" Count="0" />
+      <LineId Id="1721" Count="0" />
+      <LineId Id="1626" Count="8" />
+      <LineId Id="1636" Count="2" />
+      <LineId Id="1722" Count="0" />
+      <LineId Id="1639" Count="0" />
+      <LineId Id="1723" Count="0" />
+      <LineId Id="1640" Count="8" />
+      <LineId Id="1801" Count="1" />
+      <LineId Id="1792" Count="8" />
+      <LineId Id="1649" Count="0" />
+      <LineId Id="1725" Count="0" />
+      <LineId Id="1650" Count="7" />
+      <LineId Id="1726" Count="0" />
+      <LineId Id="1658" Count="0" />
+      <LineId Id="1727" Count="0" />
+      <LineId Id="1659" Count="5" />
       <LineId Id="1682" Count="0" />
-      <LineId Id="1665" Count="3" />
-      <LineId Id="1672" Count="1" />
-      <LineId Id="1679" Count="0" />
-      <LineId Id="1683" Count="0" />
-      <LineId Id="1680" Count="1" />
+      <LineId Id="1665" Count="0" />
+      <LineId Id="1728" Count="0" />
+      <LineId Id="1666" Count="0" />
+      <LineId Id="1754" Count="0" />
+      <LineId Id="1744" Count="4" />
+      <LineId Id="1768" Count="0" />
+      <LineId Id="1750" Count="2" />
+      <LineId Id="1755" Count="0" />
+      <LineId Id="1753" Count="0" />
+      <LineId Id="1742" Count="0" />
+      <LineId Id="1681" Count="0" />
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqCmdHandler.FB_init">

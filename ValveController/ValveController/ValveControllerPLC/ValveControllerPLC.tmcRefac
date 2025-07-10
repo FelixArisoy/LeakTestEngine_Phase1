@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Refactors>
+  <Renames>
+    <RenamedSymbol>
+      <Type guid="7f132da6-4770-42a7-a01e-2190c92a7cb5">FB_AteqControl</Type>
+      <From>abDebug1</From>
+      <To>abDebug_CmdHandler</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="a3d4985a-23a4-4261-9530-cafe9c795619">PRG_AteqComm</Type>
+      <From>abDebug</From>
+      <To>abDebug_CmdHandler</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="7f132da6-4770-42a7-a01e-2190c92a7cb5">FB_AteqControl</Type>
+      <From>abDebug</From>
+      <To>abDebug_AutoSeq</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="e53874a6-2496-4372-b4ca-6316841d2cde">E_AutoTestState</Type>
+      <From>IDLE</From>
+      <To>SEQ_IDLE</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="e53874a6-2496-4372-b4ca-6316841d2cde">E_AutoTestState</Type>
+      <From>WAIT_READY</From>
+      <To>SEQ_WAIT_READY</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="e53874a6-2496-4372-b4ca-6316841d2cde">E_AutoTestState</Type>
+      <From>RESET_FIFO</From>
+      <To>SEQ_RESET_FIFO</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="e53874a6-2496-4372-b4ca-6316841d2cde">E_AutoTestState</Type>
+      <From>PROGRAM_SELECT</From>
+      <To>SEQ_PROGRAM_SELECT</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="e53874a6-2496-4372-b4ca-6316841d2cde">E_AutoTestState</Type>
+      <From>AUTO_ZERO</From>
+      <To>SEQ_AUTO_ZERO</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="e53874a6-2496-4372-b4ca-6316841d2cde">E_AutoTestState</Type>
+      <From>START_PROGRAM</From>
+      <To>SEQ_START_PROGRAM</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="e53874a6-2496-4372-b4ca-6316841d2cde">E_AutoTestState</Type>
+      <From>WAIT_COMPLETION</From>
+      <To>SEQ_WAIT_COMPLETION</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="e53874a6-2496-4372-b4ca-6316841d2cde">E_AutoTestState</Type>
+      <From>READ_LAST_RESULT</From>
+      <To>SEQ_READ_LAST_RESULT</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="e53874a6-2496-4372-b4ca-6316841d2cde">E_AutoTestState</Type>
+      <From>READ_FIFO_RESULTS</From>
+      <To>SEQ_READ_FIFO_RESULTS</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="e53874a6-2496-4372-b4ca-6316841d2cde">E_AutoTestState</Type>
+      <From>TEST_DONE</From>
+      <To>SEQ_TEST_DONE</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="e53874a6-2496-4372-b4ca-6316841d2cde">E_AutoTestState</Type>
+      <From>ERROR_SEQUENCE</From>
+      <To>SEQ_ERROR</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="e53874a6-2496-4372-b4ca-6316841d2cde">E_AutoTestState</Type>
+      <From>ABORTING</From>
+      <To>SEQ_TIMEOUT</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="e53874a6-2496-4372-b4ca-6316841d2cde">E_AutoTestState</Type>
+      <From>RESET_DEVICE</From>
+      <To>SEQ_RESET</To>
+    </RenamedSymbol>
+    <RenamedType>
+      <Type guid="e53874a6-2496-4372-b4ca-6316841d2cde">E_ATEQAUTOTEST</Type>
+      <From>E_AutoTestState</From>
+      <To>E_AteqAutoRun</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="156ee2bd-c863-40c9-9647-6f25eaa354f0">E_COMMANDSTATUS</Type>
+      <From>E_CommandStatus</From>
+      <To>E_AteqHandshake</To>
+    </RenamedType>
+    <RenamedSymbol>
+      <Type guid="7f132da6-4770-42a7-a01e-2190c92a7cb5">FB_AteqControl</Type>
+      <From>bResetDone</From>
+      <To>bAutoSeqResetDone</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="7f132da6-4770-42a7-a01e-2190c92a7cb5">FB_AteqControl</Type>
+      <From>bResetRequest</From>
+      <To>bAutoSeqResetRequest</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="7f132da6-4770-42a7-a01e-2190c92a7cb5">FB_AteqControl</Type>
+      <From>bAutoTestSequenceDone</From>
+      <To>bAutoSequenceDone</To>
+    </RenamedSymbol>
+    <RenamedType>
+      <Type guid="470ae35c-cda6-49a5-a2ba-29d25da98e8a">M_AUTOTESTSEQUENCE</Type>
+      <From>M_AutoTestSequence</From>
+      <To>M_AutoSequence</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="c62b52d9-88f7-441c-b964-c57a050aa619">M_AUTOTESTSEQUENCE</Type>
+      <From>M_AutoTestSequence</From>
+      <To>M_AutoSequence</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="8291d93f-7201-4c42-b9ed-3ad3d520466d">M_RESETATEQ</Type>
+      <From>M_ResetAteq</From>
+      <To>M_ResetDevice</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="d83d834a-bdff-4813-91dd-64475ca219aa">M_RESETATEQ</Type>
+      <From>M_ResetAteq</From>
+      <To>M_ResetDevice</To>
+    </RenamedType>
+    <RenamedSymbol>
+      <Type guid="7f132da6-4770-42a7-a01e-2190c92a7cb5">FB_AteqControl</Type>
+      <From>tAbortDelay</From>
+      <To>tSeqTimeout</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="7f132da6-4770-42a7-a01e-2190c92a7cb5">FB_AteqControl</Type>
+      <From>tStepDelay</From>
+      <To>tTestTimeout</To>
+    </RenamedSymbol>
+  </Renames>
+</Refactors>

@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <DUT Name="E_AteqHandshake" Id="{156ee2bd-c863-40c9-9647-6f25eaa354f0}">
+    <Declaration><![CDATA[TYPE E_AteqHandshake :
+(
+    CMD_IDLE,         	// No command active, ready for new command
+    CMD_START,        	// Command bit just set, waiting for ATEQ acknowledgment
+    CMD_IN_PROGRESS,  	// ATEQ has acknowledged, command is running
+	CMD_WAIT_CYCLE_END,
+    CMD_SENT,         	// Command received successfully by ATEQ
+	CMD_EXECUTED, 		// Delay state before returning to IDLE
+    CMD_ERROR,        	// Command completed with an error from ATEQ
+    CMD_TIMEOUT,      	// Command did not complete within expected time
+    CMD_RESET   
+);
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

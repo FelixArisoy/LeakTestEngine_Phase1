@@ -6,7 +6,7 @@ VAR
     fbTest_AteqControl   	: FB_AteqControl;
     
 	stTestMappedIo   	: ST_AteqMappedIo;
-    eTestCmdStatus  	: E_CommandStatus;
+    eTestCmdStatus  	: E_AteqHandshake;
 	
 	nLoopCount            : UDINT; // Counter for simulated cycles
     nMaxCycles            : UDINT := 100; // Max cycles to wait for command completion
@@ -39,12 +39,12 @@ TEST('ProgramSelect: Command sequence should successfully reach CMD_DONE');
     stTestMappedIo.stWrite.stCommands.bProgramSelect := TRUE;
 
     // --- Act (Execute the method over multiple cycles until completion) ---
-    eTestCmdStatus := E_CommandStatus.CMD_IN_PROGRESS; // Initialize with a non-DONE state
+    eTestCmdStatus := E_AteqHandshake.CMD_IN_PROGRESS; // Initialize with a non-DONE state
     nLoopCount := 0;
 
     // Simulate multiple PLC cycles until the command is done or an error occurs
-    WHILE (eTestCmdStatus = E_CommandStatus.CMD_IDLE OR
-           eTestCmdStatus = E_CommandStatus.CMD_IN_PROGRESS) AND
+    WHILE (eTestCmdStatus = E_AteqHandshake.CMD_IDLE OR
+           eTestCmdStatus = E_AteqHandshake.CMD_IN_PROGRESS) AND
           (nLoopCount < nMaxCycles) DO
 
         // --- Simulate ATEQ response echo within the loop if it's conditional ---
@@ -75,7 +75,7 @@ AssertTrue(
 );
 
     // 2. Assert that the final status is exactly CMD_DONE
-    AssertEquals_STRING(TO_STRING(E_CommandStatus.CMD_SENT), TO_STRING(eTestCmdStatus), 'Expected final command status to be CMD_DONE');
+    AssertEquals_STRING(TO_STRING(E_AteqHandshake.CMD_SENT), TO_STRING(eTestCmdStatus), 'Expected final command status to be CMD_DONE');
 
 TEST_FINISHED();
 
@@ -88,11 +88,11 @@ TEST('ProgramSelect: Command sequence should return CMD_ERROR on ATEQ error');
     stTestMappedIo.stWrite.nProgramNumber := 16#0005;
     stTestMappedIo.stWrite.stCommands.bProgramSelect := TRUE;
 
-    eTestCmdStatus := E_CommandStatus.CMD_IN_PROGRESS;
+    eTestCmdStatus := E_AteqHandshake.CMD_IN_PROGRESS;
     nLoopCount := 0;
 
-    WHILE (eTestCmdStatus = E_CommandStatus.CMD_IDLE OR
-           eTestCmdStatus = E_CommandStatus.CMD_IN_PROGRESS) AND
+    WHILE (eTestCmdStatus = E_AteqHandshake.CMD_IDLE OR
+           eTestCmdStatus = E_AteqHandshake.CMD_IN_PROGRESS) AND
           (nLoopCount < nMaxCycles) DO
 
         IF nLoopCount = 1 THEN // Simulate ATEQ responding with an error
@@ -115,7 +115,7 @@ TEST('ProgramSelect: Command sequence should return CMD_ERROR on ATEQ error');
         TO_STRING(eTestCmdStatus)
     )
 );
-    AssertEquals_STRING(TO_STRING(E_CommandStatus.CMD_ERROR), TO_STRING(eTestCmdStatus), 'Expected final command status to be CMD_ERROR');
+    AssertEquals_STRING(TO_STRING(E_AteqHandshake.CMD_ERROR), TO_STRING(eTestCmdStatus), 'Expected final command status to be CMD_ERROR');
 TEST_FINISHED();
 
 
@@ -126,7 +126,7 @@ TEST('ProgramSelect: Command sequence should return CMD_TIMEOUT if no response')
     stTestMappedIo.stWrite.nProgramNumber := 16#0005;
     stTestMappedIo.stWrite.stCommands.bProgramSelect := TRUE;
 
-    eTestCmdStatus := E_CommandStatus.CMD_IN_PROGRESS;
+    eTestCmdStatus := E_AteqHandshake.CMD_IN_PROGRESS;
     nLoopCount := 0;
 
     // Simulate NO ATEQ response throughout the loop
@@ -134,8 +134,8 @@ TEST('ProgramSelect: Command sequence should return CMD_TIMEOUT if no response')
     stTestMappedIo.stRead.nProgramInUse := 0;
     stTestMappedIo.stRead.anErrorCode[0] := 0;
 
-    WHILE (eTestCmdStatus = E_CommandStatus.CMD_IDLE OR
-           eTestCmdStatus = E_CommandStatus.CMD_IN_PROGRESS) AND
+    WHILE (eTestCmdStatus = E_AteqHandshake.CMD_IDLE OR
+           eTestCmdStatus = E_AteqHandshake.CMD_IN_PROGRESS) AND
           (nLoopCount < nMaxCycles) DO
 
         eTestCmdStatus := fbTest_AteqControl.M_ProgramSelect();
@@ -144,7 +144,7 @@ TEST('ProgramSelect: Command sequence should return CMD_TIMEOUT if no response')
 
     // Here, we expect the loop to complete by reaching nMaxCycles
     AssertEquals(nMaxCycles, nLoopCount, 'Expected loop to run for max cycles to trigger timeout');
-    AssertEquals_STRING(TO_STRING(E_CommandStatus.CMD_TIMEOUT), TO_STRING(eTestCmdStatus), 'Expected final command status to be CMD_TIMEOUT');
+    AssertEquals_STRING(TO_STRING(E_AteqHandshake.CMD_TIMEOUT), TO_STRING(eTestCmdStatus), 'Expected final command status to be CMD_TIMEOUT');
 TEST_FINISHED();
 
 
