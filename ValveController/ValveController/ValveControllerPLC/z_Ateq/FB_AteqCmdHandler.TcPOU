@@ -15,7 +15,7 @@ VAR_OUTPUT
     eStatus         : E_AteqHandshake; // Current status of this command handler instance
 	bResetDone		: BOOL; //Reset Complete Flag used in Auto Sequence Method mainly
 	abDebug         : ARRAY[0..19] OF BOOL; //Debug Remove
-	nCounter		: DINT; //Debug Remove
+	nFB_init_Debug		: DINT; //Debug Remove
 	stIoDebug		: ST_AteqMappedIo; //Debug Remove
 END_VAR
 VAR
@@ -52,7 +52,8 @@ CASE eCurrentState OF
 			bResetRequest := FALSE;
         END_IF;
 		
-        IF fbR_TRIG_CmdTrigger(CLK := bCmdTrigger).Q THEN
+		fbR_TRIG_CmdTrigger(CLK := bCmdTrigger);
+        IF fbR_TRIG_CmdTrigger.Q THEN
             eCurrentState := E_AteqHandshake.CMD_START;
             tCmdTimeout(IN := TRUE);
             //fbR_TRIG_CmdDone(CLK := FALSE);
@@ -190,7 +191,7 @@ END_VAR
         <ST><![CDATA[// Initialize state on FB instance creation/reset
 
 eCurrentState 		:= E_AteqHandshake.CMD_IDLE; 
-nCounter 			:= nCounter + 1; // Debug Remove
+nFB_init_Debug 			:= nFB_init_Debug + 1; // Debug Remove
 
 tCmdTimeout(IN := FALSE, PT := T#3S); 
 tInterCommandDelay(IN := FALSE, PT := T#3S);
@@ -213,6 +214,7 @@ FB_init := TRUE; // Indicate successful initialization]]></ST>
       <LineId Id="1764" Count="0" />
       <LineId Id="1780" Count="0" />
       <LineId Id="1763" Count="0" />
+      <LineId Id="1803" Count="0" />
       <LineId Id="1767" Count="0" />
       <LineId Id="1583" Count="5" />
       <LineId Id="1716" Count="0" />

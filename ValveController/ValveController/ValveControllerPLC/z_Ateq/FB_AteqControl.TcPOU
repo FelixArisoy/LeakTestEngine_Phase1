@@ -20,7 +20,8 @@ VAR_OUTPUT
 	// ##### DEBUG #####
 	abDebug_AutoSeq 	: ARRAY[0..19] OF BOOL; // DEbug REmove
    	abDebug_CmdHandler	: ARRAY[0..19] OF BOOL; // DEbug REmove
-   	nCounter			: DINT; // DEbug REmove
+	nFB_init_DebugATEQControl	: DINT;
+   	nFB_init_DebugCmdHandler			: DINT; // DEbug REmove
    	stIoDebug   	: ST_AteqMappedIo; // DEbug REmove
 END_VAR
 VAR
@@ -44,7 +45,7 @@ M_AutoSequence();
 
 // ##### DEBUG #####
 abDebug_CmdHandler 	:= fbCmdHandler.abDebug;
-nCounter	:= fbCmdHandler.nCounter;
+nFB_init_DebugCmdHandler	:= fbCmdHandler.nFB_init_Debug;
 stIoDebug	:= fbCmdHandler.stIoDebug;
 
 // You can add other monitoring or manual command calls here later for Param Read/Write or Manual Control of Methods etc.
@@ -59,12 +60,12 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[// Initialize internal state variables to a known default state
-
+nFB_init_DebugATEQControl 	:= nFB_init_DebugATEQControl + 1; // Debug Remove
 eAutoSequenceState 		:= E_AteqAutoRun.SEQ_IDLE;
 bAutoSequenceDone 		:= TRUE;
 bAutoSeqResetRequest	:= FALSE;
 bAutoSeqResetDone		:= FALSE;
-FB_AteqControl.tTestTimeout(IN := FALSE);
+tTestTimeout(IN := FALSE);
 
 FB_init := TRUE; // Indicate successful initialization]]></ST>
       </Implementation>
@@ -81,7 +82,8 @@ END_VAR]]></Declaration>
         <ST><![CDATA[////#############################	SEQUENCE START	#############################	
 // Detect rising edge of bRunAutoTestSequence outside of the CASE to initiate the sequence
 // SEQ will be hold in TEST_DONE or ERROR states once started
-IF fbR_TRIG_RunSequence(CLK := bRunAutoTestSequence).Q AND eAutoSequenceState = E_AteqAutoRun.SEQ_IDLE THEN
+fbR_TRIG_RunSequence(CLK := bRunAutoTestSequence);
+IF fbR_TRIG_RunSequence.Q AND eAutoSequenceState = E_AteqAutoRun.SEQ_IDLE THEN
     bAutoSequenceDone := FALSE; // Reset done flag
     eAutoSequenceState := E_AteqAutoRun.SEQ_WAIT_READY; // Start the sequence
 END_IF
@@ -233,7 +235,7 @@ CASE eAutoSequenceState OF
 				
 				IF fbCmdHandler.bResetDone THEN
 					eAutoSequenceState := E_AteqAutoRun.SEQ_WAIT_COMPLETION;
-                	FB_AteqControl.tTestTimeout(IN := FALSE); //Reset Delay buffer before next step
+                	tTestTimeout(IN := FALSE); //Reset Delay buffer before next step
             	
 					abDebug_AutoSeq[8] := TRUE;
 				END_IF
@@ -248,8 +250,8 @@ CASE eAutoSequenceState OF
 //###############################	WAIT FOR TEST COMPLETION	###############################
 // ATEQ signals via bCycleEnd; Monitored in fbCmdHandler; Ateq Handshake		
     E_AteqAutoRun.SEQ_WAIT_COMPLETION: 
-        IF NOT FB_AteqControl.tTestTimeout.IN THEN
-            FB_AteqControl.tTestTimeout(IN := TRUE, PT := GVL_Ateq.tTestTimeOut); // Max test duration
+        IF NOT tTestTimeout.IN THEN
+            tTestTimeout(IN := TRUE, PT := GVL_Ateq.tTestTimeOut); // Max test duration
         END_IF
         
 		CASE eCmdStatusLocal OF
@@ -258,7 +260,7 @@ CASE eAutoSequenceState OF
 				
 				IF fbCmdHandler.bResetDone THEN
 					eAutoSequenceState := E_AteqAutoRun.SEQ_READ_LAST_RESULT;
-            		FB_AteqControl.tTestTimeout(IN := FALSE);
+            		tTestTimeout(IN := FALSE);
 
 					abDebug_AutoSeq[10] := TRUE; 
 				END_IF
@@ -269,9 +271,8 @@ CASE eAutoSequenceState OF
 		END_CASE
         
             
-        IF FB_AteqControl.tTestTimeout.Q THEN 
-            eAutoSequenceState := E_AteqAutoRun.SEQ_TIMEOUT;
-            FB_AteqControl.tTestTimeout(IN := FALSE); 	
+        IF tTestTimeout.Q THEN 
+            eAutoSequenceState := E_AteqAutoRun.SEQ_TIMEOUT;	
 			
 			abDebug_AutoSeq[12] := TRUE;					
         END_IF;
@@ -333,7 +334,7 @@ CASE eAutoSequenceState OF
 		
 //###############################	RESET SEQUENCE	###############################		
 	E_AteqAutoRun.SEQ_RESET:
-		FB_AteqControl.tTestTimeout(IN := FALSE);
+		tTestTimeout(IN := FALSE);
 		tSeqTimeout(IN := FALSE);
 		eCmdStatusLocal := M_ResetDevice();
         
@@ -570,9 +571,7 @@ END_VAR
       </Get>
     </Property>
     <LineIds Name="FB_AteqControl">
-      <LineId Id="422" Count="1" />
-      <LineId Id="853" Count="1" />
-      <LineId Id="424" Count="5" />
+      <LineId Id="935" Count="9" />
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.FB_init">
@@ -589,6 +588,7 @@ END_VAR
       <LineId Id="2895" Count="0" />
       <LineId Id="2602" Count="0" />
       <LineId Id="2897" Count="0" />
+      <LineId Id="2899" Count="0" />
       <LineId Id="2606" Count="3" />
       <LineId Id="2896" Count="0" />
       <LineId Id="2610" Count="1" />
@@ -601,7 +601,8 @@ END_VAR
       <LineId Id="2898" Count="0" />
       <LineId Id="2617" Count="0" />
       <LineId Id="2619" Count="9" />
-      <LineId Id="2630" Count="216" />
+      <LineId Id="2630" Count="163" />
+      <LineId Id="2795" Count="51" />
       <LineId Id="2884" Count="0" />
       <LineId Id="2877" Count="2" />
       <LineId Id="2850" Count="4" />

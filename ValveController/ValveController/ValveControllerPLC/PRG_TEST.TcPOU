@@ -5,7 +5,7 @@
 VAR
 
     fbTest_AteqComm   	: FB_Test_AteqComm; // Your test suite FB instance
-	fbTest_AteqControl	: FB_Test_AteqControl;
+	
 END_VAR
 
 

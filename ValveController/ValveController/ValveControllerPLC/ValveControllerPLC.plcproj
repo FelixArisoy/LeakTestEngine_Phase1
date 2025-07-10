@@ -117,9 +117,6 @@
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="z_AteqTest\FB_Test_AteqControl.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="z_AteqTest\FB_Test_AteqComm.TcPOU">
       <SubType>Code</SubType>
     </Compile>
