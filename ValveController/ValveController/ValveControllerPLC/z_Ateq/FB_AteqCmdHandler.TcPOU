@@ -189,18 +189,16 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[// Initialize state on FB instance creation/reset
-
-eCurrentState 		:= E_AteqHandshake.CMD_IDLE; 
-nFB_init_Debug 			:= nFB_init_Debug + 1; // Debug Remove
+(*
+eCurrentState 	:= E_AteqHandshake.CMD_IDLE; 
+nFB_init_Debug 	:= nFB_init_Debug + 1; // Debug Remove
 
 tCmdTimeout(IN := FALSE, PT := T#3S); 
 tInterCommandDelay(IN := FALSE, PT := T#3S);
 
 fbR_TRIG_CmdTrigger(CLK := FALSE);
 fbR_TRIG_ErrorCodeFFFF(CLK := FALSE);
-//fbR_TRIG_CmdDone(CLK := FALSE); 
-
-FB_init := TRUE; // Indicate successful initialization]]></ST>
+//fbR_TRIG_CmdDone(CLK := FALSE); *)]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_AteqCmdHandler">
@@ -267,8 +265,6 @@ FB_init := TRUE; // Indicate successful initialization]]></ST>
       <LineId Id="47" Count="0" />
       <LineId Id="49" Count="0" />
       <LineId Id="48" Count="0" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="7" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

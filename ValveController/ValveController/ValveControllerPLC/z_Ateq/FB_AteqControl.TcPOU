@@ -59,15 +59,13 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[// Initialize internal state variables to a known default state
+        <ST><![CDATA[(*// Initialize internal state variables to a known default state
 nFB_init_DebugATEQControl 	:= nFB_init_DebugATEQControl + 1; // Debug Remove
 eAutoSequenceState 		:= E_AteqAutoRun.SEQ_IDLE;
 bAutoSequenceDone 		:= TRUE;
-bAutoSeqResetRequest	:= FALSE;
+//bAutoSeqResetRequest	:= FALSE;
 bAutoSeqResetDone		:= FALSE;
-tTestTimeout(IN := FALSE);
-
-FB_init := TRUE; // Indicate successful initialization]]></ST>
+tTestTimeout(IN := FALSE);*)]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_AutoSequence" Id="{470ae35c-cda6-49a5-a2ba-29d25da98e8a}">
@@ -592,8 +590,6 @@ END_VAR
       <LineId Id="20" Count="0" />
       <LineId Id="26" Count="0" />
       <LineId Id="7" Count="0" />
-      <LineId Id="18" Count="0" />
-      <LineId Id="17" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_AutoSequence">
       <LineId Id="2895" Count="0" />

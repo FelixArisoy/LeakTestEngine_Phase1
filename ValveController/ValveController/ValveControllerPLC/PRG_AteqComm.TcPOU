@@ -3,13 +3,14 @@
   <POU Name="PRG_AteqComm" Id="{a3d4985a-23a4-4261-9530-cafe9c795619}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_AteqComm
 VAR
+	nMaxDeviceCount : UINT;
 	nDeviceIndex    : UINT;
 //####### Map Io #######
-    astAteqComm   		: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF FB_AteqComm;
+    afbAteqComm   		: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF FB_AteqComm;
     astAteqMappedIo 	: ARRAY[0..GVL_Ateq.nMaxDeviceCount - 1] OF ST_AteqMappedIo;
 	astAteqRawIo   		: ARRAY[0..GVL_Ateq.nMaxDeviceCount - 1] OF ST_AteqRawIo;
 //####### Control Ateq #######  
-	fbAteqControl		: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF FB_AteqControl;
+	afbAteqControl		: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF FB_AteqControl;
 	nProgramNumber		: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF WORD;
 	bRunAutoTestSequence: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF BOOL;
 	bAutoSequenceDone	: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF BOOL;
@@ -34,24 +35,27 @@ VAR
 
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[FOR nDeviceIndex := 0 TO GVL_Ateq.nMaxDeviceCount - 1 DO
+      <ST><![CDATA[//GVL_Ateq.eDeviceEndianSetTo := E_DeviceEndianness.BigEndian; // Profinet Setup
+// Max num of device set as constant in GVL_Ateq
+(*IF (nMaxDeviceCount := GVL_Ateq.nMaxDeviceCount) > 0 THEN
+FOR nDeviceIndex := 0 TO MIN(nMaxDeviceCount - 1, 3) DO // Prevent unsafe access for out of bound GVL tag needed later
    
-	astAteqComm[nDeviceIndex](
+	afbAteqComm[nDeviceIndex](
         							nDeviceIndex    := nDeviceIndex,
         							stRawIo			:= astAteqRawIo[nDeviceIndex],
         							stMappedIo		:= astAteqMappedIo[nDeviceIndex]
     							);
-	
-	fbAteqControl[nDeviceIndex](	
+	(*
+	afbAteqControl[nDeviceIndex](	
 									nProgramNumber			:= nProgramNumber[nDeviceIndex],
 									bRunAutoTestSequence 	:= bRunAutoTestSequence[nDeviceIndex],
 									bAutoSeqResetRequest	:= bAutoSeqResetRequest[nDeviceIndex],
 									stIo					:= astAteqMappedIo[nDeviceIndex],
-								);
+								); *)
 END_FOR
-
+END_IF
 	
-	
+	*)
 
 
 
@@ -124,15 +128,8 @@ END_IF
 ]]></ST>
     </Implementation>
     <LineIds Name="PRG_AteqComm">
-      <LineId Id="860" Count="6" />
-      <LineId Id="997" Count="0" />
-      <LineId Id="1002" Count="0" />
-      <LineId Id="998" Count="3" />
-      <LineId Id="867" Count="1" />
-      <LineId Id="986" Count="1" />
-      <LineId Id="886" Count="0" />
-      <LineId Id="888" Count="0" />
-      <LineId Id="891" Count="67" />
+      <LineId Id="1259" Count="1" />
+      <LineId Id="1170" Count="87" />
       <LineId Id="155" Count="0" />
     </LineIds>
   </POU>
