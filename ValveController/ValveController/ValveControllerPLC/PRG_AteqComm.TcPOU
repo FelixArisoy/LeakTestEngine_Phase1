@@ -4,17 +4,24 @@
     <Declaration><![CDATA[PROGRAM PRG_AteqComm
 VAR
 	nDeviceIndex    : UINT;
-	
+//####### Map Io #######
     astAteqComm   		: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF FB_AteqComm;
     astAteqMappedIo 	: ARRAY[0..GVL_Ateq.nMaxDeviceCount - 1] OF ST_AteqMappedIo;
 	astAteqRawIo   		: ARRAY[0..GVL_Ateq.nMaxDeviceCount - 1] OF ST_AteqRawIo;
-  
-    bCommandSent       : BOOL := FALSE;
+//####### Control Ateq #######  
+	fbAteqControl		: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF FB_AteqControl;
+	nProgramNumber		: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF WORD;
+	bRunAutoTestSequence: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF BOOL;
+	bAutoSequenceDone	: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF BOOL;
+	bAutoSeqResetRequest: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF BOOL;
+	
+  	
+    // DEBUG variables for delay and array storage:
+	bCommandSent       : BOOL := FALSE;
     bEchoReceived      : BOOL := FALSE;
     tStartTime         : TIME;
     tResponseTime      : TIME;
 
-    //variables for delay and array storage:
     fbDelayBetweenTriggers : TON;
     tDelayTimeBetweenTriggers : TIME := T#1S; // Adjust this as needed (e.g., 1 second)
 
@@ -24,16 +31,7 @@ VAR
     bDelayFinished     : BOOL := FALSE;        // Flag to indicate delay completion
     bTriggerReady      : BOOL := TRUE;         // Flag to indicate next trigger is ready
 
-	
-	fbAteqControl		: FB_AteqControl;
-	bRunAteqSequence	: BOOL;
-	bAutoSequenceDone	: BOOL;
-	
 
-
-	bRunAutoTestSequence: BOOL;
-	bAutoSeqResetRequest: BOOL;
-	nProgramNumber: WORD;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[FOR nDeviceIndex := 0 TO GVL_Ateq.nMaxDeviceCount - 1 DO
@@ -44,35 +42,20 @@ END_VAR]]></Declaration>
         							stMappedIo		:= astAteqMappedIo[nDeviceIndex]
     							);
 	
+	fbAteqControl[nDeviceIndex](	
+									nProgramNumber			:= nProgramNumber[nDeviceIndex],
+									bRunAutoTestSequence 	:= bRunAutoTestSequence[nDeviceIndex],
+									bAutoSeqResetRequest	:= bAutoSeqResetRequest[nDeviceIndex],
+									stIo					:= astAteqMappedIo[nDeviceIndex],
+								);
 END_FOR
 
-IF bRunAteqSequence THEN
-    // This single line executes the FB_AteqControl's main implementation
-    // (which contains your M_AutoTestSequence logic)
-    fbAteqControl(	
-					nProgramNumber			:= nProgramNumber,
-					bRunAutoTestSequence 	:= TRUE,
-					bAutoSeqResetRequest	:= bAutoSeqResetRequest,
-					stIo					:= astAteqMappedIo[0],
-);
 	
 	
 
 
-ELSIF NOT bRunAteqSequence THEN
-// This is to keep FB's "alive" even when not "active".
-    fbAteqControl(	
-					nProgramNumber			:= nProgramNumber,
-					bRunAutoTestSequence 	:= FALSE,
-					bAutoSeqResetRequest	:= bAutoSeqResetRequest,
-					stIo					:= astAteqMappedIo[0],
-);
-END_IF
 
-bAutoSequenceDone	:= fbAteqControl.bAutoSequenceDone;
-
-
-
+(*
 // Response DEBUG
 
 // Master switch to start/stop the response time measurement sequence
@@ -137,18 +120,18 @@ ELSE // bTestActive is FALSE (test is not running)
     bDelayFinished := TRUE; // Ready for test to start
     bTriggerReady := TRUE;  // Ready to send first trigger when bTestActive becomes TRUE
 END_IF
-
+*)
 ]]></ST>
     </Implementation>
     <LineIds Name="PRG_AteqComm">
-      <LineId Id="860" Count="13" />
-      <LineId Id="973" Count="0" />
-      <LineId Id="965" Count="3" />
-      <LineId Id="961" Count="1" />
-      <LineId Id="876" Count="0" />
-      <LineId Id="878" Count="2" />
-      <LineId Id="975" Count="4" />
-      <LineId Id="885" Count="3" />
+      <LineId Id="860" Count="6" />
+      <LineId Id="997" Count="0" />
+      <LineId Id="1002" Count="0" />
+      <LineId Id="998" Count="3" />
+      <LineId Id="867" Count="1" />
+      <LineId Id="986" Count="1" />
+      <LineId Id="886" Count="0" />
+      <LineId Id="888" Count="0" />
       <LineId Id="891" Count="67" />
       <LineId Id="155" Count="0" />
     </LineIds>

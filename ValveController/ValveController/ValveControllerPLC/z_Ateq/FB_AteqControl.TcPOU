@@ -199,7 +199,7 @@ CASE eAutoSequenceState OF
 			
 			abDebug_AutoSeq[5] := TRUE;
 			ELSE
-				bCmdHandlerResetREquest := TRUE;
+				bCmdHandlerResetRequest := TRUE;
         END_IF
 
         CASE eCmdStatusLocal OF
@@ -368,7 +368,8 @@ VAR
   
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[// use later 
+;]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_ParamWrite" Id="{efef9bf2-d12a-4715-8734-c95ea8380a79}">
@@ -377,7 +378,8 @@ VAR
   
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[// use later 
+;]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_ProgramSelect" Id="{3f180883-986e-4f1d-b18a-91a389fa3ca6}">
@@ -400,12 +402,12 @@ IF fbCmdHandler.eStatus = CMD_IDLE THEN
 ELSE
     M_ProgramSelect := fbCmdHandler.eStatus;
 END_IF
-
+(*
 // Clear the program number if needed
 IF fbCmdHandler.eStatus <> E_AteqHandshake.CMD_IDLE OR fbCmdHandler.eStatus = E_AteqHandshake.CMD_ERROR OR fbCmdHandler.eStatus = E_AteqHandshake.CMD_TIMEOUT THEN
     stIo.stWrite.nProgramNumber := 0; 
 END_IF
-]]></ST>
+*)]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_ProgramStart" Id="{df77a28a-31ae-4bb7-aada-fdddd0be9668}">
@@ -499,11 +501,20 @@ END_IF
       </Implementation>
     </Method>
     <Method Name="M_ResetDevice" Id="{d83d834a-bdff-4813-91dd-64475ca219aa}">
-      <Declaration><![CDATA[{warning 'add method implementation '}
-METHOD M_ResetDevice : E_AteqHandshake
+      <Declaration><![CDATA[METHOD M_ResetDevice : E_AteqHandshake
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[
+	fbCmdHandler(
+   					bResetRequest 	:= bCmdHandlerResetRequest,
+					bCmdEcho        := stIo.stRead.stEcho.bReset,
+    				bCmdError       := stIo.stRead.stErrorCode.bReset,
+    				bCmdTrigger     := stIo.stWrite.stCommands.bReset, // This is the IN_OUT - FB_CommandHandler will manage it
+    				stIo_Ref        := stIo,
+					eStatus			=> M_ResetDevice 
+);
+
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_ResetFIFO" Id="{d2dd068a-bc41-4e1b-8fe3-37e11fad9b4b}">
@@ -622,8 +633,10 @@ END_VAR
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ParamRead">
       <LineId Id="4" Count="0" />
+      <LineId Id="8" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ParamWrite">
+      <LineId Id="8" Count="0" />
       <LineId Id="4" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ProgramSelect">
@@ -679,6 +692,7 @@ END_VAR
       <LineId Id="28" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ResetDevice">
+      <LineId Id="5" Count="9" />
       <LineId Id="4" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ResetFIFO">
