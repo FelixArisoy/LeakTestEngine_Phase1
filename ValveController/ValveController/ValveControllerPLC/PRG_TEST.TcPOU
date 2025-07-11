@@ -4,7 +4,7 @@
     <Declaration><![CDATA[PROGRAM PRG_TEST
 VAR
 
-    fbTest_AteqComm   	: FB_Test_AteqComm; // Your test suite FB instance
+    //fbTest_AteqComm   	: FB_Test_AteqComm; // Your test suite FB instance
 	
 END_VAR
 
