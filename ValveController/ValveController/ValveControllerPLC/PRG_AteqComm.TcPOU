@@ -32,23 +32,35 @@ VAR
     bDelayFinished     : BOOL := FALSE;        // Flag to indicate delay completion
     bTriggerReady      : BOOL := TRUE;         // Flag to indicate next trigger is ready
 
-
+	eAteqCallerState	: E_AteqCallerState;
 	nInitIndex : UINT := 0;
     bAteqControlInitialized : BOOL := FALSE;;
+	
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[// Initialize max device count once
-nMaxDeviceCount := GVL_Ateq.nMaxDeviceCount;
+(*nMaxDeviceCount := GVL_Ateq.nMaxDeviceCount;
 
-IF NOT bAteqControlInitialized THEN
-	IF nInitIndex <= (nMaxDeviceCount - 1) THEN
+CASE eAteqCallerState OF
+	
+	E_AteqCallerState.INIT:
+		
+	(*IF nInitIndex <= (nMaxDeviceCount - 1) THEN
 		afbAteqControl[nInitIndex].FB_Init(TRUE, TRUE);
-		nInitIndex := nInitIndex + 1;
-	ELSE
-		bAteqControlInitialized := TRUE; // Done initializing all FBs
-	END_IF
-ELSE
-	IF nMaxDeviceCount > 0 THEN
+		
+		IF afbAteqControl[nInitIndex].bInitialized THEN
+			nInitIndex := nInitIndex + 1;
+		END_IF
+		
+	ELSE*)
+		eAteqCallerState := E_AteqCallerState.CONTROL; // Done initializing all FBs
+	//END_IF
+	
+	E_AteqCallerState.CONTROL:
+*)	
+GVL_Ateq.eDeviceEndianSetTo := E_DeviceEndianness.BigEndian;
+nMaxDeviceCount 	:= GVL_Ateq.nMaxDeviceCount;	
+IF nMaxDeviceCount > 0 THEN
 		FOR nDeviceIndex := 0 TO nMaxDeviceCount - 1 DO
 			afbAteqComm[nDeviceIndex](
 				nDeviceIndex 	:= nDeviceIndex,
@@ -64,7 +76,11 @@ ELSE
 			);
 		END_FOR
 	END_IF
-END_IF
+	
+//END_CASE
+
+
+
 
 (*
 // Response DEBUG
@@ -135,9 +151,27 @@ END_IF
 ]]></ST>
     </Implementation>
     <LineIds Name="PRG_AteqComm">
-      <LineId Id="1490" Count="5" />
-      <LineId Id="1499" Count="20" />
-      <LineId Id="1383" Count="67" />
+      <LineId Id="1490" Count="1" />
+      <LineId Id="1524" Count="1" />
+      <LineId Id="1527" Count="0" />
+      <LineId Id="1529" Count="0" />
+      <LineId Id="1531" Count="0" />
+      <LineId Id="1545" Count="0" />
+      <LineId Id="1537" Count="7" />
+      <LineId Id="1534" Count="0" />
+      <LineId Id="1532" Count="1" />
+      <LineId Id="1530" Count="0" />
+      <LineId Id="1565" Count="0" />
+      <LineId Id="1547" Count="0" />
+      <LineId Id="1564" Count="0" />
+      <LineId Id="1548" Count="13" />
+      <LineId Id="1546" Count="0" />
+      <LineId Id="1562" Count="0" />
+      <LineId Id="1528" Count="0" />
+      <LineId Id="1526" Count="0" />
+      <LineId Id="1492" Count="0" />
+      <LineId Id="1502" Count="0" />
+      <LineId Id="1384" Count="66" />
       <LineId Id="155" Count="0" />
     </LineIds>
   </POU>

@@ -81,6 +81,9 @@
     <Compile Include="DUTs\AteqControl\E_AteqAutoRun.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\AteqControl\E_AteqCallerState.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\AteqControl\E_AteqHandshake.TcDUT">
       <SubType>Code</SubType>
     </Compile>
