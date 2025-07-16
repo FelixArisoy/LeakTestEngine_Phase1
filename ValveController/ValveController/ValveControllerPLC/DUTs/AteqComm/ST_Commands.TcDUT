@@ -5,24 +5,24 @@
 STRUCT
 
     (* Byte 0 - 00h *)
-    bReset                     : BOOL; // Bit 0
-    bStart                     : BOOL; // Bit 1
-    bSpecialCycle              : BOOL; // Bit 2
-    bProgramSelect             : BOOL; // Bit 3
-    bReadFIFO           		: BOOL; // Bit 4
-    bReadParameters            : BOOL; // Bit 5
-    bWriteParameters           : BOOL; // Bit 6
-    bResetFifo                 : BOOL; // Bit 7
+    bReset                     	: BOOL; // Bit 0
+    bStart                     	: BOOL; // Bit 1
+    bSpecialCycle              	: BOOL; // Bit 2
+    bProgramSelect             	: BOOL; // Bit 3
+    bReadFIFO					: BOOL; // Bit 4
+    bReadParameters            	: BOOL; // Bit 5
+    bWriteParameters           	: BOOL; // Bit 6
+    bResetFifo                 	: BOOL; // Bit 7
 
     (* Byte 1 - 01h *)
-    bReadInstrumentConfig      : BOOL; // Bit 0
-    bReadConfig	               : BOOL; // Bit 1
-    bReadFunctionBits          : BOOL; // Bit 2
-    bWriteExtMenu              : BOOL; // Bit 3
-    bWriteFunctionBits         : BOOL; // Bit 4
-    bReadProgramName           : BOOL; // Bit 5
-    bWriteProgramName          : BOOL; // Bit 6
-    bReadLastResult            : BOOL; // Bit 7
+    bReadInstrumentConfig      	: BOOL; // Bit 0
+    bReadConfig	               	: BOOL; // Bit 1
+    bReadFunctionBits          	: BOOL; // Bit 2
+    bWriteExtMenu              	: BOOL; // Bit 3
+    bWriteFunctionBits         	: BOOL; // Bit 4
+    bReadProgramName           	: BOOL; // Bit 5
+    bWriteProgramName          	: BOOL; // Bit 6
+    bReadLastResult            	: BOOL; // Bit 7
 
 END_STRUCT
 END_TYPE

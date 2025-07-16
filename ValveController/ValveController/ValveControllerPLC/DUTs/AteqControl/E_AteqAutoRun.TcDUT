@@ -4,12 +4,12 @@
     <Declaration><![CDATA[TYPE E_AteqAutoRun :
 (	
     SEQ_IDLE,             	// Auto sequence is idle, waiting for trigger
-    SEQ_WAIT_READY,       	// Waiting for ATEQ to be in a ready state
+
     SEQ_RESET_FIFO,       	// Executing FIFO clear command
     SEQ_PROGRAM_SELECT,   	// Selecting test program (if applicable)
     SEQ_AUTO_ZERO,        	// Executing Auto Zero command
     SEQ_START_PROGRAM,    	// Starting the test program
-    SEQ_WAIT_COMPLETION,  	// Waiting for test program to finish
+
     SEQ_READ_LAST_RESULT, 	// Reading the last test result
     SEQ_READ_FIFO_RESULTS,	// Reading FIFO results (if multiple)
     SEQ_TEST_DONE,        	// Auto sequence completed successfully

@@ -3,8 +3,8 @@
   <Itf Name="I_LeakTester" Id="{11a10af9-8b0f-41e4-8632-69cc6e80ba3c}">
     <Declaration><![CDATA[INTERFACE I_LeakTester
 ]]></Declaration>
-    <Method Name="M_AutoSequence" Id="{c62b52d9-88f7-441c-b964-c57a050aa619}">
-      <Declaration><![CDATA[METHOD M_AutoSequence
+    <Method Name="M_AutoSeq" Id="{c62b52d9-88f7-441c-b964-c57a050aa619}">
+      <Declaration><![CDATA[METHOD M_AutoSeq
 VAR
 	
 END_VAR

@@ -13,6 +13,7 @@ VAR_IN_OUT
 END_VAR
 VAR_OUTPUT
 	eAutoSequenceState 	: E_AteqAutoRun;
+	bAutoSeqRunning 	: BOOL;
    	bAutoSequenceDone 	: BOOL; // Indicates completion of the auto sequence
 	bAutoSeqError		: BOOL;
    	bAutoSeqResetDone	: BOOL;
@@ -30,15 +31,24 @@ VAR
 	fbCmdHandler : FB_AteqCmdHandler;	//Therefore, CASE stuck on IDLE, doesnt progress to the next steps.	
 	bCmdHandlerInitialized: BOOL;									
 	bCmdHandlerResetRequest : BOOL;
-									
+	
+	eAutoSeqCmdStatus : E_AteqHandshake; // AUTO SEQ variable to hold command status								
 	stResultsRaw		: ST_AteqResultsRaw;
 	stLastResults		: ST_AteqResultsDecoded;
     astFIFO				: ARRAY[0..7] OF ST_AteqResultsDecoded;
 
     // Internal timers USED IN Auto Sequence
     tTestTimeout 	: TON; 
-    tSeqTimeout 	: TON; 
-	
+    tSeqTimeout 	: TON;
+
+
+//Auto Seq Step Flags 
+	bFifoResetComplete		: BOOL;
+	bAutoZeroComplete		: BOOL;   
+	bProgramSelectComplete	: BOOL;
+	bProgramRunComplete		: BOOL;
+	bReadLastResultComplete	: BOOL;
+	bResetDeviceDone : BOOL;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[
@@ -64,7 +74,7 @@ bInitialized := TRUE;
 *)
 
 // Main call for the automatic test sequence
-M_AutoSequence();
+M_AutoSeq();
 
 
 // ##### DEBUG #####
@@ -75,10 +85,11 @@ stIoDebug	:= fbCmdHandler.stIoDebug;
 // You can add other monitoring or manual command calls here later for Param Read/Write or Manual Control of Methods etc.
 // However, M_AutoSequence should be the primary driver for running Ateq programs.]]></ST>
     </Implementation>
-    <Method Name="M_AutoSequence" Id="{470ae35c-cda6-49a5-a2ba-29d25da98e8a}">
-      <Declaration><![CDATA[METHOD M_AutoSequence
+    <Method Name="M_AutoSeq" Id="{470ae35c-cda6-49a5-a2ba-29d25da98e8a}">
+      <Declaration><![CDATA[METHOD M_AutoSeq
 VAR
-    eCmdStatusLocal : E_AteqHandshake; // Local variable to hold command status
+    
+	
 	fbR_TRIG_RunSequence : R_TRIG;
 	fbR_TRIG_AutoSeqResetRequest : R_TRIG;
 	i : INT;
@@ -86,289 +97,105 @@ VAR
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[////#############################	SEQUENCE START	#############################	
-// Detect rising edge of bRunAutoTestSequence outside of the CASE to initiate the sequence
 // SEQ will be hold in TEST_DONE or ERROR states once started
-fbR_TRIG_RunSequence(CLK := bRunAutoTestSequence);
-IF fbR_TRIG_RunSequence.Q AND eAutoSequenceState = E_AteqAutoRun.SEQ_IDLE THEN
-    bAutoSequenceDone := FALSE; // Reset done flag
-    eAutoSequenceState := E_AteqAutoRun.SEQ_WAIT_READY; // Start the sequence
-END_IF
 
 ////#############################	SEQUENCE TMEOUT	#############################
-// SEQ start requested but didnot start. 
-
-IF bRunAutoTestSequence AND eAutoSequenceState = E_AteqAutoRun.SEQ_IDLE AND eAutoSequenceState <> E_AteqAutoRun.SEQ_TEST_DONE AND eAutoSequenceState <> E_AteqAutoRun.SEQ_ERROR THEN
+// SEQ start requested but didnot start check 
+IF fbR_TRIG_RunSequence.Q AND 
+	eAutoSequenceState <> E_AteqAutoRun.SEQ_TEST_DONE AND 
+	eAutoSequenceState <> E_AteqAutoRun.SEQ_ERROR AND 
+	eAutoSequenceState <> E_AteqAutoRun.SEQ_TIMEOUT THEN
+	
 	tSeqTimeout(IN := TRUE, PT := GVL_Ateq.tAutoSeqTimeout); 
 	IF tSeqTimeout.Q THEN
 		eAutoSequenceState := E_AteqAutoRun.SEQ_TIMEOUT;
 	END_IF 
 END_IF
-// Always call the timer
+// ALWAYS call the timer
 tSeqTimeout(IN := tSeqTimeout.IN, PT := tSeqTimeout.PT);
-
-
+// ALWAYS Sequence Reset Request Check outside of CASE
+		fbR_TRIG_AutoSeqResetRequest(CLK := bAutoSeqResetRequest);
+		IF fbR_TRIG_AutoSeqResetRequest.Q THEN
+			eAutoSequenceState 	:= E_AteqAutoRun.SEQ_RESET; 		
+		END_IF
 
 CASE eAutoSequenceState OF
 	
-//###############################	ATEQ IDLE	###############################	
-    E_AteqAutoRun.SEQ_IDLE:
-        FOR i := 0 TO 9 DO //Debug remove
-		abDebug_AutoSeq[i] := FALSE; 
-		END_FOR;
+//###########	SEQUENCE IDLE / Check IF ATEQ READY once Seq triggered	###############################	
+	E_AteqAutoRun.SEQ_IDLE:
 		IF bAutoSeqResetDone THEN
 			bAutoSeqResetRequest := FALSE;
+			bAutoSeqRunning		:= FALSE;
 		END_IF
-
-		
-//###############################	ATEQ READY	###############################
-// Wait IF ATEQ is BUSY or not connected CycleEnd = 0, if ATEQ is ready CycleEnd = 1			
-    E_AteqAutoRun.SEQ_WAIT_READY: 
-        IF stIo.stRead.stRealtimeTestResults.bCycleEnd THEN 
-            eAutoSequenceState := E_AteqAutoRun.SEQ_RESET_FIFO;
-
-            abDebug_AutoSeq[0] := TRUE;
-        END_IF;
-
+		fbR_TRIG_RunSequence(CLK := bRunAutoTestSequence);
+		// Wait IF ATEQ is BUSY or not connected CycleEnd = 0, if ATEQ is ready CycleEnd = 1
+		IF fbR_TRIG_RunSequence.Q AND stIo.stRead.stRealtimeTestResults.bCycleEnd THEN
+   			bAutoSequenceDone 	:= FALSE; // Reset done flag
+			bRunAutoTestSequence:= FALSE;
+			bAutoSeqRunning		:= TRUE;
+    		eAutoSequenceState 	:= E_AteqAutoRun.SEQ_RESET_FIFO;
+			abDebug_AutoSeq[19] := TRUE;
+		END_IF
 
 //###########	CLEAR FIFO MEMORY: BEFORE EVERY TEST CYCLE STARTS	###########			
     E_AteqAutoRun.SEQ_RESET_FIFO: 
 	
-	IF stIo.stRead.nResultsInFifo <> 0 THEN // Execute if FIFO has data
-		eCmdStatusLocal := M_ResetFIFO();
-		IF eCmdStatusLocal = E_AteqHandshake.CMD_IDLE THEN
-			stIo.stWrite.stCommands.bResetFIFO 	:= TRUE;
-			ELSE
-				bCmdHandlerResetRequest := TRUE;
-		END_IF
-		    
-		CASE eCmdStatusLocal OF
-        E_AteqHandshake.CMD_EOC:
-			bCmdHandlerResetRequest := TRUE;
-			
-			IF fbCmdHandler.bResetDone THEN
-				eAutoSequenceState := E_AteqAutoRun.SEQ_AUTO_ZERO;
-			END_IF
+		M_ResetFIFO();
 
-            abDebug_AutoSeq[1] := TRUE; 
-
-        E_AteqHandshake.CMD_ERROR, E_AteqHandshake.CMD_TIMEOUT:
-            eAutoSequenceState := E_AteqAutoRun.SEQ_ERROR; // add bCmdHandlerResetRequest := TRUE; conditions there,  may be used by HMI for future...
-            
-            abDebug_AutoSeq[2] := TRUE; 
-    END_CASE
-	
-	ELSIF stIo.stRead.nResultsInFifo = 0 THEN // MOVE TO AUTO ZERO STEP IF FIFO = 0
-		eAutoSequenceState := E_AteqAutoRun.SEQ_AUTO_ZERO;
-	ELSE
-		eAutoSequenceState := E_AteqAutoRun.SEQ_ERROR;	 
-	END_IF
-     
 
 //###############################	PERFORM AUTO ZERO	###############################	
     E_AteqAutoRun.SEQ_AUTO_ZERO:  
 		
-        eCmdStatusLocal := M_SpecialCycle(nSpecialCycleId := GVL_AteqSpecialCycle.PiezoAutoZeroReg2); // Special Cycle ID 16#08 for Piezo Auto Zero Reg 2
-       
-       	IF eCmdStatusLocal = E_AteqHandshake.CMD_IDLE THEN
-            stIo.stWrite.stCommands.bSpecialCycle 	:= TRUE;
-			stIo.stWrite.stCommands.bStart 			:= TRUE;
-			
-			abDebug_AutoSeq[3] := TRUE;
-			ELSE
-				bCmdHandlerResetRequest := TRUE;
-        END_IF
-
-        	CASE eCmdStatusLocal OF
-            E_AteqHandshake.CMD_SUCCESS:
-                bCmdHandlerResetRequest 		:= TRUE;
-				stIo.stWrite.stCommands.bStart 	:= FALSE;
-				
-				IF fbCmdHandler.bResetDone THEN
-					eAutoSequenceState := E_AteqAutoRun.SEQ_PROGRAM_SELECT;
-				END_IF
-				
-				     
-            E_AteqHandshake.CMD_ERROR, E_AteqHandshake.CMD_TIMEOUT:
-                eAutoSequenceState := E_AteqAutoRun.SEQ_ERROR;
-                abDebug_AutoSeq[4] := TRUE;
-
-        	END_CASE;
-		
-		
+		M_SpecialCycle(nSpecialCycleId := GVL_AteqSpecialCycle.PiezoAutoZeroReg2); // Special Cycle ID 16#08 for Piezo Auto Zero Reg 2
+    
+	
 //###############################	SELECT TEST PROGRAM	###############################			
     E_AteqAutoRun.SEQ_PROGRAM_SELECT: 
-        
-        eCmdStatusLocal := M_ProgramSelect(); 
-			
-        IF eCmdStatusLocal = E_AteqHandshake.CMD_IDLE THEN
-            stIo.stWrite.stCommands.bProgramSelect := TRUE;
-			
-			abDebug_AutoSeq[5] := TRUE;
-			ELSE
-				bCmdHandlerResetRequest := TRUE;
-        END_IF
-
-        CASE eCmdStatusLocal OF
-            E_AteqHandshake.CMD_SUCCESS:
-				bCmdHandlerResetRequest := TRUE;
-				
-				IF fbCmdHandler.bResetDone THEN
-					eAutoSequenceState := E_AteqAutoRun.SEQ_START_PROGRAM;
-				END_IF
-                
-            
-            E_AteqHandshake.CMD_ERROR, E_AteqHandshake.CMD_TIMEOUT:
-                eAutoSequenceState := E_AteqAutoRun.SEQ_ERROR;
-                abDebug_AutoSeq[6] := TRUE;
-        END_CASE;
-
 		
-//###############################	RUN TEST PROGRAM	###############################			
+		M_ProgramSelect(); 
+			
+		
+//###############################	START RUNNING TEST PROGRAM	###############################			
     E_AteqAutoRun.SEQ_START_PROGRAM:
-        eCmdStatusLocal := M_ProgramStart();
         
-        IF eCmdStatusLocal = E_AteqHandshake.CMD_IDLE THEN
-            stIo.stWrite.stCommands.bStart := TRUE; 
-			
-			abDebug_AutoSeq[7] := TRUE;
-			ELSE
-				bCmdHandlerResetRequest := TRUE;
-        END_IF
-
-        CASE eCmdStatusLocal OF
-            E_AteqHandshake.CMD_SUCCESS:
-				bCmdHandlerResetRequest := TRUE;
-				
-				IF fbCmdHandler.bResetDone THEN
-					eAutoSequenceState := E_AteqAutoRun.SEQ_WAIT_COMPLETION;
-                	tTestTimeout(IN := FALSE); //Reset Delay buffer before next step
-            	
-					abDebug_AutoSeq[8] := TRUE;
-				END_IF
-                
-            E_AteqHandshake.CMD_ERROR, E_AteqHandshake.CMD_TIMEOUT:
-                eAutoSequenceState := E_AteqAutoRun.SEQ_ERROR;
-				
-                abDebug_AutoSeq[9] := TRUE;
-        END_CASE;
-
-		
-//###############################	WAIT FOR TEST COMPLETION	###############################
-// ATEQ signals via bCycleEnd; Monitored in fbCmdHandler; Ateq Handshake		
-    E_AteqAutoRun.SEQ_WAIT_COMPLETION: 
-        
-            tTestTimeout(IN := TRUE, PT := GVL_Ateq.tTestTimeOut); // Max test duration
+		M_ProgramStart();
        
-        
-		CASE eCmdStatusLocal OF
-			E_AteqHandshake.CMD_SUCCESS:
-			bCmdHandlerResetRequest := TRUE;
-				
-				IF fbCmdHandler.bResetDone THEN
-					eAutoSequenceState := E_AteqAutoRun.SEQ_READ_LAST_RESULT;
-            		tTestTimeout(IN := FALSE);
-
-					abDebug_AutoSeq[10] := TRUE; 
-				END_IF
-				
-			E_AteqHandshake.CMD_ERROR, E_AteqHandshake.CMD_TIMEOUT:
-                eAutoSequenceState := E_AteqAutoRun.SEQ_ERROR;
-				abDebug_AutoSeq[11] := TRUE;
-		END_CASE
-        
-            
-        IF tTestTimeout.Q THEN 
-            eAutoSequenceState := E_AteqAutoRun.SEQ_TIMEOUT;	
-			
-			abDebug_AutoSeq[12] := TRUE;					
-        END_IF;
-        
 		
 //###############################	READ LAST RESULTS	###############################			
     E_AteqAutoRun.SEQ_READ_LAST_RESULT: // Retrieve and store test results
-        eCmdStatusLocal := M_ReadLastResult();
         
-        IF eCmdStatusLocal = E_AteqHandshake.CMD_IDLE THEN
-            stIo.stWrite.stCommands.bReadLastResult := TRUE; 
-			ELSE
-				bCmdHandlerResetRequest := TRUE;
-        END_IF
-
-        CASE eCmdStatusLocal OF
-            E_AteqHandshake.CMD_SUCCESS:
-				bCmdHandlerResetRequest := TRUE;
-				
-				IF fbCmdHandler.bResetDone THEN
-					eAutoSequenceState := E_AteqAutoRun.SEQ_TEST_DONE;
-            	
-					abDebug_AutoSeq[13] := TRUE;
-				END_IF
-                
-            E_AteqHandshake.CMD_ERROR, E_AteqHandshake.CMD_TIMEOUT:
-                eAutoSequenceState := E_AteqAutoRun.SEQ_ERROR;
-				
-				abDebug_AutoSeq[14] := TRUE;
-        END_CASE;
-
+		M_ReadLastResult();
+        
 		
 //###############################	TEST COMPLETED	###############################			
     E_AteqAutoRun.SEQ_TEST_DONE:
-        bAutoSequenceDone 	:= TRUE;
- 			fbR_TRIG_AutoSeqResetRequest(CLK := bAutoSeqResetRequest);
-		IF fbR_TRIG_AutoSeqResetRequest.Q THEN
-			eAutoSequenceState 	:= E_AteqAutoRun.SEQ_RESET; 
-			abDebug_AutoSeq[15] := TRUE;
+    	IF bFifoResetComplete
+		AND bAutoZeroComplete  
+		AND bProgramSelectComplete
+		AND bProgramRunComplete
+		AND bReadLastResultComplete THEN
+		bAutoSequenceDone 	:= TRUE;
+
+        abDebug_AutoSeq[15] := TRUE;
 		END_IF
-        
-//###############################	ERROR SEQUENCE	###############################	
-// add bCmdHandlerResetRequest := TRUE; conditions there,  may be used by HMI for future...		
-    E_AteqAutoRun.SEQ_ERROR: 
-			fbR_TRIG_AutoSeqResetRequest(CLK := bAutoSeqResetRequest);
-		IF fbR_TRIG_AutoSeqResetRequest.Q THEN
-			eAutoSequenceState 	:= E_AteqAutoRun.SEQ_RESET;
-			abDebug_AutoSeq[16] := TRUE;
-		END_IF
-	
 		
+//###############################	ERROR SEQUENCE	###############################			
+    E_AteqAutoRun.SEQ_ERROR: 
+
+		abDebug_AutoSeq[16] := TRUE;
 //###############################	TIMEOUT SEQUENCE	###############################				
     E_AteqAutoRun.SEQ_TIMEOUT: 
-			
-			fbR_TRIG_AutoSeqResetRequest(CLK := bAutoSeqResetRequest);
-		IF fbR_TRIG_AutoSeqResetRequest.Q THEN
-				eAutoSequenceState := E_AteqAutoRun.SEQ_RESET; 
-		END_IF
- 
+
 		abDebug_AutoSeq[17] := TRUE;
 
 		
 //###############################	RESET SEQUENCE	###############################		
 	E_AteqAutoRun.SEQ_RESET:
-		tTestTimeout(IN := FALSE);
-		tSeqTimeout(IN := FALSE);
-		
-		eCmdStatusLocal := M_ResetDevice();
-        
-		abDebug_AutoSeq[18] := TRUE;
-        IF eCmdStatusLocal = E_AteqHandshake.CMD_IDLE THEN
-            stIo.stWrite.stCommands.bReset := TRUE; 
-			ELSE
-				bCmdHandlerResetRequest := TRUE;
-        END_IF
 
-        CASE eCmdStatusLocal OF
-            E_AteqHandshake.CMD_SUCCESS:	
-        		bCmdHandlerResetRequest := TRUE;
-				
-				IF fbCmdHandler.bResetDone THEN
-					eAutoSequenceState 	:= E_AteqAutoRun.SEQ_IDLE;
-					abDebug_AutoSeq[19] := TRUE;
-				END_IF
-				
-			E_AteqHandshake.CMD_ERROR, E_AteqHandshake.CMD_TIMEOUT:
-					eAutoSequenceState := E_AteqAutoRun.SEQ_ERROR;
-					abDebug_AutoSeq[19] := TRUE;	
-		END_CASE			
+		tSeqTimeout(IN := FALSE);
+		M_ResetDevice();
 		
+			
 END_CASE]]></ST>
       </Implementation>
     </Method>
@@ -395,12 +222,12 @@ END_VAR]]></Declaration>
     <Method Name="M_ProgramSelect" Id="{3f180883-986e-4f1d-b18a-91a389fa3ca6}">
       <Declaration><![CDATA[METHOD M_ProgramSelect : E_AteqHandshake
 VAR
-   
+
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[stIo.stWrite.nProgramNumber := nProgramNumber; // Set the program number register
 
-IF fbCmdHandler.eStatus = CMD_IDLE THEN
+
 	fbCmdHandler(
 					bResetRequest 	:= bCmdHandlerResetRequest,
    					bCmdEcho    	:= stIo.stRead.stEcho.bProgramSelect,
@@ -409,9 +236,32 @@ IF fbCmdHandler.eStatus = CMD_IDLE THEN
 					stIo_Ref		:= StIo,
 					eStatus			=> M_ProgramSelect
 );
-ELSE
-    M_ProgramSelect := fbCmdHandler.eStatus;
+
+IF bAutoSeqRunning THEN
+
+        CASE M_ProgramSelect OF
+			CMD_IDLE:
+				IF NOT bProgramSelectComplete THEN
+					stIo.stWrite.stCommands.bProgramSelect := TRUE;
+					abDebug_AutoSeq[3] := TRUE;
+				END_IF
+            CMD_DONE:
+				bProgramSelectComplete := TRUE;
+        	CMD_ERROR:
+            	eAutoSequenceState := E_AteqAutoRun.SEQ_ERROR;
+			CMD_TIMEOUT:
+				eAutoSequenceState := E_AteqAutoRun.SEQ_TIMEOUT;
+        END_CASE;
+	
+	IF bProgramSelectComplete AND M_ProgramSelect = CMD_IDLE THEN
+		eAutoSequenceState := E_AteqAutoRun.SEQ_START_PROGRAM;
+		//bProgramSelected := FALSE;
+	END_IF
 END_IF
+
+
+
+
 (*
 // Clear the program number if needed
 IF fbCmdHandler.eStatus <> E_AteqHandshake.CMD_IDLE OR fbCmdHandler.eStatus = E_AteqHandshake.CMD_ERROR OR fbCmdHandler.eStatus = E_AteqHandshake.CMD_TIMEOUT THEN
@@ -427,7 +277,7 @@ VAR
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
-IF fbCmdHandler.eStatus = CMD_IDLE THEN
+
 	fbCmdHandler(
    					bResetRequest 	:= bCmdHandlerResetRequest,
 					bCmdEcho    	:= stIo.stRead.stEcho.bStart,
@@ -436,12 +286,30 @@ IF fbCmdHandler.eStatus = CMD_IDLE THEN
 					stIo_Ref		:= StIo,
 					eStatus			=> M_ProgramStart
 );
-ELSE
-	M_ProgramStart := fbCmdHandler.eStatus;
-END_IF
 
 
-]]></ST>
+IF bAutoSeqRunning THEN
+	
+		CASE M_ProgramStart OF
+			CMD_IDLE:
+				IF NOT bProgramRunComplete THEN
+					stIo.stWrite.stCommands.bStart := TRUE; 	
+					abDebug_AutoSeq[4] := TRUE;
+				END_IF
+            CMD_DONE:
+				bProgramRunComplete	:= TRUE;
+				   
+        	CMD_ERROR:
+            	eAutoSequenceState := E_AteqAutoRun.SEQ_ERROR;
+			CMD_TIMEOUT:
+				eAutoSequenceState := E_AteqAutoRun.SEQ_TIMEOUT;
+        END_CASE;
+
+	IF bProgramRunComplete AND M_ProgramStart = CMD_IDLE THEN
+		eAutoSequenceState := E_AteqAutoRun.SEQ_READ_LAST_RESULT;
+		//bProgramRunComplete := FALSE;
+	END_IF
+END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_ReadFIFO" Id="{2bd2f2bf-d1e5-497c-8c97-5c4c719656ec}">
@@ -475,12 +343,12 @@ END_IF
     <Method Name="M_ReadLastResult" Id="{bca66d8f-b4be-4355-b92b-b0dac3f24c0c}">
       <Declaration><![CDATA[METHOD M_ReadLastResult : E_AteqHandshake
 VAR
-   
+	
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[// This command might not follow the full handshake, but rather simply triggers a data update.
 // Assuming it does have a command bit and echo/error bits for consistency.
-IF fbCmdHandler.eStatus = CMD_IDLE THEN
+
 	fbCmdHandler(
    					bResetRequest 	:= bCmdHandlerResetRequest,
 					bCmdEcho    	:= stIo.stRead.stEcho.bReadLastResult,
@@ -489,12 +357,30 @@ IF fbCmdHandler.eStatus = CMD_IDLE THEN
 					stIo_Ref		:= StIo,
 					eStatus			=> M_ReadLastResult
 );
-ELSE
-	M_ReadLastResult := fbCmdHandler.eStatus;
+
+IF bAutoSeqRunning THEN
+		
+		CASE M_ReadLastResult OF
+			CMD_IDLE:
+				IF NOT bReadLastResultComplete THEN
+					stIo.stWrite.stCommands.bReadLastResult := TRUE; 
+					abDebug_AutoSeq[5] := TRUE;
+				END_IF
+			CMD_DONE:
+                bReadLastResultComplete	:= TRUE;
+				
+			CMD_ERROR:
+            	eAutoSequenceState := E_AteqAutoRun.SEQ_ERROR;
+				
+			CMD_TIMEOUT:
+				eAutoSequenceState := E_AteqAutoRun.SEQ_TIMEOUT;
+        END_CASE;
+
+	IF bReadLastResultComplete AND M_ReadLastResult = CMD_IDLE THEN
+		eAutoSequenceState := E_AteqAutoRun.SEQ_TEST_DONE;
+		//bReadLastResultComplete := FALSE;
+	END_IF
 END_IF
-
-
-
 (*
  /////////////////DEBUG HERE//////////////////
 // If command is done, decode the raw results
@@ -512,10 +398,11 @@ END_IF
     </Method>
     <Method Name="M_ResetDevice" Id="{d83d834a-bdff-4813-91dd-64475ca219aa}">
       <Declaration><![CDATA[METHOD M_ResetDevice : E_AteqHandshake
-]]></Declaration>
+VAR
+
+END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-	fbCmdHandler(
+        <ST><![CDATA[	fbCmdHandler(
    					bResetRequest 	:= bCmdHandlerResetRequest,
 					bCmdEcho        := stIo.stRead.stEcho.bReset,
     				bCmdError       := stIo.stRead.stErrorCode.bReset,
@@ -524,13 +411,46 @@ END_IF
 					eStatus			=> M_ResetDevice 
 );
 
-]]></ST>
+
+IF bAutoSeqRunning THEN
+		
+		CASE M_ResetDevice OF
+			
+			CMD_IDLE:
+				IF stIo.stRead.anErrorCode[0] <> 0 AND stIo.stRead.anErrorCode[1] <> 0  THEN
+					stIo.stWrite.stCommands.bReset := TRUE;
+					abDebug_AutoSeq[18] := TRUE;
+				ELSE
+					bResetDeviceDone := TRUE;
+				END_IF
+				
+			CMD_DONE:	
+				bResetDeviceDone := TRUE;
+				
+			CMD_ERROR:
+            	eAutoSequenceState := E_AteqAutoRun.SEQ_ERROR;
+			CMD_TIMEOUT:
+				eAutoSequenceState := E_AteqAutoRun.SEQ_TIMEOUT;	
+		END_CASE
+			
+	IF bResetDeviceDone AND M_ResetDevice = CMD_IDLE THEN
+		eAutoSequenceState 	:= SEQ_IDLE;
+		bAutoSeqResetDone		:= TRUE;
+		
+		bFifoResetComplete		:= FALSE;
+		bAutoZeroComplete  		:= FALSE;
+		bProgramSelectComplete	:= FALSE;
+		bProgramRunComplete		:= FALSE;
+		bReadLastResultComplete	:= FALSE;
+		//bResetDone := FALSE;
+	END_IF
+END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_ResetFIFO" Id="{d2dd068a-bc41-4e1b-8fe3-37e11fad9b4b}">
       <Declaration><![CDATA[METHOD M_ResetFIFO : E_AteqHandshake
 VAR
-  	
+  		
 END_VAR
 ]]></Declaration>
       <Implementation>
@@ -544,6 +464,32 @@ END_VAR
 					eStatus			=> M_ResetFIFO 
 );
 
+IF bAutoSeqRunning THEN	
+	
+		CASE M_ResetFIFO OF
+			CMD_IDLE:
+				IF NOT bFifoResetComplete THEN	
+					stIo.stWrite.stCommands.bResetFIFO 	:= TRUE;
+					abDebug_AutoSeq[0] := TRUE;
+				END_IF
+				
+        	CMD_DONE:
+            	bFifoResetComplete	:= TRUE;
+ 	
+        	CMD_ERROR:
+            	eAutoSequenceState := E_AteqAutoRun.SEQ_ERROR;
+				
+			CMD_TIMEOUT:
+				eAutoSequenceState := E_AteqAutoRun.SEQ_TIMEOUT;
+    	END_CASE
+		
+	IF bFifoResetComplete AND stIo.stRead.nResultsInFifo = 0 AND M_ResetFIFO = CMD_IDLE THEN
+		eAutoSequenceState := E_AteqAutoRun.SEQ_AUTO_ZERO;
+		//bFifoResetComplete := FALSE;
+	END_IF
+END_IF
+
+
 ]]></ST>
       </Implementation>
     </Method>
@@ -551,8 +497,7 @@ END_VAR
       <Declaration><![CDATA[METHOD M_SpecialCycle : E_AteqHandshake
 VAR_INPUT
     nSpecialCycleId			: WORD; // Input for the special cycle ID (GVL_AteqSpecialCycle.PiezoAutoZeroReg2 for AutoZero 16#08)
-END_VAR
-]]></Declaration>
+END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[stIo.stWrite.nSpecialCycle := nSpecialCycleId; // Set the special cycle ID register
 
@@ -566,14 +511,41 @@ END_VAR
 					eStatus			=> M_SpecialCycle
 );
 
+(*
+	IF M_SpecialCycle = CMD_DONE OR M_SpecialCycle = CMD_ERROR OR M_SpecialCycle = CMD_TIMEOUT THEN
+    	stIo.stWrite.nSpecialCycle := 0; //Default
+	END_IF
+*)
+	
+IF bAutoSeqRunning THEN
+	
+		CASE M_SpecialCycle OF
+			CMD_IDLE:
+				IF NOT bAutoZeroComplete THEN
+				stIo.stWrite.stCommands.bSpecialCycle 	:= TRUE;
+				stIo.stWrite.stCommands.bStart 			:= TRUE; // Only Special Cycle needs exculisve Start bit
+				abDebug_AutoSeq[2] := TRUE;
+				END_IF
+				
+			CMD_DONE:
+				stIo.stWrite.stCommands.bStart 	:= FALSE;
+				bAutoZeroComplete	:= TRUE;
 
-
+        	CMD_ERROR:
+            	eAutoSequenceState := SEQ_ERROR;
+			CMD_TIMEOUT:
+				eAutoSequenceState := SEQ_TIMEOUT;
+		END_CASE;
+	
+	IF bAutoZeroComplete AND M_SpecialCycle = CMD_IDLE THEN
+			eAutoSequenceState := SEQ_PROGRAM_SELECT;
+			//bAutoZeroComplete := FALSE;
+	END_IF
+END_IF
 // If the command is DONE or ERROR/TIMEOUT, clear the special cycle ID to prevent re-triggering
 // or accidental setting if the command bit is accidentally re-asserted.
 
-IF M_SpecialCycle = CMD_SUCCESS OR M_SpecialCycle = CMD_ERROR OR M_SpecialCycle = CMD_TIMEOUT THEN
-    stIo.stWrite.nSpecialCycle := 0; //Default
-END_IF]]></ST>
+]]></ST>
       </Implementation>
     </Method>
     <Property Name="P_SystemDateTime" Id="{edbff775-b379-4408-8922-353bd74d8226}">
@@ -597,48 +569,68 @@ END_VAR
       <LineId Id="935" Count="9" />
       <LineId Id="9" Count="0" />
     </LineIds>
-    <LineIds Name="FB_AteqControl.M_AutoSequence">
+    <LineIds Name="FB_AteqControl.M_AutoSeq">
       <LineId Id="2895" Count="0" />
-      <LineId Id="2602" Count="0" />
       <LineId Id="2897" Count="0" />
-      <LineId Id="2899" Count="0" />
-      <LineId Id="2606" Count="3" />
       <LineId Id="2896" Count="0" />
       <LineId Id="2610" Count="1" />
-      <LineId Id="2894" Count="0" />
       <LineId Id="2613" Count="0" />
+      <LineId Id="2957" Count="3" />
       <LineId Id="2888" Count="0" />
       <LineId Id="2891" Count="0" />
       <LineId Id="2889" Count="1" />
       <LineId Id="2616" Count="0" />
-      <LineId Id="2898" Count="0" />
+      <LineId Id="2961" Count="0" />
       <LineId Id="2617" Count="0" />
-      <LineId Id="2619" Count="9" />
-      <LineId Id="2630" Count="163" />
-      <LineId Id="2795" Count="35" />
-      <LineId Id="2909" Count="0" />
-      <LineId Id="2832" Count="6" />
-      <LineId Id="2907" Count="0" />
-      <LineId Id="2839" Count="7" />
-      <LineId Id="2884" Count="0" />
-      <LineId Id="2908" Count="0" />
-      <LineId Id="2877" Count="2" />
+      <LineId Id="2619" Count="0" />
+      <LineId Id="2941" Count="2" />
+      <LineId Id="2620" Count="4" />
+      <LineId Id="2633" Count="0" />
+      <LineId Id="2962" Count="1" />
+      <LineId Id="3080" Count="0" />
+      <LineId Id="2634" Count="0" />
+      <LineId Id="2968" Count="0" />
+      <LineId Id="2991" Count="0" />
+      <LineId Id="2965" Count="1" />
+      <LineId Id="3079" Count="0" />
+      <LineId Id="3065" Count="0" />
+      <LineId Id="2967" Count="0" />
+      <LineId Id="3039" Count="0" />
+      <LineId Id="2964" Count="0" />
+      <LineId Id="2644" Count="3" />
+      <LineId Id="2649" Count="0" />
+      <LineId Id="2677" Count="3" />
+      <LineId Id="2682" Count="0" />
+      <LineId Id="3066" Count="0" />
+      <LineId Id="2707" Count="0" />
+      <LineId Id="3035" Count="0" />
+      <LineId Id="2710" Count="1" />
+      <LineId Id="2713" Count="0" />
+      <LineId Id="3067" Count="0" />
+      <LineId Id="2714" Count="0" />
+      <LineId Id="2737" Count="3" />
+      <LineId Id="3068" Count="0" />
+      <LineId Id="2741" Count="0" />
+      <LineId Id="2799" Count="3" />
+      <LineId Id="3069" Count="0" />
+      <LineId Id="2803" Count="0" />
+      <LineId Id="2826" Count="2" />
+      <LineId Id="3071" Count="3" />
+      <LineId Id="2829" Count="0" />
+      <LineId Id="3077" Count="1" />
+      <LineId Id="3076" Count="0" />
+      <LineId Id="3075" Count="0" />
+      <LineId Id="2835" Count="1" />
+      <LineId Id="2838" Count="0" />
+      <LineId Id="2843" Count="3" />
       <LineId Id="2850" Count="0" />
       <LineId Id="2910" Count="0" />
       <LineId Id="2851" Count="3" />
       <LineId Id="2881" Count="0" />
       <LineId Id="2880" Count="0" />
-      <LineId Id="2911" Count="0" />
-      <LineId Id="2856" Count="1" />
-      <LineId Id="2887" Count="0" />
-      <LineId Id="2858" Count="11" />
-      <LineId Id="2885" Count="0" />
-      <LineId Id="2873" Count="0" />
-      <LineId Id="2883" Count="0" />
-      <LineId Id="2874" Count="0" />
-      <LineId Id="2882" Count="0" />
-      <LineId Id="2886" Count="0" />
-      <LineId Id="2875" Count="1" />
+      <LineId Id="2856" Count="0" />
+      <LineId Id="2876" Count="0" />
+      <LineId Id="3033" Count="0" />
       <LineId Id="190" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ParamRead">
@@ -655,9 +647,18 @@ END_VAR
       <LineId Id="65" Count="0" />
       <LineId Id="86" Count="0" />
       <LineId Id="92" Count="0" />
-      <LineId Id="87" Count="4" />
+      <LineId Id="87" Count="3" />
+      <LineId Id="104" Count="0" />
       <LineId Id="70" Count="0" />
-      <LineId Id="84" Count="1" />
+      <LineId Id="105" Count="1" />
+      <LineId Id="111" Count="1" />
+      <LineId Id="126" Count="0" />
+      <LineId Id="128" Count="2" />
+      <LineId Id="127" Count="0" />
+      <LineId Id="113" Count="0" />
+      <LineId Id="115" Count="8" />
+      <LineId Id="125" Count="0" />
+      <LineId Id="97" Count="4" />
       <LineId Id="71" Count="1" />
       <LineId Id="76" Count="0" />
       <LineId Id="73" Count="1" />
@@ -670,12 +671,19 @@ END_VAR
       <LineId Id="41" Count="1" />
       <LineId Id="49" Count="0" />
       <LineId Id="43" Count="3" />
-      <LineId Id="39" Count="0" />
-      <LineId Id="47" Count="1" />
-      <LineId Id="40" Count="0" />
+      <LineId Id="39" Count="1" />
       <LineId Id="23" Count="0" />
       <LineId Id="35" Count="0" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="75" Count="0" />
+      <LineId Id="77" Count="2" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="61" Count="9" />
+      <LineId Id="74" Count="0" />
       <LineId Id="34" Count="0" />
+      <LineId Id="72" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ReadFIFO">
       <LineId Id="10" Count="1" />
@@ -691,10 +699,20 @@ END_VAR
       <LineId Id="43" Count="1" />
       <LineId Id="51" Count="0" />
       <LineId Id="45" Count="3" />
-      <LineId Id="41" Count="0" />
-      <LineId Id="49" Count="1" />
-      <LineId Id="42" Count="0" />
+      <LineId Id="41" Count="1" />
       <LineId Id="27" Count="0" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="75" Count="0" />
+      <LineId Id="80" Count="2" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="63" Count="0" />
+      <LineId Id="77" Count="0" />
+      <LineId Id="64" Count="1" />
+      <LineId Id="78" Count="0" />
+      <LineId Id="66" Count="5" />
+      <LineId Id="74" Count="0" />
       <LineId Id="36" Count="1" />
       <LineId Id="35" Count="0" />
       <LineId Id="17" Count="9" />
@@ -702,8 +720,13 @@ END_VAR
       <LineId Id="28" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ResetDevice">
-      <LineId Id="5" Count="9" />
-      <LineId Id="4" Count="0" />
+      <LineId Id="64" Count="17" />
+      <LineId Id="104" Count="1" />
+      <LineId Id="82" Count="2" />
+      <LineId Id="86" Count="9" />
+      <LineId Id="106" Count="0" />
+      <LineId Id="96" Count="7" />
+      <LineId Id="42" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ResetFIFO">
       <LineId Id="74" Count="0" />
@@ -713,7 +736,27 @@ END_VAR
       <LineId Id="96" Count="0" />
       <LineId Id="83" Count="0" />
       <LineId Id="90" Count="0" />
+      <LineId Id="101" Count="0" />
+      <LineId Id="118" Count="0" />
+      <LineId Id="106" Count="0" />
+      <LineId Id="142" Count="0" />
+      <LineId Id="144" Count="0" />
+      <LineId Id="147" Count="0" />
+      <LineId Id="143" Count="0" />
+      <LineId Id="151" Count="1" />
+      <LineId Id="107" Count="0" />
+      <LineId Id="109" Count="0" />
+      <LineId Id="153" Count="0" />
+      <LineId Id="111" Count="1" />
+      <LineId Id="154" Count="0" />
+      <LineId Id="113" Count="2" />
+      <LineId Id="124" Count="0" />
+      <LineId Id="138" Count="1" />
+      <LineId Id="141" Count="0" />
+      <LineId Id="140" Count="0" />
       <LineId Id="68" Count="0" />
+      <LineId Id="128" Count="1" />
+      <LineId Id="127" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_SpecialCycle">
       <LineId Id="92" Count="0" />
@@ -722,8 +765,28 @@ END_VAR
       <LineId Id="114" Count="1" />
       <LineId Id="122" Count="0" />
       <LineId Id="116" Count="3" />
-      <LineId Id="112" Count="1" />
-      <LineId Id="100" Count="6" />
+      <LineId Id="112" Count="0" />
+      <LineId Id="167" Count="1" />
+      <LineId Id="164" Count="1" />
+      <LineId Id="149" Count="0" />
+      <LineId Id="166" Count="0" />
+      <LineId Id="150" Count="0" />
+      <LineId Id="113" Count="0" />
+      <LineId Id="151" Count="0" />
+      <LineId Id="133" Count="0" />
+      <LineId Id="157" Count="0" />
+      <LineId Id="161" Count="0" />
+      <LineId Id="159" Count="1" />
+      <LineId Id="158" Count="0" />
+      <LineId Id="162" Count="1" />
+      <LineId Id="134" Count="0" />
+      <LineId Id="136" Count="1" />
+      <LineId Id="141" Count="4" />
+      <LineId Id="100" Count="0" />
+      <LineId Id="152" Count="0" />
+      <LineId Id="154" Count="2" />
+      <LineId Id="153" Count="0" />
+      <LineId Id="101" Count="3" />
       <LineId Id="52" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.P_SystemDateTime.Get">
