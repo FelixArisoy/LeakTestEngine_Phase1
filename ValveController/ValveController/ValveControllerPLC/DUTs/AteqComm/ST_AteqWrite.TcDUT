@@ -5,7 +5,7 @@
 STRUCT
 //Writing table structure (From PLC To ATEQ)
 	anCommands			: ARRAY[0..1] OF BYTE;      // 00h–01h Commands buffer
-	stCommands			: ST_Commands;				// 00h–01h Commands bitmap
+	stCommands			: ST_AteqCommands;				// 00h–01h Commands bitmap
     anReservedOut1		: ARRAY[0..3] OF BYTE;      // 02h–05h Not Used
     nProgramNumber 		: WORD;                     // 06h–07h Address 06h: Number of the program to be selected. Address 07h = 0
 	nSpecialCycle		: WORD;						// 08h–09h Address 08h: Special cycle. Address 09h=0

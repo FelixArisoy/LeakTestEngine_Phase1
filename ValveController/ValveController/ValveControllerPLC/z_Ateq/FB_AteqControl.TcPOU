@@ -1,45 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
   <POU Name="FB_AteqControl" Id="{7f132da6-4770-42a7-a01e-2190c92a7cb5}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_AteqControl IMPLEMENTS I_LeakTester
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AteqControl
 VAR_INPUT
-   	nProgramNumber : WORD; // Input for the program number to select
+   	nProgramNumber : WORD; // program number to be executed
 END_VAR
 VAR_IN_OUT
-	bRunAutoTestSequence 	: BOOL;
+	bAutoSeqRunRequest 		: BOOL;
 	bAutoSeqResetRequest	: BOOL;
-    stIo	: ST_AteqMappedIo; 
+    stIo	: ST_AteqIo; 
 //Mapped Io Exchange Zone will be passing the data to ResultRaw Struct 
 //then will be decoded in M_ReadLastResult (ResultDecoded Struct) 
 END_VAR
 VAR_OUTPUT
-	eAutoSequenceState 	: E_AteqAutoMode;
-	bInAutoMode 		: BOOL;
-   	bAutoSequenceDone 	: BOOL; 
+	eAutoSeqState 		: E_AteqAutoMode; // holds M_AutoSeq step status
+	bAutoSeqActive 		: BOOL; // TRUE between Seq Started and Reset Done 
+   	bAutoSeqDone 		: BOOL; 
 	bAutoSeqError		: BOOL;
    	bAutoSeqResetDone	: BOOL;
    
-	bInitialized		: BOOL;
 	
 	// ##### DEBUG #####
-   	stIoDebug   	: ST_AteqMappedIo;
+   	stIoDebug   	: ST_AteqIo;
 END_VAR
 VAR
 (*fbCmdHandler works in body of the FB, do not ever declare in the Methods. 
 That causes the instance FB calls overwrite the internal vars. 
 Therefore, CASE stucks on IDLE, does not progress to the next steps. 
 For future: FB_init may be required*)	
-	fbCmdHandler : FB_AteqCmdHandler;	
-	bCmdHandlerInitialized	: BOOL;									
+	fbCmdHandler : FB_AteqCmdHandler;									
 	bCmdHandlerResetRequest : BOOL;
-	
-	eAutoSeqCmdStatus 	: E_AteqHandshake; // holds M_AutoSeq status								
+
+//!!!!!!!!!!!!!! To be used									
 	stResultsRaw		: ST_AteqResultsRaw;
 	stLastResults		: ST_AteqResultsDecoded;
     astFIFO				: ARRAY[0..7] OF ST_AteqResultsDecoded;
 
 // Internal timers USED IN M_AutoSeq
-    tTestTimeout 	: TON; 
     tSeqTimeout 	: TON;
 
 //Auto Seq Step Flags. For future: Use STRUCK instead individual flags 
@@ -56,8 +53,6 @@ END_VAR]]></Declaration>
 // Main call for the auto sequence: 
 // Runs one Program at a time gets results and resets
 M_AutoSeq();
-
-
 
 
 (*
@@ -80,13 +75,6 @@ bInitialized := TRUE;
 *)
 
 
-
-
-// ##### DEBUG #####
-stIoDebug	:= fbCmdHandler.stIoDebug;
-
-
-
 // You can add other monitoring or manual command calls here later for Param Read/Write or Manual Control of Methods etc.
 // However, M_AutoSequence should be the primary driver for running Ateq programs.]]></ST>
     </Implementation>
@@ -100,13 +88,13 @@ END_VAR]]></Declaration>
         <ST><![CDATA[//#############################	SEQUENCE TMEOUT	#############################
 // SEQ start requested but didnot start check 
 IF fbR_TRIG_RunSequence.Q AND 
-	eAutoSequenceState <> E_AteqAutoMode.SEQ_TEST_DONE AND 
-	eAutoSequenceState <> E_AteqAutoMode.SEQ_ERROR AND 
-	eAutoSequenceState <> E_AteqAutoMode.SEQ_TIMEOUT THEN
+	eAutoSeqState <> E_AteqAutoMode.SEQ_TEST_DONE AND 
+	eAutoSeqState <> E_AteqAutoMode.SEQ_ERROR AND 
+	eAutoSeqState <> E_AteqAutoMode.SEQ_TIMEOUT THEN
 	
 	tSeqTimeout(IN := TRUE, PT := GVL_Ateq.tAutoSeqTimeout); 
 	IF tSeqTimeout.Q THEN
-		eAutoSequenceState := E_AteqAutoMode.SEQ_TIMEOUT;
+		eAutoSeqState := E_AteqAutoMode.SEQ_TIMEOUT;
 	END_IF 
 END_IF
 
@@ -116,26 +104,26 @@ tSeqTimeout(IN := tSeqTimeout.IN, PT := tSeqTimeout.PT);
 //############################# SEQUENCE RESET REQUEST #############################
 		fbR_TRIG_AutoSeqResetRequest(CLK := bAutoSeqResetRequest);
 		IF fbR_TRIG_AutoSeqResetRequest.Q THEN
-			eAutoSequenceState 	:= SEQ_RESET; 		
+			bAutoSeqResetRequest 	:= FALSE;
+			eAutoSeqState 		:= SEQ_RESET; 		
 		END_IF
 
 //#############################	SEQUENCE START	#############################		
-CASE eAutoSequenceState OF
+CASE eAutoSeqState OF
 	
 	SEQ_IDLE:
 		IF bAutoSeqResetDone THEN
-			bAutoSeqResetRequest 	:= FALSE;
-			bInAutoMode				:= FALSE;
+			bAutoSeqActive				:= FALSE;
 		END_IF
 		
-		fbR_TRIG_RunSequence(CLK := bRunAutoTestSequence);
+		fbR_TRIG_RunSequence(CLK := bAutoSeqRunRequest);
 		
 //IF ATEQ is BUSY or not connected CycleEnd = 0, if ATEQ is ready CycleEnd = 1
 		IF fbR_TRIG_RunSequence.Q AND stIo.stRead.stRealtimeTestResults.bCycleEnd THEN
-   			bAutoSequenceDone 	:= FALSE;
-			bRunAutoTestSequence:= FALSE;
-			bInAutoMode			:= TRUE;
-    		eAutoSequenceState 	:= SEQ_RESET_FIFO;
+   			bAutoSeqDone 	:= FALSE;
+			bAutoSeqRunRequest:= FALSE;
+			bAutoSeqActive			:= TRUE;
+    		eAutoSeqState 	:= SEQ_RESET_FIFO;
 		END_IF
 
 	
@@ -171,7 +159,7 @@ CASE eAutoSequenceState OF
 		AND bProgramSelectComplete
 		AND bProgramRunComplete
 		AND bReadLastResultComplete THEN
-		bAutoSequenceDone 	:= TRUE;
+		bAutoSeqDone 	:= TRUE;
 		END_IF
 				
     SEQ_ERROR: 
@@ -291,7 +279,7 @@ stIo.stWrite.nProgramNumber := nProgramNumber; // Sets the program number regist
 					eStatus			=> M_ProgramSelect
 );
 
-IF bInAutoMode THEN
+IF bAutoSeqActive THEN
 
         CASE M_ProgramSelect OF
 			CMD_IDLE:
@@ -303,14 +291,14 @@ IF bInAutoMode THEN
 				bProgramSelectComplete := TRUE;
 				
         	CMD_ERROR:
-            	eAutoSequenceState := SEQ_ERROR;
+            	eAutoSeqState := SEQ_ERROR;
 				
 			CMD_TIMEOUT:
-				eAutoSequenceState := SEQ_TIMEOUT;
+				eAutoSeqState := SEQ_TIMEOUT;
         END_CASE;
 	
 	IF bProgramSelectComplete AND M_ProgramSelect = CMD_IDLE THEN
-		eAutoSequenceState := SEQ_START_PROGRAM;
+		eAutoSeqState := SEQ_START_PROGRAM;
 	END_IF
 END_IF
 
@@ -343,7 +331,7 @@ END_VAR]]></Declaration>
 );
 
 
-IF bInAutoMode THEN
+IF bAutoSeqActive THEN
 	
 		CASE M_ProgramStart OF
 			CMD_IDLE:
@@ -354,14 +342,14 @@ IF bInAutoMode THEN
 				bProgramRunComplete	:= TRUE;
 				   
         	CMD_ERROR:
-            	eAutoSequenceState := SEQ_ERROR;
+            	eAutoSeqState := SEQ_ERROR;
 				
 			CMD_TIMEOUT:
-				eAutoSequenceState := SEQ_TIMEOUT;
+				eAutoSeqState := SEQ_TIMEOUT;
         END_CASE;
 
 	IF bProgramRunComplete AND M_ProgramStart = CMD_IDLE THEN
-		eAutoSequenceState := SEQ_READ_LAST_RESULT;
+		eAutoSeqState := SEQ_READ_LAST_RESULT;
 	END_IF
 END_IF]]></ST>
       </Implementation>
@@ -429,7 +417,7 @@ END_VAR]]></Declaration>
 					eStatus			=> M_ReadLastResult
 );
 
-IF bInAutoMode THEN
+IF bAutoSeqActive THEN
 		
 		CASE M_ReadLastResult OF
 			CMD_IDLE:
@@ -440,14 +428,14 @@ IF bInAutoMode THEN
                 bReadLastResultComplete	:= TRUE;
 				
 			CMD_ERROR:
-            	eAutoSequenceState := SEQ_ERROR;
+            	eAutoSeqState := SEQ_ERROR;
 				
 			CMD_TIMEOUT:
-				eAutoSequenceState := SEQ_TIMEOUT;
+				eAutoSeqState := SEQ_TIMEOUT;
         END_CASE;
 
 	IF bReadLastResultComplete AND M_ReadLastResult = CMD_IDLE THEN
-		eAutoSequenceState := SEQ_TEST_DONE;
+		eAutoSeqState := SEQ_TEST_DONE;
 	END_IF
 END_IF
 
@@ -510,13 +498,13 @@ END_VAR]]></Declaration>
 				bResetDeviceDone := TRUE;
 				
 			CMD_ERROR:
-            	eAutoSequenceState := SEQ_ERROR;
+            	eAutoSeqState := SEQ_ERROR;
 			CMD_TIMEOUT:
-				eAutoSequenceState := SEQ_TIMEOUT;	
+				eAutoSeqState := SEQ_TIMEOUT;	
 		END_CASE
 			
 	IF bResetDeviceDone AND M_ResetDevice = CMD_IDLE THEN
-		eAutoSequenceState 		:= SEQ_IDLE;
+		eAutoSeqState 		:= SEQ_IDLE;
 		bAutoSeqResetDone		:= TRUE;
 		
 		bFifoResetComplete		:= FALSE;
@@ -545,7 +533,7 @@ END_VAR
 					eStatus			=> M_ResetFIFO 
 );
 
-IF bInAutoMode THEN	
+IF bAutoSeqActive THEN	
 	
 		CASE M_ResetFIFO OF
 			CMD_IDLE:
@@ -557,16 +545,16 @@ IF bInAutoMode THEN
             	bFifoResetComplete	:= TRUE;
  	
         	CMD_ERROR:
-            	eAutoSequenceState 	:= SEQ_ERROR;
+            	eAutoSeqState 	:= SEQ_ERROR;
 				
 			CMD_TIMEOUT:
-				eAutoSequenceState 	:= SEQ_TIMEOUT;
+				eAutoSeqState 	:= SEQ_TIMEOUT;
     	END_CASE
 		
 	IF bFifoResetComplete 
 	AND stIo.stRead.nResultsInFifo = 0 
 	AND M_ResetFIFO = CMD_IDLE THEN
-		eAutoSequenceState := SEQ_AUTO_ZERO;
+		eAutoSeqState := SEQ_AUTO_ZERO;
 	END_IF
 END_IF
 
@@ -601,7 +589,7 @@ stIo.stWrite.nSpecialCycle := nSpecialCycleId; // Sets the special cycle ID regi
 	END_IF
 
 	
-IF bInAutoMode THEN
+IF bAutoSeqActive THEN
 	
 		CASE M_SpecialCycle OF
 			CMD_IDLE:
@@ -616,13 +604,13 @@ IF bInAutoMode THEN
 				bAutoZeroComplete	:= TRUE;
 
         	CMD_ERROR:
-            	eAutoSequenceState := SEQ_ERROR;
+            	eAutoSeqState := SEQ_ERROR;
 			CMD_TIMEOUT:
-				eAutoSequenceState := SEQ_TIMEOUT;
+				eAutoSeqState := SEQ_TIMEOUT;
 		END_CASE;
 	
 	IF bAutoZeroComplete AND M_SpecialCycle = CMD_IDLE THEN
-			eAutoSequenceState := SEQ_PROGRAM_SELECT;
+			eAutoSeqState := SEQ_PROGRAM_SELECT;
 
 	END_IF
 END_IF
@@ -647,20 +635,19 @@ END_VAR
     <LineIds Name="FB_AteqControl">
       <LineId Id="1130" Count="0" />
       <LineId Id="1135" Count="1" />
-      <LineId Id="1131" Count="3" />
+      <LineId Id="1131" Count="1" />
       <LineId Id="1000" Count="1" />
       <LineId Id="1009" Count="15" />
       <LineId Id="1008" Count="0" />
-      <LineId Id="998" Count="0" />
-      <LineId Id="936" Count="0" />
-      <LineId Id="1137" Count="2" />
-      <LineId Id="942" Count="0" />
-      <LineId Id="1140" Count="1" />
+      <LineId Id="1141" Count="0" />
       <LineId Id="943" Count="1" />
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_AutoSeq">
-      <LineId Id="3101" Count="88" />
+      <LineId Id="3101" Count="18" />
+      <LineId Id="3190" Count="0" />
+      <LineId Id="3120" Count="7" />
+      <LineId Id="3129" Count="60" />
       <LineId Id="190" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ParamRead">

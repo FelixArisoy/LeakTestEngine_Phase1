@@ -51,19 +51,19 @@
     <Compile Include="4_Sequence\FB_TextFile.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\AteqComm\E_DeviceEndianness.TcDUT">
+    <Compile Include="DUTs\AteqComm\E_AteqEndian.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\AteqComm\ST_Commands.TcDUT">
+    <Compile Include="DUTs\AteqComm\ST_AteqCommands.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\AteqComm\ST_Echo.TcDUT">
+    <Compile Include="DUTs\AteqComm\ST_AteqEcho.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\AteqComm\ST_ErrorCode.TcDUT">
+    <Compile Include="DUTs\AteqComm\ST_AteqErrorCode.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\AteqComm\ST_AteqMappedIo.TcDUT">
+    <Compile Include="DUTs\AteqComm\ST_AteqIo.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\AteqComm\ST_AteqRawIo.TcDUT">
@@ -72,7 +72,7 @@
     <Compile Include="DUTs\AteqComm\ST_AteqRead.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\AteqComm\ST_RealtimeTestResults.TcDUT">
+    <Compile Include="DUTs\AteqComm\ST_AteqRealtimeTestResults.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\AteqComm\ST_AteqWrite.TcDUT">
@@ -118,6 +118,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="z_AteqTest\FB_Test_AteqComm.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="z_AteqTest\FB_Test_AteqControl.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="z_Ateq\FB_AteqCmdHandler.TcPOU">

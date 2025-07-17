@@ -7,7 +7,7 @@ VAR_INPUT
 END_VAR
 VAR_IN_OUT
 	stRawIo 			: ST_AteqRawIo;
-    stMappedIo 			: ST_AteqMappedIo;
+    stMappedIo 			: ST_AteqIo;
 END_VAR
 VAR_OUTPUT
 
@@ -111,14 +111,14 @@ stMappedIo.stRead.anReservedIn[0]	:= stRawIo.anInput[0][4];
 stMappedIo.stRead.anReservedIn[1]	:= stRawIo.anInput[0][5];
 
 	CASE  GVL_Ateq.eDeviceEndianSetTo OF
-		E_DeviceEndianness.LittleEndian: // Little Endian
+		E_AteqEndian.LittleEndian: // Little Endian
 		// Parse WORDs from bytes
 		stMappedIo.stRead.nProgramInUse		:= SHL(BYTE_TO_WORD(stRawIo.anInput[0][6]), 8) OR BYTE_TO_WORD(stRawIo.anInput[0][7]);
 		stMappedIo.stRead.nResultsInFifo	:= SHL(BYTE_TO_WORD(stRawIo.anInput[0][8]), 8) OR BYTE_TO_WORD(stRawIo.anInput[0][9]);
 		stMappedIo.stRead.nTestType			:= SHL(BYTE_TO_WORD(stRawIo.anInput[0][10]), 8) OR BYTE_TO_WORD(stRawIo.anInput[0][11]);
 		stMappedIo.stRead.nProgramStep		:= SHL(BYTE_TO_WORD(stRawIo.anInput[0][14]), 8) OR BYTE_TO_WORD(stRawIo.anInput[0][15]);
 
-		E_DeviceEndianness.BigEndian: // Big Endian
+		E_AteqEndian.BigEndian: // Big Endian
 		stMappedIo.stRead.nProgramInUse		:= BYTE_TO_WORD(stRawIo.anInput[0][6]) 	OR SHL(BYTE_TO_WORD(stRawIo.anInput[0][7]), 8);
 		stMappedIo.stRead.nResultsInFifo	:= BYTE_TO_WORD(stRawIo.anInput[0][8]) 	OR SHL(BYTE_TO_WORD(stRawIo.anInput[0][9]), 8);
 		stMappedIo.stRead.nTestType			:= BYTE_TO_WORD(stRawIo.anInput[0][10]) OR SHL(BYTE_TO_WORD(stRawIo.anInput[0][11]), 8);
@@ -165,7 +165,7 @@ anLeakUnitCodeBuffer [3] :=	stRawIo.anInput[0][31];
 // Copy into REAL and DWORD vars from Buffer adr to Destination Adr of the ST_AteqInRead
 // --- Endianness-aware conversion for 4-byte values (DWORD and REAL) ---
 CASE GVL_Ateq.eDeviceEndianSetTo OF
-    E_DeviceEndianness.BigEndian: // ATEQ sends LSB first (Byte0, Byte1, Byte2, Byte3)
+    E_AteqEndian.BigEndian: // ATEQ sends LSB first (Byte0, Byte1, Byte2, Byte3)
         // Reconstruct DWORDs from buffers for Little Endian
         nPressureCurValueBuffer := 
             BYTE_TO_DWORD(anPressureCurValueBuffer[0]) 		OR
@@ -191,7 +191,7 @@ CASE GVL_Ateq.eDeviceEndianSetTo OF
             SHL(BYTE_TO_DWORD(anLeakUnitCodeBuffer[2]), 16) OR
             SHL(BYTE_TO_DWORD(anLeakUnitCodeBuffer[3]), 24);
 
-    E_DeviceEndianness.LittleEndian: // ATEQ sends MSB first (Byte3, Byte2, Byte1, Byte0)
+    E_AteqEndian.LittleEndian: // ATEQ sends MSB first (Byte3, Byte2, Byte1, Byte0)
         // Reconstruct DWORDs from buffers for Big Endian
         nPressureCurValueBuffer := 
             SHL(BYTE_TO_DWORD(anPressureCurValueBuffer[0]), 24) OR
@@ -316,7 +316,7 @@ stRawIo.anOutput[0][4] := stMappedIo.stWrite.anReservedOut1[2];
 stRawIo.anOutput[0][5] := stMappedIo.stWrite.anReservedOut1[3];
 
 CASE  GVL_Ateq.eDeviceEndianSetTo OF
-	E_DeviceEndianness.BigEndian: //little-endian
+	E_AteqEndian.BigEndian: //little-endian
 	// Program Select
 	stRawIo.anOutput[0][6] := WORD_TO_BYTE(stMappedIo.stWrite.nProgramNumber AND 16#00FF);
 	stRawIo.anOutput[0][7] := WORD_TO_BYTE(SHR(stMappedIo.stWrite.nProgramNumber, 8));
@@ -324,7 +324,7 @@ CASE  GVL_Ateq.eDeviceEndianSetTo OF
 	stRawIo.anOutput[0][8] := WORD_TO_BYTE(stMappedIo.stWrite.nSpecialCycle AND 16#00FF);
 	stRawIo.anOutput[0][9] := WORD_TO_BYTE(SHR(stMappedIo.stWrite.nSpecialCycle, 8));
 	
-	E_DeviceEndianness.LittleEndian: // big-endian
+	E_AteqEndian.LittleEndian: // big-endian
 	// Program Select 
 	stRawIo.anOutput[0][6] := WORD_TO_BYTE(SHR(stMappedIo.stWrite.nProgramNumber, 8));
 	stRawIo.anOutput[0][7] := WORD_TO_BYTE(stMappedIo.stWrite.nProgramNumber AND 16#00FF);

@@ -9,7 +9,7 @@ END_VAR
 VAR_IN_OUT
 	bResetRequest	: BOOL;
     bCmdTrigger     : BOOL; // The actual command bit from stIo.stWrite.stCommands (will be set FALSE by this FB)
-    stIo_Ref        : ST_AteqMappedIo; // Reference to the entire mapped I/O structure for ATEQ status checks
+    stIo_Ref        : ST_AteqIo; // Reference to the entire mapped I/O structure for ATEQ status checks
 END_VAR
 VAR_OUTPUT
     eStatus         : E_AteqHandshake := E_AteqHandshake.CMD_IDLE; // Current status of this command handler instance
@@ -19,12 +19,12 @@ VAR_OUTPUT
 	
 	//abDebug         : ARRAY[0..19] OF BOOL; //Debug Remove
 	nFB_init_Debug		: DINT; //Debug Remove
-	stIoDebug		: ST_AteqMappedIo; //Debug Remove
+	stIoDebug		: ST_AteqIo; //Debug Remove
 	
 END_VAR
 VAR
 	eCurrentState   	: E_AteqHandshake; // Internal state of this FB instance
-    stResetCommands		: ST_Commands;
+    stResetCommands		: ST_AteqCommands;
 
 
 	tCmdTimeout     	: TON; // Timer for overall command timeout (e.g., 5 seconds)

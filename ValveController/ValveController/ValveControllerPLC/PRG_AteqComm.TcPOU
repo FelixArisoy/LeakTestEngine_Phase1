@@ -7,13 +7,13 @@ VAR
 	nDeviceIndex    : UINT;
 //####### Map Io #######
     afbAteqComm   		: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF FB_AteqComm;
-    astAteqMappedIo 	: ARRAY[0..GVL_Ateq.nMaxDeviceCount - 1] OF ST_AteqMappedIo;
+    astAteqIo 			: ARRAY[0..GVL_Ateq.nMaxDeviceCount - 1] OF ST_AteqIo;
 	astAteqRawIo   		: ARRAY[0..GVL_Ateq.nMaxDeviceCount - 1] OF ST_AteqRawIo;
 //####### Control Ateq #######  
 	afbAteqControl		: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF FB_AteqControl;
 	nProgramNumber		: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF WORD;
-	bRunAutoTestSequence: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF BOOL;
-	bAutoSequenceDone	: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF BOOL;
+	bAutoSeqRun			: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF BOOL;
+	bAutoSeqDone		: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF BOOL;
 	bAutoSeqResetRequest: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF BOOL;
 	
   	
@@ -58,22 +58,28 @@ CASE eAteqCallerState OF
 	
 	E_AteqCallerState.CONTROL:
 *)	
-GVL_Ateq.eDeviceEndianSetTo := E_DeviceEndianness.BigEndian;
-nMaxDeviceCount 	:= GVL_Ateq.nMaxDeviceCount;	
-IF nMaxDeviceCount > 0 THEN
-		FOR nDeviceIndex := 0 TO nMaxDeviceCount - 1 DO
-			afbAteqComm[nDeviceIndex](
-				nDeviceIndex 	:= nDeviceIndex,
-				stRawIo 		:= astAteqRawIo[nDeviceIndex],
-				stMappedIo 		:= astAteqMappedIo[nDeviceIndex]
-			);
 
-			afbAteqControl[nDeviceIndex](
-				nProgramNumber 			:= nProgramNumber[nDeviceIndex],
-				bRunAutoTestSequence 	:= bRunAutoTestSequence[nDeviceIndex],
-				bAutoSeqResetRequest 	:= bAutoSeqResetRequest[nDeviceIndex],
-				stIo 					:= astAteqMappedIo[nDeviceIndex]
-			);
+
+
+GVL_Ateq.eDeviceEndianSetTo := E_AteqEndian.BigEndian;
+nMaxDeviceCount 			:= GVL_Ateq.nMaxDeviceCount;	
+
+	IF nMaxDeviceCount > 0 THEN
+		
+		FOR nDeviceIndex := 0 TO nMaxDeviceCount - 1 DO
+			
+		afbAteqComm[nDeviceIndex](
+									nDeviceIndex 			:= nDeviceIndex,
+									stRawIo 				:= astAteqRawIo[nDeviceIndex],
+									stMappedIo 				:= astAteqIo[nDeviceIndex]
+);
+
+		afbAteqControl[nDeviceIndex](
+									nProgramNumber 			:= nProgramNumber[nDeviceIndex],
+									bAutoSeqRunRequest 		:= bAutoSeqRun[nDeviceIndex],
+									bAutoSeqResetRequest 	:= bAutoSeqResetRequest[nDeviceIndex],
+									stIo 					:= astAteqIo[nDeviceIndex]
+);
 		END_FOR
 	END_IF
 	
@@ -151,27 +157,14 @@ END_IF
 ]]></ST>
     </Implementation>
     <LineIds Name="PRG_AteqComm">
-      <LineId Id="1490" Count="1" />
-      <LineId Id="1524" Count="1" />
-      <LineId Id="1527" Count="0" />
-      <LineId Id="1529" Count="0" />
-      <LineId Id="1531" Count="0" />
-      <LineId Id="1545" Count="0" />
-      <LineId Id="1537" Count="7" />
-      <LineId Id="1534" Count="0" />
-      <LineId Id="1532" Count="1" />
-      <LineId Id="1530" Count="0" />
-      <LineId Id="1565" Count="0" />
-      <LineId Id="1547" Count="0" />
-      <LineId Id="1564" Count="0" />
-      <LineId Id="1548" Count="13" />
-      <LineId Id="1546" Count="0" />
-      <LineId Id="1562" Count="0" />
-      <LineId Id="1528" Count="0" />
-      <LineId Id="1526" Count="0" />
-      <LineId Id="1492" Count="0" />
-      <LineId Id="1502" Count="0" />
-      <LineId Id="1384" Count="66" />
+      <LineId Id="1967" Count="24" />
+      <LineId Id="2081" Count="0" />
+      <LineId Id="2083" Count="0" />
+      <LineId Id="1993" Count="0" />
+      <LineId Id="2084" Count="0" />
+      <LineId Id="1994" Count="0" />
+      <LineId Id="2080" Count="0" />
+      <LineId Id="1995" Count="84" />
       <LineId Id="155" Count="0" />
     </LineIds>
   </POU>

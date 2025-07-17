@@ -3,18 +3,16 @@
   <POU Name="PRG_TEST" Id="{17166b4e-59dc-4826-b23b-b13d729fc1f3}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_TEST
 VAR
-
-    //fbTest_AteqComm   	: FB_Test_AteqComm; // Your test suite FB instance
-	
+    fbTest_AteqComm   	: FB_Test_AteqComm; // Your test suite FB instance	
 END_VAR
 
 
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[	//TcUnit.RUN();
-	//TcUnit.RUN_IN_SEQUENCE();
- 	//fbTest_AteqComm(); 
-	//fbTest_AteqControl();
+	TcUnit.RUN_IN_SEQUENCE();
+ 	fbTest_AteqComm(); 
+
 ]]></ST>
     </Implementation>
     <LineIds Name="PRG_TEST">

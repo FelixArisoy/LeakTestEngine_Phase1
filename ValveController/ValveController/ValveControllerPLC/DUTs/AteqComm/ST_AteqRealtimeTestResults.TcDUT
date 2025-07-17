@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
-  <DUT Name="ST_RealtimeTestResults" Id="{f471bc97-779c-49f0-b883-ddd2ac5652bc}">
-    <Declaration><![CDATA[TYPE ST_RealtimeTestResults :
+  <DUT Name="ST_AteqRealtimeTestResults" Id="{f471bc97-779c-49f0-b883-ddd2ac5652bc}">
+    <Declaration><![CDATA[TYPE ST_AteqRealtimeTestResults :
 STRUCT
-	   (* Byte 0 - 0Ch *)
+	// Byte 0 - 0Ch
     bPass                : BOOL; // Bit 0
     bFailPart            : BOOL; // Bit 1
     bFailRef             : BOOL; // Bit 2
@@ -13,7 +13,7 @@ STRUCT
     bRecoverable         : BOOL; // Bit 6
     bCalibEror           : BOOL; // Bit 7
 
-    (* Byte 1 - 0Dh *)
+    // Byte 1 - 0Dh
     bCalibCheckEror      : BOOL; // Bit 0
     bATRFault            : BOOL; // Bit 1
     bReserved2           : BOOL; // Bit 2
