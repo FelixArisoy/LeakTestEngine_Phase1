@@ -6,7 +6,7 @@
     CMD_IDLE,         	// No command active, ready for new command
     CMD_IN_PROGRESS,  	// ATEQ has acknowledged, command is running
 	CMD_WAIT_CYCLE_END,
-	CMD_EOC, 			// CMD End Of Cycle
+	CMD_EOC, 			// End Of Cycle
 	CMD_DONE,
     CMD_ERROR,        	// Command completed with an error from ATEQ
     CMD_TIMEOUT,      	// Command did not complete within expected time

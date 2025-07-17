@@ -13,7 +13,7 @@ VAR_IN_OUT
 //then will be decoded in M_ReadLastResult (ResultDecoded Struct) 
 END_VAR
 VAR_OUTPUT
-	eAutoSequenceState 	: E_AteqAutoRun;
+	eAutoSequenceState 	: E_AteqAutoMode;
 	bInAutoMode 		: BOOL;
    	bAutoSequenceDone 	: BOOL; 
 	bAutoSeqError		: BOOL;
@@ -48,6 +48,7 @@ For future: FB_init may be required*)
 	bProgramSelectComplete	: BOOL;
 	bProgramRunComplete		: BOOL;
 	bReadLastResultComplete	: BOOL;
+	bReadFIFOComplete		: BOOL;
 	bResetDeviceDone 		: BOOL;
 END_VAR]]></Declaration>
     <Implementation>
@@ -96,17 +97,16 @@ VAR
 	fbR_TRIG_AutoSeqResetRequest : R_TRIG;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-//#############################	SEQUENCE TMEOUT	#############################
+        <ST><![CDATA[//#############################	SEQUENCE TMEOUT	#############################
 // SEQ start requested but didnot start check 
 IF fbR_TRIG_RunSequence.Q AND 
-	eAutoSequenceState <> E_AteqAutoRun.SEQ_TEST_DONE AND 
-	eAutoSequenceState <> E_AteqAutoRun.SEQ_ERROR AND 
-	eAutoSequenceState <> E_AteqAutoRun.SEQ_TIMEOUT THEN
+	eAutoSequenceState <> E_AteqAutoMode.SEQ_TEST_DONE AND 
+	eAutoSequenceState <> E_AteqAutoMode.SEQ_ERROR AND 
+	eAutoSequenceState <> E_AteqAutoMode.SEQ_TIMEOUT THEN
 	
 	tSeqTimeout(IN := TRUE, PT := GVL_Ateq.tAutoSeqTimeout); 
 	IF tSeqTimeout.Q THEN
-		eAutoSequenceState := E_AteqAutoRun.SEQ_TIMEOUT;
+		eAutoSequenceState := E_AteqAutoMode.SEQ_TIMEOUT;
 	END_IF 
 END_IF
 
@@ -161,7 +161,10 @@ CASE eAutoSequenceState OF
         
 		M_ReadLastResult();
         
-				
+	(*SEQ_READ_FIFO:
+		M_ReadFIFO();
+	For future: if multiple programs runs in seq then reads the data in chunk*)	
+	
     SEQ_TEST_DONE:
     	IF bFifoResetComplete
 		AND bAutoZeroComplete  
@@ -188,22 +191,86 @@ END_CASE]]></ST>
     </Method>
     <Method Name="M_ParamRead" Id="{e5267fc8-c940-466e-9918-6092a897a7f1}">
       <Declaration><![CDATA[METHOD M_ParamRead : E_AteqHandshake
-VAR
-  
+VAR 
+	bReadParamsComplete: BOOL;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[// use later 
-;]]></ST>
+        <ST><![CDATA[(*
+// USED as manual Method call only
+// use later, its a template
+
+	fbCmdHandler(
+   					bResetRequest 	:= bCmdHandlerResetRequest,
+					bCmdEcho    	:= stIo.stRead.stEcho.bReadParams,
+    				bCmdError   	:= stIo.stRead.stErrorCode.bReadParams,
+					bCmdTrigger 	:= stIo.stWrite.stCommands.bReadParameters,
+					stIo_Ref		:= StIo,
+					eStatus			=> M_ParamRead
+);
+
+//////////////////// DEBUG HERE /////////////////////////
+
+		CASE M_ParamRead OF
+			CMD_IDLE:
+				IF NOT bReadParamsComplete THEN
+					stIo.stWrite.stCommands.bReadParameters := TRUE; 
+				END_IF
+			CMD_DONE:
+                bReadParamsComplete	:= TRUE;
+				
+			CMD_ERROR:
+            	;// Do something
+				
+			CMD_TIMEOUT:
+				;// Do something
+        END_CASE;
+
+	IF bReadParamsComplete AND M_ParamRead = CMD_IDLE THEN
+		; // Return here
+	END_IF
+*)]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_ParamWrite" Id="{efef9bf2-d12a-4715-8734-c95ea8380a79}">
       <Declaration><![CDATA[METHOD M_ParamWrite : E_AteqHandshake
-VAR
-  
+VAR 
+	bWriteParamsComplete: BOOL;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[// use later 
-;]]></ST>
+        <ST><![CDATA[(*
+// USED as manual Method call only
+// use later, its a template. Excahange Zone needs to be filled. Follow Ateq Fieldbus Manual
+
+	fbCmdHandler(
+   					bResetRequest 	:= bCmdHandlerResetRequest,
+					bCmdEcho    	:= stIo.stRead.stEcho.bWriteParams,
+    				bCmdError   	:= stIo.stRead.stErrorCode.bWriteParams,
+					bCmdTrigger 	:= stIo.stWrite.stCommands.bWriteParams,
+					stIo_Ref		:= StIo,
+					eStatus			=> M_ParamWrite
+);
+
+//////////////////// DEBUG HERE /////////////////////////
+
+		CASE M_ParamWrite OF
+			CMD_IDLE:
+				IF NOT bWriteParamsComplete THEN
+					stIo.stWrite.stCommands.bWriteParams := TRUE; 
+				END_IF
+			CMD_DONE:
+                bWriteParamsComplete	:= TRUE;
+				
+			CMD_ERROR:
+            	;// Do something
+				
+			CMD_TIMEOUT:
+				;// Do something
+        END_CASE;
+
+	IF bWriteParamsComplete AND M_ParamWrite = CMD_IDLE THEN
+		; // Return here
+	END_IF
+*)]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_ProgramSelect" Id="{3f180883-986e-4f1d-b18a-91a389fa3ca6}">
@@ -305,25 +372,42 @@ VAR
      
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[(*// This command also might simply trigger a data update from FIFO.
+        <ST><![CDATA[(*
+// This command also might simply trigger a data update from FIFO.
 // Assuming it does have a command bit and echo/error bits for consistency.
-
-fbCmdHandler(
-   					bCmdEcho    := stIo.stRead.stEcho.bReadFIFO,
-    				bCmdError   := stIo.stRead.stErrorCode.bReadFIFO,
-					bCmdTrigger := stIo.stWrite.stCommands.bReadFIFO,
-					stIo_Ref	:= StIo,
-					eStatus		=> M_ReadFIFO
+	fbCmdHandler(
+   					bResetRequest 	:= bCmdHandlerResetRequest,
+					bCmdEcho    	:= stIo.stRead.stEcho.bReadFIFO,
+    				bCmdError   	:= stIo.stRead.stErrorCode.bReadFIFO,
+					bCmdTrigger 	:= stIo.stWrite.stCommands.bReadFIFO,
+					stIo_Ref		:= StIo,
+					eStatus			=> M_ReadFIFO
 );
+
 //////////////////// DEBUG HERE /////////////////////////
-// If command is done, decode and store the FIFO result
-IF M_ReadFIFO = CMD_DONE THEN
-    // Assuming FIFO results come from a specific part of stIo.stRead
-    // and you have a mechanism to store them in astFIFO.
-    // Example: astFIFO[nFIFO_WritePointer] := DecodeAteqRawResults(stIo.stRead.stRawFIFOResult);
-    // You'd need a FIFO write pointer and logic to manage the array
-    // This decoding logic needs to be fully implemented.
+// IF USED Change bindings to eAutoSequenceState in M_ReadLastResult
+IF bInAutoMode THEN
+		
+		CASE M_ReadFIFO OF
+			CMD_IDLE:
+				IF NOT bReadFIFOComplete THEN
+					stIo.stWrite.stCommands.bReadFIFO := TRUE; 
+				END_IF
+			CMD_DONE:
+                bReadFIFOComplete	:= TRUE;
+				
+			CMD_ERROR:
+            	eAutoSequenceState := SEQ_ERROR;
+				
+			CMD_TIMEOUT:
+				eAutoSequenceState := SEQ_TIMEOUT;
+        END_CASE;
+
+	IF bReadFIFOComplete AND M_ReadFIFO = CMD_IDLE THEN
+		eAutoSequenceState := SEQ_TEST_DONE;
+	END_IF
 END_IF
+
 *)]]></ST>
       </Implementation>
     </Method>
@@ -576,78 +660,19 @@ END_VAR
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_AutoSeq">
-      <LineId Id="2896" Count="0" />
-      <LineId Id="2610" Count="1" />
-      <LineId Id="2613" Count="0" />
-      <LineId Id="2957" Count="3" />
-      <LineId Id="2888" Count="0" />
-      <LineId Id="2891" Count="0" />
-      <LineId Id="2889" Count="1" />
-      <LineId Id="2616" Count="0" />
-      <LineId Id="3092" Count="0" />
-      <LineId Id="2961" Count="0" />
-      <LineId Id="2617" Count="0" />
-      <LineId Id="3095" Count="0" />
-      <LineId Id="2619" Count="0" />
-      <LineId Id="2941" Count="2" />
-      <LineId Id="2620" Count="1" />
-      <LineId Id="3091" Count="0" />
-      <LineId Id="2622" Count="1" />
-      <LineId Id="2633" Count="0" />
-      <LineId Id="2962" Count="1" />
-      <LineId Id="3080" Count="0" />
-      <LineId Id="2634" Count="0" />
-      <LineId Id="2968" Count="0" />
-      <LineId Id="3097" Count="0" />
-      <LineId Id="2991" Count="0" />
-      <LineId Id="3096" Count="0" />
-      <LineId Id="2965" Count="1" />
-      <LineId Id="3079" Count="0" />
-      <LineId Id="3065" Count="0" />
-      <LineId Id="2967" Count="0" />
-      <LineId Id="2964" Count="0" />
-      <LineId Id="2644" Count="3" />
-      <LineId Id="2649" Count="0" />
-      <LineId Id="2677" Count="0" />
-      <LineId Id="2680" Count="0" />
-      <LineId Id="2682" Count="0" />
-      <LineId Id="3066" Count="0" />
-      <LineId Id="2707" Count="0" />
-      <LineId Id="2711" Count="0" />
-      <LineId Id="2713" Count="0" />
-      <LineId Id="3067" Count="0" />
-      <LineId Id="2714" Count="0" />
-      <LineId Id="2737" Count="0" />
-      <LineId Id="2739" Count="1" />
-      <LineId Id="3068" Count="0" />
-      <LineId Id="2741" Count="0" />
-      <LineId Id="2799" Count="0" />
-      <LineId Id="2801" Count="1" />
-      <LineId Id="3069" Count="0" />
-      <LineId Id="2803" Count="0" />
-      <LineId Id="2826" Count="0" />
-      <LineId Id="2828" Count="0" />
-      <LineId Id="3071" Count="3" />
-      <LineId Id="2829" Count="0" />
-      <LineId Id="3077" Count="0" />
-      <LineId Id="3075" Count="0" />
-      <LineId Id="2835" Count="0" />
-      <LineId Id="2838" Count="0" />
-      <LineId Id="2844" Count="2" />
-      <LineId Id="2852" Count="2" />
-      <LineId Id="2881" Count="0" />
-      <LineId Id="2880" Count="0" />
-      <LineId Id="2856" Count="0" />
-      <LineId Id="2876" Count="0" />
-      <LineId Id="3033" Count="0" />
+      <LineId Id="3101" Count="88" />
       <LineId Id="190" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ParamRead">
+      <LineId Id="47" Count="1" />
       <LineId Id="4" Count="0" />
+      <LineId Id="13" Count="10" />
+      <LineId Id="26" Count="18" />
       <LineId Id="8" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ParamWrite">
-      <LineId Id="8" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="12" Count="31" />
       <LineId Id="4" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ProgramSelect">
@@ -699,11 +724,14 @@ END_VAR
       <LineId Id="72" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ReadFIFO">
+      <LineId Id="67" Count="0" />
       <LineId Id="10" Count="1" />
-      <LineId Id="27" Count="6" />
+      <LineId Id="59" Count="6" />
+      <LineId Id="27" Count="0" />
       <LineId Id="25" Count="0" />
-      <LineId Id="17" Count="7" />
-      <LineId Id="4" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="37" Count="21" />
       <LineId Id="26" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ReadLastResult">

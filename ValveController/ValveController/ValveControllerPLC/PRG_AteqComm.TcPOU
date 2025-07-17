@@ -32,7 +32,7 @@ VAR
     bDelayFinished     : BOOL := FALSE;        // Flag to indicate delay completion
     bTriggerReady      : BOOL := TRUE;         // Flag to indicate next trigger is ready
 
-	eAteqCallerState	: E_AteqCallerState;
+
 	nInitIndex : UINT := 0;
     bAteqControlInitialized : BOOL := FALSE;;
 	

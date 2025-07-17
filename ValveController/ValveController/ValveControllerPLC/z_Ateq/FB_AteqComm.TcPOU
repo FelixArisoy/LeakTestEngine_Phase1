@@ -265,10 +265,10 @@ END_IF;
 IF stMappedIo.stWrite.stCommands.bReadFIFO THEN
     nCommand0 := nCommand0 OR 16#10;
 END_IF;
-IF stMappedIo.stWrite.stCommands.bReadParameters THEN
+IF stMappedIo.stWrite.stCommands.bReadParams THEN
     nCommand0 := nCommand0 OR 16#20;
 END_IF;
-IF stMappedIo.stWrite.stCommands.bWriteParameters THEN
+IF stMappedIo.stWrite.stCommands.bWriteParams THEN
     nCommand0 := nCommand0 OR 16#40;
 END_IF;
 IF stMappedIo.stWrite.stCommands.bResetFifo THEN

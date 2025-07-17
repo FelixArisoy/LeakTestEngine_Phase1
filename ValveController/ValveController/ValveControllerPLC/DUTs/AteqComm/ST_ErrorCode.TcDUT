@@ -4,7 +4,7 @@
     <Declaration><![CDATA[TYPE ST_ErrorCode :
 STRUCT
 	
-	 (* Byte 0 - 02h *)
+	// Byte 0 - 02h
     bReset                  : BOOL; // Bit 0
     bStart                  : BOOL; // Bit 1
     bSpecialCycle           : BOOL; // Bit 2
@@ -14,7 +14,7 @@ STRUCT
     bWriteParams            : BOOL; // Bit 6
     bResetFIFO              : BOOL; // Bit 7
 
-    (* Byte 1 - 03h *)
+    // Byte 1 - 03h
     bReadConfig             : BOOL; // Bit 0
     bReadExtMenu            : BOOL; // Bit 1
     bReadFunctionBits       : BOOL; // Bit 2
