@@ -4,24 +4,24 @@
     <Declaration><![CDATA[TYPE ST_AteqErrorCode :
 STRUCT	
 	// Byte 0 - 02h
-    bReset                  : BOOL; // Bit 0
-    bStart                  : BOOL; // Bit 1
-    bSpecialCycle           : BOOL; // Bit 2
-    bProgramSelect          : BOOL; // Bit 3
-    bReadFIFO               : BOOL; // Bit 4
-    bReadParams             : BOOL; // Bit 5
-    bWriteParams            : BOOL; // Bit 6
-    bResetFIFO              : BOOL; // Bit 7
+    bReset                 	: BOOL; // Bit 0 Reset error
+    bStart                 	: BOOL; // Bit 1 Start error
+    bSpecialCycle          	: BOOL; // Bit 2 Special cycle error
+    bProgramSelect         	: BOOL; // Bit 3 Program selection error
+    bReadFIFO       		: BOOL; // Bit 4 Reading of the results FIFO error
+    bReadParams            	: BOOL; // Bit 5 Reading of the parameters error
+    bWriteParams           	: BOOL; // Bit 6 Writing of the parameters error
+    bResetFIFO             	: BOOL; // Bit 7 Reset of the results FIFO error
 
     // Byte 1 - 03h
-    bReadConfig             : BOOL; // Bit 0
-    bReadExtMenu            : BOOL; // Bit 1
-    bReadFunctionBits       : BOOL; // Bit 2
-    bWriteExtMenu           : BOOL; // Bit 3
-    bWriteFunctionBits      : BOOL; // Bit 4
-    bReadProgramName        : BOOL; // Bit 5
-    bWriteProgramName       : BOOL; // Bit 6
-    bReadLastResult         : BOOL; // Bit 7
+    bReadInstrumentConfig	: BOOL; // Bit 0 Reading of the instrument configuration error
+    bReadConfigMenuBits		: BOOL; // Bit 1 Reading of the general bits error
+    bReadFunctionBits      	: BOOL; // Bit 2 Reading of the normal bits error
+    bWriteExtMenu          	: BOOL; // Bit 3 Writing of the general bits error
+    bWriteFunctionBits     	: BOOL; // Bit 4 Writing of the normal bits error
+    bReadProgramName       	: BOOL; // Bit 5 Reading of the program personalisation error
+    bWriteProgramName      	: BOOL; // Bit 6 Writing of the program personalisation error
+    bReadLastResult        	: BOOL; // Bit 7 Writing Last Result Error
 	
 END_STRUCT
 END_TYPE

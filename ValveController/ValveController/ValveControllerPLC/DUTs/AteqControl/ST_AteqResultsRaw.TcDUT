@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
   <DUT Name="ST_AteqResultsRaw" Id="{3da4913a-8629-4ea8-bd6b-58104d8307fa}">
-    <Declaration><![CDATA[TYPE ST_AteqResultsRaw :
+    <Declaration><![CDATA[TYPE ST_AteqResultsRaw : //will be disregarded
 STRUCT
     nProgramNumber              : WORD;     // Word 1
     nTestType                   : WORD;     // Word 2
-    nRelayImage                 : WORD;     // Word 3 (bitfield)
+    nRelayStatus                : WORD;     // Word 3 (bitmap)
     nAlarmCode                  : WORD;     // Word 4
 
     nPressureLowWord            : WORD;     // Word 5
@@ -13,39 +13,40 @@ STRUCT
     nPressureUnitCodeLowWord    : WORD;     // Word 7
     nPressureUnitCodeHighWord   : WORD;     // Word 8
 
-    nLeakLowWord                : WORD;     // Word 9
-    nLeakHighWord               : WORD;     // Word 10
+    nLeakLowWord				: WORD;     // Word 9
+    nLeakHighWord				: WORD;     // Word 10
     nLeakUnitCodeLowWord        : WORD;     // Word 11
     nLeakUnitCodeHighWord       : WORD;     // Word 12
 
-    nPiezo2LowWord              : WORD;     // Word 13
-    nPiezo2HighWord             : WORD;     // Word 14
-    nPiezo2UnitCodeLowWord      : WORD;     // Word 15
-    nPiezo2UnitCodeHighWord     : WORD;     // Word 16
+    nPressurePiezo2LowWord              : WORD;     // Word 13
+    nPressurePiezo2HighWord             : WORD;     // Word 14
+    nPressurePiezo2UnitCodeLowWord      : WORD;     // Word 15
+    nPressurePiezo2UnitCodeHighWord     : WORD;     // Word 16
 
-    nCheckLowWord               : WORD;     // Word 17
-    nCheckHighWord              : WORD;     // Word 18
-    nCheckUnitCodeLowWord       : WORD;     // Word 19
-    nCheckUnitCodeHighWord      : WORD;     // Word 20
+    nTestCheckResultLowWord				: WORD;     // Word 17
+    nTestCheckResultHighWord			: WORD;     // Word 18
+    nTestCheckResultUnitCodeLowWord		: WORD;     // Word 19
+    nTestCheckResultUnitCodeHighWord	: WORD;     // Word 20
 
     nLargeLeakLowWord           : WORD;     // Word 21
     nLargeLeakHighWord          : WORD;     // Word 22
     nLargeLeakUnitCodeLowWord   : WORD;     // Word 23
     nLargeLeakUnitCodeHighWord  : WORD;     // Word 24
 
-    nPaLeakLowWord              : WORD;     // Word 25
-    nPaLeakHighWord             : WORD;     // Word 26
+    nPaLeakResultLowWord		: WORD;     // Word 25
+    nPaLeakResultHighWord		: WORD;     // Word 26
 
-    aUnused                     : ARRAY[27..36] OF WORD; // Word 27-36
+    aReserved					: ARRAY[27..36] OF WORD; // Word 27-36 Unused
 
-    nAtmosphereLowWord          : WORD;     // Word 37
-    nAtmosphereHighWord         : WORD;     // Word 38
-    nTemperatureLowWord         : WORD;     // Word 39
-    nTemperatureHighWord        : WORD;     // Word 40
+    nAtmPressureLowWord			: WORD;     // Word 37
+    nAtmPressureHighWord		: WORD;     // Word 38
+    nTempCelciusLowWord         : WORD;     // Word 39
+    nTempCelciusHighWord        : WORD;     // Word 40
 
-   // dtTimestamp                 : DT;       // Local time of reception
+   	dtTestTimeStamp             : DT;       // Local time of reception
 END_STRUCT
 END_TYPE
+
 ]]></Declaration>
   </DUT>
 </TcPlcObject>

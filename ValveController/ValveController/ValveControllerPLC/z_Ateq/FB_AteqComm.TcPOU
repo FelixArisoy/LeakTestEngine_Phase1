@@ -12,17 +12,9 @@ END_VAR
 VAR_OUTPUT
 
 END_VAR
-VAR
-	pRawInputStartAdr  	: POINTER TO BYTE; // Used in Update to MEMCPY in Struct vars
-    pRawOutputStartAdr 	: POINTER TO BYTE;
-	bHeartbeat 			: BOOL;	
-    //nModuleIndex		: UINT;
-END_VAR]]></Declaration>
+]]></Declaration>
     <Implementation>
-      <ST><![CDATA[pRawInputStartAdr   := ADR(stRawIo.anInput);
-pRawOutputStartAdr  := ADR(stRawIo.anOutput);
-
-//M_HeartBeat();
+      <ST><![CDATA[
 M_InputMap();
 M_OutputMap();
 
@@ -78,8 +70,8 @@ stMappedIo.stRead.stEcho.bReadParams        := (byEcho0 AND 16#20) <> 0;
 stMappedIo.stRead.stEcho.bWriteParams       := (byEcho0 AND 16#40) <> 0;
 stMappedIo.stRead.stEcho.bResetFIFO         := (byEcho0 AND 16#80) <> 0;
 
-stMappedIo.stRead.stEcho.bReadConfig        := (byEcho1 AND 16#01) <> 0;
-stMappedIo.stRead.stEcho.bReadExtMenu       := (byEcho1 AND 16#02) <> 0;
+stMappedIo.stRead.stEcho.bReadInstrumentConfig        := (byEcho1 AND 16#01) <> 0;
+stMappedIo.stRead.stEcho.bReadConfigMenuBits       := (byEcho1 AND 16#02) <> 0;
 stMappedIo.stRead.stEcho.bReadFunctionBits  := (byEcho1 AND 16#04) <> 0;
 stMappedIo.stRead.stEcho.bWriteExtMenu      := (byEcho1 AND 16#08) <> 0;
 stMappedIo.stRead.stEcho.bWriteFunctionBits := (byEcho1 AND 16#10) <> 0;
@@ -97,8 +89,8 @@ stMappedIo.stRead.stErrorCode.bReadParams        := (byError0 AND 16#20) <> 0;
 stMappedIo.stRead.stErrorCode.bWriteParams       := (byError0 AND 16#40) <> 0;
 stMappedIo.stRead.stErrorCode.bResetFIFO         := (byError0 AND 16#80) <> 0;
 
-stMappedIo.stRead.stErrorCode.bReadConfig        := (byError1 AND 16#01) <> 0;
-stMappedIo.stRead.stErrorCode.bReadExtMenu       := (byError1 AND 16#02) <> 0;
+stMappedIo.stRead.stErrorCode.bReadInstrumentConfig        := (byError1 AND 16#01) <> 0;
+stMappedIo.stRead.stErrorCode.bReadConfigMenuBits       := (byError1 AND 16#02) <> 0;
 stMappedIo.stRead.stErrorCode.bReadFunctionBits  := (byError1 AND 16#04) <> 0;
 stMappedIo.stRead.stErrorCode.bWriteExtMenu      := (byError1 AND 16#08) <> 0;
 stMappedIo.stRead.stErrorCode.bWriteFunctionBits := (byError1 AND 16#10) <> 0;
@@ -107,8 +99,8 @@ stMappedIo.stRead.stErrorCode.bWriteProgramName  := (byError1 AND 16#40) <> 0;
 stMappedIo.stRead.stErrorCode.bReadLastResult    := (byError1 AND 16#80) <> 0;
 
 
-stMappedIo.stRead.anReservedIn[0]	:= stRawIo.anInput[0][4];
-stMappedIo.stRead.anReservedIn[1]	:= stRawIo.anInput[0][5];
+stMappedIo.stRead.anReserved[0]	:= stRawIo.anInput[0][4];
+stMappedIo.stRead.anReserved[1]	:= stRawIo.anInput[0][5];
 
 	CASE  GVL_Ateq.eDeviceEndianSetTo OF
 		E_AteqEndian.LittleEndian: // Little Endian
@@ -271,7 +263,7 @@ END_IF;
 IF stMappedIo.stWrite.stCommands.bWriteParams THEN
     nCommand0 := nCommand0 OR 16#40;
 END_IF;
-IF stMappedIo.stWrite.stCommands.bResetFifo THEN
+IF stMappedIo.stWrite.stCommands.bResetFIFO THEN
     nCommand0 := nCommand0 OR 16#80;
 END_IF;
 
@@ -279,7 +271,7 @@ END_IF;
 IF stMappedIo.stWrite.stCommands.bReadInstrumentConfig THEN
     nCommand1 := nCommand1 OR 16#01;
 END_IF;
-IF stMappedIo.stWrite.stCommands.bReadConfig THEN
+IF stMappedIo.stWrite.stCommands.bReadConfigMenuBits THEN
     nCommand1 := nCommand1 OR 16#02;
 END_IF;
 IF stMappedIo.stWrite.stCommands.bReadFunctionBits THEN
@@ -347,9 +339,6 @@ END_FOR;
       </Implementation>
     </Method>
     <LineIds Name="FB_AteqComm">
-      <LineId Id="169" Count="0" />
-      <LineId Id="167" Count="0" />
-      <LineId Id="186" Count="0" />
       <LineId Id="168" Count="0" />
       <LineId Id="187" Count="0" />
       <LineId Id="105" Count="0" />

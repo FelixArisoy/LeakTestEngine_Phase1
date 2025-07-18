@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
   <POU Name="FB_AteqCmdHandler" Id="{736e6d42-ec43-485f-bfa6-1943d6a22849}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_AteqCmdHandler
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AteqCmdHandler //This is a child FB to FB_AteqControl
 VAR_INPUT    
 	bCmdEcho        : BOOL; // Command echo bit from ATEQ (TRUE while active)
     bCmdError       : BOOL; // Error code bit from ATEQ

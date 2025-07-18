@@ -9,8 +9,7 @@
     SEQ_AUTO_ZERO,        	// Executing Auto Zero command
     SEQ_START_PROGRAM,    	// Starting the test program
     SEQ_READ_LAST_RESULT, 	// Reading the last test result
-	//SEQ_READ_FIFO,		// For future use
-    SEQ_READ_FIFO_RESULTS,	// Reading FIFO results (if multiple)
+	//SEQ_READ_FIFO_RESULTS,	// Reading FIFO results (if multiple)
     SEQ_TEST_DONE,        	// Auto sequence completed successfully
     SEQ_ERROR,   			// An error occurred within the auto sequence
 	SEQ_TIMEOUT,

@@ -8,15 +8,15 @@ STRUCT
     nTestType           : WORD;
     nRelayImage         : WORD;  // Original raw word
 
-    // Relay image decoded bits
+    // Relay status image decoded bits
     bPassPart           : BOOL;  // Bit 0 = 1: pass
-    bFailMaxFlow        : BOOL;  // Bit 1 = 1: fail (max)
-    bFailMinFlow        : BOOL;  // Bit 2 = 1: fail (min)
+    bFailMaxFlowReject	: BOOL;  // Bit 1 = 1: fail (max)
+    bFailMinFlowReject	: BOOL;  // Bit 2 = 1: fail (min)
     bAlarm              : BOOL;  // Bit 3 = 1: alarm
-    bUnused4            : BOOL;  // Bit 4
-    bReserved5          : BOOL;  // Bit 5
-    bUnused6            : BOOL;  // Bit 6
-    bUnused7            : BOOL;  // Bit 7
+    bUnusedBit4         : BOOL;  // Bit 4
+    bUnusedBit5			: BOOL;  // Bit 5
+    bUnusedBit6			: BOOL;  // Bit 6
+    bUnusedBit7			: BOOL;  // Bit 7
 
     nAlarmCode          : WORD;
 
@@ -26,23 +26,23 @@ STRUCT
     fLeak              	: REAL;
     nLeakUnitCode       : DWORD;
 
-    fPiezo2Pressure    	: REAL;
-    nPiezo2UnitCode     : DWORD;
+    fPressurePiezo2    			: REAL;
+    nPressurePiezo2UnitCode     : DWORD;
 
-    fTestCheckResult    : REAL;
-    nTestCheckUnitCode  : DWORD;
+    fTestCheckResult    		: REAL;
+    nTestCheckResultUnitCode  	: DWORD;
 
     fLargeLeak         	: REAL;
     nLargeLeakUnitCode  : DWORD;
 
     fPaLeakResult      	: REAL;
 
-	aUnused             : ARRAY[27..36] OF WORD; // Word 27-36
+	aReserved			: ARRAY[27..36] OF WORD; // Word 27-36
 	
-    fAtmosphere_hPa    	: REAL;
-    fTemperature_C     	: REAL;
+    fAtmPressure    	: REAL;
+    fTempCelcius     	: REAL;
 
-   // dtTimestamp       : DT;
+   	dtTestTimeStamp		: DT;
 	
 END_STRUCT
 END_TYPE

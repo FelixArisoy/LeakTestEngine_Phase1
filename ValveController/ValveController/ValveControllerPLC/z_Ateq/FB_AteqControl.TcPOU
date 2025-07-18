@@ -20,6 +20,7 @@ VAR_OUTPUT
    	bAutoSeqResetDone	: BOOL;
    
 	
+	
 	// ##### DEBUG #####
    	stIoDebug   	: ST_AteqIo;
 END_VAR
@@ -32,9 +33,7 @@ For future: FB_init may be required*)
 	bCmdHandlerResetRequest : BOOL;
 
 //!!!!!!!!!!!!!! To be used									
-	stResultsRaw		: ST_AteqResultsRaw;
-	stLastResults		: ST_AteqResultsDecoded;
-    astFIFO				: ARRAY[0..7] OF ST_AteqResultsDecoded;
+   // astFIFO				: ARRAY[0..7] OF ST_AteqResultsDecoded;
 
 // Internal timers USED IN M_AutoSeq
     tSeqTimeout 	: TON;
@@ -105,7 +104,7 @@ tSeqTimeout(IN := tSeqTimeout.IN, PT := tSeqTimeout.PT);
 		fbR_TRIG_AutoSeqResetRequest(CLK := bAutoSeqResetRequest);
 		IF fbR_TRIG_AutoSeqResetRequest.Q THEN
 			bAutoSeqResetRequest 	:= FALSE;
-			eAutoSeqState 		:= SEQ_RESET; 		
+			eAutoSeqState 			:= SEQ_RESET; 		
 		END_IF
 
 //#############################	SEQUENCE START	#############################		
@@ -113,17 +112,17 @@ CASE eAutoSeqState OF
 	
 	SEQ_IDLE:
 		IF bAutoSeqResetDone THEN
-			bAutoSeqActive				:= FALSE;
+			bAutoSeqActive	:= FALSE;
 		END_IF
 		
 		fbR_TRIG_RunSequence(CLK := bAutoSeqRunRequest);
 		
 //IF ATEQ is BUSY or not connected CycleEnd = 0, if ATEQ is ready CycleEnd = 1
 		IF fbR_TRIG_RunSequence.Q AND stIo.stRead.stRealtimeTestResults.bCycleEnd THEN
-   			bAutoSeqDone 	:= FALSE;
-			bAutoSeqRunRequest:= FALSE;
-			bAutoSeqActive			:= TRUE;
-    		eAutoSeqState 	:= SEQ_RESET_FIFO;
+   			bAutoSeqDone 		:= FALSE;
+			bAutoSeqRunRequest	:= FALSE;
+			bAutoSeqActive		:= TRUE;
+    		eAutoSeqState		:= SEQ_RESET_FIFO;
 		END_IF
 
 	
@@ -149,7 +148,7 @@ CASE eAutoSeqState OF
         
 		M_ReadLastResult();
         
-	(*SEQ_READ_FIFO:
+	(*SEQ_READ_FIFO_RESULTS:
 		M_ReadFIFO();
 	For future: if multiple programs runs in seq then reads the data in chunk*)	
 	
@@ -619,19 +618,6 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Property Name="P_SystemDateTime" Id="{edbff775-b379-4408-8922-353bd74d8226}">
-      <Declaration><![CDATA[PROPERTY P_SystemDateTime : DT]]></Declaration>
-      <Get Name="Get" Id="{e8fbd260-46bb-4198-bba6-59c4a737ee81}">
-        <Declaration><![CDATA[VAR
-
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[P_SystemDateTime := TIME_TO_DT(GVL_HW.nSystemTime);
-]]></ST>
-        </Implementation>
-      </Get>
-    </Property>
     <LineIds Name="FB_AteqControl">
       <LineId Id="1130" Count="0" />
       <LineId Id="1135" Count="1" />
@@ -831,10 +817,6 @@ END_VAR
       <LineId Id="101" Count="0" />
       <LineId Id="103" Count="1" />
       <LineId Id="52" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_AteqControl.P_SystemDateTime.Get">
-      <LineId Id="6" Count="0" />
-      <LineId Id="2" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_AteqResultHandler" Id="{83a39566-cc01-4a56-a640-0780618ac137}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AteqResultHandler
+VAR_INPUT
+	bIsAutoSeqDone		: BOOL;
+	anExchangeZone		: ARRAY[0..127] OF BYTE; // Raw 40-byte ATEQ Last Result block
+END_VAR
+VAR_IN_OUT	
+END_VAR
+VAR_OUTPUT
+	bLastResultsStored	: BOOL;
+	//bFIFOResultsStored	: BOOL;
+	stLastResults		: ST_AteqResultsDecoded;
+END_VAR
+VAR_TEMP
+	nOffset : INT;
+	
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bIsAutoSeqDone THEN
+	
+	FOR nOffset := 0 TO 127 DO
+	M_GetWord(nIndex := nOffset);
+	M_GetDWord(nIndex := nOffset);
+	M_GetReal(nIndex := nOffset);
+	END_FOR
+	
+	IF nOffset = 127 THEN
+		M_DecodeLastResults();
+	END_IF
+END_IF]]></ST>
+    </Implementation>
+    <Method Name="M_DecodeLastResults" Id="{ae5e062d-88f2-44cf-8bfc-3c173c4914c7}">
+      <Declaration><![CDATA[METHOD M_DecodeLastResults : ST_AteqResultsDecoded
+VAR
+	dtTemp : DT;
+	nOffset : INT;
+	wRelayImage : WORD;
+END_VAR
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// === Word fields ===
+stLastResults.nProgramNumber := M_GetWord(0);
+stLastResults.nTestType      := M_GetWord(2);
+wRelayImage := M_GetWord(4);
+stLastResults.nRelayImage := wRelayImage;
+
+// === Relay bits ===
+stLastResults.bPassPart          := (wRelayImage AND 16#0001) <> 0;
+stLastResults.bFailMaxFlowReject := (wRelayImage AND 16#0002) <> 0;
+stLastResults.bFailMinFlowReject := (wRelayImage AND 16#0004) <> 0;
+stLastResults.bAlarm             := (wRelayImage AND 16#0008) <> 0;
+// Others are reserved
+
+// === Alarm code ===
+stLastResults.nAlarmCode := M_GetWord(6);
+
+// === Real + DWORD Unit code pairs ===
+stLastResults.fPressure              := M_GetReal(8);
+stLastResults.nPressureUnitCode      := M_GetDWord(12);
+
+stLastResults.fLeak                  := M_GetReal(16);
+stLastResults.nLeakUnitCode          := M_GetDWord(20);
+
+stLastResults.fPressurePiezo2        := M_GetReal(24);
+stLastResults.nPressurePiezo2UnitCode:= M_GetDWord(28);
+
+stLastResults.fTestCheckResult       := M_GetReal(32);
+stLastResults.nTestCheckResultUnitCode := M_GetDWord(36);
+
+stLastResults.fLargeLeak             := M_GetReal(40);
+stLastResults.nLargeLeakUnitCode     := M_GetDWord(44);
+
+stLastResults.fPaLeakResult          := M_GetReal(48);
+
+// === Reserved WORDs (10 WORDs from byte 52 to 71) ===
+FOR nOffset := 0 TO 9 DO
+	stLastResults.aReserved[27 + nOffset] := M_GetWord(52 + nOffset * 2);
+END_FOR
+
+// === Environmental ===
+stLastResults.fAtmPressure  := M_GetReal(72);
+stLastResults.fTempCelcius  := M_GetReal(76);
+
+// === Timestamp (DT) ===
+stLastResults.dtTestTimeStamp := GVL_HW.nSystemTime;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_GetDWord" Id="{ae3ff039-bb3d-4e21-88fd-0677b0274f55}">
+      <Declaration><![CDATA[METHOD PRIVATE M_GetDWord : DWORD
+VAR_INPUT
+	nIndex : INT;
+END_VAR
+VAR
+	nLowWord  : WORD;
+	nHighWord : WORD;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+nLowWord := M_GetWord(nIndex := nIndex);
+nHighWord := M_GetWord(nIndex := nIndex + 2);
+IF GVL_Ateq.eDeviceEndianSetTo = E_AteqEndian.LittleEndian THEN
+	M_GetDword := SHL(WORD_TO_DWORD(nLowWord), 16) OR WORD_TO_DWORD(nHighWord);
+ELSE
+	M_GetDword := SHL(WORD_TO_DWORD(nHighWord), 16) OR WORD_TO_DWORD(nLowWord);
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_GetReal" Id="{7f230d3b-3725-4a01-ae93-b74613e3223d}">
+      <Declaration><![CDATA[METHOD PRIVATE M_GetReal : REAL
+VAR_INPUT
+	nIndex : INT;	
+END_VAR
+VAR
+	nDWord : DWORD;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[nDWord := M_GetDWord(nIndex := nIndex);
+M_GetReal := DWORD_TO_REAL(nDWord);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_GetWord" Id="{1767a00b-de76-4571-b2d0-10fc51192ebe}">
+      <Declaration><![CDATA[METHOD PRIVATE M_GetWord : WORD
+VAR_INPUT
+	nIndex : INT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+IF GVL_Ateq.eDeviceEndianSetTo = E_AteqEndian.LittleEndian THEN
+	M_GetWord := SHL(BYTE_TO_WORD(anExchangeZone[nIndex]), 8) OR BYTE_TO_WORD(anExchangeZone[nIndex + 1]);
+ELSE
+	M_GetWord := BYTE_TO_WORD(anExchangeZone[nIndex]) OR SHL(BYTE_TO_WORD(anExchangeZone[nIndex + 1]), 8);
+END_IF
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_AteqResultHandler">
+      <LineId Id="9" Count="0" />
+      <LineId Id="123" Count="0" />
+      <LineId Id="128" Count="0" />
+      <LineId Id="127" Count="0" />
+      <LineId Id="125" Count="1" />
+      <LineId Id="131" Count="4" />
+      <LineId Id="124" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqResultHandler.M_DecodeLastResults">
+      <LineId Id="220" Count="44" />
+      <LineId Id="267" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqResultHandler.M_GetDWord">
+      <LineId Id="49" Count="0" />
+      <LineId Id="37" Count="5" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="51" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqResultHandler.M_GetReal">
+      <LineId Id="25" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqResultHandler.M_GetWord">
+      <LineId Id="10" Count="0" />
+      <LineId Id="17" Count="3" />
+      <LineId Id="15" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

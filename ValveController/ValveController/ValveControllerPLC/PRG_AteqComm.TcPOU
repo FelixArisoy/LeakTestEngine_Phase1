@@ -15,7 +15,8 @@ VAR
 	bAutoSeqRun			: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF BOOL;
 	bAutoSeqDone		: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF BOOL;
 	bAutoSeqResetRequest: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF BOOL;
-	
+//####### Ateq Result Handler #######
+	afbAteqResult		: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF FB_AteqResultHandler;
   	
     // DEBUG variables for delay and array storage:
 	bCommandSent       : BOOL := FALSE;
@@ -80,11 +81,17 @@ nMaxDeviceCount 			:= GVL_Ateq.nMaxDeviceCount;
 									bAutoSeqResetRequest 	:= bAutoSeqResetRequest[nDeviceIndex],
 									stIo 					:= astAteqIo[nDeviceIndex]
 );
+		
+		afbAteqResult[nDeviceIndex](
+									bIsAutoSeqDone			:= afbAteqControl[nDeviceIndex].bAutoSeqDone,
+									anExchangeZone			:= astAteqIo[nDeviceIndex].stRead.anExchangeZone,
+);		
+				
+
 		END_FOR
 	END_IF
 	
 //END_CASE
-
 
 
 
@@ -164,7 +171,16 @@ END_IF
       <LineId Id="2084" Count="0" />
       <LineId Id="1994" Count="0" />
       <LineId Id="2080" Count="0" />
-      <LineId Id="1995" Count="84" />
+      <LineId Id="1995" Count="11" />
+      <LineId Id="2131" Count="0" />
+      <LineId Id="2125" Count="0" />
+      <LineId Id="2127" Count="0" />
+      <LineId Id="2126" Count="0" />
+      <LineId Id="2124" Count="0" />
+      <LineId Id="2122" Count="0" />
+      <LineId Id="2121" Count="0" />
+      <LineId Id="2007" Count="4" />
+      <LineId Id="2013" Count="66" />
       <LineId Id="155" Count="0" />
     </LineIds>
   </POU>
