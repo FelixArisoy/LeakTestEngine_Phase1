@@ -3,20 +3,20 @@
   <Itf Name="I_ValveBank" Id="{9abff4a5-9dc4-4338-a357-8d967cc6368b}">
     <Declaration><![CDATA[INTERFACE I_ValveBank EXTENDS IValve
 ]]></Declaration>
-    <Method Name="AddValve" Id="{40186191-08b9-4aab-8670-059bfa3bd986}">
-      <Declaration><![CDATA[METHOD AddValve : BOOL
+    <Method Name="M_Status" Id="{c1abdec2-e6ee-4ff9-babd-3e8d6a259cd4}">
+      <Declaration><![CDATA[METHOD M_Status : BOOL
 VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
-    <Method Name="GetValveStats" Id="{cc111834-5512-4f98-b80c-ee2a3f76900a}">
-      <Declaration><![CDATA[METHOD GetValveStats : INT
+    <Method Name="M_TriggerFromMask" Id="{755f9910-c101-4fb7-90ee-bcba44a6a4a3}">
+      <Declaration><![CDATA[METHOD M_TriggerFromMask : BOOL
 VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
-    <Method Name="TriggerFromMask" Id="{755f9910-c101-4fb7-90ee-bcba44a6a4a3}">
-      <Declaration><![CDATA[METHOD TriggerFromMask : BOOL
+    <Method Name="M_TriggerManual" Id="{63fac6b4-9286-4ff2-830b-5a885f2ba6a0}">
+      <Declaration><![CDATA[METHOD M_TriggerManual : BOOL
 VAR_INPUT
 END_VAR
 ]]></Declaration>

@@ -3,60 +3,93 @@
   <POU Name="FB_Valve" Id="{80e7d0b3-dfac-4a5a-948d-086d420c2f8a}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Valve IMPLEMENTS I_Valve
 VAR_INPUT
+	nStatus		: DWORD;
+	bCmdOpen  	: BOOL;
+    bCmdClose 	: BOOL;
 END_VAR
 VAR_OUTPUT
+	bSolenoidFaulted 	: BOOL;
+	bOpenCircuit 		: BOOL;
+	ShortCircuit 		: BOOL;
+	ManualOverride 		: BOOL;
+	bOpened   : BOOL;
+    bClosed   : BOOL;
 END_VAR
-VAR
+VAR 
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
-    <Method Name="CmdClose" Id="{1d16d4c9-6a39-44b9-8565-d407aaf3c08c}">
-      <Declaration><![CDATA[{warning 'add method implementation '}
-METHOD CmdClose : BOOL (*Closes the Valve*)
+    <Method Name="M_CmdClose" Id="{1d16d4c9-6a39-44b9-8565-d407aaf3c08c}">
+      <Declaration><![CDATA[METHOD M_CmdClose : BOOL (*Closes the Valve*)
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[  	bCmdClose := TRUE;
+    bCmdOpen := FALSE;
+    M_CmdClose := TRUE;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="CmdOpen" Id="{a47b2e7e-6fcc-450a-be9b-01c5b6f5eb05}">
-      <Declaration><![CDATA[{warning 'add method implementation '}
-METHOD CmdOpen : BOOL (*Opens the Valve*)
+    <Method Name="M_CmdOpen" Id="{a47b2e7e-6fcc-450a-be9b-01c5b6f5eb05}">
+      <Declaration><![CDATA[METHOD M_CmdOpen : BOOL (*Opens the Valve*)
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[	bCmdOpen := TRUE;
+ 	bCmdClose := FALSE;
+ 	M_CmdOpen := TRUE;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="IsClosed" Id="{7c95474c-71b9-49cc-9865-a556154c6204}">
-      <Declaration><![CDATA[{warning 'add method implementation '}
-METHOD IsClosed : BOOL
+    <Method Name="M_IsClosed" Id="{7c95474c-71b9-49cc-9865-a556154c6204}">
+      <Declaration><![CDATA[METHOD M_IsClosed : BOOL
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[	M_IsClosed := bClosed;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="IsOpened" Id="{9ec97de6-5a3f-413f-bb42-7a4ae7406d98}">
-      <Declaration><![CDATA[{warning 'add method implementation '}
-METHOD IsOpened : BOOL
+    <Method Name="M_IsOpened" Id="{9ec97de6-5a3f-413f-bb42-7a4ae7406d98}">
+      <Declaration><![CDATA[METHOD M_IsOpened : BOOL
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[	M_IsOpened := bOpened;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Status" Id="{f41bb54e-9b59-49d0-856c-e790c3a7a76a}">
+      <Declaration><![CDATA[METHOD M_Status : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Status decoding logic
+    ShortCircuit     := (nStatus AND GVL_ValveStatus.SHORT_CIRCUIT) <> 0;
+    bOpenCircuit     := (nStatus AND GVL_ValveStatus.OPEN_CIRCUIT) <> 0;
+    ManualOverride   := (nStatus AND GVL_ValveStatus.STATUS_FAULT_OVERRIDE) <> 0;
+
+    bOpened          := (nStatus AND GVL_ValveStatus.OPENED) <> 0;
+    bClosed          := (nStatus AND GVL_ValveStatus.CLOSED) <> 0;
+
+    bSolenoidFaulted := ShortCircuit OR bOpenCircuit;
+
+    // Return TRUE if no fault
+    M_Status := NOT (bSolenoidFaulted OR ManualOverride);]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_Valve">
       <LineId Id="9" Count="0" />
     </LineIds>
-    <LineIds Name="FB_Valve.CmdClose">
+    <LineIds Name="FB_Valve.M_CmdClose">
+      <LineId Id="7" Count="1" />
       <LineId Id="4" Count="0" />
     </LineIds>
-    <LineIds Name="FB_Valve.CmdOpen">
+    <LineIds Name="FB_Valve.M_CmdOpen">
+      <LineId Id="7" Count="1" />
       <LineId Id="4" Count="0" />
     </LineIds>
-    <LineIds Name="FB_Valve.IsClosed">
+    <LineIds Name="FB_Valve.M_IsClosed">
       <LineId Id="4" Count="0" />
     </LineIds>
-    <LineIds Name="FB_Valve.IsOpened">
+    <LineIds Name="FB_Valve.M_IsOpened">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.M_Status">
+      <LineId Id="5" Count="10" />
       <LineId Id="4" Count="0" />
     </LineIds>
   </POU>

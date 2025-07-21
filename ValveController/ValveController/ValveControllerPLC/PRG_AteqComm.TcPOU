@@ -80,7 +80,7 @@ nMaxDeviceCount 			:= GVL_Ateq.nMaxDeviceCount;
 									bAutoSeqRunRequest 		:= bAutoSeqRun[nDeviceIndex],
 									bAutoSeqResetRequest 	:= bAutoSeqResetRequest[nDeviceIndex],
 									stRawIo 				:= astAteqRawIo[nDeviceIndex],
-									stMappedIo 					:= astAteqIo[nDeviceIndex]
+									stMappedIo 				:= astAteqIo[nDeviceIndex]
 );
 		
 		afbAteqResult[nDeviceIndex](

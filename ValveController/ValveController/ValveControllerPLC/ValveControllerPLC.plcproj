@@ -21,12 +21,6 @@
     <Compile Include="0_Interfaces\I_Controller.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="0_Interfaces\I_LeakTester.TcIO">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="0_Interfaces\I_Sequence.TcIO">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="0_Interfaces\I_Valve.TcIO">
       <SubType>Code</SubType>
     </Compile>
@@ -41,6 +35,10 @@
     </Compile>
     <Compile Include="2_ValveBank\FB_ValveBank.TcPOU">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="2_ValveBank\GVL_ValveStatus.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
     </Compile>
     <Compile Include="4_Sequence\FB_HexDecoder.TcPOU">
       <SubType>Code</SubType>
@@ -127,6 +125,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="z_Ateq\FB_AteqControl.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="z_Ateq\FB_AteqRecipeHandler.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="z_Ateq\FB_AteqResultHandler.TcPOU">

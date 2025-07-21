@@ -3,54 +3,76 @@
   <POU Name="FB_ValveBank" Id="{6fd479d4-9175-4488-b2ec-fe7d4059738b}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_ValveBank IMPLEMENTS I_ValveBank
 VAR_INPUT
-	NumOfValves : INT;
+    NumOfValves : INT; 				// Total number of valves in this bank
+	dwValveMask : DWORD;            // Each bit enables corresponding valve
+END_VAR
+VAR_IN_OUT
+    afbValve : ARRAY[0..49] OF FB_Valve; // Max size; NumOfValves limits how many are used
 END_VAR
 VAR_OUTPUT
+    aValveStatus : ARRAY[0..49] OF DWORD; // Aggregated raw status
+    aValveError  : ARRAY[0..49] OF BOOL;  // True if valve reports error
+    bHasAnyError : BOOL;                  // Summary flag
 END_VAR
 VAR
-	aValves 	: ARRAY[1..NumOfValves] OF FB_Valve;
-END_VAR
-]]></Declaration>
+    i : INT;
+END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[
 
 ]]></ST>
     </Implementation>
-    <Method Name="AddValve" Id="{3f4e104f-ebf9-455a-83e7-c19d6b83e420}">
-      <Declaration><![CDATA[{warning 'add method implementation '}
-METHOD AddValve : BOOL
+    <Method Name="M_Status" Id="{49dfdca5-5b79-4752-a62e-fc568e236d58}">
+      <Declaration><![CDATA[METHOD M_Status : BOOL
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[bHasAnyError := FALSE;
+FOR i := 0 TO NumOfValves - 1 DO
+    aValveStatus[i] := afbValve[i].nStatus;
+    IF NOT afbValve[i].M_Status() THEN
+        aValveError[i] := TRUE;
+        bHasAnyError := TRUE;
+    ELSE
+        aValveError[i] := FALSE;
+    END_IF
+END_FOR
+M_Status := NOT bHasAnyError;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="GetValveStats" Id="{a2aa7772-672a-422c-afc0-a68981b3618e}">
-      <Declaration><![CDATA[{warning 'add method implementation '}
-METHOD GetValveStats : INT
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="TriggerFromMask" Id="{fe376a1d-db65-4f96-89c4-385f8cf1d130}">
-      <Declaration><![CDATA[{warning 'add method implementation '}
-METHOD TriggerFromMask : BOOL
-VAR_INPUT
-	aValveMask : ARRAY[1..NumOfValves] OF BOOL;
-END_VAR
+    <Method Name="M_TriggerFromMask" Id="{fe376a1d-db65-4f96-89c4-385f8cf1d130}">
+      <Declaration><![CDATA[METHOD M_TriggerFromMask : BOOL
 VAR
-	i	: INT;
+    i : INT;
+    bitSet : BOOL;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[FOR i := 1 TO NumOfValves DO
-	IF aVAlveMask[i] THEN
-		aValves[i].CmdOpen();
-	ELSE
-		aValves[i].CmdClose();
-	END_IF
+        <ST><![CDATA[
+FOR i := 0 TO NumOfValves - 1 DO
+    bitSet := (dwValveMask AND SHL(1, i)) <> 0;
+    
+    IF NOT aValveError[i] THEN
+        IF bitSet THEN
+            afbValve[i].M_CmdOpen();
+        ELSE
+            afbValve[i].M_CmdClose();
+        END_IF
+    END_IF
 END_FOR
 
-TriggerFromMask := TRUE;]]></ST>
+M_TriggerFromMask := TRUE;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_TriggerManual" Id="{8af14a3c-2dc8-4674-a94b-adeb0c9e665c}">
+      <Declaration><![CDATA[METHOD M_TriggerManual : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FOR i := 0 TO NumOfValves - 1 DO
+    IF NOT aValveError[i] THEN
+        afbValve[i].M_CmdOpen(); // Trigger manually (could be parameterized)
+    END_IF
+END_FOR
+M_TriggerManual := TRUE;]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_ValveBank">
@@ -58,20 +80,17 @@ TriggerFromMask := TRUE;]]></ST>
       <LineId Id="15" Count="0" />
       <LineId Id="14" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveBank.AddValve">
+    <LineIds Name="FB_ValveBank.M_Status">
+      <LineId Id="5" Count="9" />
       <LineId Id="4" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveBank.GetValveStats">
-      <LineId Id="4" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_ValveBank.TriggerFromMask">
-      <LineId Id="4" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="15" Count="0" />
-      <LineId Id="17" Count="2" />
-      <LineId Id="14" Count="0" />
-      <LineId Id="21" Count="0" />
+    <LineIds Name="FB_ValveBank.M_TriggerFromMask">
+      <LineId Id="34" Count="13" />
       <LineId Id="20" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBank.M_TriggerManual">
+      <LineId Id="5" Count="4" />
+      <LineId Id="4" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

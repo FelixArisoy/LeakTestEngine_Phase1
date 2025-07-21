@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_AteqRecipeHandler" Id="{5bd52787-700f-4e89-ba64-88cd754a1d2e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AteqRecipeHandler
+VAR_INPUT
+    StartAutoSequence : BOOL;
+    RecipeBuffers     : WORD;
+    RecipeLengths     : UINT;
+    ValveProgramMap   : ARRAY[0..32] OF INT;
+    ValveStabilizationTime : TIME := T#200ms;
+END_VAR
+
+VAR_OUTPUT
+    Done              : BOOL;
+    Busy              : BOOL;
+    ProgramNumber     : WORD;
+    ValveMask         : DWORD;
+    StartCommand      : BOOL;
+END_VAR
+
+VAR
+    CurrentStep       : UINT;
+    Running           : BOOL;
+    ValveTriggerTimer : TON;
+    State             : INT; (* 0:Idle, 1:ValveOn, 2:Wait, 3:SetProgram *)
+END_VAR
+
+VAR CONSTANT
+    MAX_ATEQ_DEVICES : UINT := 4;
+END_VAR
+
+VAR_TEMP
+    i : UINT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+    CASE State[i] OF
+
+        0: (* Idle *)
+            Done[i] := FALSE;
+            Busy[i] := FALSE;
+            StartCommand[i] := FALSE;
+            IF StartAutoSequence[i] AND NOT Running[i] THEN
+                Running[i] := TRUE;
+                CurrentStep[i] := 0;
+                State[i] := 1;
+                Busy[i] := TRUE;
+            END_IF
+
+        1: (* Valve On *)
+            ValveMask[i] := ValveProgramMap[i, CurrentStep[i]];
+            ValveTriggerTimer(IN := TRUE, PT := ValveStabilizationTime);
+            State[i] := 2;
+
+        2: (* Wait for valve *)
+            ValveTriggerTimer(IN := TRUE);
+            IF ValveTriggerTimer.Q THEN
+                ValveTriggerTimer(IN := FALSE);
+                State[i] := 3;
+            END_IF
+
+        3: (* Set Program Number and Trigger *)
+            ProgramNumber[i] := RecipeBuffers[i, CurrentStep[i]];
+            StartCommand[i] := TRUE;
+            IF CurrentStep[i] + 1 >= RecipeLengths[i] THEN
+                Running[i] := FALSE;
+                Done[i] := TRUE;
+                State[i] := 0;
+            ELSE
+                CurrentStep[i] := CurrentStep[i] + 1;
+                State[i] := 1;
+            END_IF
+
+    END_CASE
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_AteqRecipeHandler">
+      <LineId Id="149" Count="39" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
