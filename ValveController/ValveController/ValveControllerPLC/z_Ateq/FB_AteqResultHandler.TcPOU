@@ -3,7 +3,7 @@
   <POU Name="FB_AteqResultHandler" Id="{83a39566-cc01-4a56-a640-0780618ac137}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_AteqResultHandler
 VAR_INPUT
-	bIsAutoSeqDone		: BOOL;
+	bAutoSeqDone		: BOOL;
 	anExchangeZone		: ARRAY[0..127] OF BYTE; // Raw 40-byte ATEQ Last Result block
 END_VAR
 VAR_IN_OUT	
@@ -12,29 +12,41 @@ VAR_OUTPUT
 	bLastResultsStored	: BOOL;
 	//bFIFOResultsStored	: BOOL;
 	stLastResults		: ST_AteqResultsDecoded;
+	astLastResults		: ARRAY[0..GVL_Ateq.nMaxResultStore] OF ST_AteqResultsDecoded;
 END_VAR
-VAR_TEMP
-	nOffset : INT;
-	
+VAR
+	nOffset 	: INT := 0;
+	nTestIndex 	: INT := 0;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[IF bIsAutoSeqDone THEN
-	
-	FOR nOffset := 0 TO 127 DO
-	M_GetWord(nIndex := nOffset);
-	M_GetDWord(nIndex := nOffset);
-	M_GetReal(nIndex := nOffset);
-	END_FOR
-	
-	IF nOffset = 127 THEN
-		M_DecodeLastResults();
-	END_IF
-END_IF]]></ST>
+      <ST><![CDATA[IF bAutoSeqDone THEN
+    
+	// Read and Parse ExchangeZone
+    FOR nOffset := 0 TO 127 DO
+        M_GetWord(nIndex := nOffset);
+        M_GetDWord(nIndex := nOffset);
+        M_GetReal(nIndex := nOffset);
+    END_FOR
+
+	 M_DecodeLastResults();
+	 
+    // Store the result once per test
+    IF NOT bLastResultsStored AND nTestIndex < GVL_Ateq.nMaxResultStore THEN
+        astLastResults[nTestIndex] := stLastResults;
+        bLastResultsStored := TRUE;
+		bAutoSeqDone := FALSE;		
+        nTestIndex := nTestIndex + 1; 
+    END_IF
+
+ELSE
+    bLastResultsStored := FALSE;
+END_IF
+]]></ST>
     </Implementation>
     <Method Name="M_DecodeLastResults" Id="{ae5e062d-88f2-44cf-8bfc-3c173c4914c7}">
-      <Declaration><![CDATA[METHOD M_DecodeLastResults : ST_AteqResultsDecoded
+      <Declaration><![CDATA[METHOD M_DecodeLastResults
 VAR
-	dtTemp : DT;
+	dtTemp 	: DT;
 	nOffset : INT;
 	wRelayImage : WORD;
 END_VAR
@@ -59,22 +71,22 @@ stLastResults.bAlarm             := (wRelayImage AND 16#0008) <> 0;
 stLastResults.nAlarmCode := M_GetWord(6);
 
 // === Real + DWORD Unit code pairs ===
-stLastResults.fPressure              := M_GetReal(8);
-stLastResults.nPressureUnitCode      := M_GetDWord(12);
+stLastResults.fPressure              := M_GetReal(8) / 1000.0;
+stLastResults.nPressureUnitCode      := M_GetDWord(12) / 1000;
 
-stLastResults.fLeak                  := M_GetReal(16);
-stLastResults.nLeakUnitCode          := M_GetDWord(20);
+stLastResults.fLeak                  := M_GetReal(16) / 10000.0;
+stLastResults.nLeakUnitCode          := M_GetDWord(20) / 1000;
 
-stLastResults.fPressurePiezo2        := M_GetReal(24);
-stLastResults.nPressurePiezo2UnitCode:= M_GetDWord(28);
+stLastResults.fPressurePiezo2        := M_GetReal(24) / 1000.0;
+stLastResults.nPressurePiezo2UnitCode:= M_GetDWord(28) / 1000;
 
-stLastResults.fTestCheckResult       := M_GetReal(32);
-stLastResults.nTestCheckResultUnitCode := M_GetDWord(36);
+stLastResults.fTestCheckResult       := M_GetReal(32) / 1000.0;
+stLastResults.nTestCheckResultUnitCode := M_GetDWord(36) / 1000;
 
-stLastResults.fLargeLeak             := M_GetReal(40);
-stLastResults.nLargeLeakUnitCode     := M_GetDWord(44);
+stLastResults.fLargeLeak             := M_GetReal(40) / 1000.0;
+stLastResults.nLargeLeakUnitCode     := M_GetDWord(44) / 1000;
 
-stLastResults.fPaLeakResult          := M_GetReal(48);
+stLastResults.fPaLeakResult          := M_GetReal(48) / 1000.0;
 
 // === Reserved WORDs (10 WORDs from byte 52 to 71) ===
 FOR nOffset := 0 TO 9 DO
@@ -82,11 +94,14 @@ FOR nOffset := 0 TO 9 DO
 END_FOR
 
 // === Environmental ===
-stLastResults.fAtmPressure  := M_GetReal(72);
-stLastResults.fTempCelcius  := M_GetReal(76);
+stLastResults.fAtmPressure  := M_GetReal(72) / 1000.0;
+stLastResults.fTempCelcius  := M_GetReal(76) / 1000.0;
 
 // === Timestamp (DT) ===
-stLastResults.dtTestTimeStamp := GVL_HW.nSystemTime;
+stLastResults.dtTestTimeStamp := GVL_HW.dtSystemTime;
+
+
+
 ]]></ST>
       </Implementation>
     </Method>
@@ -142,16 +157,16 @@ END_IF
       </Implementation>
     </Method>
     <LineIds Name="FB_AteqResultHandler">
-      <LineId Id="9" Count="0" />
-      <LineId Id="123" Count="0" />
-      <LineId Id="128" Count="0" />
-      <LineId Id="127" Count="0" />
-      <LineId Id="125" Count="1" />
-      <LineId Id="131" Count="4" />
+      <LineId Id="218" Count="14" />
+      <LineId Id="239" Count="0" />
+      <LineId Id="233" Count="5" />
       <LineId Id="124" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqResultHandler.M_DecodeLastResults">
       <LineId Id="220" Count="44" />
+      <LineId Id="276" Count="0" />
+      <LineId Id="278" Count="0" />
+      <LineId Id="277" Count="0" />
       <LineId Id="267" Count="0" />
       <LineId Id="5" Count="0" />
     </LineIds>

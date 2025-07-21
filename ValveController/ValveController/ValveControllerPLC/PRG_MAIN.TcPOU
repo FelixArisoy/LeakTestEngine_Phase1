@@ -3,19 +3,61 @@
   <POU Name="PRG_MAIN" Id="{075ea502-c30b-43b0-8467-21d133ac9e69}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_MAIN
 VAR
-
-	
+    ulSystemTime   : ULINT;
+    dtUnixEpoch    : DT := DT#2025-07-21-08:50:00;
+    dtSystemTime   : DT;
+    tDelta         : TIME;
+    ulMsSince1970  : ULINT;
 END_VAR
-]]></Declaration>
+VAR
+    fbLocalTime      : FB_LocalSystemTime;  // Synchronizes with Windows clock
+    bInitDone        : BOOL := FALSE;
+    dtCurrentTime    : DT;
+END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[//Update System time in every Task Cycle
-GVL_HW.nSystemTime := ULINT_TO_DT(Tc2_System.F_GetSystemTime());
-]]></ST>
+      <ST><![CDATA[
+
+// First call — start the FB
+fbLocalTime( 
+    bEnable := TRUE,        // trigger initial sync
+    dwCycle := 60           // resync every 60 s
+);
+
+// After first sync, FB bValid becomes TRUE
+IF fbLocalTime.bValid THEN
+    bInitDone := TRUE;
+END_IF
+
+// Update dtCurrentTime each cycle
+IF bInitDone THEN
+    dtCurrentTime := SYSTEMTIME_TO_DT(fbLocalTime.systemTime);
+END_IF
+
+// Use dtCurrentTime as your system timestamp
+GVL_HW.dtSystemTime := dtCurrentTime;
+
+(*
+// system time in 100ns since 1601
+ulSystemTime := F_GetSystemTime();
+
+
+// Subtract 116444736000000000 (difference between 1601 and 1970 in 100ns units)
+ulMsSince1970 := (ulSystemTime - 116444736000000000) / 10000;
+
+
+tDelta := ULINT_TO_TIME(ulMsSince1970); // if ULINT_TO_TIME not available, split manually
+
+
+dtSystemTime := dtUnixEpoch + tDelta;
+GVL_HW.dtSystemTime := dtSystemTime;
+*)]]></ST>
     </Implementation>
     <LineIds Name="PRG_MAIN">
-      <LineId Id="8" Count="0" />
-      <LineId Id="2" Count="0" />
-      <LineId Id="14" Count="0" />
+      <LineId Id="85" Count="19" />
+      <LineId Id="78" Count="1" />
+      <LineId Id="57" Count="11" />
+      <LineId Id="71" Count="0" />
+      <LineId Id="27" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

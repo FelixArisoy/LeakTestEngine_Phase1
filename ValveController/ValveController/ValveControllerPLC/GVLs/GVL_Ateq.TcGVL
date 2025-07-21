@@ -3,10 +3,11 @@
   <GVL Name="GVL_Ateq" Id="{8341f924-21b8-4660-ac80-fb81e367c10a}">
     <Declaration><![CDATA[// shared IO variables for one ATEQ device
 VAR_GLOBAL CONSTANT
-    nMaxDeviceCount : UINT := 1; // Set; based on Total Num of F6 ATEQ devices
-	tCommandTimeout	: TIME := T#30S; //Sets AteqControl CmdHandlerMethod Timeout
-	tTestTimeOut	: TIME := T#120S;
-	tAutoSeqTimeout	: TIME := T#300S;
+    nMaxDeviceCount : UINT 	:= 1; // Set; based on Total Num of F6 ATEQ devices
+	tCommandTimeout	: TIME 	:= T#30S; //Sets AteqControl CmdHandlerMethod Timeout
+	tTestTimeOut	: TIME 	:= T#120S;
+	tAutoSeqTimeout	: TIME 	:= T#300S;
+	nMaxResultStore	: INT	:= 99;	//FB_ResultHandler Result buffer array limit
 
 END_VAR
 

@@ -83,7 +83,7 @@ nMaxDeviceCount 			:= GVL_Ateq.nMaxDeviceCount;
 );
 		
 		afbAteqResult[nDeviceIndex](
-									bIsAutoSeqDone			:= afbAteqControl[nDeviceIndex].bAutoSeqDone,
+									bAutoSeqDone			:= afbAteqControl[nDeviceIndex].bAutoSeqDone,
 									anExchangeZone			:= astAteqIo[nDeviceIndex].stRead.anExchangeZone,
 );		
 				
