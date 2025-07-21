@@ -69,17 +69,18 @@ nMaxDeviceCount 			:= GVL_Ateq.nMaxDeviceCount;
 		
 		FOR nDeviceIndex := 0 TO nMaxDeviceCount - 1 DO
 			
-		afbAteqComm[nDeviceIndex](
+		(*afbAteqComm[nDeviceIndex](
 									nDeviceIndex 			:= nDeviceIndex,
 									stRawIo 				:= astAteqRawIo[nDeviceIndex],
 									stMappedIo 				:= astAteqIo[nDeviceIndex]
-);
+);*)
 
 		afbAteqControl[nDeviceIndex](
 									nProgramNumber 			:= nProgramNumber[nDeviceIndex],
 									bAutoSeqRunRequest 		:= bAutoSeqRun[nDeviceIndex],
 									bAutoSeqResetRequest 	:= bAutoSeqResetRequest[nDeviceIndex],
-									stIo 					:= astAteqIo[nDeviceIndex]
+									stRawIo 				:= astAteqRawIo[nDeviceIndex],
+									stMappedIo 					:= astAteqIo[nDeviceIndex]
 );
 		
 		afbAteqResult[nDeviceIndex](
@@ -171,7 +172,9 @@ END_IF
       <LineId Id="2084" Count="0" />
       <LineId Id="1994" Count="0" />
       <LineId Id="2080" Count="0" />
-      <LineId Id="1995" Count="11" />
+      <LineId Id="1995" Count="8" />
+      <LineId Id="2168" Count="0" />
+      <LineId Id="2004" Count="2" />
       <LineId Id="2131" Count="0" />
       <LineId Id="2125" Count="0" />
       <LineId Id="2127" Count="0" />

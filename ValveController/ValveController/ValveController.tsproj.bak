@@ -24,7 +24,7 @@
 			</ArrayInfo>
 		</DataType>
 	</DataTypes>
-	<Project ProjectGUID="{A76AF4C2-744F-4C27-A416-5035FFBECB46}" TargetNetId="5.76.71.245.1.1" Target64Bit="true" ShowHideConfigurations="#x6">
+	<Project ProjectGUID="{A76AF4C2-744F-4C27-A416-5035FFBECB46}" AmlIdsEnabled="true" TargetNetId="5.76.71.245.1.1" Target64Bit="true" ShowHideConfigurations="#x6">
 		<System>
 			<Settings MaxCpus="4">
 				<Cpu CpuId="3"/>
@@ -42,10 +42,13 @@
 					<Name>PlcAteqCommTask</Name>
 				</Task>
 			</Tasks>
+			<AdditionalProjectFiles>
+				<File>_AML\TwinCAT.AMLDataExchange.log</File>
+			</AdditionalProjectFiles>
 		</System>
 		<Plc>
 			<Project GUID="{FF505B91-FACF-4A2B-B73E-9C5E3B10185D}" Name="ValveControllerPLC" PrjFilePath="ValveControllerPLC\ValveControllerPLC.plcproj" TmcFilePath="ValveControllerPLC\ValveControllerPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{D26CD5E7-D7A1-CA3B-DDA3-F5FEDC4FA6E0}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{C90F77D9-1331-BE1E-A50F-58DEED84DAE6}">
 					<Name>ValveControllerPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
@@ -106,13 +109,13 @@
 			</Project>
 		</Plc>
 		<Io>
-			<Device Id="1" DevType="113" AmsPort="28673" AmsNetId="5.76.71.245.2.1" RemoteName="Device 1 (Profinet Controller)">
+			<Device Id="1" AmlId="{A86A7610-2FF5-4427-A1F1-68F3806A7625}" DevType="113" AmsPort="28673" AmsNetId="5.76.71.245.2.1" RemoteName="Device 1 (Profinet Controller)">
 				<Name>Device 1 (Profinet Controller)</Name>
 				<DevData>000000000000000000000000409c0000656d300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100780aa8c000ffffff0001054c47f4040000000000000000000000000000000000010aa8c00000000000000000000000000000000000000000</DevData>
 				<Image Id="1" AddrType="1" ImageType="3" SizeIn="260" SizeOut="266">
 					<Name>Image</Name>
 				</Image>
-				<Box Id="1" BoxType="9121">
+				<Box Id="1" AmlId="{4D0E8789-E929-49EB-9FEF-70E07FAF4004}" BoxType="9121">
 					<Name>ateqf620</Name>
 					<Comment><![CDATA[GSDML Name: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
 Path: \\vmware-host\Shared Folders\VMShared\(X)Research\2025_05_ValveControllerOOP\
@@ -121,7 +124,7 @@ OrderNumber: 153x.10x
 HW Release Version: 2
 SW Release Version: 3.4.19]]></Comment>
 					<ImageId>121</ImageId>
-					<Vars VarGrpType="1">
+					<Vars AmlId="{140A7FD9-2ED3-489D-B055-5B2D9052B2B2}" VarGrpType="1">
 						<Name>Inputs</Name>
 						<Var>
 							<Name>PnIoBoxState</Name>
@@ -165,7 +168,7 @@ SW Release Version: 3.4.19]]></Comment>
 							<BitOffs>16</BitOffs>
 						</Var>
 					</Vars>
-					<Vars VarGrpType="2">
+					<Vars AmlId="{AEAD6789-2078-4142-9BF3-1876E6F2F2B9}" VarGrpType="2">
 						<Name>Outputs</Name>
 						<Var>
 							<Name>PnIoBoxCtrl</Name>
@@ -712,10 +715,10 @@ OrderNumber: 153x.10x]]></Comment>
 Submodule Info: Firmware version V3.4.19 - V3.4.x. Supports FastStartup, Identification & Maintenance 1-4, RT and IRT Communication.
 ]]></Comment>
 									<ImageId>183</ImageId>
-									<Vars VarGrpType="1">
+									<Vars AmlId="{2E6CA7E8-8DDC-4DB2-893B-22289895C1A4}" VarGrpType="1">
 										<Name>Inputs</Name>
 									</Vars>
-									<Vars VarGrpType="2">
+									<Vars AmlId="{7C277E1F-1EE8-4DA7-8B4F-D93CBC217E7A}" VarGrpType="2">
 										<Name>Outputs</Name>
 									</Vars>
 								</SubModule>
@@ -724,10 +727,10 @@ Submodule Info: Firmware version V3.4.19 - V3.4.x. Supports FastStartup, Identif
 									<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
 ]]></Comment>
 									<ImageId>183</ImageId>
-									<Vars VarGrpType="1">
+									<Vars AmlId="{3956D493-EFA6-4B21-AA6E-8B396229F1F7}" VarGrpType="1">
 										<Name>Inputs</Name>
 									</Vars>
-									<Vars VarGrpType="2">
+									<Vars AmlId="{BAB1F62A-475D-4497-A0C2-CBFB53095F45}" VarGrpType="2">
 										<Name>Outputs</Name>
 									</Vars>
 								</SubModule>
@@ -736,10 +739,10 @@ Submodule Info: Firmware version V3.4.19 - V3.4.x. Supports FastStartup, Identif
 									<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
 ]]></Comment>
 									<ImageId>183</ImageId>
-									<Vars VarGrpType="1">
+									<Vars AmlId="{F9E6FBC2-3707-4A9E-87F6-B19CF2A4A2E3}" VarGrpType="1">
 										<Name>Inputs</Name>
 									</Vars>
-									<Vars VarGrpType="2">
+									<Vars AmlId="{344275F6-1B7C-4669-B7E7-6ED1A88FA600}" VarGrpType="2">
 										<Name>Outputs</Name>
 									</Vars>
 								</SubModule>
@@ -748,10 +751,10 @@ Submodule Info: Firmware version V3.4.19 - V3.4.x. Supports FastStartup, Identif
 									<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
 ]]></Comment>
 									<ImageId>183</ImageId>
-									<Vars VarGrpType="1">
+									<Vars AmlId="{07233FDD-E7C8-49D4-8629-089D8E046E13}" VarGrpType="1">
 										<Name>Inputs</Name>
 									</Vars>
-									<Vars VarGrpType="2">
+									<Vars AmlId="{15160C3E-0642-4BFD-A76F-EED9C6B7888E}" VarGrpType="2">
 										<Name>Outputs</Name>
 									</Vars>
 								</SubModule>
@@ -768,7 +771,7 @@ Module Info: 64 Bytes Input Module
 Submodule Info: 64 Bytes Input Submodule
 ]]></Comment>
 									<ImageId>183</ImageId>
-									<Vars VarGrpType="1">
+									<Vars AmlId="{411ECA1A-5121-442C-8597-6EDE19F4D159}" VarGrpType="1">
 										<Name>Inputs</Name>
 										<Var>
 											<Name>Inputs</Name>
@@ -776,7 +779,7 @@ Submodule Info: 64 Bytes Input Submodule
 											<BitOffs>32</BitOffs>
 										</Var>
 									</Vars>
-									<Vars VarGrpType="2">
+									<Vars AmlId="{AAE45C4C-BE54-4BDD-AD44-618DE57BDA13}" VarGrpType="2">
 										<Name>Outputs</Name>
 									</Vars>
 								</SubModule>
@@ -793,7 +796,7 @@ Module Info: 64 Bytes Input Module
 Submodule Info: 64 Bytes Input Submodule
 ]]></Comment>
 									<ImageId>183</ImageId>
-									<Vars VarGrpType="1">
+									<Vars AmlId="{E50251C8-DEB3-4C65-AD9F-7BB1162689D4}" VarGrpType="1">
 										<Name>Inputs</Name>
 										<Var>
 											<Name>Inputs</Name>
@@ -801,7 +804,7 @@ Submodule Info: 64 Bytes Input Submodule
 											<BitOffs>544</BitOffs>
 										</Var>
 									</Vars>
-									<Vars VarGrpType="2">
+									<Vars AmlId="{5167FB3E-2D0D-4B6E-933F-7A6E05217032}" VarGrpType="2">
 										<Name>Outputs</Name>
 									</Vars>
 								</SubModule>
@@ -818,7 +821,7 @@ Module Info: 64 Bytes Input Module
 Submodule Info: 64 Bytes Input Submodule
 ]]></Comment>
 									<ImageId>183</ImageId>
-									<Vars VarGrpType="1">
+									<Vars AmlId="{B0A124DC-DCA6-4264-899E-55322E313B30}" VarGrpType="1">
 										<Name>Inputs</Name>
 										<Var>
 											<Name>Inputs</Name>
@@ -826,7 +829,7 @@ Submodule Info: 64 Bytes Input Submodule
 											<BitOffs>1056</BitOffs>
 										</Var>
 									</Vars>
-									<Vars VarGrpType="2">
+									<Vars AmlId="{0B51D179-4675-4000-A372-407C049B872B}" VarGrpType="2">
 										<Name>Outputs</Name>
 									</Vars>
 								</SubModule>
@@ -843,7 +846,7 @@ Module Info: 64 Bytes Input Module
 Submodule Info: 64 Bytes Input Submodule
 ]]></Comment>
 									<ImageId>183</ImageId>
-									<Vars VarGrpType="1">
+									<Vars AmlId="{AE5EE82D-DA7B-4131-8448-5D52027C65EA}" VarGrpType="1">
 										<Name>Inputs</Name>
 										<Var>
 											<Name>Inputs</Name>
@@ -851,7 +854,7 @@ Submodule Info: 64 Bytes Input Submodule
 											<BitOffs>1568</BitOffs>
 										</Var>
 									</Vars>
-									<Vars VarGrpType="2">
+									<Vars AmlId="{9BB86C9E-9CA1-48BF-A927-F2A077CEA667}" VarGrpType="2">
 										<Name>Outputs</Name>
 									</Vars>
 								</SubModule>
@@ -868,10 +871,10 @@ Module Info: 64 Bytes Output Module
 Submodule Info: 64 Bytes Output Submodule
 ]]></Comment>
 									<ImageId>183</ImageId>
-									<Vars VarGrpType="1">
+									<Vars AmlId="{6E28FE7A-0282-4A42-8EED-36467B01747B}" VarGrpType="1">
 										<Name>Inputs</Name>
 									</Vars>
-									<Vars VarGrpType="2">
+									<Vars AmlId="{816BD4CC-FD32-41DF-AA48-34FED384A6EA}" VarGrpType="2">
 										<Name>Outputs</Name>
 										<Var>
 											<Name>Outputs</Name>
@@ -893,10 +896,10 @@ Module Info: 64 Bytes Output Module
 Submodule Info: 64 Bytes Output Submodule
 ]]></Comment>
 									<ImageId>183</ImageId>
-									<Vars VarGrpType="1">
+									<Vars AmlId="{A0057627-08CF-4950-AD36-36EF41BCE4C7}" VarGrpType="1">
 										<Name>Inputs</Name>
 									</Vars>
-									<Vars VarGrpType="2">
+									<Vars AmlId="{7433E0DC-3B54-4DC4-AE9A-4D9F6AC97969}" VarGrpType="2">
 										<Name>Outputs</Name>
 										<Var>
 											<Name>Outputs</Name>
@@ -918,10 +921,10 @@ Module Info: 64 Bytes Output Module
 Submodule Info: 64 Bytes Output Submodule
 ]]></Comment>
 									<ImageId>183</ImageId>
-									<Vars VarGrpType="1">
+									<Vars AmlId="{539C757D-0EAD-4D89-BF2C-18C9BF6BCFFF}" VarGrpType="1">
 										<Name>Inputs</Name>
 									</Vars>
-									<Vars VarGrpType="2">
+									<Vars AmlId="{3E082472-BFD0-42D3-837C-443CADCFF602}" VarGrpType="2">
 										<Name>Outputs</Name>
 										<Var>
 											<Name>Outputs</Name>
@@ -943,10 +946,10 @@ Module Info: 64 Bytes Output Module
 Submodule Info: 64 Bytes Output Submodule
 ]]></Comment>
 									<ImageId>183</ImageId>
-									<Vars VarGrpType="1">
+									<Vars AmlId="{DB615BD7-B924-42DE-A85F-1F477608453D}" VarGrpType="1">
 										<Name>Inputs</Name>
 									</Vars>
-									<Vars VarGrpType="2">
+									<Vars AmlId="{A826846D-1721-4F97-B345-49D76023A85C}" VarGrpType="2">
 										<Name>Outputs</Name>
 										<Var>
 											<Name>Outputs</Name>

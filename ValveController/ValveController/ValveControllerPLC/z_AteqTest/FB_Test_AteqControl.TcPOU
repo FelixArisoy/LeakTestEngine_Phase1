@@ -24,7 +24,7 @@ END_VAR
 						nProgramNumber 			:= 0,
 						bAutoSeqRunRequest 		:= TRUE,
 						bAutoSeqResetRequest 	:= FALSE,
-						stIo 					:= stTestIo
+						stMappedIo 					:= stTestIo
 );
 		nTestStep := 1;
     1: // Call FB, check transition to RESET_FIFO
@@ -41,7 +41,7 @@ END_VAR
 						nProgramNumber 			:= 0,
 						bAutoSeqRunRequest 		:= TRUE,
 						bAutoSeqResetRequest 	:= FALSE,
-						stIo 					:= stTestIo
+						stMappedIo 					:= stTestIo
 );
 
         IF fbTestInstance.eAutoSeqState = SEQ_AUTO_ZERO THEN
@@ -56,7 +56,7 @@ END_VAR
 						nProgramNumber 			:= 0,
 						bAutoSeqRunRequest 		:= TRUE,
 						bAutoSeqResetRequest 	:= FALSE,
-						stIo 					:= stTestIo
+						stMappedIo 					:= stTestIo
 );
 
         IF fbTestInstance.eAutoSeqState = SEQ_PROGRAM_SELECT THEN
@@ -71,7 +71,7 @@ END_VAR
 						nProgramNumber 			:= 0,
 						bAutoSeqRunRequest 		:= TRUE,
 						bAutoSeqResetRequest 	:= FALSE,
-						stIo 					:= stTestIo
+						stMappedIo 					:= stTestIo
 );
 
         fbTestInstance.bProgramSelectComplete := TRUE;
@@ -80,7 +80,7 @@ END_VAR
 						nProgramNumber 			:= 0,
 						bAutoSeqRunRequest 		:= TRUE,
 						bAutoSeqResetRequest 	:= FALSE,
-						stIo 					:= stTestIo
+						stMappedIo 					:= stTestIo
 );
 
         IF fbTestInstance.eAutoSeqState = SEQ_START_PROGRAM THEN

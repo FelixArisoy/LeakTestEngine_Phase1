@@ -126,9 +126,6 @@
     <Compile Include="z_Ateq\FB_AteqCmdHandler.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="z_Ateq\FB_AteqComm.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="z_Ateq\FB_AteqControl.TcPOU">
       <SubType>Code</SubType>
     </Compile>
