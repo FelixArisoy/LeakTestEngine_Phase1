@@ -55,9 +55,9 @@ FOR i := 0 TO nNumOfValves - 1 DO
     
     IF aeValveStatus[i] = OK THEN
         IF bitSet THEN
-            afbValve[i].M_CmdOpen();
+            afbValve[i].M_Open();
         ELSE
-            afbValve[i].M_CmdClose();
+            afbValve[i].M_Close();
         END_IF
     END_IF
 END_FOR
@@ -76,9 +76,9 @@ END_VAR]]></Declaration>
     IF NOT aValveError[i] THEN
         
 		IF anReqOpenManual[i] THEN
-			afbValve[i].M_CmdOpen(); 
+			afbValve[i].M_Open(); 
 		ELSE	
-			afbValve[i].M_CmdClose(); 
+			afbValve[i].M_Close(); 
 		END_IF
 		
     END_IF

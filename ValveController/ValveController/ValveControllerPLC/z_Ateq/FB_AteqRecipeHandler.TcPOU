@@ -68,7 +68,7 @@ END_VAR
             END_IF
 		
 		E_StatesAteqRecipeHandler.RECIPE_RUN_ATEQ: // Set Program Number to the Ateq Control AutoSeq and Run
-            nProgramNumber := anProgramNumber[i];
+            nProgramNumber := anProgramNumber[nCurrentProgram];
             bAteqSeqRunCmd := TRUE;
 			
 			IF eAteqProgramAutoSeqStates = SEQ_TEST_DONE THEN
@@ -80,7 +80,7 @@ END_VAR
 			
            
 			
-		E_StatesAteqRecipeHandler.RECIPE_STORE_RESULTS: //Recipe Handler Error
+		E_StatesAteqRecipeHandler.RECIPE_RESULT_STORED: //Recipe Handler Error
 			IF bLastResultsStored THEN
 				bAteqSeqResetCmd := TRUE; // Reset ATEQ
 				 IF nCurrentProgram >= GVL_AteqConfig.nMaxProgramsToRun - 1 THEN
@@ -100,17 +100,7 @@ END_VAR
 ]]></ST>
     </Implementation>
     <LineIds Name="FB_AteqRecipeHandler">
-      <LineId Id="755" Count="45" />
-      <LineId Id="806" Count="3" />
-      <LineId Id="822" Count="0" />
-      <LineId Id="817" Count="4" />
-      <LineId Id="815" Count="1" />
-      <LineId Id="814" Count="0" />
-      <LineId Id="823" Count="0" />
-      <LineId Id="825" Count="0" />
-      <LineId Id="824" Count="0" />
-      <LineId Id="826" Count="0" />
-      <LineId Id="810" Count="1" />
+      <LineId Id="827" Count="64" />
       <LineId Id="9" Count="0" />
     </LineIds>
   </POU>

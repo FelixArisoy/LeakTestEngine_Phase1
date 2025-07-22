@@ -11,6 +11,9 @@ VAR_GLOBAL CONSTANT
 	nMaxTestSteps	: INT	:= 10;	
 	nMaxProgramsToRun	: INT := 33;
 	nMaxValveBank		: INT := 2;
+	
+	//bValveBankPosFeedbackUsed 	: BOOL := FALSE;
+	bValvePosFeedbackUsed	: BOOL := FALSE;
 END_VAR
 
 VAR_GLOBAL
