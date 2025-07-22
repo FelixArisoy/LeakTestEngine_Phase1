@@ -6,17 +6,17 @@ VAR
 	nMaxDeviceCount : UINT;
 	nDeviceIndex    : UINT;
 //####### Map Io #######
-    afbAteqComm   		: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF FB_AteqComm;
-    astAteqIo 			: ARRAY[0..GVL_Ateq.nMaxDeviceCount - 1] OF ST_AteqIo;
-	astAteqRawIo   		: ARRAY[0..GVL_Ateq.nMaxDeviceCount - 1] OF ST_AteqRawIo;
+   // afbAteqComm   		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount	- 1] OF FB_AteqComm;
+    astAteqIo 			: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqIo;
+	astAteqRawIo   		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqRawIo;
 //####### Control Ateq #######  
-	afbAteqControl		: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF FB_AteqControl;
-	nProgramNumber		: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF WORD;
-	bAutoSeqRun			: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF BOOL;
-	bAutoSeqDone		: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF BOOL;
-	bAutoSeqResetRequest: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF BOOL;
+	afbAteqControl		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount	- 1] OF FB_AteqControl;
+	nProgramNumber		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount	- 1] OF WORD;
+	bAutoSeqRun			: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount	- 1] OF BOOL;
+	bAutoSeqDone		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount	- 1] OF BOOL;
+	bAutoSeqResetRequest: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount	- 1] OF BOOL;
 //####### Ateq Result Handler #######
-	afbAteqResult		: ARRAY[0..GVL_Ateq.nMaxDeviceCount	- 1] OF FB_AteqResultHandler;
+	afbAteqResult		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount	- 1] OF FB_AteqResultHandler;
   	
     // DEBUG variables for delay and array storage:
 	bCommandSent       : BOOL := FALSE;
@@ -40,7 +40,7 @@ VAR
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[// Initialize max device count once
-(*nMaxDeviceCount := GVL_Ateq.nMaxDeviceCount;
+(*nMaxDeviceCount := GVL_AteqConfig.nMaxDeviceCount;
 
 CASE eAteqCallerState OF
 	
@@ -62,8 +62,8 @@ CASE eAteqCallerState OF
 
 
 
-GVL_Ateq.eDeviceEndianSetTo := E_AteqEndian.BigEndian;
-nMaxDeviceCount 			:= GVL_Ateq.nMaxDeviceCount;	
+GVL_AteqConfig.eDeviceEndianSetTo := E_StatesAteqEndian.BigEndian;
+nMaxDeviceCount 			:= GVL_AteqConfig.nMaxDeviceCount;	
 
 	IF nMaxDeviceCount > 0 THEN
 		

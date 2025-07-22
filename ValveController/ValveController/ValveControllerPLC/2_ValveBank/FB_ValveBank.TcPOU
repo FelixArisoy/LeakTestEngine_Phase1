@@ -3,40 +3,43 @@
   <POU Name="FB_ValveBank" Id="{6fd479d4-9175-4488-b2ec-fe7d4059738b}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_ValveBank IMPLEMENTS I_ValveBank
 VAR_INPUT
-    NumOfValves : INT; 				// Total number of valves in this bank
-	dwValveMask : DWORD;            // Each bit enables corresponding valve
+    nNumOfValves 	: INT;		// Total number of valves in this bank
+	nValveMaskAuto 	: DWORD;	// Each bit enables corresponding valve 
 END_VAR
 VAR_IN_OUT
-    afbValve : ARRAY[0..49] OF FB_Valve; // Max size; NumOfValves limits how many are used
+    afbValve 		: ARRAY[0..nNumOfValves - 1] OF FB_Valve; // Max size; NumOfValves limits how many are used
+	anReqOpenManual	: ARRAY[0..nNumOfValves - 1] OF BOOL; 
+	anReqCloseManual: ARRAY[0..nNumOfValves - 1] OF BOOL;
 END_VAR
 VAR_OUTPUT
-    aValveStatus : ARRAY[0..49] OF DWORD; // Aggregated raw status
-    aValveError  : ARRAY[0..49] OF BOOL;  // True if valve reports error
-    bHasAnyError : BOOL;                  // Summary flag
+    aeValveStatus : ARRAY[0..nNumOfValves -1] OF E_ValveStatus;
+    bHasAnyError : BOOL;
 END_VAR
-VAR
-    i : INT;
-END_VAR]]></Declaration>
+]]></Declaration>
     <Implementation>
       <ST><![CDATA[
 
 ]]></ST>
     </Implementation>
     <Method Name="M_Status" Id="{49dfdca5-5b79-4752-a62e-fc568e236d58}">
-      <Declaration><![CDATA[METHOD M_Status : BOOL
-]]></Declaration>
+      <Declaration><![CDATA[METHOD M_Status
+VAR
+    i : INT;
+END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[bHasAnyError := FALSE;
-FOR i := 0 TO NumOfValves - 1 DO
-    aValveStatus[i] := afbValve[i].nStatus;
-    IF NOT afbValve[i].M_Status() THEN
-        aValveError[i] := TRUE;
-        bHasAnyError := TRUE;
-    ELSE
-        aValveError[i] := FALSE;
+FOR i := 0 TO nNumOfValves - 1 DO
+
+	aeValveStatus[i] := afbValve[i].M_Status();
+	
+	IF aeValveStatus[i] <> OK THEN
+		bHasAnyError := TRUE;
     END_IF
+	
 END_FOR
-M_Status := NOT bHasAnyError;]]></ST>
+
+
+//OR mapp the VB Status  bits here]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_TriggerFromMask" Id="{fe376a1d-db65-4f96-89c4-385f8cf1d130}">
@@ -47,10 +50,10 @@ VAR
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
-FOR i := 0 TO NumOfValves - 1 DO
-    bitSet := (dwValveMask AND SHL(1, i)) <> 0;
+FOR i := 0 TO nNumOfValves - 1 DO
+    bitSet := (nValveMaskAuto AND SHL(1, i)) <> 0;
     
-    IF NOT aValveError[i] THEN
+    IF aeValveStatus[i] = OK THEN
         IF bitSet THEN
             afbValve[i].M_CmdOpen();
         ELSE
@@ -64,15 +67,23 @@ M_TriggerFromMask := TRUE;
       </Implementation>
     </Method>
     <Method Name="M_TriggerManual" Id="{8af14a3c-2dc8-4674-a94b-adeb0c9e665c}">
-      <Declaration><![CDATA[METHOD M_TriggerManual : BOOL
-]]></Declaration>
+      <Declaration><![CDATA[METHOD M_TriggerManual
+VAR
+    i : INT;
+END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[FOR i := 0 TO NumOfValves - 1 DO
+        <ST><![CDATA[FOR i := 0 TO nNumOfValves - 1 DO
     IF NOT aValveError[i] THEN
-        afbValve[i].M_CmdOpen(); // Trigger manually (could be parameterized)
+        
+		IF anReqOpenManual[i] THEN
+			afbValve[i].M_CmdOpen(); 
+		ELSE	
+			afbValve[i].M_CmdClose(); 
+		END_IF
+		
     END_IF
 END_FOR
-M_TriggerManual := TRUE;]]></ST>
+]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_ValveBank">
@@ -81,15 +92,29 @@ M_TriggerManual := TRUE;]]></ST>
       <LineId Id="14" Count="0" />
     </LineIds>
     <LineIds Name="FB_ValveBank.M_Status">
-      <LineId Id="5" Count="9" />
+      <LineId Id="5" Count="3" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="14" Count="0" />
       <LineId Id="4" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="16" Count="0" />
     </LineIds>
     <LineIds Name="FB_ValveBank.M_TriggerFromMask">
       <LineId Id="34" Count="13" />
       <LineId Id="20" Count="0" />
     </LineIds>
     <LineIds Name="FB_ValveBank.M_TriggerManual">
-      <LineId Id="5" Count="4" />
+      <LineId Id="5" Count="2" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="14" Count="1" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="8" Count="1" />
       <LineId Id="4" Count="0" />
     </LineIds>
   </POU>

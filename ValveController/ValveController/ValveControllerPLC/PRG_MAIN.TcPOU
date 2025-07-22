@@ -34,7 +34,7 @@ IF bInitDone THEN
 END_IF
 
 // Use dtCurrentTime as your system timestamp
-GVL_HW.dtSystemTime := dtCurrentTime;
+GVL_Controller.dtSystemTime := dtCurrentTime;
 
 (*
 // system time in 100ns since 1601

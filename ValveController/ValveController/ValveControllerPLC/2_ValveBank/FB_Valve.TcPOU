@@ -3,11 +3,13 @@
   <POU Name="FB_Valve" Id="{80e7d0b3-dfac-4a5a-948d-086d420c2f8a}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Valve IMPLEMENTS I_Valve
 VAR_INPUT
-	nStatus		: DWORD;
-	bCmdOpen  	: BOOL;
-    bCmdClose 	: BOOL;
+	nValveFeedback	: DWORD; // Size depends on the hardware config
+	//nInputMap		: DWORD; // Size depends on the hardware config
+	bCmdOpen  		: BOOL;
+    bCmdClose 		: BOOL;
 END_VAR
 VAR_OUTPUT
+	//nOutputMap			: DWORD; // Size depends on the hardware config
 	bSolenoidFaulted 	: BOOL;
 	bOpenCircuit 		: BOOL;
 	ShortCircuit 		: BOOL;
@@ -43,32 +45,46 @@ END_VAR
       <Declaration><![CDATA[METHOD M_IsClosed : BOOL
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[	M_IsClosed := bClosed;]]></ST>
+        <ST><![CDATA[	M_IsClosed := bClosed;
+	//Use if external sensor position feedback]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_IsOpened" Id="{9ec97de6-5a3f-413f-bb42-7a4ae7406d98}">
       <Declaration><![CDATA[METHOD M_IsOpened : BOOL
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[	M_IsOpened := bOpened;]]></ST>
+        <ST><![CDATA[	M_IsOpened := bOpened;
+	//Use if external sensor position feedback]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_Status" Id="{f41bb54e-9b59-49d0-856c-e790c3a7a76a}">
-      <Declaration><![CDATA[METHOD M_Status : BOOL
+      <Declaration><![CDATA[METHOD M_Status : E_ValveStatus
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[// Status decoding logic
-    ShortCircuit     := (nStatus AND GVL_ValveStatus.SHORT_CIRCUIT) <> 0;
-    bOpenCircuit     := (nStatus AND GVL_ValveStatus.OPEN_CIRCUIT) <> 0;
-    ManualOverride   := (nStatus AND GVL_ValveStatus.STATUS_FAULT_OVERRIDE) <> 0;
+        <ST><![CDATA[
+// Decode status
+ShortCircuit   := (nValveFeedback AND GVL_ValveStatus.SHORT_CIRCUIT) <> 0;
+bOpenCircuit   := (nValveFeedback AND GVL_ValveStatus.OPEN_CIRCUIT) <> 0;
+ManualOverride := (nValveFeedback AND GVL_ValveStatus.STATUS_FAULT_OVERRIDE) <> 0;
 
-    bOpened          := (nStatus AND GVL_ValveStatus.OPENED) <> 0;
-    bClosed          := (nStatus AND GVL_ValveStatus.CLOSED) <> 0;
+bOpened := (nValveFeedback AND GVL_ValveStatus.OPENED) <> 0; //Use if postion feedback received thru VB mapping
+bClosed := (nValveFeedback AND GVL_ValveStatus.CLOSED) <> 0;
 
-    bSolenoidFaulted := ShortCircuit OR bOpenCircuit;
+bSolenoidFaulted := ShortCircuit OR bOpenCircuit;
 
-    // Return TRUE if no fault
-    M_Status := NOT (bSolenoidFaulted OR ManualOverride);]]></ST>
+// Return status enum
+IF ShortCircuit THEN
+    M_Status := E_ValveStatus.SHORT_CIRCUIT;
+ELSIF bOpenCircuit THEN
+    M_Status := E_ValveStatus.OPEN_CIRCUIT;
+ELSIF ManualOverride THEN
+    M_Status := E_ValveStatus.MANUAL_OVERRIDE;
+ELSIF NOT (bOpened OR bClosed) THEN
+    M_Status := E_ValveStatus.UNKNOWN_FAULT;
+ELSE
+    M_Status := E_ValveStatus.OK; // Comm or heartbeat bits maybe binded 
+END_IF
+]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_Valve">
@@ -84,12 +100,15 @@ END_VAR
     </LineIds>
     <LineIds Name="FB_Valve.M_IsClosed">
       <LineId Id="4" Count="0" />
+      <LineId Id="6" Count="0" />
     </LineIds>
     <LineIds Name="FB_Valve.M_IsOpened">
       <LineId Id="4" Count="0" />
+      <LineId Id="6" Count="0" />
     </LineIds>
     <LineIds Name="FB_Valve.M_Status">
-      <LineId Id="5" Count="10" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="19" Count="21" />
       <LineId Id="4" Count="0" />
     </LineIds>
   </POU>

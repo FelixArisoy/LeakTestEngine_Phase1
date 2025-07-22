@@ -27,6 +27,9 @@
     <Compile Include="0_Interfaces\I_ValveBank.TcIO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="1_Controller\FB_DwellTime.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="1_Controller\FB_MainPLC.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -35,10 +38,6 @@
     </Compile>
     <Compile Include="2_ValveBank\FB_ValveBank.TcPOU">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="2_ValveBank\GVL_ValveStatus.TcGVL">
-      <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
     </Compile>
     <Compile Include="4_Sequence\FB_HexDecoder.TcPOU">
       <SubType>Code</SubType>
@@ -49,37 +48,40 @@
     <Compile Include="4_Sequence\FB_TextFile.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\AteqComm\E_AteqEndian.TcDUT">
+    <Compile Include="DUTs\AteqIo\ST_AteqCommands.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\AteqComm\ST_AteqCommands.TcDUT">
+    <Compile Include="DUTs\AteqIo\ST_AteqEcho.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\AteqComm\ST_AteqEcho.TcDUT">
+    <Compile Include="DUTs\AteqIo\ST_AteqErrorCode.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\AteqComm\ST_AteqErrorCode.TcDUT">
+    <Compile Include="DUTs\AteqIo\ST_AteqIo.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\AteqComm\ST_AteqIo.TcDUT">
+    <Compile Include="DUTs\AteqIo\ST_AteqRawIo.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\AteqComm\ST_AteqRawIo.TcDUT">
+    <Compile Include="DUTs\AteqIo\ST_AteqRead.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\AteqComm\ST_AteqRead.TcDUT">
+    <Compile Include="DUTs\AteqIo\ST_AteqRealtimeTestResults.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\AteqComm\ST_AteqRealtimeTestResults.TcDUT">
+    <Compile Include="DUTs\AteqIo\ST_AteqWrite.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\AteqComm\ST_AteqWrite.TcDUT">
+    <Compile Include="DUTs\AteqControl\E_StatesAteqEndian.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\AteqControl\E_AteqAutoMode.TcDUT">
+    <Compile Include="DUTs\AteqControl\E_StatesAteqProgramAuto.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\AteqControl\E_AteqHandshake.TcDUT">
+    <Compile Include="DUTs\AteqControl\E_StatesAteqHandshake.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\AteqControl\E_StatesAteqRecipeHandler.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\AteqControl\ST_AteqResultsDecoded.TcDUT">
@@ -88,7 +90,10 @@
     <Compile Include="DUTs\AteqControl\ST_AteqResultsRaw.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="GVLs\GVL_Ateq.TcGVL">
+    <Compile Include="DUTs\ValveControl\E_ValveStatus.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GVLs\GVL_AteqConfig.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
@@ -96,7 +101,11 @@
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
-    <Compile Include="GVLs\GVL_HW.TcGVL">
+    <Compile Include="GVLs\GVL_Controller.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="GVLs\GVL_ValveStatus.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
@@ -133,14 +142,12 @@
     <Compile Include="z_Ateq\FB_AteqResultHandler.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="z_Ateq\FB_DwellTime.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DUTs" />
-    <Folder Include="DUTs\AteqComm" />
+    <Folder Include="DUTs\AteqIo" />
     <Folder Include="DUTs\AteqControl" />
+    <Folder Include="DUTs\ValveControl" />
     <Folder Include="GVLs" />
     <Folder Include="1_Controller" />
     <Folder Include="2_ValveBank" />

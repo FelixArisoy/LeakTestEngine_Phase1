@@ -12,7 +12,7 @@ VAR_OUTPUT
 	bLastResultsStored	: BOOL;
 	//bFIFOResultsStored	: BOOL;
 	stLastResults		: ST_AteqResultsDecoded;
-	astLastResults		: ARRAY[0..GVL_Ateq.nMaxResultStore] OF ST_AteqResultsDecoded;
+	astLastResults		: ARRAY[0..GVL_AteqConfig.nMaxResultStore] OF ST_AteqResultsDecoded;
 END_VAR
 VAR
 	nOffset 	: INT := 0;
@@ -31,7 +31,7 @@ END_VAR]]></Declaration>
 	 M_DecodeLastResults();
 	 
     // Store the result once per test
-    IF NOT bLastResultsStored AND nTestIndex < GVL_Ateq.nMaxResultStore THEN
+    IF NOT bLastResultsStored AND nTestIndex < GVL_AteqConfig.nMaxResultStore THEN
         astLastResults[nTestIndex] := stLastResults;
         bLastResultsStored := TRUE;
 		bAutoSeqDone := FALSE;		
@@ -98,7 +98,7 @@ stLastResults.fAtmPressure  := M_GetReal(72) / 1000.0;
 stLastResults.fTempCelcius  := M_GetReal(76) / 1000.0;
 
 // === Timestamp (DT) ===
-stLastResults.dtTestTimeStamp := GVL_HW.dtSystemTime;
+stLastResults.dtTestTimeStamp := GVL_Controller.dtSystemTime;
 
 
 
@@ -118,7 +118,7 @@ END_VAR]]></Declaration>
         <ST><![CDATA[
 nLowWord := M_GetWord(nIndex := nIndex);
 nHighWord := M_GetWord(nIndex := nIndex + 2);
-IF GVL_Ateq.eDeviceEndianSetTo = E_AteqEndian.LittleEndian THEN
+IF GVL_AteqConfig.eDeviceEndianSetTo = E_StatesAteqEndian.LittleEndian THEN
 	M_GetDword := SHL(WORD_TO_DWORD(nLowWord), 16) OR WORD_TO_DWORD(nHighWord);
 ELSE
 	M_GetDword := SHL(WORD_TO_DWORD(nHighWord), 16) OR WORD_TO_DWORD(nLowWord);
@@ -147,7 +147,7 @@ VAR_INPUT
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
-IF GVL_Ateq.eDeviceEndianSetTo = E_AteqEndian.LittleEndian THEN
+IF GVL_AteqConfig.eDeviceEndianSetTo = E_StatesAteqEndian.LittleEndian THEN
 	M_GetWord := SHL(BYTE_TO_WORD(anExchangeZone[nIndex]), 8) OR BYTE_TO_WORD(anExchangeZone[nIndex + 1]);
 ELSE
 	M_GetWord := BYTE_TO_WORD(anExchangeZone[nIndex]) OR SHL(BYTE_TO_WORD(anExchangeZone[nIndex + 1]), 8);

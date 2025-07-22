@@ -2,81 +2,115 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
   <POU Name="FB_AteqRecipeHandler" Id="{5bd52787-700f-4e89-ba64-88cd754a1d2e}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_AteqRecipeHandler
-VAR_INPUT
-    StartAutoSequence : BOOL;
-    RecipeBuffers     : WORD;
-    RecipeLengths     : UINT;
-    ValveProgramMap   : ARRAY[0..32] OF INT;
-    ValveStabilizationTime : TIME := T#200ms;
+VAR_INPUT    
+	bValveBankHasAnyError	: BOOL;
+	bLastResultsStored		: BOOL;
+    anProgramNumber		: ARRAY[0..GVL_AteqConfig.nMaxProgramsToRun - 1] OF WORD;
+    anValveMask			: ARRAY[0..GVL_AteqConfig.nMaxProgramsToRun - 1] OF DWORD;
+	eAteqProgramAutoSeqStates 		: E_StatesAteqProgramAuto;
+    ValveStabilizationTime : TIME := T#200MS;	
 END_VAR
-
+VAR_IN_OUT
+	bAutoTestRecipeStart	: BOOL; // Flag will be binded to Main PLC Run Cmd
+	bAteqSeqRunCmd			: BOOL;
+	bAteqSeqResetCmd		: BOOL;
+END_VAR
 VAR_OUTPUT
-    Done              : BOOL;
-    Busy              : BOOL;
-    ProgramNumber     : WORD;
-    ValveMask         : DWORD;
-    StartCommand      : BOOL;
+
+    nProgramNumber    : WORD;
+    nValveMask         : DWORD;
+
 END_VAR
 
 VAR
-    CurrentStep       : UINT;
-    Running           : BOOL;
-    ValveTriggerTimer : TON;
-    State             : INT; (* 0:Idle, 1:ValveOn, 2:Wait, 3:SetProgram *)
-END_VAR
+	eStatesAteqRecipeHandler : E_StatesAteqRecipeHandler;
+	tRecipeHandlerTimeout : TON;
+	nCurrentProgram	: INT;
+    tValveStable : TON;
 
-VAR CONSTANT
-    MAX_ATEQ_DEVICES : UINT := 4;
-END_VAR
 
-VAR_TEMP
-    i : UINT;
-END_VAR]]></Declaration>
+END_VAR
+]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
-    CASE State[i] OF
+      <ST><![CDATA[tRecipeHandlerTimeout(In := TRUE, PT := T#15S);    
+	CASE eStatesAteqRecipeHandler OF
 
-        0: (* Idle *)
-            Done[i] := FALSE;
-            Busy[i] := FALSE;
-            StartCommand[i] := FALSE;
-            IF StartAutoSequence[i] AND NOT Running[i] THEN
-                Running[i] := TRUE;
-                CurrentStep[i] := 0;
-                State[i] := 1;
-                Busy[i] := TRUE;
+        E_StatesAteqRecipeHandler.RECIPE_IDLE: // Idle 
+			
+			IF bAutoTestRecipeStart THEN
+				tValveStable.PT := ValveStabilizationTime;
+				nCurrentProgram := 0;
+				bAteqSeqResetCmd := TRUE;
+				bAutoTestRecipeStart := FALSE;
+				eStatesAteqRecipeHandler := E_StatesAteqRecipeHandler.RECIPE_TRIGGER_VALVES;
+			END_IF
+			
+			
+        E_StatesAteqRecipeHandler.RECIPE_TRIGGER_VALVES: // Valve Cmd On From Mask
+            IF eAteqProgramAutoSeqStates = SEQ_IDLE AND NOT bValveBankHasAnyError THEN
+				tRecipeHandlerTimeout(IN := FALSE);
+				bAteqSeqResetCmd := FALSE;
+				nValveMask := anValveMask[nCurrentProgram];            
+            	eStatesAteqRecipeHandler := 2;
+			ELSIF tRecipeHandlerTimeout.Q THEN
+					eStatesAteqRecipeHandler := 4;
+			END_IF
+			
+
+        E_StatesAteqRecipeHandler.RECIPE_WAIT_VALVES: //  Wait for valve stabilization
+            tValveStable(IN := TRUE);
+			
+            IF tValveStable.Q  THEN
+                tValveStable(IN := FALSE);
+				eStatesAteqRecipeHandler := 3;
+			ELSIF tRecipeHandlerTimeout.Q THEN
+					eStatesAteqRecipeHandler := E_StatesAteqRecipeHandler.RECIPE_TIMEOUT;
             END_IF
-
-        1: (* Valve On *)
-            ValveMask[i] := ValveProgramMap[i, CurrentStep[i]];
-            ValveTriggerTimer(IN := TRUE, PT := ValveStabilizationTime);
-            State[i] := 2;
-
-        2: (* Wait for valve *)
-            ValveTriggerTimer(IN := TRUE);
-            IF ValveTriggerTimer.Q THEN
-                ValveTriggerTimer(IN := FALSE);
-                State[i] := 3;
-            END_IF
-
-        3: (* Set Program Number and Trigger *)
-            ProgramNumber[i] := RecipeBuffers[i, CurrentStep[i]];
-            StartCommand[i] := TRUE;
-            IF CurrentStep[i] + 1 >= RecipeLengths[i] THEN
-                Running[i] := FALSE;
-                Done[i] := TRUE;
-                State[i] := 0;
-            ELSE
-                CurrentStep[i] := CurrentStep[i] + 1;
-                State[i] := 1;
-            END_IF
-
+		
+		E_StatesAteqRecipeHandler.RECIPE_RUN_ATEQ: // Set Program Number to the Ateq Control AutoSeq and Run
+            nProgramNumber := anProgramNumber[i];
+            bAteqSeqRunCmd := TRUE;
+			
+			IF eAteqProgramAutoSeqStates = SEQ_TEST_DONE THEN
+				bAteqSeqRunCmd := FALSE;
+				
+			ELSIF eAteqProgramAutoSeqStates = SEQ_ERROR OR eAteqProgramAutoSeqStates = SEQ_TIMEOUT THEN
+				eStatesAteqRecipeHandler := E_StatesAteqRecipeHandler.RECIPE_TIMEOUT;
+			END_IF
+			
+           
+			
+		E_StatesAteqRecipeHandler.RECIPE_STORE_RESULTS: //Recipe Handler Error
+			IF bLastResultsStored THEN
+				bAteqSeqResetCmd := TRUE; // Reset ATEQ
+				 IF nCurrentProgram >= GVL_AteqConfig.nMaxProgramsToRun - 1 THEN
+                	eStatesAteqRecipeHandler := 0;
+            	ELSE
+                	nCurrentProgram := nCurrentProgram + 1;
+                	eStatesAteqRecipeHandler := 1;
+            	END_IF
+			END_IF
+		
+			E_StatesAteqRecipeHandler.RECIPE_ERROR:
+			;
+			E_StatesAteqRecipeHandler.RECIPE_TIMEOUT:
+			;
     END_CASE
 
 ]]></ST>
     </Implementation>
     <LineIds Name="FB_AteqRecipeHandler">
-      <LineId Id="149" Count="39" />
+      <LineId Id="755" Count="45" />
+      <LineId Id="806" Count="3" />
+      <LineId Id="822" Count="0" />
+      <LineId Id="817" Count="4" />
+      <LineId Id="815" Count="1" />
+      <LineId Id="814" Count="0" />
+      <LineId Id="823" Count="0" />
+      <LineId Id="825" Count="0" />
+      <LineId Id="824" Count="0" />
+      <LineId Id="826" Count="0" />
+      <LineId Id="810" Count="1" />
       <LineId Id="9" Count="0" />
     </LineIds>
   </POU>

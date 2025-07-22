@@ -29,7 +29,7 @@ END_VAR
 		nTestStep := 1;
     1: // Call FB, check transition to RESET_FIFO
 
-        IF fbTestInstance.eAutoSeqState = SEQ_RESET_FIFO THEN
+        IF fbTestInstance.eStatesAteqProgramAuto = SEQ_RESET_FIFO THEN
             AssertTrue(TRUE, 'Transitioned to SEQ_RESET_FIFO');
             nTestStep := 2;
         END_IF
@@ -44,7 +44,7 @@ END_VAR
 						stMappedIo 					:= stTestIo
 );
 
-        IF fbTestInstance.eAutoSeqState = SEQ_AUTO_ZERO THEN
+        IF fbTestInstance.eStatesAteqProgramAuto = SEQ_AUTO_ZERO THEN
             AssertTrue(TRUE, 'Transitioned to SEQ_AUTO_ZERO');
             nTestStep := 3;
         END_IF
@@ -59,7 +59,7 @@ END_VAR
 						stMappedIo 					:= stTestIo
 );
 
-        IF fbTestInstance.eAutoSeqState = SEQ_PROGRAM_SELECT THEN
+        IF fbTestInstance.eStatesAteqProgramAuto = SEQ_PROGRAM_SELECT THEN
             AssertTrue(TRUE, 'Transitioned to SEQ_PROGRAM_SELECT');
             nTestStep := 4;
         END_IF
@@ -83,7 +83,7 @@ END_VAR
 						stMappedIo 					:= stTestIo
 );
 
-        IF fbTestInstance.eAutoSeqState = SEQ_START_PROGRAM THEN
+        IF fbTestInstance.eStatesAteqProgramAuto = SEQ_START_PROGRAM THEN
             AssertTrue(TRUE, 'Transitioned to SEQ_START_PROGRAM');
             nTestStep := 100;
         END_IF

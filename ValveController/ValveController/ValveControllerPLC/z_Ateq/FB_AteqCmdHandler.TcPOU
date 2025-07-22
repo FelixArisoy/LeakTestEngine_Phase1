@@ -12,7 +12,7 @@ VAR_IN_OUT
     stIo_Ref        : ST_AteqIo; // Reference to the entire mapped I/O structure for ATEQ status checks
 END_VAR
 VAR_OUTPUT
-    eStatus         : E_AteqHandshake := E_AteqHandshake.CMD_IDLE; // Current status of this command handler instance
+    eStatesAteqHandshake         : E_StatesAteqHandshake := E_StatesAteqHandshake.CMD_IDLE; // Current status of this command handler instance
 	bResetDone		: BOOL; //Reset Complete Flag used in Auto Sequence Method mainly
 
 	
@@ -23,7 +23,7 @@ VAR_OUTPUT
 	
 END_VAR
 VAR
-	eCurrentState   	: E_AteqHandshake; // Internal state of this FB instance
+	eCurrentState   	: E_StatesAteqHandshake; // Internal state of this FB instance
     stResetCommands		: ST_AteqCommands;
 
 
@@ -46,8 +46,7 @@ VAR
 	bCmdDoneDWELL		: BOOL;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
-//fbF_TRIG_EndOfCycle(CLK := stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd);
+      <ST><![CDATA[//fbF_TRIG_EndOfCycle(CLK := stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd);
 //fbR_TRIG_EndOfCycle(CLK := stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd);
 //fbR_TRIG_ErrorCodeFFFF(CLK := (stIo_Ref.stRead.anErrorCode[0] = 16#FF AND stIo_Ref.stRead.anErrorCode[1] = 16#FF));
 
@@ -57,13 +56,13 @@ tCmdDoneDWELL.PT		:= T#100MS;
 tResetDWELL.PT			:= T#100MS;
 
 	IF bResetRequest THEN
-		eCurrentState := E_AteqHandshake.CMD_RESET;
+		eCurrentState := E_StatesAteqHandshake.CMD_RESET;
 	END_IF
 
 CASE eCurrentState OF
 
-    E_AteqHandshake.CMD_IDLE:
-        eStatus := E_AteqHandshake.CMD_IDLE;
+    E_StatesAteqHandshake.CMD_IDLE:
+        eStatesAteqHandshake := E_StatesAteqHandshake.CMD_IDLE;
 		
 		IF bResetDone THEN
 			bResetRequest := FALSE;
@@ -76,15 +75,15 @@ CASE eCurrentState OF
 			stIo_Ref.stRead.anErrorCode[1] = 0 THEN //Error not exist
 					
 			bResetDone := FALSE;
-            eCurrentState := E_AteqHandshake.CMD_IN_PROGRESS;
+            eCurrentState := E_StatesAteqHandshake.CMD_IN_PROGRESS;
             tCmdTimeout(IN := FALSE);
 		ELSE
-			eCurrentState := E_AteqHandshake.CMD_RESET;
+			eCurrentState := E_StatesAteqHandshake.CMD_RESET;
         END_IF
 
 
-    E_AteqHandshake.CMD_IN_PROGRESS:
-        eStatus := E_AteqHandshake.CMD_IN_PROGRESS;
+    E_StatesAteqHandshake.CMD_IN_PROGRESS:
+        eStatesAteqHandshake := E_StatesAteqHandshake.CMD_IN_PROGRESS;
 		tCmdTimeout(IN := TRUE);
         IF NOT bCmdInProgressDWELL THEN
 			bCmdInProgressDWELL := TRUE;
@@ -96,42 +95,42 @@ CASE eCurrentState OF
 	IF tCmdInProgressDWELL.Q THEN
 			
         IF bCmdEcho THEN
-            eCurrentState := E_AteqHandshake.CMD_WAIT_CYCLE_END;
+            eCurrentState := E_StatesAteqHandshake.CMD_WAIT_CYCLE_END;
 			tCmdTimeout(IN := FALSE);
 		ELSIF NOT bCmdEcho AND stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd THEN
-			eCurrentState := E_AteqHandshake.CMD_ERROR;
+			eCurrentState := E_StatesAteqHandshake.CMD_ERROR;
 			tCmdTimeout(IN := FALSE);
 		ELSIF tCmdTimeout.Q THEN
-			eCurrentState := E_AteqHandshake.CMD_TIMEOUT;
+			eCurrentState := E_StatesAteqHandshake.CMD_TIMEOUT;
         END_IF
 	END_IF
 		
 		
-    E_AteqHandshake.CMD_WAIT_CYCLE_END:
-        eStatus := E_AteqHandshake.CMD_WAIT_CYCLE_END;
+    E_StatesAteqHandshake.CMD_WAIT_CYCLE_END:
+        eStatesAteqHandshake := E_StatesAteqHandshake.CMD_WAIT_CYCLE_END;
 	   	tCmdTimeout(IN := TRUE);
 		IF stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd THEN
-            eCurrentState := E_AteqHandshake.CMD_EOC;
+            eCurrentState := E_StatesAteqHandshake.CMD_EOC;
 			tCmdTimeout(IN := FALSE);
 		ELSIF tCmdTimeout.Q THEN
-			eCurrentState := E_AteqHandshake.CMD_TIMEOUT;
+			eCurrentState := E_StatesAteqHandshake.CMD_TIMEOUT;
         END_IF
 
 
-	E_AteqHandshake.CMD_EOC:
-        eStatus := E_AteqHandshake.CMD_EOC;
+	E_StatesAteqHandshake.CMD_EOC:
+        eStatesAteqHandshake := E_StatesAteqHandshake.CMD_EOC;
 		
 		IF (stIo_Ref.stRead.anErrorCode[0] = 0 AND stIo_Ref.stRead.anErrorCode[1] = 0) THEN
-			eCurrentState 	:= E_AteqHandshake.CMD_DONE;
+			eCurrentState 	:= E_StatesAteqHandshake.CMD_DONE;
 		ELSIF bCmdError AND NOT (stIo_Ref.stRead.anErrorCode[0] = 16#FF AND stIo_Ref.stRead.anErrorCode[1] = 16#FF) THEN
-            eCurrentState 	:= E_AteqHandshake.CMD_ERROR;
+            eCurrentState 	:= E_StatesAteqHandshake.CMD_ERROR;
             tCmdTimeout(IN := FALSE);
 		END_IF
 
 		
 //#############	Holds Below until Reset Request	#############
-	E_AteqHandshake.CMD_DONE:
-		eStatus := E_AteqHandshake.CMD_DONE;
+	E_StatesAteqHandshake.CMD_DONE:
+		eStatesAteqHandshake := E_StatesAteqHandshake.CMD_DONE;
 		 tCmdTimeout(IN := FALSE);
 		
 		IF NOT bCmdDoneDWELL THEN
@@ -140,21 +139,21 @@ CASE eCurrentState OF
 		
 		tCmdDoneDWELL(IN := bCmdDoneDWELL); //Reset CmdTrigger after dwell
 		IF tCmdDoneDWELL.Q THEN
-			eCurrentState 	:= E_AteqHandshake.CMD_RESET;
+			eCurrentState 	:= E_StatesAteqHandshake.CMD_RESET;
 		END_IF
 		
         	
-    E_AteqHandshake.CMD_ERROR:
-        eStatus := E_AteqHandshake.CMD_ERROR;
+    E_StatesAteqHandshake.CMD_ERROR:
+        eStatesAteqHandshake := E_StatesAteqHandshake.CMD_ERROR;
 		bCmdTrigger 	:= FALSE;
 		stIo_Ref.stWrite.stCommands := stResetCommands;
 	
-    E_AteqHandshake.CMD_TIMEOUT:
-        eStatus := E_AteqHandshake.CMD_TIMEOUT;
+    E_StatesAteqHandshake.CMD_TIMEOUT:
+        eStatesAteqHandshake := E_StatesAteqHandshake.CMD_TIMEOUT;
 		bCmdTrigger 	:= FALSE;
 		stIo_Ref.stWrite.stCommands := stResetCommands;	
 
-	E_AteqHandshake.CMD_RESET:
+	E_StatesAteqHandshake.CMD_RESET:
         // Clear internal stuff
         bCmdTrigger := FALSE;
 		stIo_Ref.stWrite.stCommands := stResetCommands;
@@ -178,7 +177,7 @@ CASE eCurrentState OF
 			bCmdDoneDWELL := FALSE;
 			
 			bResetDone := TRUE;
-        	eCurrentState := E_AteqHandshake.CMD_IDLE;	
+        	eCurrentState := E_StatesAteqHandshake.CMD_IDLE;	
 		END_IF
         
 		
@@ -186,48 +185,7 @@ END_CASE
 ]]></ST>
     </Implementation>
     <LineIds Name="FB_AteqCmdHandler">
-      <LineId Id="3591" Count="2" />
-      <LineId Id="3595" Count="0" />
-      <LineId Id="3738" Count="0" />
-      <LineId Id="3596" Count="0" />
-      <LineId Id="3740" Count="0" />
-      <LineId Id="3739" Count="0" />
-      <LineId Id="3741" Count="1" />
-      <LineId Id="3597" Count="1" />
-      <LineId Id="3600" Count="8" />
-      <LineId Id="3610" Count="1" />
-      <LineId Id="3737" Count="0" />
-      <LineId Id="3612" Count="7" />
-      <LineId Id="3622" Count="3" />
-      <LineId Id="3627" Count="0" />
-      <LineId Id="3629" Count="3" />
-      <LineId Id="3723" Count="2" />
-      <LineId Id="3633" Count="0" />
-      <LineId Id="3726" Count="0" />
-      <LineId Id="3728" Count="2" />
-      <LineId Id="3634" Count="2" />
-      <LineId Id="3638" Count="4" />
-      <LineId Id="3645" Count="9" />
-      <LineId Id="3656" Count="9" />
-      <LineId Id="3668" Count="2" />
-      <LineId Id="3672" Count="0" />
-      <LineId Id="3736" Count="0" />
-      <LineId Id="3673" Count="5" />
-      <LineId Id="3744" Count="0" />
-      <LineId Id="3679" Count="1" />
-      <LineId Id="3682" Count="0" />
-      <LineId Id="3745" Count="0" />
-      <LineId Id="3683" Count="7" />
-      <LineId Id="3756" Count="0" />
-      <LineId Id="3691" Count="3" />
-      <LineId Id="3755" Count="0" />
-      <LineId Id="3695" Count="14" />
-      <LineId Id="3713" Count="3" />
-      <LineId Id="3747" Count="1" />
-      <LineId Id="3750" Count="0" />
-      <LineId Id="3749" Count="0" />
-      <LineId Id="3751" Count="0" />
-      <LineId Id="3717" Count="5" />
+      <LineId Id="3843" Count="135" />
       <LineId Id="9" Count="0" />
     </LineIds>
   </POU>

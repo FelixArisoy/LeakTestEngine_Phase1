@@ -2,6 +2,7 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
   <GVL Name="GVL_ValveStatus" Id="{59ad9f5b-4d90-436d-b338-fc83937e29c2}">
     <Declaration><![CDATA[VAR_GLOBAL CONSTANT
+	// Status values depend on hardware config.
     OPENED         	: DWORD := 16#0001;
     CLOSED         	: DWORD := 16#0002;
     SHORT_CIRCUIT   : DWORD := 16#0010;

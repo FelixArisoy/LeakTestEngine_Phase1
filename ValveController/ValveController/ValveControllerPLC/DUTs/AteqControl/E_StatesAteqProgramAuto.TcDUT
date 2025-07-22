@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
-  <DUT Name="E_AteqAutoMode" Id="{e53874a6-2496-4372-b4ca-6316841d2cde}">
-    <Declaration><![CDATA[TYPE E_AteqAutoMode :
+  <DUT Name="E_StatesAteqProgramAuto" Id="{e53874a6-2496-4372-b4ca-6316841d2cde}">
+    <Declaration><![CDATA[TYPE E_StatesAteqProgramAuto :
 (	
     SEQ_IDLE,             	// Auto sequence is idle, waiting for trigger
     SEQ_RESET_FIFO,       	// Executing FIFO clear command
