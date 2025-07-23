@@ -1,0 +1,497 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_Valve" Id="{80e7d0b3-dfac-4a5a-948d-086d420c2f8a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Valve IMPLEMENTS I_Valve
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR 
+	bSolenoidFaulted 	: BOOL;
+	bOpenCircuit 		: BOOL;
+	bShortCircuit 		: BOOL;
+	bManualOverride 	: BOOL;
+
+	// Property bindings
+	stFieldDevice	: ST_FieldDevice;
+	bCloseCmd 		: BOOL;
+	bClosedPosSensor: BOOL;	// Bind the property if valve position feedback used
+	bClosed			: BOOL;
+	bOpenCmd  		: BOOL;
+	bOpenedPosSensor: BOOL;	// Bind the property if valve position feedback used
+	bOpened			: BOOL;
+	
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="M_ActClose" Id="{1d16d4c9-6a39-44b9-8565-d407aaf3c08c}">
+      <Declaration><![CDATA[METHOD M_ActClose : BOOL
+VAR
+	tValveTimeout : TON;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[	// There is no safe to operate check as this valve will be supervised by the Main PLC.
+	//	Main PLC is responsible with safety monitoring and motion activity.
+IF GVL_ValveBankConfig.bValvePosSensorUsed THEN
+	
+	IF NOT bClosedPosSensor AND NOT stFieldDevice.bDeviceFaulted THEN
+		bOpenCmd 	:= FALSE;
+		bCloseCmd 	:= TRUE;
+		tValveTimeout(IN := TRUE, PT := GVL_ValveBankConfig.bValveActTimeout);
+	END_IF
+
+	IF bClosedPosSensor THEN
+		tValveTimeout(IN := FALSE);		
+		bCloseCmd 	:= FALSE;
+		bClosed 	:= TRUE;
+		bOpened		:= TRUE;		
+	
+	ELSIF tValveTimeout.Q THEN
+		tValveTimeout(IN := FALSE);	
+		stFieldDevice.bDeviceFaulted := TRUE;
+	END_IF
+
+ELSE	//Runs valves witout position feeedback
+		bCloseCmd 	:= TRUE;
+ 		bOpenCmd 	:= FALSE;
+ 		bClosed 	:= TRUE;
+		bOpened 	:= FALSE;	
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_ActOpen" Id="{a47b2e7e-6fcc-450a-be9b-01c5b6f5eb05}">
+      <Declaration><![CDATA[METHOD M_ActOpen : BOOL //Opens the Valve
+VAR
+	tValveTimeout : TON;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[	// There is no safe to operate check as this valve will be supervised by the Main PLC.
+	//	Main PLC is responsible with safety monitoring and motion activity.
+IF GVL_ValveBankConfig.bValvePosSensorUsed THEN
+	
+	IF NOT bOpenedPosSensor AND NOT stFieldDevice.bDeviceFaulted THEN
+		bCloseCmd 	:= FALSE;
+		bOpenCmd 	:= TRUE;
+		tValveTimeout(IN := TRUE, PT := GVL_ValveBankConfig.bValveActTimeout);
+	END_IF
+
+	IF bOpenedPosSensor THEN
+		tValveTimeout(IN := FALSE);		
+		bOpenCmd 	:= FALSE;
+		bOpened 	:= TRUE;
+		bClosed		:= FALSE;		
+	
+	ELSIF tValveTimeout.Q THEN
+		tValveTimeout(IN := FALSE);	
+		stFieldDevice.bDeviceFaulted := TRUE;
+	END_IF
+
+ELSE	//Runs valves witout position feeedback
+		bOpenCmd 	:= TRUE;
+ 		bCloseCmd 	:= FALSE;
+		bOpened 	:= TRUE;	
+		bClosed		:= FALSE;
+
+END_IF	]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_DeviceEnable" Id="{31b203e1-14d9-4010-b876-54b4f5dc5607}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD M_DeviceEnable : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF stFieldDevice.bDeviceEnableCmd AND stFieldDevice.bDeviceCommOK THEN
+	stFieldDevice.bDeviceEnabled := TRUE;
+	M_DeviceEnable := TRUE;
+	ELSE
+		stFieldDevice.bDeviceFaulted := TRUE;
+		M_DeviceEnable := FALSE;
+	END_IF
+	
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_DeviceHeartbeat" Id="{3ab4ca18-8ee5-4b9a-8146-3c852b6dbf75}">
+      <Declaration><![CDATA[METHOD M_DeviceHeartbeat : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[M_DeviceHeartbeat := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_DeviceReset" Id="{f42fd6b6-c27d-42f2-9230-e4ea03ebbda8}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD M_DeviceReset : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF stFieldDevice.bDeviceReset THEN
+	stFieldDevice.bDeviceFaulted := FALSE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_DeviceStatus" Id="{f41bb54e-9b59-49d0-856c-e790c3a7a76a}">
+      <Declaration><![CDATA[METHOD M_DeviceStatus : E_StatusFieldDevice
+VAR
+	nStatusFeedback		: DWORD; // Size depends on the hardware config
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// nValveFeedback binded through the properties. 
+// Adjust GVL values depending on valvebank hardware config
+bShortCircuit   := (nStatusFeedback AND GVL_ValveStatus.SHORT_CIRCUIT) <> 0;
+bOpenCircuit   	:= (nStatusFeedback AND GVL_ValveStatus.OPEN_CIRCUIT) <> 0;
+bManualOverride := (nStatusFeedback AND GVL_ValveStatus.STATUS_FAULT_OVERRIDE) <> 0;
+
+bSolenoidFaulted := bShortCircuit OR bOpenCircuit;
+
+// Return status enum
+IF bShortCircuit THEN
+    M_DeviceStatus := E_StatusFieldDevice.SHORT_CIRCUIT;
+	stFieldDevice.bDeviceFaulted := TRUE;
+ELSIF bOpenCircuit THEN
+    M_DeviceStatus := E_StatusFieldDevice.OPEN_CIRCUIT;
+	stFieldDevice.bDeviceFaulted := TRUE;
+ELSIF bManualOverride THEN
+    M_DeviceStatus := E_StatusFieldDevice.MANUAL_OVERRIDE; // Manual is active while Valve requested
+	stFieldDevice.bDeviceFaulted := TRUE;
+ELSIF GVL_ValveBankConfig.bValvePosSensorUsed AND NOT (bOpenedPosSensor OR bClosedPosSensor) THEN
+	M_DeviceStatus := E_StatusFieldDevice.UNKNOWN; // Valve Position unknown
+ELSE
+    M_DeviceStatus := E_StatusFieldDevice.OK; // Comm or heartbeat bits maybe binded 
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="pActCloseComp" Id="{a3f8b53f-cb5c-499e-be36-4478dcced1b5}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pActCloseComp : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{2972d0e4-ffd2-4357-a7fe-9ff8a9698a72}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pActCloseComp := bClosed;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{5f2058f9-0711-4c5a-b3e3-842dc9f12e03}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bClosed := pActCloseComp;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pActClosedPosSensor" Id="{caede0cd-da5c-42eb-b4c6-ca51b4eb9f93}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pActClosedPosSensor : BOOL
+]]></Declaration>
+      <Set Name="Set" Id="{898cafb7-795e-4139-9fc1-ce2eb8f73c66}">
+        <Declaration><![CDATA[
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bClosedPosSensor := pActClosedPosSensor;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pActCloseOut" Id="{8f05d0ab-f58d-4400-b35e-255344c88c03}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pActCloseOut : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{555281c1-2fed-4fce-8690-c7dd5592c8a8}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pActCloseOut := bCloseCmd;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{07c4f586-38c3-4f86-8e53-49d79888f2f4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bCloseCmd := pActCloseOut;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pActOpenComp" Id="{a5e0df93-6bfe-49bc-bb67-0ad142a5a46a}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pActOpenComp : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{4c13ad77-d4a9-457a-9240-07a75b117374}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pActOpenComp := bOpened;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{31b65298-9c00-4015-bb96-263a7c1829ab}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bOpened := pActOpenComp;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pActOpenedPosSensor" Id="{76cc81b4-5650-4c86-bf53-b309497122dc}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pActOpenedPosSensor : BOOL
+]]></Declaration>
+      <Set Name="Set" Id="{87b31f9a-bb75-4a57-864f-9b015374207f}">
+        <Declaration><![CDATA[
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bOpenedPosSensor := pActOpenedPosSensor;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pActOpenOut" Id="{ee9801f7-3449-4db9-a39b-f0ea88fff941}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pActOpenOut : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{d131e40e-9bf2-49b6-afc6-d1b217d44aeb}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pActOpenOut := bOpenCmd;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{cf0de5f0-7fc7-4d94-b83e-faf8ae59e107}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bOpenCmd := pActOpenOut;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pDeviceCommOK" Id="{f05f3604-49e1-42c7-aa3f-89d0e1fb9b5f}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pDeviceCommOK : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{b6511e56-45b8-4af0-8d80-71c9e6eb779b}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pDeviceCommOK := stFieldDevice.bDeviceCommOK;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{2e140620-ed1e-4121-a8c0-84740986e904}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[stFieldDevice.bDeviceCommOK := pDeviceCommOK;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pDeviceEnableCmd" Id="{7ed9058e-b6b7-44c6-837c-6921721a4bdf}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pDeviceEnableCmd : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{9e03921b-6ea3-4b53-9297-ab6027a0c17f}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pDeviceEnableCmd := stFieldDevice.bDeviceEnableCmd;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{7d40e995-720a-4419-815b-2fd14baf7465}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[stFieldDevice.bDeviceEnableCmd := pDeviceEnableCmd;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pDeviceEnabled" Id="{bdb9b89d-8cf2-4232-9d49-ee2fabd8fc5a}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pDeviceEnabled : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{8e314884-717f-4b79-b501-43a227a2c5ff}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pDeviceEnabled := stFieldDevice.bDeviceEnabled;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{74251f11-1897-4f56-b1cb-0c07cba85019}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[stFieldDevice.bDeviceEnabled := pDeviceEnabled;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pDeviceFaulted" Id="{57e62ac0-66a2-4034-a801-adc78d1bdd95}">
+      <Declaration><![CDATA[PROPERTY pDeviceFaulted : BOOL
+// Send Fault feedback from the valve to outside of the FB]]></Declaration>
+      <Get Name="Get" Id="{26b5496d-34ac-480e-b5f4-c5028d3b1316}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pDeviceFaulted := stFieldDevice.bDeviceFaulted;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{6169097e-7cd1-4572-b848-6292fcb0a1f0}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[stFieldDevice.bDeviceFaulted := pDeviceFaulted;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pDeviceReset" Id="{e7c4c885-dc72-43ba-803f-de09b6c71d43}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pDeviceReset : BOOL
+]]></Declaration>
+      <Set Name="Set" Id="{ad0c55d2-823b-4f4b-8f41-6460c3da82ac}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[stFieldDevice.bDeviceReset := pDeviceReset;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pDeviceStatusFeedback" Id="{5fd82563-e933-4644-b96a-c891c1c884b9}">
+      <Declaration><![CDATA[PROPERTY pDeviceStatusFeedback : DWORD
+// Bind the status feedback from Valvebank to this property if available
+// Size depends on the hardware configuration]]></Declaration>
+      <Get Name="Get" Id="{0392ecc4-eeac-40bb-a4b3-9ce89c66760c}">
+        <Declaration><![CDATA[
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pDeviceStatusFeedback := stFieldDevice.nDeviceStatusFeedback;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{e794ad29-b554-45e4-9686-ab9fb1963ab8}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[stFieldDevice.nDeviceStatusFeedback := pDeviceStatusFeedback;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_Valve">
+      <LineId Id="81" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.M_ActClose">
+      <LineId Id="95" Count="25" />
+      <LineId Id="37" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.M_ActOpen">
+      <LineId Id="10" Count="3" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="16" Count="6" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="24" Count="6" />
+      <LineId Id="34" Count="1" />
+      <LineId Id="40" Count="1" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.M_DeviceEnable">
+      <LineId Id="5" Count="1" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="8" Count="4" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.M_DeviceHeartbeat">
+      <LineId Id="17" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.M_DeviceReset">
+      <LineId Id="5" Count="1" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.M_DeviceStatus">
+      <LineId Id="74" Count="22" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.pActCloseComp.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.pActCloseComp.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.pActClosedPosSensor.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.pActCloseOut.Get">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.pActCloseOut.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.pActOpenComp.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.pActOpenComp.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.pActOpenedPosSensor.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.pActOpenOut.Get">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.pActOpenOut.Set">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.pDeviceCommOK.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.pDeviceCommOK.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.pDeviceEnableCmd.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.pDeviceEnableCmd.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.pDeviceEnabled.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.pDeviceEnabled.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.pDeviceFaulted.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.pDeviceFaulted.Set">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.pDeviceReset.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.pDeviceStatusFeedback.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Valve.pDeviceStatusFeedback.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

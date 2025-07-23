@@ -1,28 +1,115 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
-  <POU Name="FB_Test_AteqComm" Id="{b608c7ab-a9f5-4d6a-ae95-38172be6353d}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_Test_AteqComm EXTENDS TcUnit.FB_TestSuite
-VAR
- 
-	//fbTestSuite			: TcUnit.FB_TestSuite;
-	
+  <POU Name="FB_Test_AteqControl" Id="{2a34a3c3-1d83-451d-84a7-ef9326ab65d3}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Test_AteqControl EXTENDS TcUnit.FB_TestSuite
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR	
+// Test Map Io	
 	nDeviceIndex 		: UINT	:= 0;	
-   // fbTestAteqComm		: FB_AteqComm;
 	stTestAteqRawIo		: ST_AteqRawIo;
 	stTestAteqMappedIo	: ST_AteqIo;
 	  
+// Test Control Methods	
+    fbTestInstance : FB_AteqControl;
+    stTestIo       : ST_AteqIo;
+
+    bTestStarted   : BOOL := FALSE;
+    nTestStep      : INT := 0;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[(*
-        Test_InputMapBigEndian();		
+      <ST><![CDATA[	// Test Map Io
+	Test_InputMapBigEndian();		
 
-        Test_InputMapLittleEndian();
+	Test_InputMapLittleEndian();
 
-        Test_OutputMapBigEndian();
+	Test_OutputMapBigEndian();
 
-        Test_OutputMapLittleEndian();
-*)]]></ST>
+	Test_OutputMapLittleEndian();
+
+
+
+CASE nTestStep OF
+
+    0: // Initialize inputs and call FB
+        stTestIo.stRead.stRealtimeTestResults.bCycleEnd := TRUE; // Simulate ATEQ ready
+        
+        fbTestInstance(
+						nProgramNumber 			:= 0,
+						bAutoSeqRunRequest 		:= TRUE,
+						bAutoSeqResetRequest 	:= FALSE,
+						stMappedIo 					:= stTestIo
+);
+		nTestStep := 1;
+    1: // Call FB, check transition to RESET_FIFO
+
+        IF fbTestInstance.eStatesAteqProgramAuto = SEQ_RESET_FIFO THEN
+            AssertTrue(TRUE, 'Transitioned to SEQ_RESET_FIFO');
+            nTestStep := 2;
+        END_IF
+
+    2: // Simulate FIFO reset done
+        stTestIo.stRead.nResultsInFifo := 0;
+
+        fbTestInstance(
+						nProgramNumber 			:= 0,
+						bAutoSeqRunRequest 		:= TRUE,
+						bAutoSeqResetRequest 	:= FALSE,
+						stMappedIo 					:= stTestIo
+);
+
+        IF fbTestInstance.eStatesAteqProgramAuto = SEQ_AUTO_ZERO THEN
+            AssertTrue(TRUE, 'Transitioned to SEQ_AUTO_ZERO');
+            nTestStep := 3;
+        END_IF
+
+    3: // Simulate AutoZero done
+        fbTestInstance.bAutoZeroComplete := TRUE;
+
+        fbTestInstance(
+						nProgramNumber 			:= 0,
+						bAutoSeqRunRequest 		:= TRUE,
+						bAutoSeqResetRequest 	:= FALSE,
+						stMappedIo 					:= stTestIo
+);
+
+        IF fbTestInstance.eStatesAteqProgramAuto = SEQ_PROGRAM_SELECT THEN
+            AssertTrue(TRUE, 'Transitioned to SEQ_PROGRAM_SELECT');
+            nTestStep := 4;
+        END_IF
+
+    4: // Simulate ProgramSelect complete
+        stTestIo.stRead.stEcho.bProgramSelect := TRUE;
+
+        fbTestInstance(
+						nProgramNumber 			:= 0,
+						bAutoSeqRunRequest 		:= TRUE,
+						bAutoSeqResetRequest 	:= FALSE,
+						stMappedIo 					:= stTestIo
+);
+
+        fbTestInstance.bProgramSelectComplete := TRUE;
+
+        fbTestInstance(
+						nProgramNumber 			:= 0,
+						bAutoSeqRunRequest 		:= TRUE,
+						bAutoSeqResetRequest 	:= FALSE,
+						stMappedIo 					:= stTestIo
+);
+
+        IF fbTestInstance.eStatesAteqProgramAuto = SEQ_START_PROGRAM THEN
+            AssertTrue(TRUE, 'Transitioned to SEQ_START_PROGRAM');
+            nTestStep := 100;
+        END_IF
+
+    100: // Final Step
+        ; // Test Done
+
+END_CASE
+]]></ST>
     </Implementation>
     <Method Name="Test_InputMapBigEndian" Id="{33e14d08-4505-41cf-8bcb-360c35b2be3d}">
       <Declaration><![CDATA[METHOD Test_InputMapBigEndian
@@ -313,22 +400,39 @@ END_FOR
 TEST_FINISHED();]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FB_Test_AteqComm">
-      <LineId Id="546" Count="1" />
-      <LineId Id="549" Count="1" />
-      <LineId Id="552" Count="1" />
-      <LineId Id="555" Count="1" />
+    <LineIds Name="FB_Test_AteqControl">
+      <LineId Id="119" Count="7" />
+      <LineId Id="116" Count="2" />
+      <LineId Id="18" Count="4" />
+      <LineId Id="71" Count="4" />
+      <LineId Id="25" Count="10" />
+      <LineId Id="76" Count="5" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="82" Count="0" />
+      <LineId Id="38" Count="6" />
+      <LineId Id="83" Count="5" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="89" Count="0" />
+      <LineId Id="46" Count="6" />
+      <LineId Id="90" Count="5" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="96" Count="0" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="97" Count="5" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="103" Count="0" />
+      <LineId Id="57" Count="8" />
       <LineId Id="9" Count="0" />
     </LineIds>
-    <LineIds Name="FB_Test_AteqComm.Test_InputMapBigEndian">
+    <LineIds Name="FB_Test_AteqControl.Test_InputMapBigEndian">
       <LineId Id="6" Count="84" />
       <LineId Id="5" Count="0" />
     </LineIds>
-    <LineIds Name="FB_Test_AteqComm.Test_InputMapLittleEndian">
+    <LineIds Name="FB_Test_AteqControl.Test_InputMapLittleEndian">
       <LineId Id="1376" Count="86" />
       <LineId Id="5" Count="0" />
     </LineIds>
-    <LineIds Name="FB_Test_AteqComm.Test_OutputMapBigEndian">
+    <LineIds Name="FB_Test_AteqControl.Test_OutputMapBigEndian">
       <LineId Id="6" Count="2" />
       <LineId Id="19" Count="0" />
       <LineId Id="25" Count="0" />
@@ -337,7 +441,7 @@ TEST_FINISHED();]]></ST>
       <LineId Id="10" Count="8" />
       <LineId Id="5" Count="0" />
     </LineIds>
-    <LineIds Name="FB_Test_AteqComm.Test_OutputMapLittleEndian">
+    <LineIds Name="FB_Test_AteqControl.Test_OutputMapLittleEndian">
       <LineId Id="421" Count="20" />
       <LineId Id="489" Count="3" />
       <LineId Id="442" Count="33" />

@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_Test_ValveBank" Id="{eef084d8-083b-4c8a-8905-74c3ef572986}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Test_ValveBank EXTENDS TcUnit.FB_TestSuite
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+    fbValveBank     : FB_ValveBank;
+    afbValveMock   	: ARRAY[0..3] OF FB_ValveMock; // Only 4 for demo
+	aipValveMock 	: ARRAY[0..3] OF I_Valve;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Test_TrigValvesFromMask();]]></ST>
+    </Implementation>
+    <Method Name="Test_TrigValvesFromMask" Id="{873bcba0-7c8a-4f93-b6c3-b59e09cd4f9d}">
+      <Declaration><![CDATA[METHOD Test_TrigValvesFromMask : REFERENCE TO FB_Test
+VAR
+    i : INT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('TriggerFromMask');
+
+// Set number of valves in the bank
+fbValveBank.pNumOfValvesAvailable := 4;
+
+// Inject mock valves
+FOR i := 0 TO 3 DO
+    aipValveMock[i] := afbValveMock[i]; // FB to interface; Tc needs manual assigment in order to use pointers
+	fbValveBank.M_UnitTestInjectValveMock(idx := i, refValve := ADR(aipValveMock[i])); // Address poniter of I_Valve type FB_ValveMock
+    afbValveMock[i].M_DeviceReset(); // Reset internal test flags
+END_FOR
+
+// Simulate: only Valve 0 and 2 should be commanded open (binary 0101)
+fbValveBank.pValveMask := 16#00000005;
+fbValveBank.pDeviceFaulted := FALSE;
+// Trigger the method under test
+fbValveBank.M_TrigValvesFromMask();
+
+// Validate expected behavior
+AssertTrue(afbValveMock[0].bOpenCalled, 'Valve 0 should open');
+AssertTrue(NOT afbValveMock[1].bOpenCalled, 'Valve 1 should not open');
+AssertTrue(afbValveMock[2].bOpenCalled, 'Valve 2 should open');
+AssertTrue(NOT afbValveMock[3].bOpenCalled, 'Valve 3 should not open');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Test_ValveBank">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Test_ValveBank.Test_TrigValvesFromMask">
+      <LineId Id="35" Count="7" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="43" Count="15" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

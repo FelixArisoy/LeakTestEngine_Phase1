@@ -25,7 +25,7 @@ END_VAR
 VAR
 	eStatesAteqRecipeHandler : E_StatesAteqRecipeHandler;
 	tRecipeHandlerTimeout : TON;
-	nCurrentProgram	: INT;
+	nIndexToCurrentProgram	: INT;
     tValveStable : TON;
 
 
@@ -37,9 +37,9 @@ END_VAR
 
         E_StatesAteqRecipeHandler.RECIPE_IDLE: // Idle 
 			
-			IF bAutoTestRecipeStart THEN
+			IF bAutoTestRecipeStart AND eAteqProgramAutoSeqStates = SEQ_IDLE THEN
 				tValveStable.PT := ValveStabilizationTime;
-				nCurrentProgram := 0;
+				nIndexToCurrentProgram := 0;
 				bAteqSeqResetCmd := TRUE;
 				bAutoTestRecipeStart := FALSE;
 				eStatesAteqRecipeHandler := E_StatesAteqRecipeHandler.RECIPE_TRIGGER_VALVES;
@@ -47,10 +47,10 @@ END_VAR
 			
 			
         E_StatesAteqRecipeHandler.RECIPE_TRIGGER_VALVES: // Valve Cmd On From Mask
-            IF eAteqProgramAutoSeqStates = SEQ_IDLE AND NOT bValveBankHasAnyError THEN
+            IF NOT bValveBankHasAnyError THEN
 				tRecipeHandlerTimeout(IN := FALSE);
 				bAteqSeqResetCmd := FALSE;
-				nValveMask := anValveMask[nCurrentProgram];            
+				nValveMask := anValveMask[nIndexToCurrentProgram];            
             	eStatesAteqRecipeHandler := 2;
 			ELSIF tRecipeHandlerTimeout.Q THEN
 					eStatesAteqRecipeHandler := 4;
@@ -68,7 +68,7 @@ END_VAR
             END_IF
 		
 		E_StatesAteqRecipeHandler.RECIPE_RUN_ATEQ: // Set Program Number to the Ateq Control AutoSeq and Run
-            nProgramNumber := anProgramNumber[nCurrentProgram];
+            nProgramNumber := anProgramNumber[nIndexToCurrentProgram];
             bAteqSeqRunCmd := TRUE;
 			
 			IF eAteqProgramAutoSeqStates = SEQ_TEST_DONE THEN
@@ -83,10 +83,10 @@ END_VAR
 		E_StatesAteqRecipeHandler.RECIPE_RESULT_STORED: //Recipe Handler Error
 			IF bLastResultsStored THEN
 				bAteqSeqResetCmd := TRUE; // Reset ATEQ
-				 IF nCurrentProgram >= GVL_AteqConfig.nMaxProgramsToRun - 1 THEN
+				 IF nIndexToCurrentProgram >= GVL_AteqConfig.nMaxProgramsToRun - 1 THEN
                 	eStatesAteqRecipeHandler := 0;
             	ELSE
-                	nCurrentProgram := nCurrentProgram + 1;
+                	nIndexToCurrentProgram := nIndexToCurrentProgram + 1;
                 	eStatesAteqRecipeHandler := 1;
             	END_IF
 			END_IF
@@ -100,7 +100,7 @@ END_VAR
 ]]></ST>
     </Implementation>
     <LineIds Name="FB_AteqRecipeHandler">
-      <LineId Id="827" Count="64" />
+      <LineId Id="1015" Count="64" />
       <LineId Id="9" Count="0" />
     </LineIds>
   </POU>

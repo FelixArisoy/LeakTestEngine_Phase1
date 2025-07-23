@@ -3,21 +3,14 @@
   <POU Name="PRG_MAIN" Id="{075ea502-c30b-43b0-8467-21d133ac9e69}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_MAIN
 VAR
-    ulSystemTime   : ULINT;
-    dtUnixEpoch    : DT := DT#2025-07-21-08:50:00;
-    dtSystemTime   : DT;
-    tDelta         : TIME;
-    ulMsSince1970  : ULINT;
 END_VAR
 VAR
     fbLocalTime      : FB_LocalSystemTime;  // Synchronizes with Windows clock
-    bInitDone        : BOOL := FALSE;
     dtCurrentTime    : DT;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[
-
-// First call — start the FB
+// GET LOCAL TIME - First call start
 fbLocalTime( 
     bEnable := TRUE,        // trigger initial sync
     dwCycle := 60           // resync every 60 s
@@ -25,38 +18,20 @@ fbLocalTime(
 
 // After first sync, FB bValid becomes TRUE
 IF fbLocalTime.bValid THEN
-    bInitDone := TRUE;
-END_IF
-
 // Update dtCurrentTime each cycle
-IF bInitDone THEN
     dtCurrentTime := SYSTEMTIME_TO_DT(fbLocalTime.systemTime);
 END_IF
 
-// Use dtCurrentTime as your system timestamp
 GVL_Controller.dtSystemTime := dtCurrentTime;
 
-(*
-// system time in 100ns since 1601
-ulSystemTime := F_GetSystemTime();
-
-
-// Subtract 116444736000000000 (difference between 1601 and 1970 in 100ns units)
-ulMsSince1970 := (ulSystemTime - 116444736000000000) / 10000;
-
-
-tDelta := ULINT_TO_TIME(ulMsSince1970); // if ULINT_TO_TIME not available, split manually
-
-
-dtSystemTime := dtUnixEpoch + tDelta;
-GVL_HW.dtSystemTime := dtSystemTime;
-*)]]></ST>
+]]></ST>
     </Implementation>
     <LineIds Name="PRG_MAIN">
-      <LineId Id="85" Count="19" />
-      <LineId Id="78" Count="1" />
-      <LineId Id="57" Count="11" />
-      <LineId Id="71" Count="0" />
+      <LineId Id="86" Count="8" />
+      <LineId Id="98" Count="0" />
+      <LineId Id="100" Count="1" />
+      <LineId Id="103" Count="1" />
+      <LineId Id="78" Count="0" />
       <LineId Id="27" Count="0" />
     </LineIds>
   </POU>

@@ -1,0 +1,430 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_ValveBank" Id="{6fd479d4-9175-4488-b2ec-fe7d4059738b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ValveBank IMPLEMENTS I_ValveBank
+VAR_INPUT   
+
+END_VAR
+VAR_IN_OUT
+	
+	anReqOpenManual	: ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF BOOL; 
+	anReqCloseManual: ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF BOOL;
+END_VAR
+VAR_OUTPUT
+	abValveHeartbeat	: ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF BOOL;
+    aeValveStatus		: ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF E_StatusFieldDevice;    
+END_VAR
+VAR
+	aipValveReal	: ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF I_Valve; // Max size; NumOfValves limits how many are used 
+	apipValve		: ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF POINTER TO I_Valve; // Interface pointers
+	// Property bindings
+	stFieldDevice	: ST_FieldDevice;
+	nNumOfValvesAvailable 	: INT ; // Total number of valves conncected in this valve bank
+	nValveMask 	: DWORD;		// Each bit enables corresponding valve
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[M_DeviceHeartbeat();
+M_DeviceStatus();
+
+]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{44768775-9fab-41ea-9cf3-9fa1b86775b6}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+END_VAR
+
+VAR
+	i: INT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FOR i := 0 TO nNumOfValvesAvailable - 1 DO
+    apipValve[i] := ADR(aipValveReal[i]); // Cast pointer to interface
+END_FOR
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_DeviceEnable" Id="{d27b4188-153f-44f5-b9f4-cd702c02a5d3}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD M_DeviceEnable : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF stFieldDevice.bDeviceEnableCmd AND stFieldDevice.bDeviceCommOK THEN
+	stFieldDevice.bDeviceEnabled := TRUE;
+	M_DeviceEnable := TRUE;
+	ELSE
+		stFieldDevice.bDeviceFaulted := TRUE;
+		M_DeviceEnable := FALSE;
+	END_IF
+	
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_DeviceHeartbeat" Id="{11b2fe7b-c1bd-4282-870e-66651e1f524e}">
+      <Declaration><![CDATA[METHOD M_DeviceHeartbeat : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[M_DeviceHeartbeat := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_DeviceReset" Id="{6c7ce817-d292-4aaf-b346-0dfd99dbdabe}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD M_DeviceReset : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF stFieldDevice.bDeviceReset THEN
+	stFieldDevice.bDeviceFaulted := FALSE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_DeviceStatus" Id="{49dfdca5-5b79-4752-a62e-fc568e236d58}">
+      <Declaration><![CDATA[METHOD M_DeviceStatus : E_StatusFieldDevice
+VAR
+    i : INT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// mapp the hardware specific valve bank Status bits here if available]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_InitValves" Id="{ac7296a0-4fd1-48dd-acf9-7aefb8e3ff93}">
+      <Declaration><![CDATA[METHOD M_InitValves
+VAR
+    i : INT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+FOR i := 0 TO nNumOfValvesAvailable - 1 DO
+	//afbValve[i]();
+	apipValve[i]^.pDeviceCommOK := TRUE; // Map Individual valve HB from VB if available
+	apipValve[i]^.pDeviceEnableCmd := TRUE; // Enable all
+	
+	abValveHeartbeat[i] := apipValve[i]^.M_DeviceHeartbeat(); // init all valves that are connected to the bank
+	aeValveStatus[i] 	:= apipValve[i]^.M_DeviceStatus(); // Array will be mapped to HMI	
+END_FOR
+
+
+//OR mapp the VB Status  bits here]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_TrigValvesFromMask" Id="{fe376a1d-db65-4f96-89c4-385f8cf1d130}">
+      <Declaration><![CDATA[METHOD M_TrigValvesFromMask : BOOL
+VAR
+    i : INT;
+    bitSet : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FOR i := 0 TO nNumOfValvesAvailable - 1 DO
+    
+	IF i >= 0 AND i < 32 THEN // Prevent accidental bit shifting
+		bitSet := (nValveMask AND SHL(1, i)) <> 0;
+	END_IF
+	
+ 
+    IF NOT apipValve[i]^.pDeviceFaulted  THEN
+        IF bitSet THEN
+			apipValve[i]^.M_ActOpen();
+        ELSE
+            apipValve[i]^.M_ActClose();
+        END_IF
+    END_IF
+END_FOR
+
+M_TrigValvesFromMask := TRUE;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_TrigValvesManual" Id="{8af14a3c-2dc8-4674-a94b-adeb0c9e665c}">
+      <Declaration><![CDATA[METHOD M_TrigValvesManual : BOOL
+VAR
+    i : INT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+FOR i := 0 TO nNumOfValvesAvailable - 1 DO
+    
+	IF NOT apipValve[i]^.pDeviceFaulted THEN
+        
+		IF anReqOpenManual[i] THEN
+			apipValve[i]^.M_ActOpen(); 
+		
+		ELSIF anReqCloseManual[i] THEN	
+			apipValve[i]^.M_ActClose(); 
+		END_IF
+		
+    END_IF
+END_FOR
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_UnitTestInjectValveMock" Id="{84e6aba4-f54e-40e9-90cf-54eb31c58b35}">
+      <Declaration><![CDATA[METHOD PUBLIC M_UnitTestInjectValveMock // Used for TcUnit FB_ValveMock injection
+VAR_INPUT
+    idx: INT;
+    refValve: POINTER TO I_Valve;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+IF idx >= 0 AND idx < nNumOfValvesAvailable THEN
+    apipValve[idx] := refValve;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="pDeviceCommOK" Id="{352dddb1-1c64-4cc8-b289-cb2d9c109aa0}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pDeviceCommOK : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{0de0c202-d3ab-45c0-9838-52cafb915e51}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pDeviceCommOK := stFieldDevice.bDeviceCommOK;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{6abde139-7cbd-4e20-9a5a-c7b53e521352}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[stFieldDevice.bDeviceCommOK := pDeviceCommOK;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pDeviceEnableCmd" Id="{88d6e28b-d680-4f91-ad1c-a8ab581b797f}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pDeviceEnableCmd : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{c00ed25d-aeea-497a-ae99-d01c5426b1f5}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pDeviceEnableCmd := stFieldDevice.bDeviceEnableCmd;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{9dedf1aa-3f8b-4bd0-9e2c-8ae5ff70fee5}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[stFieldDevice.bDeviceEnableCmd := pDeviceEnableCmd;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pDeviceEnabled" Id="{98d9040d-5408-4a74-9e41-a7e33173237e}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pDeviceEnabled : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{79abb8df-19fe-4a51-88f3-0a0e97bc9cde}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pDeviceEnabled := stFieldDevice.bDeviceEnabled;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{b290b5c8-c657-4516-b555-f65f8f4ce9e4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[stFieldDevice.bDeviceEnabled := pDeviceEnabled;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pDeviceFaulted" Id="{f764ceb7-a28d-4b48-b500-6fb834f55ab3}">
+      <Declaration><![CDATA[PROPERTY pDeviceFaulted : BOOL
+// Send Fault feedback from the valve to outside of the FB]]></Declaration>
+      <Get Name="Get" Id="{a29c348d-95ab-446b-8b38-0e7895369d1c}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pDeviceFaulted := stFieldDevice.bDeviceFaulted;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{ab6b4f8c-4b6d-43fc-9445-18c80ef1d0b4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[stFieldDevice.bDeviceFaulted := pDeviceFaulted;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pDeviceReset" Id="{b8002858-155a-4303-b666-9f670f070a54}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pDeviceReset : BOOL
+]]></Declaration>
+      <Set Name="Set" Id="{1bfe165c-4649-4f5d-ad1d-78879b294ac2}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[stFieldDevice.bDeviceReset := pDeviceReset;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pDeviceStatusFeedback" Id="{b64b716f-64b9-498a-a606-710d0f21afa8}">
+      <Declaration><![CDATA[PROPERTY pDeviceStatusFeedback : DWORD
+// Bind the status feedback from Valvebank to this property if available
+// Size depends on the hardware configuration]]></Declaration>
+      <Get Name="Get" Id="{f38e8fa2-1d2c-418f-ba77-1cce4b0f5df2}">
+        <Declaration><![CDATA[
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pDeviceStatusFeedback := stFieldDevice.nDeviceStatusFeedback;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{d193449a-3779-4372-a812-ecd6d195de5a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[stFieldDevice.nDeviceStatusFeedback := pDeviceStatusFeedback;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pNumOfValvesAvailable" Id="{f8a2e382-60a6-46fc-a865-d245d7f4f32b}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pNumOfValvesAvailable : INT
+]]></Declaration>
+      <Get Name="Get" Id="{283c56b6-f63a-40ad-85c4-8e022e6b3eec}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pNumOfValvesAvailable := nNumOfValvesAvailable;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{bc0214cf-db98-4468-a0ff-ef4f03e143fd}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[nNumOfValvesAvailable := pNumOfValvesAvailable;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pValveMask" Id="{8e3086c9-7aa4-46ab-a768-77399a7bd519}">
+      <Declaration><![CDATA[PROPERTY pValveMask : DWORD]]></Declaration>
+      <Set Name="Set" Id="{90ba2342-6052-4cb3-bd75-c2cb8826199c}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[nValveMask := pValveMask;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_ValveBank">
+      <LineId Id="195" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="14" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBank.FB_init">
+      <LineId Id="17" Count="2" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBank.M_DeviceEnable">
+      <LineId Id="5" Count="7" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBank.M_DeviceHeartbeat">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBank.M_DeviceReset">
+      <LineId Id="5" Count="1" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBank.M_DeviceStatus">
+      <LineId Id="16" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBank.M_InitValves">
+      <LineId Id="5" Count="1" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="23" Count="1" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="15" Count="2" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBank.M_TrigValvesFromMask">
+      <LineId Id="54" Count="1" />
+      <LineId Id="71" Count="0" />
+      <LineId Id="69" Count="1" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="57" Count="2" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="61" Count="6" />
+      <LineId Id="20" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBank.M_TrigValvesManual">
+      <LineId Id="19" Count="0" />
+      <LineId Id="5" Count="1" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="8" Count="1" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBank.M_UnitTestInjectValveMock">
+      <LineId Id="10" Count="3" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBank.pDeviceCommOK.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBank.pDeviceCommOK.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBank.pDeviceEnableCmd.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBank.pDeviceEnableCmd.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBank.pDeviceEnabled.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBank.pDeviceEnabled.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBank.pDeviceFaulted.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBank.pDeviceFaulted.Set">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBank.pDeviceReset.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBank.pDeviceStatusFeedback.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBank.pDeviceStatusFeedback.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBank.pNumOfValvesAvailable.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBank.pNumOfValvesAvailable.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBank.pValveMask.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

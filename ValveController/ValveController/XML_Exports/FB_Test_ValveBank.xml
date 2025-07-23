@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0200">
+  <fileHeader companyName="Beckhoff Automation GmbH" productName="TwinCAT PLC Control" productVersion="3.5.13.21" creationDateTime="2025-07-23T13:24:22.2511915" />
+  <contentHeader name="ValveControllerPLC" modificationDateTime="2025-07-23T13:24:22.2511915">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="1" y="1" />
+      </fbd>
+      <ld>
+        <scaling x="1" y="1" />
+      </ld>
+      <sfc>
+        <scaling x="1" y="1" />
+      </sfc>
+    </coordinateInfo>
+    <addData>
+      <data name="http://www.3s-software.com/plcopenxml/projectinformation" handleUnknown="implementation">
+        <ProjectInformation />
+      </data>
+    </addData>
+  </contentHeader>
+  <types>
+    <dataTypes />
+    <pous>
+      <pou name="FB_Test_ValveBank" pouType="functionBlock">
+        <interface>
+          <localVars>
+            <variable name="fbValveBank">
+              <type>
+                <derived name="FB_ValveBank" />
+              </type>
+            </variable>
+            <variable name="afbValveMock">
+              <type>
+                <array>
+                  <dimension lower="0" upper="3" />
+                  <baseType>
+                    <derived name="FB_ValveMock" />
+                  </baseType>
+                </array>
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Only 4 for demo</xhtml>
+              </documentation>
+            </variable>
+          </localVars>
+          <addData>
+            <data name="http://www.3s-software.com/plcopenxml/pouinheritance" handleUnknown="implementation">
+              <Inheritance>
+                <Extends>TcUnit.FB_TestSuite</Extends>
+              </Inheritance>
+            </data>
+          </addData>
+        </interface>
+        <body>
+          <ST>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml">Test_TriggerFromMask();</xhtml>
+          </ST>
+        </body>
+        <addData>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="Test_TriggerFromMask" ObjectId="873bcba0-7c8a-4f93-b6c3-b59e09cd4f9d">
+              <interface>
+                <returnType>
+                  <derived name="REFERENCE TO FB_Test" />
+                </returnType>
+                <localVars>
+                  <variable name="i">
+                    <type>
+                      <INT />
+                    </type>
+                  </variable>
+                </localVars>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">TEST('TriggerFromMask');
+
+// Set number of valves in the bank
+fbValveBank.pNumOfValvesAvailable := 4;
+
+// Inject mock valves
+FOR i := 0 TO 3 DO
+    fbValveBank.M_InjectValvePointer(idx := i, refValve := ADR(afbValveMock[i])); // Correct: use ADR
+    afbValveMock[i].M_DeviceReset(); // Reset internal test flags
+END_FOR
+
+// Simulate: only Valve 0 and 2 should be commanded open (binary 0101)
+fbValveBank.pValveMask := 16#00000005;
+
+// Trigger the method under test
+fbValveBank.M_TriggerFromMask();
+
+// Validate expected behavior
+AssertTrue(afbValveMock[0].bOpenCalled, 'Valve 0 should open');
+AssertTrue(NOT afbValveMock[1].bOpenCalled, 'Valve 1 should not open');
+AssertTrue(afbValveMock[2].bOpenCalled, 'Valve 2 should open');
+AssertTrue(NOT afbValveMock[3].bOpenCalled, 'Valve 3 should not open');
+
+TEST_FINISHED();
+</xhtml>
+                </ST>
+              </body>
+              <InterfaceAsPlainText>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">METHOD Test_TriggerFromMask : REFERENCE TO FB_Test
+VAR
+    i : INT;
+END_VAR
+</xhtml>
+              </InterfaceAsPlainText>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/interfaceasplaintext" handleUnknown="implementation">
+            <InterfaceAsPlainText>
+              <xhtml xmlns="http://www.w3.org/1999/xhtml">FUNCTION_BLOCK FB_Test_ValveBank EXTENDS TcUnit.FB_TestSuite
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+    fbValveBank     : FB_ValveBank;
+    afbValveMock   : ARRAY[0..3] OF FB_ValveMock; // Only 4 for demo
+END_VAR</xhtml>
+            </InterfaceAsPlainText>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+            <ObjectId>eef084d8-083b-4c8a-8905-74c3ef572986</ObjectId>
+          </data>
+        </addData>
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations />
+  </instances>
+  <addData>
+    <data name="http://www.3s-software.com/plcopenxml/projectstructure" handleUnknown="discard">
+      <ProjectStructure>
+        <Object Name="FB_Test_ValveBank" ObjectId="eef084d8-083b-4c8a-8905-74c3ef572986">
+          <Object Name="Test_TriggerFromMask" ObjectId="873bcba0-7c8a-4f93-b6c3-b59e09cd4f9d" />
+        </Object>
+      </ProjectStructure>
+    </data>
+  </addData>
+</project>

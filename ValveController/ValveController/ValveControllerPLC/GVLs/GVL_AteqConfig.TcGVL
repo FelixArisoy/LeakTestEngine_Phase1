@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
   <GVL Name="GVL_AteqConfig" Id="{8341f924-21b8-4660-ac80-fb81e367c10a}">
-    <Declaration><![CDATA[// shared IO variables for one ATEQ device
-VAR_GLOBAL CONSTANT
+    <Declaration><![CDATA[VAR_GLOBAL CONSTANT
     nMaxDeviceCount : UINT 	:= 1; // Set; based on Total Num of F6 ATEQ devices
 	tCommandTimeout	: TIME 	:= T#30S; //Sets AteqControl CmdHandlerMethod Timeout
 	tTestTimeOut	: TIME 	:= T#120S;
@@ -10,10 +9,8 @@ VAR_GLOBAL CONSTANT
 	nMaxResultStore	: INT	:= 99;	//FB_ResultHandler Result buffer array limit
 	nMaxTestSteps	: INT	:= 10;	
 	nMaxProgramsToRun	: INT := 33;
-	nMaxValveBank		: INT := 2;
 	
-	//bValveBankPosFeedbackUsed 	: BOOL := FALSE;
-	bValvePosFeedbackUsed	: BOOL := FALSE;
+	
 END_VAR
 
 VAR_GLOBAL

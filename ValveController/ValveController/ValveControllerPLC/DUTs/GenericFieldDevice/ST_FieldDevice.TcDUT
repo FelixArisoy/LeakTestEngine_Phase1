@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <DUT Name="ST_FieldDevice" Id="{e6bb178d-59b1-4bd4-95a8-c8ce46e5aa65}">
+    <Declaration><![CDATA[TYPE ST_FieldDevice :
+STRUCT
+	bDeviceCommOK		: BOOL;
+	bDeviceEnabled		: BOOL;
+	bDeviceEnableCmd	: BOOL;
+	bDeviceFaulted		: BOOL;
+	bDeviceReset		: BOOL;
+	nDeviceStatusFeedback	: DWORD; // Mapped from the hardware status registry. Size depends on the config
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
