@@ -66,8 +66,7 @@ METHOD M_DeviceStatus : E_StatusFieldDevice
       </Implementation>
     </Method>
     <Property Name="pActCloseComp" Id="{90ef72ff-dd67-488e-a3a5-cc821ba3981b}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pActCloseComp : BOOL
+      <Declaration><![CDATA[PROPERTY pActCloseComp : BOOL
 ]]></Declaration>
       <Get Name="Get" Id="{d9c5fdbb-e219-4961-8878-39fec21476e5}">
         <Declaration><![CDATA[VAR
@@ -87,8 +86,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="pActClosedPosSensor" Id="{5cdea73f-3580-4098-bf40-d2f062f20488}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pActClosedPosSensor : BOOL
+      <Declaration><![CDATA[PROPERTY pActClosedPosSensor : BOOL
 ]]></Declaration>
       <Set Name="Set" Id="{3915627c-61f2-48eb-bd6f-aba7941ec046}">
         <Declaration><![CDATA[VAR
@@ -100,8 +98,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="pActCloseOut" Id="{f5dcd3d0-b458-4b70-bdbe-d8c163b15df0}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pActCloseOut : BOOL
+      <Declaration><![CDATA[PROPERTY pActCloseOut : BOOL
 ]]></Declaration>
       <Get Name="Get" Id="{6566deca-91da-4631-b302-26230a379ca4}">
         <Declaration><![CDATA[VAR
@@ -121,8 +118,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="pActOpenComp" Id="{f2d280a2-9d6e-4966-923b-f5ae482f909c}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pActOpenComp : BOOL
+      <Declaration><![CDATA[PROPERTY pActOpenComp : BOOL
 ]]></Declaration>
       <Get Name="Get" Id="{2ddc636b-a48a-4b5f-ae17-78de2b172de1}">
         <Declaration><![CDATA[VAR
@@ -142,8 +138,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="pActOpenedPosSensor" Id="{593f2643-d7b0-45ee-85cc-5159907c42bd}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pActOpenedPosSensor : BOOL
+      <Declaration><![CDATA[PROPERTY pActOpenedPosSensor : BOOL
 ]]></Declaration>
       <Set Name="Set" Id="{1c441899-605d-433c-8248-0397322629a8}">
         <Declaration><![CDATA[VAR
@@ -155,8 +150,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="pActOpenOut" Id="{a39bcd44-cc36-4b78-b662-38fa44e07190}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pActOpenOut : BOOL
+      <Declaration><![CDATA[PROPERTY pActOpenOut : BOOL
 ]]></Declaration>
       <Get Name="Get" Id="{20e0e9f4-e0af-4cda-a123-69fd9f591965}">
         <Declaration><![CDATA[VAR
@@ -176,8 +170,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="pDeviceCommOK" Id="{00c70a1d-45b3-4fef-9d5c-df95d60cc0ac}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pDeviceCommOK : BOOL
+      <Declaration><![CDATA[PROPERTY pDeviceCommOK : BOOL
 ]]></Declaration>
       <Get Name="Get" Id="{46f48900-5392-43e8-8c95-b81220c2d51f}">
         <Declaration><![CDATA[VAR
@@ -197,8 +190,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="pDeviceEnableCmd" Id="{ede025cf-8032-4438-8174-f52dfa65619b}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pDeviceEnableCmd : BOOL
+      <Declaration><![CDATA[PROPERTY pDeviceEnableCmd : BOOL
 ]]></Declaration>
       <Get Name="Get" Id="{dd83f4a1-db6a-42dd-aee5-489e6f9c5282}">
         <Declaration><![CDATA[VAR
@@ -218,8 +210,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="pDeviceEnabled" Id="{140dc4fa-d179-4239-90f3-5b07e45fcec6}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pDeviceEnabled : BOOL
+      <Declaration><![CDATA[PROPERTY pDeviceEnabled : BOOL
 ]]></Declaration>
       <Get Name="Get" Id="{3b7fcfa0-c28b-4153-8cb5-d70ed187f51f}">
         <Declaration><![CDATA[VAR
@@ -239,8 +230,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="pDeviceFaulted" Id="{e09d199e-39d6-439a-8c6c-9c3f30ad30e4}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pDeviceFaulted : BOOL
+      <Declaration><![CDATA[PROPERTY pDeviceFaulted : BOOL
 ]]></Declaration>
       <Get Name="Get" Id="{b24053dd-ba7e-474b-b468-153ede085680}">
         <Declaration><![CDATA[VAR
@@ -260,8 +250,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="pDeviceReset" Id="{da4469e4-a0d0-4125-b50f-ff059ecfd822}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pDeviceReset : BOOL
+      <Declaration><![CDATA[PROPERTY pDeviceReset : BOOL
 ]]></Declaration>
       <Set Name="Set" Id="{3fcb01b3-a6cf-4a9a-a7b1-dc808415828f}">
         <Declaration><![CDATA[VAR
@@ -273,8 +262,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="pDeviceStatusFeedback" Id="{7044f426-1541-4bdd-9801-28d99ddcd296}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pDeviceStatusFeedback : DWORD
+      <Declaration><![CDATA[PROPERTY pDeviceStatusFeedback : DWORD
 ]]></Declaration>
       <Get Name="Get" Id="{83165745-0d5d-4151-945f-9f03a3c182b3}">
         <Declaration><![CDATA[VAR

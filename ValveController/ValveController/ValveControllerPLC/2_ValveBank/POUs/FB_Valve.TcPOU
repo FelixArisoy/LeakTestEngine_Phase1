@@ -11,7 +11,7 @@ VAR
 	bOpenCircuit 		: BOOL;
 	bShortCircuit 		: BOOL;
 	bManualOverride 	: BOOL;
-
+	tValveTimeout 		: TON;
 	// Property bindings
 	stFieldDevice	: ST_FieldDevice;
 	bCloseCmd 		: BOOL;
@@ -30,7 +30,6 @@ END_VAR
     <Method Name="M_ActClose" Id="{1d16d4c9-6a39-44b9-8565-d407aaf3c08c}">
       <Declaration><![CDATA[METHOD M_ActClose : BOOL
 VAR
-	tValveTimeout : TON;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[	// There is no safe to operate check as this valve will be supervised by the Main PLC.
@@ -54,18 +53,18 @@ IF GVL_ValveBankConfig.bValvePosSensorUsed THEN
 		stFieldDevice.bDeviceFaulted := TRUE;
 	END_IF
 
-ELSE	//Runs valves witout position feeedback
+ELSIF NOT GVL_ValveBankConfig.bValvePosSensorUsed THEN	//Runs valves witout position feeedback
 		bCloseCmd 	:= TRUE;
  		bOpenCmd 	:= FALSE;
- 		bClosed 	:= TRUE;
-		bOpened 	:= FALSE;	
+		
+ 		bClosed 	:= bCloseCmd;
+		bOpened 	:= bOpenCmd;	
 END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_ActOpen" Id="{a47b2e7e-6fcc-450a-be9b-01c5b6f5eb05}">
       <Declaration><![CDATA[METHOD M_ActOpen : BOOL //Opens the Valve
 VAR
-	tValveTimeout : TON;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[	// There is no safe to operate check as this valve will be supervised by the Main PLC.
@@ -75,7 +74,7 @@ IF GVL_ValveBankConfig.bValvePosSensorUsed THEN
 	IF NOT bOpenedPosSensor AND NOT stFieldDevice.bDeviceFaulted THEN
 		bCloseCmd 	:= FALSE;
 		bOpenCmd 	:= TRUE;
-		tValveTimeout(IN := TRUE, PT := GVL_ValveBankConfig.bValveActTimeout);
+		tValveTimeout(IN := TRUE, PT := GVL_ValveBankConfig.bValveActTimeout);		
 	END_IF
 
 	IF bOpenedPosSensor THEN
@@ -89,12 +88,12 @@ IF GVL_ValveBankConfig.bValvePosSensorUsed THEN
 		stFieldDevice.bDeviceFaulted := TRUE;
 	END_IF
 
-ELSE	//Runs valves witout position feeedback
+ELSIF NOT GVL_ValveBankConfig.bValvePosSensorUsed THEN	//Runs valves witout position feeedback
 		bOpenCmd 	:= TRUE;
  		bCloseCmd 	:= FALSE;
-		bOpened 	:= TRUE;	
-		bClosed		:= FALSE;
-
+		
+		bOpened 	:= bOpenCmd;	
+		bClosed		:= bCloseCmd;
 END_IF	]]></ST>
       </Implementation>
     </Method>
@@ -164,8 +163,7 @@ END_IF
       </Implementation>
     </Method>
     <Property Name="pActCloseComp" Id="{a3f8b53f-cb5c-499e-be36-4478dcced1b5}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pActCloseComp : BOOL
+      <Declaration><![CDATA[PROPERTY pActCloseComp : BOOL
 ]]></Declaration>
       <Get Name="Get" Id="{2972d0e4-ffd2-4357-a7fe-9ff8a9698a72}">
         <Declaration><![CDATA[VAR
@@ -185,8 +183,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="pActClosedPosSensor" Id="{caede0cd-da5c-42eb-b4c6-ca51b4eb9f93}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pActClosedPosSensor : BOOL
+      <Declaration><![CDATA[PROPERTY pActClosedPosSensor : BOOL
 ]]></Declaration>
       <Set Name="Set" Id="{898cafb7-795e-4139-9fc1-ce2eb8f73c66}">
         <Declaration><![CDATA[
@@ -199,8 +196,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="pActCloseOut" Id="{8f05d0ab-f58d-4400-b35e-255344c88c03}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pActCloseOut : BOOL
+      <Declaration><![CDATA[PROPERTY pActCloseOut : BOOL
 ]]></Declaration>
       <Get Name="Get" Id="{555281c1-2fed-4fce-8690-c7dd5592c8a8}">
         <Declaration><![CDATA[VAR
@@ -220,8 +216,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="pActOpenComp" Id="{a5e0df93-6bfe-49bc-bb67-0ad142a5a46a}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pActOpenComp : BOOL
+      <Declaration><![CDATA[PROPERTY pActOpenComp : BOOL
 ]]></Declaration>
       <Get Name="Get" Id="{4c13ad77-d4a9-457a-9240-07a75b117374}">
         <Declaration><![CDATA[VAR
@@ -241,8 +236,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="pActOpenedPosSensor" Id="{76cc81b4-5650-4c86-bf53-b309497122dc}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pActOpenedPosSensor : BOOL
+      <Declaration><![CDATA[PROPERTY pActOpenedPosSensor : BOOL
 ]]></Declaration>
       <Set Name="Set" Id="{87b31f9a-bb75-4a57-864f-9b015374207f}">
         <Declaration><![CDATA[
@@ -255,8 +249,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="pActOpenOut" Id="{ee9801f7-3449-4db9-a39b-f0ea88fff941}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pActOpenOut : BOOL
+      <Declaration><![CDATA[PROPERTY pActOpenOut : BOOL
 ]]></Declaration>
       <Get Name="Get" Id="{d131e40e-9bf2-49b6-afc6-d1b217d44aeb}">
         <Declaration><![CDATA[VAR
@@ -276,8 +269,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="pDeviceCommOK" Id="{f05f3604-49e1-42c7-aa3f-89d0e1fb9b5f}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pDeviceCommOK : BOOL
+      <Declaration><![CDATA[PROPERTY pDeviceCommOK : BOOL
 ]]></Declaration>
       <Get Name="Get" Id="{b6511e56-45b8-4af0-8d80-71c9e6eb779b}">
         <Declaration><![CDATA[VAR
@@ -297,8 +289,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="pDeviceEnableCmd" Id="{7ed9058e-b6b7-44c6-837c-6921721a4bdf}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pDeviceEnableCmd : BOOL
+      <Declaration><![CDATA[PROPERTY pDeviceEnableCmd : BOOL
 ]]></Declaration>
       <Get Name="Get" Id="{9e03921b-6ea3-4b53-9297-ab6027a0c17f}">
         <Declaration><![CDATA[VAR
@@ -318,8 +309,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="pDeviceEnabled" Id="{bdb9b89d-8cf2-4232-9d49-ee2fabd8fc5a}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pDeviceEnabled : BOOL
+      <Declaration><![CDATA[PROPERTY pDeviceEnabled : BOOL
 ]]></Declaration>
       <Get Name="Get" Id="{8e314884-717f-4b79-b501-43a227a2c5ff}">
         <Declaration><![CDATA[VAR
@@ -359,8 +349,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="pDeviceReset" Id="{e7c4c885-dc72-43ba-803f-de09b6c71d43}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pDeviceReset : BOOL
+      <Declaration><![CDATA[PROPERTY pDeviceReset : BOOL
 ]]></Declaration>
       <Set Name="Set" Id="{ad0c55d2-823b-4f4b-8f41-6460c3da82ac}">
         <Declaration><![CDATA[VAR
@@ -397,20 +386,25 @@ END_VAR
       <LineId Id="81" Count="0" />
     </LineIds>
     <LineIds Name="FB_Valve.M_ActClose">
-      <LineId Id="95" Count="25" />
+      <LineId Id="95" Count="23" />
+      <LineId Id="124" Count="0" />
+      <LineId Id="119" Count="1" />
       <LineId Id="37" Count="0" />
     </LineIds>
     <LineIds Name="FB_Valve.M_ActOpen">
       <LineId Id="10" Count="3" />
-      <LineId Id="15" Count="0" />
+      <LineId Id="47" Count="0" />
       <LineId Id="38" Count="0" />
-      <LineId Id="16" Count="6" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="18" Count="4" />
       <LineId Id="39" Count="0" />
       <LineId Id="42" Count="0" />
       <LineId Id="24" Count="6" />
       <LineId Id="34" Count="1" />
-      <LineId Id="40" Count="1" />
-      <LineId Id="33" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="41" Count="0" />
       <LineId Id="4" Count="0" />
     </LineIds>
     <LineIds Name="FB_Valve.M_DeviceEnable">

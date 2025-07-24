@@ -7,83 +7,56 @@ VAR_INPUT
     bCmdError       : BOOL; // Error code bit from ATEQ
 END_VAR
 VAR_IN_OUT
-	bResetRequest	: BOOL;
     bCmdTrigger     : BOOL; // The actual command bit from stIo.stWrite.stCommands (will be set FALSE by this FB)
     stIo_Ref        : ST_AteqIo; // Reference to the entire mapped I/O structure for ATEQ status checks
 END_VAR
 VAR_OUTPUT
-    eStatesAteqHandshake         : E_StatesAteqHandshake := E_StatesAteqHandshake.CMD_IDLE; // Current status of this command handler instance
-	bResetDone		: BOOL; //Reset Complete Flag used in Auto Sequence Method mainly
-
-	
-	
-	//abDebug         : ARRAY[0..19] OF BOOL; //Debug Remove
-	nFB_init_Debug		: DINT; //Debug Remove
-	stIoDebug		: ST_AteqIo; //Debug Remove
-	
+    eStatesAteqHandshake         : E_StatesAteqHandshake := E_StatesAteqHandshake.CMD_IDLE; // Current status of this command handler instance	
 END_VAR
 VAR
 	eCurrentState   	: E_StatesAteqHandshake; // Internal state of this FB instance
-    stResetCommands		: ST_AteqCommands;
-
-
+    stClearCmdOut		: ST_AteqCommands;
+	nRetryAttempts 		: INT := 0;
+	nMaxRetries 		: INT := 3;
 	tCmdTimeout     	: TON; // Timer for overall command timeout (e.g., 5 seconds)
     tCmdInProgressDWELL	: TON;
 	tCmdDoneDWELL		: TON;
-	tResetDWELL			: TON;
-    //cInterCommandDelayTime 	: TIME; // Configurable delay for inter-command spacing
-    
-	bSuccessConditionDetected : BOOL; 
-    fbF_TRIG_EndOfCycle		: F_TRIG;
-	fbR_TRIG_EndOfCycle		: R_TRIG;
+	
    	fbR_TRIG_CmdTrigger 	: R_TRIG;
-	fbR_TRIG_ErrorCodeFFFF	: R_TRIG;
-	//fbR_TRIG_CmdDone 		: R_TRIG;
-	 
-	i : INT;
-	bCmdInProgressDWELL : BOOL;
-	bResetDWELL			: BOOL;
+
+	bCmdInProgressDWELL : BOOL;	
 	bCmdDoneDWELL		: BOOL;
+	resetCall: BOOL;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[//fbF_TRIG_EndOfCycle(CLK := stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd);
-//fbR_TRIG_EndOfCycle(CLK := stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd);
-//fbR_TRIG_ErrorCodeFFFF(CLK := (stIo_Ref.stRead.anErrorCode[0] = 16#FF AND stIo_Ref.stRead.anErrorCode[1] = 16#FF));
+      <ST><![CDATA[tCmdTimeout.PT 			:= GVL_AteqConfig.tCmdTimeout;
+tCmdInProgressDWELL.PT 	:= GVL_AteqConfig.tCmdInProgressDWELL;
+tCmdDoneDWELL.PT		:= GVL_AteqConfig.tCmdDoneDWELL;
 
-tCmdTimeout.PT			:= T#60S;
-tCmdInProgressDWELL.PT 	:= T#500MS;
-tCmdDoneDWELL.PT		:= T#100MS;
-tResetDWELL.PT			:= T#100MS;
-
-	IF bResetRequest THEN
-		eCurrentState := E_StatesAteqHandshake.CMD_RESET;
-	END_IF
 
 CASE eCurrentState OF
 
-    E_StatesAteqHandshake.CMD_IDLE:
-        eStatesAteqHandshake := E_StatesAteqHandshake.CMD_IDLE;
+    CMD_IDLE:
+        eStatesAteqHandshake := CMD_IDLE;
 		
-		IF bResetDone THEN
-			bResetRequest := FALSE;
-        END_IF;
-			 
 		fbR_TRIG_CmdTrigger(CLK := bCmdTrigger);
-		IF fbR_TRIG_CmdTrigger.Q AND 
-			stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd AND
+		IF fbR_TRIG_CmdTrigger.Q THEN
+			tCmdTimeout(IN := TRUE);
+		END_IF	
+					
+		IF	fbR_TRIG_CmdTrigger.Q AND stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd AND
 			stIo_Ref.stRead.anErrorCode[0] = 0 AND 
 			stIo_Ref.stRead.anErrorCode[1] = 0 THEN //Error not exist
 					
-			bResetDone := FALSE;
-            eCurrentState := E_StatesAteqHandshake.CMD_IN_PROGRESS;
+            eCurrentState := CMD_IN_PROGRESS;
             tCmdTimeout(IN := FALSE);
-		ELSE
-			eCurrentState := E_StatesAteqHandshake.CMD_RESET;
+		ELSIF tCmdTimeout.Q THEN
+			eCurrentState := CMD_TIMEOUT;
         END_IF
 
 
-    E_StatesAteqHandshake.CMD_IN_PROGRESS:
-        eStatesAteqHandshake := E_StatesAteqHandshake.CMD_IN_PROGRESS;
+    CMD_IN_PROGRESS:
+        eStatesAteqHandshake := CMD_IN_PROGRESS;
 		tCmdTimeout(IN := TRUE);
         IF NOT bCmdInProgressDWELL THEN
 			bCmdInProgressDWELL := TRUE;
@@ -95,42 +68,41 @@ CASE eCurrentState OF
 	IF tCmdInProgressDWELL.Q THEN
 			
         IF bCmdEcho THEN
-            eCurrentState := E_StatesAteqHandshake.CMD_WAIT_CYCLE_END;
+            eCurrentState := CMD_WAIT_CYCLE_END;
 			tCmdTimeout(IN := FALSE);
 		ELSIF NOT bCmdEcho AND stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd THEN
-			eCurrentState := E_StatesAteqHandshake.CMD_ERROR;
-			tCmdTimeout(IN := FALSE);
+			eCurrentState := CMD_ERROR;
+			
 		ELSIF tCmdTimeout.Q THEN
-			eCurrentState := E_StatesAteqHandshake.CMD_TIMEOUT;
+			eCurrentState := CMD_TIMEOUT;
         END_IF
 	END_IF
 		
 		
-    E_StatesAteqHandshake.CMD_WAIT_CYCLE_END:
-        eStatesAteqHandshake := E_StatesAteqHandshake.CMD_WAIT_CYCLE_END;
-	   	tCmdTimeout(IN := TRUE);
+    CMD_WAIT_CYCLE_END:
+        eStatesAteqHandshake := CMD_WAIT_CYCLE_END;
+	   	//tCmdTimeout(IN := TRUE);
 		IF stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd THEN
-            eCurrentState := E_StatesAteqHandshake.CMD_EOC;
-			tCmdTimeout(IN := FALSE);
-		ELSIF tCmdTimeout.Q THEN
-			eCurrentState := E_StatesAteqHandshake.CMD_TIMEOUT;
+            eCurrentState := CMD_EOC;
+			//tCmdTimeout(IN := FALSE);
+		ELSIF NOT bCmdEcho 
+		OR NOT (stIo_Ref.stRead.anErrorCode[0] = 0 AND stIo_Ref.stRead.anErrorCode[1] = 0)THEN
+			eCurrentState := CMD_ERROR;
         END_IF
 
 
-	E_StatesAteqHandshake.CMD_EOC:
-        eStatesAteqHandshake := E_StatesAteqHandshake.CMD_EOC;
+	CMD_EOC:
+        eStatesAteqHandshake := CMD_EOC;
 		
 		IF (stIo_Ref.stRead.anErrorCode[0] = 0 AND stIo_Ref.stRead.anErrorCode[1] = 0) THEN
-			eCurrentState 	:= E_StatesAteqHandshake.CMD_DONE;
+			eCurrentState 	:= CMD_DONE;
 		ELSIF bCmdError AND NOT (stIo_Ref.stRead.anErrorCode[0] = 16#FF AND stIo_Ref.stRead.anErrorCode[1] = 16#FF) THEN
-            eCurrentState 	:= E_StatesAteqHandshake.CMD_ERROR;
-            tCmdTimeout(IN := FALSE);
+            eCurrentState 	:= CMD_ERROR;            
 		END_IF
 
 		
-//#############	Holds Below until Reset Request	#############
-	E_StatesAteqHandshake.CMD_DONE:
-		eStatesAteqHandshake := E_StatesAteqHandshake.CMD_DONE;
+	CMD_DONE:
+		eStatesAteqHandshake := CMD_DONE;
 		 tCmdTimeout(IN := FALSE);
 		
 		IF NOT bCmdDoneDWELL THEN
@@ -139,54 +111,122 @@ CASE eCurrentState OF
 		
 		tCmdDoneDWELL(IN := bCmdDoneDWELL); //Reset CmdTrigger after dwell
 		IF tCmdDoneDWELL.Q THEN
-			eCurrentState 	:= E_StatesAteqHandshake.CMD_RESET;
+			eCurrentState 	:= CMD_RESET;
 		END_IF
 		
         	
-    E_StatesAteqHandshake.CMD_ERROR:
-        eStatesAteqHandshake := E_StatesAteqHandshake.CMD_ERROR;
-		bCmdTrigger 	:= FALSE;
-		stIo_Ref.stWrite.stCommands := stResetCommands;
-	
-    E_StatesAteqHandshake.CMD_TIMEOUT:
-        eStatesAteqHandshake := E_StatesAteqHandshake.CMD_TIMEOUT;
-		bCmdTrigger 	:= FALSE;
-		stIo_Ref.stWrite.stCommands := stResetCommands;	
-
-	E_StatesAteqHandshake.CMD_RESET:
-        // Clear internal stuff
-        bCmdTrigger := FALSE;
-		stIo_Ref.stWrite.stCommands := stResetCommands;
-        tCmdTimeout(IN := FALSE);
-        //fbF_TRIG_EndOfCycle(CLK := FALSE);
-		fbR_TRIG_CmdTrigger(CLK := FALSE);
-		//fbR_TRIG_ErrorCodeFFFF(CLK := FALSE);
-	
-		IF NOT bResetDWELL THEN
-			bResetDWELL := TRUE;
-		END_IF
-			
-			tResetDWELL(IN := bResetDWELL);
+    CMD_ERROR:
+        eStatesAteqHandshake 		:= CMD_ERROR;
+    	bCmdTrigger 				:= FALSE;
+		stIo_Ref.stWrite.stCommands := stClearCmdOut; // Clear Output
+		tCmdTimeout			(IN 	:= FALSE);
+		fbR_TRIG_CmdTrigger	(CLK 	:= FALSE);
 		
-		IF tResetDWELL.Q THEN
-			tResetDWELL(IN := FALSE);
-			bResetDWELL := FALSE;
+    IF nRetryAttempts < nMaxRetries THEN
+        nRetryAttempts 	:= nRetryAttempts + 1;
+		bCmdTrigger 	:= TRUE;
+        eCurrentState 	:= CMD_IDLE; // Retry
+    ELSE
+        eCurrentState := CMD_FAIL; //hard fail
+    END_IF
+		
+		
+    CMD_TIMEOUT:
+        eStatesAteqHandshake 		:= CMD_TIMEOUT;
+		bCmdTrigger 				:= FALSE;
+		stIo_Ref.stWrite.stCommands := stClearCmdOut; // Clear Output
+		tCmdTimeout			(IN 	:= FALSE);
+		fbR_TRIG_CmdTrigger	(CLK 	:= FALSE);
+		
+    IF nRetryAttempts < nMaxRetries THEN
+        nRetryAttempts 	:= nRetryAttempts + 1;
+		bCmdTrigger 	:= TRUE;
+        eCurrentState 	:= CMD_IDLE; // Retry
+    ELSE
+        eCurrentState := CMD_FAIL; //hard fail
+    END_IF
+
+
+	CMD_RESET:
+		resetCall := M_Reset();
+		IF resetCall THEN
+			eCurrentState := CMD_IDLE;
+		END_IF
+
+	CMD_FAIL:
+		eStatesAteqHandshake 		:= CMD_FAIL;
+    	bCmdTrigger 				:= FALSE;
+		stIo_Ref.stWrite.stCommands := stClearCmdOut; // Clear Output
+		tCmdTimeout			(IN 	:= FALSE);
+		fbR_TRIG_CmdTrigger	(CLK 	:= FALSE);
+		 // Throw Fault and HOLD STATE UNTIL Reset Request
+END_CASE
+]]></ST>
+    </Implementation>
+    <Method Name="M_Reset" Id="{fdad7fb2-10b9-4753-be55-6426b3d99521}">
+      <Declaration><![CDATA[METHOD M_Reset : BOOL
+VAR
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+		M_Reset := FALSE;
+		
+		bCmdTrigger 				:= FALSE;
+		stIo_Ref.stWrite.stCommands := stClearCmdOut; // Clear Output
+		tCmdTimeout			(IN 	:= FALSE);
+		fbR_TRIG_CmdTrigger	(CLK 	:= FALSE);
+
 			tCmdInProgressDWELL(IN := FALSE);
 			bCmdInProgressDWELL := FALSE;
 			tCmdDoneDWELL(IN := FALSE);
 			bCmdDoneDWELL := FALSE;
 			
-			bResetDone := TRUE;
-        	eCurrentState := E_StatesAteqHandshake.CMD_IDLE;	
-		END_IF
-        
-		
-END_CASE
+			nRetryAttempts := 0; // Clear on full reset done
+			
+			M_Reset := TRUE;
 ]]></ST>
-    </Implementation>
+      </Implementation>
+    </Method>
     <LineIds Name="FB_AteqCmdHandler">
-      <LineId Id="3843" Count="135" />
+      <LineId Id="4496" Count="0" />
+      <LineId Id="4309" Count="1" />
+      <LineId Id="4482" Count="0" />
+      <LineId Id="4316" Count="5" />
+      <LineId Id="4327" Count="8" />
+      <LineId Id="4337" Count="37" />
+      <LineId Id="4489" Count="0" />
+      <LineId Id="4375" Count="10" />
+      <LineId Id="4387" Count="2" />
+      <LineId Id="4391" Count="16" />
+      <LineId Id="4461" Count="0" />
+      <LineId Id="4409" Count="0" />
+      <LineId Id="4466" Count="0" />
+      <LineId Id="4463" Count="0" />
+      <LineId Id="4410" Count="10" />
+      <LineId Id="4473" Count="2" />
+      <LineId Id="4423" Count="0" />
+      <LineId Id="4464" Count="0" />
+      <LineId Id="4490" Count="5" />
+      <LineId Id="4429" Count="3" />
+      <LineId Id="4458" Count="0" />
+      <LineId Id="4499" Count="2" />
+      <LineId Id="4459" Count="0" />
+      <LineId Id="4479" Count="0" />
+      <LineId Id="4485" Count="3" />
+      <LineId Id="4484" Count="0" />
+      <LineId Id="4483" Count="0" />
+      <LineId Id="4460" Count="0" />
       <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqCmdHandler.M_Reset">
+      <LineId Id="6" Count="0" />
+      <LineId Id="32" Count="1" />
+      <LineId Id="7" Count="3" />
+      <LineId Id="21" Count="5" />
+      <LineId Id="34" Count="1" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="5" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

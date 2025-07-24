@@ -155,6 +155,9 @@
     <Compile Include="zTEST\Test_ValveBank\FB_ValveMock.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="zTEST\Test_Valve\FB_Test_Valve.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="2_ValveBank\DUTs" />
@@ -172,6 +175,7 @@
     <Folder Include="0_Interfaces" />
     <Folder Include="PRG" />
     <Folder Include="zTEST" />
+    <Folder Include="zTEST\Test_Valve" />
     <Folder Include="zTEST\Test_Ateq" />
     <Folder Include="zTEST\Test_ValveBank" />
     <Folder Include="VISUs" />

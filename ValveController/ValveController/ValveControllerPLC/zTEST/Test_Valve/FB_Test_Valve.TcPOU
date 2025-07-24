@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_Test_Valve" Id="{ac63c8e0-3607-4c1e-ae96-a0877b91a118}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Test_Valve EXTENDS TcUnit.FB_TestSuite
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+    fbValve : FB_Valve;
+
+    // Config for test
+    bSensorMode : BOOL := TRUE;
+    dwStatus : DWORD;
+
+    // Timeout sim
+    nCycleCounter : INT := 0;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+	Test_OpenNoSensorMode();
+	Test_OpenWithSensor();
+	Test_TimeoutWhenSensorMissing();
+]]></ST>
+    </Implementation>
+    <Method Name="M_ResetValve" Id="{3858ce28-c8c0-4d61-9821-ab3fe2c8a0ca}">
+      <Declaration><![CDATA[METHOD PRIVATE M_ResetValve : REFERENCE TO FB_Test
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+    fbValve.M_DeviceReset();
+    fbValve.pDeviceReset := FALSE;
+    fbValve.pActOpenedPosSensor := FALSE;
+    fbValve.pActClosedPosSensor := FALSE;
+    fbValve.pDeviceStatusFeedback := 0;
+    fbValve.pDeviceCommOK := TRUE;
+    fbValve.pDeviceEnableCmd := TRUE;
+
+    ]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_OpenNoSensorMode" Id="{707abc9a-b167-46a8-874a-8f168451b113}">
+      <Declaration><![CDATA[METHOD Test_OpenNoSensorMode : REFERENCE TO FB_Test
+VAR
+    expectedStatus : E_StatusFieldDevice;
+    actualStatus   : E_StatusFieldDevice;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Open_No_Sensor_Mode');
+M_ResetValve();
+bSensorMode := FALSE;
+GVL_ValveBankConfig.bValvePosSensorUsed := bSensorMode;
+fbValve.M_ActOpen();
+
+AssertTrue(fbValve.pActOpenOut, 'Output command should be ON immediately');
+AssertTrue(fbValve.pActOpenComp, 'Open complete flag should be set without sensor');
+
+	expectedStatus 	:= E_StatusFieldDevice.OK;
+	actualStatus	:= fbValve.M_DeviceStatus();
+AssertEquals(expectedStatus, actualStatus, 'Expected OK in no-sensor mode');
+
+TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_OpenWithSensor" Id="{1df892f8-6999-4cd8-8afc-cea2e459107d}">
+      <Declaration><![CDATA[METHOD Test_OpenWithSensor : REFERENCE TO FB_Test
+VAR
+    expectedStatus : E_StatusFieldDevice;
+    actualStatus   : E_StatusFieldDevice;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+TEST('Open_With_Sensor');
+M_ResetValve();
+bSensorMode := TRUE;
+GVL_ValveBankConfig.bValvePosSensorUsed := bSensorMode;
+// Simulate: sensor says not opened initially
+fbValve.pActOpenedPosSensor := FALSE;
+fbValve.pDeviceStatusFeedback := 0;
+
+// Run ActOpen
+fbValve.M_ActOpen();
+
+// Simulate sensor triggers opened after some time
+fbValve.pActOpenedPosSensor := TRUE;
+fbValve.M_ActOpen();
+
+// Check state
+AssertTrue(fbValve.pActOpenOut = FALSE, 'Output command should be OFF after open complete');
+AssertTrue(fbValve.pActOpenComp, 'Valve open complete flag should be true');
+
+    expectedStatus := E_StatusFieldDevice.OK;
+    actualStatus   := fbValve.M_DeviceStatus();
+AssertEquals(expectedStatus, actualStatus, 'Expected OK status');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_TimeoutWhenSensorMissing" Id="{33da9b6d-1c3e-4e31-adac-7b6fa9614ff3}">
+      <Declaration><![CDATA[METHOD Test_TimeoutWhenSensorMissing : REFERENCE TO FB_Test
+VAR
+    expectedStatus : E_StatusFieldDevice;
+    actualStatus   : E_StatusFieldDevice;
+	tTestingTimeout: TON;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+TEST('Timeout_When_Sensor_Missing');
+M_ResetValve();
+bSensorMode := TRUE;
+GVL_ValveBankConfig.bValvePosSensorUsed := bSensorMode;
+fbValve.pActOpenedPosSensor := FALSE;
+fbValve.pDeviceStatusFeedback := 0;
+
+// Simulate many scan cycles to trigger timeout
+
+    fbValve.M_ActOpen();
+
+tTestingTimeout(IN := TRUE, PT := GVL_ValveBankConfig.bValveActTimeout + T#100MS);
+IF tTestingTimeout.Q THEN
+	AssertTrue(fbValve.pDeviceFaulted, 'Valve should be faulted due to timeout');
+END_IF
+
+	expectedStatus := E_StatusFieldDevice.UNKNOWN;
+    actualStatus   := fbValve.M_DeviceStatus();
+AssertEquals(expectedStatus, actualStatus, 'Expected UNKNOWN status after failed actuation');
+
+TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Test_Valve">
+      <LineId Id="114" Count="3" />
+      <LineId Id="102" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Test_Valve.M_ResetValve">
+      <LineId Id="7" Count="7" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Test_Valve.Test_OpenNoSensorMode">
+      <LineId Id="6" Count="7" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="14" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Test_Valve.Test_OpenWithSensor">
+      <LineId Id="6" Count="18" />
+      <LineId Id="32" Count="1" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="25" Count="2" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Test_Valve.Test_TimeoutWhenSensorMissing">
+      <LineId Id="11" Count="8" />
+      <LineId Id="35" Count="1" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="22" Count="1" />
+      <LineId Id="43" Count="1" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="25" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

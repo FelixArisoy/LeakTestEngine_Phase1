@@ -4,8 +4,10 @@
     <Declaration><![CDATA[VAR_GLOBAL CONSTANT
 	nMaxDeviceCount		: INT 	:= 2;
 	nMaxNumOfValveSlots	: INT	:= 32;
-	bValvePosSensorUsed : BOOL 	:= FALSE;
 	bValveActTimeout	: TIME 	:= T#2S;
+END_VAR
+VAR_GLOBAL
+	bValvePosSensorUsed : BOOL;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

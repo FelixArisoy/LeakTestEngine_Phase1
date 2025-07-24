@@ -172,8 +172,7 @@ END_IF
       </Implementation>
     </Method>
     <Property Name="pDeviceCommOK" Id="{352dddb1-1c64-4cc8-b289-cb2d9c109aa0}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pDeviceCommOK : BOOL
+      <Declaration><![CDATA[PROPERTY pDeviceCommOK : BOOL
 ]]></Declaration>
       <Get Name="Get" Id="{0de0c202-d3ab-45c0-9838-52cafb915e51}">
         <Declaration><![CDATA[VAR
@@ -193,8 +192,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="pDeviceEnableCmd" Id="{88d6e28b-d680-4f91-ad1c-a8ab581b797f}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pDeviceEnableCmd : BOOL
+      <Declaration><![CDATA[PROPERTY pDeviceEnableCmd : BOOL
 ]]></Declaration>
       <Get Name="Get" Id="{c00ed25d-aeea-497a-ae99-d01c5426b1f5}">
         <Declaration><![CDATA[VAR
@@ -214,8 +212,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="pDeviceEnabled" Id="{98d9040d-5408-4a74-9e41-a7e33173237e}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pDeviceEnabled : BOOL
+      <Declaration><![CDATA[PROPERTY pDeviceEnabled : BOOL
 ]]></Declaration>
       <Get Name="Get" Id="{79abb8df-19fe-4a51-88f3-0a0e97bc9cde}">
         <Declaration><![CDATA[VAR
@@ -255,8 +252,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="pDeviceReset" Id="{b8002858-155a-4303-b666-9f670f070a54}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pDeviceReset : BOOL
+      <Declaration><![CDATA[PROPERTY pDeviceReset : BOOL
 ]]></Declaration>
       <Set Name="Set" Id="{1bfe165c-4649-4f5d-ad1d-78879b294ac2}">
         <Declaration><![CDATA[VAR
@@ -290,8 +286,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="pNumOfValvesAvailable" Id="{f8a2e382-60a6-46fc-a865-d245d7f4f32b}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY pNumOfValvesAvailable : INT
+      <Declaration><![CDATA[PROPERTY pNumOfValvesAvailable : INT
 ]]></Declaration>
       <Get Name="Get" Id="{283c56b6-f63a-40ad-85c4-8e022e6b3eec}">
         <Declaration><![CDATA[VAR

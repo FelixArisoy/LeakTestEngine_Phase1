@@ -8,9 +8,12 @@
 	CMD_WAIT_CYCLE_END,
 	CMD_EOC, 			// End Of Cycle
 	CMD_DONE,
-    CMD_ERROR,        	// Command completed with an error from ATEQ
-    CMD_TIMEOUT,      	// Command did not complete within expected time
-    CMD_RESET   
+    CMD_ERROR,        	// Command completed with an error from ATEQ (retries)
+    CMD_TIMEOUT,      	// Command did not complete within expected time (retries)
+    CMD_RESET,
+	CMD_FAIL			// Retires failled, ATEQ comm faulted. 
+						// Pass Error To HMI over ProgramAutoSeq: SEQ_ERROR
+
 );
 END_TYPE]]></Declaration>
   </DUT>

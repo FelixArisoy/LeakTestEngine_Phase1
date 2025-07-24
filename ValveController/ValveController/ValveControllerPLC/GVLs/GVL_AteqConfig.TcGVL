@@ -10,7 +10,11 @@
 	nMaxTestSteps	: INT	:= 10;	
 	nMaxProgramsToRun	: INT := 33;
 	
-	
+	// CmdHandler Timers
+	tCmdTimeout 		: TIME := T#5000MS; // Debug Future; can be limitted by the TestRunTime tru ParamRead
+	tCmdInProgressDWELL : TIME := T#300MS;	// Must be atleast 300ms. DEBUG; Monitor network lags with multiple ATEQ runs
+	tCmdDoneDWELL 		: TIME := T#50MS;
+
 END_VAR
 
 VAR_GLOBAL

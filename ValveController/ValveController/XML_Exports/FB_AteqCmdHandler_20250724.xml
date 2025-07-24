@@ -1,0 +1,402 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0200">
+  <fileHeader companyName="Beckhoff Automation GmbH" productName="TwinCAT PLC Control" productVersion="3.5.13.21" creationDateTime="2025-07-24T11:45:52.6953125" />
+  <contentHeader name="ValveControllerPLC" modificationDateTime="2025-07-24T11:45:52.6953125">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="1" y="1" />
+      </fbd>
+      <ld>
+        <scaling x="1" y="1" />
+      </ld>
+      <sfc>
+        <scaling x="1" y="1" />
+      </sfc>
+    </coordinateInfo>
+    <addData>
+      <data name="http://www.3s-software.com/plcopenxml/projectinformation" handleUnknown="implementation">
+        <ProjectInformation />
+      </data>
+    </addData>
+  </contentHeader>
+  <types>
+    <dataTypes />
+    <pous>
+      <pou name="FB_AteqCmdHandler" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="bCmdEcho">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Command echo bit from ATEQ (TRUE while active)</xhtml>
+              </documentation>
+            </variable>
+            <variable name="bCmdError">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Error code bit from ATEQ</xhtml>
+              </documentation>
+            </variable>
+          </inputVars>
+          <inOutVars>
+            <variable name="bResetRequest">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="bCmdTrigger">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> The actual command bit from stIo.stWrite.stCommands (will be set FALSE by this FB)</xhtml>
+              </documentation>
+            </variable>
+            <variable name="stIo_Ref">
+              <type>
+                <derived name="ST_AteqIo" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Reference to the entire mapped I/O structure for ATEQ status checks</xhtml>
+              </documentation>
+            </variable>
+          </inOutVars>
+          <outputVars>
+            <variable name="eStatesAteqHandshake">
+              <type>
+                <derived name="E_StatesAteqHandshake" />
+              </type>
+              <initialValue>
+                <simpleValue value="E_StatesAteqHandshake.CMD_IDLE" />
+              </initialValue>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Current status of this command handler instance</xhtml>
+              </documentation>
+            </variable>
+            <variable name="bResetDone">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Reset Complete Flag used in Auto Sequence Method mainly</xhtml>
+              </documentation>
+            </variable>
+            <variable name="nFB_init_Debug">
+              <type>
+                <DINT />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Debug Remove</xhtml>
+              </documentation>
+            </variable>
+            <variable name="stIoDebug">
+              <type>
+                <derived name="ST_AteqIo" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Debug Remove</xhtml>
+              </documentation>
+            </variable>
+          </outputVars>
+          <localVars>
+            <variable name="eCurrentState">
+              <type>
+                <derived name="E_StatesAteqHandshake" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Internal state of this FB instance</xhtml>
+              </documentation>
+            </variable>
+            <variable name="stResetCommands">
+              <type>
+                <derived name="ST_AteqCommands" />
+              </type>
+            </variable>
+            <variable name="tCmdTimeout">
+              <type>
+                <derived name="TON" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Timer for overall command timeout (e.g., 5 seconds)</xhtml>
+              </documentation>
+            </variable>
+            <variable name="tCmdInProgressDWELL">
+              <type>
+                <derived name="TON" />
+              </type>
+            </variable>
+            <variable name="tCmdDoneDWELL">
+              <type>
+                <derived name="TON" />
+              </type>
+            </variable>
+            <variable name="tResetDWELL">
+              <type>
+                <derived name="TON" />
+              </type>
+            </variable>
+            <variable name="bSuccessConditionDetected">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">cInterCommandDelayTime 	: TIME; // Configurable delay for inter-command spacing</xhtml>
+              </documentation>
+            </variable>
+            <variable name="fbF_TRIG_EndOfCycle">
+              <type>
+                <derived name="F_TRIG" />
+              </type>
+            </variable>
+            <variable name="fbR_TRIG_EndOfCycle">
+              <type>
+                <derived name="R_TRIG" />
+              </type>
+            </variable>
+            <variable name="fbR_TRIG_CmdTrigger">
+              <type>
+                <derived name="R_TRIG" />
+              </type>
+            </variable>
+            <variable name="fbR_TRIG_ErrorCodeFFFF">
+              <type>
+                <derived name="R_TRIG" />
+              </type>
+            </variable>
+            <variable name="i">
+              <type>
+                <INT />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">fbR_TRIG_CmdDone 		: R_TRIG;</xhtml>
+              </documentation>
+            </variable>
+            <variable name="bCmdInProgressDWELL">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="bResetDWELL">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="bCmdDoneDWELL">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml">//fbF_TRIG_EndOfCycle(CLK := stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd);
+//fbR_TRIG_EndOfCycle(CLK := stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd);
+//fbR_TRIG_ErrorCodeFFFF(CLK := (stIo_Ref.stRead.anErrorCode[0] = 16#FF AND stIo_Ref.stRead.anErrorCode[1] = 16#FF));
+
+tCmdTimeout.PT			:= T#60S;
+tCmdInProgressDWELL.PT 	:= T#500MS;
+tCmdDoneDWELL.PT		:= T#100MS;
+tResetDWELL.PT			:= T#100MS;
+
+	IF bResetRequest THEN
+		eCurrentState := E_StatesAteqHandshake.CMD_RESET;
+	END_IF
+
+CASE eCurrentState OF
+
+    E_StatesAteqHandshake.CMD_IDLE:
+        eStatesAteqHandshake := E_StatesAteqHandshake.CMD_IDLE;
+		
+		IF bResetDone THEN
+			bResetRequest := FALSE;
+        END_IF;
+			 
+		fbR_TRIG_CmdTrigger(CLK := bCmdTrigger);
+		IF fbR_TRIG_CmdTrigger.Q AND 
+			stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd AND
+			stIo_Ref.stRead.anErrorCode[0] = 0 AND 
+			stIo_Ref.stRead.anErrorCode[1] = 0 THEN //Error not exist
+					
+			bResetDone := FALSE;
+            eCurrentState := E_StatesAteqHandshake.CMD_IN_PROGRESS;
+            tCmdTimeout(IN := FALSE);
+		ELSE
+			eCurrentState := E_StatesAteqHandshake.CMD_RESET;
+        END_IF
+
+
+    E_StatesAteqHandshake.CMD_IN_PROGRESS:
+        eStatesAteqHandshake := E_StatesAteqHandshake.CMD_IN_PROGRESS;
+		tCmdTimeout(IN := TRUE);
+        IF NOT bCmdInProgressDWELL THEN
+			bCmdInProgressDWELL := TRUE;
+		END_IF
+		
+        // Wait for execution to begin
+		tCmdInProgressDWELL(IN := bCmdInProgressDWELL);
+		
+	IF tCmdInProgressDWELL.Q THEN
+			
+        IF bCmdEcho THEN
+            eCurrentState := E_StatesAteqHandshake.CMD_WAIT_CYCLE_END;
+			tCmdTimeout(IN := FALSE);
+		ELSIF NOT bCmdEcho AND stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd THEN
+			eCurrentState := E_StatesAteqHandshake.CMD_ERROR;
+			tCmdTimeout(IN := FALSE);
+		ELSIF tCmdTimeout.Q THEN
+			eCurrentState := E_StatesAteqHandshake.CMD_TIMEOUT;
+        END_IF
+	END_IF
+		
+		
+    E_StatesAteqHandshake.CMD_WAIT_CYCLE_END:
+        eStatesAteqHandshake := E_StatesAteqHandshake.CMD_WAIT_CYCLE_END;
+	   	tCmdTimeout(IN := TRUE);
+		IF stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd THEN
+            eCurrentState := E_StatesAteqHandshake.CMD_EOC;
+			tCmdTimeout(IN := FALSE);
+		ELSIF tCmdTimeout.Q THEN
+			eCurrentState := E_StatesAteqHandshake.CMD_TIMEOUT;
+        END_IF
+
+
+	E_StatesAteqHandshake.CMD_EOC:
+        eStatesAteqHandshake := E_StatesAteqHandshake.CMD_EOC;
+		
+		IF (stIo_Ref.stRead.anErrorCode[0] = 0 AND stIo_Ref.stRead.anErrorCode[1] = 0) THEN
+			eCurrentState 	:= E_StatesAteqHandshake.CMD_DONE;
+		ELSIF bCmdError AND NOT (stIo_Ref.stRead.anErrorCode[0] = 16#FF AND stIo_Ref.stRead.anErrorCode[1] = 16#FF) THEN
+            eCurrentState 	:= E_StatesAteqHandshake.CMD_ERROR;
+            tCmdTimeout(IN := FALSE);
+		END_IF
+
+		
+//#############	Holds Below until Reset Request	#############
+	E_StatesAteqHandshake.CMD_DONE:
+		eStatesAteqHandshake := E_StatesAteqHandshake.CMD_DONE;
+		 tCmdTimeout(IN := FALSE);
+		
+		IF NOT bCmdDoneDWELL THEN
+				bCmdDoneDWELL := TRUE;
+		END_IF
+		
+		tCmdDoneDWELL(IN := bCmdDoneDWELL); //Reset CmdTrigger after dwell
+		IF tCmdDoneDWELL.Q THEN
+			eCurrentState 	:= E_StatesAteqHandshake.CMD_RESET;
+		END_IF
+		
+        	
+    E_StatesAteqHandshake.CMD_ERROR:
+        eStatesAteqHandshake := E_StatesAteqHandshake.CMD_ERROR;
+		bCmdTrigger 	:= FALSE;
+		stIo_Ref.stWrite.stCommands := stResetCommands;
+	
+    E_StatesAteqHandshake.CMD_TIMEOUT:
+        eStatesAteqHandshake := E_StatesAteqHandshake.CMD_TIMEOUT;
+		bCmdTrigger 	:= FALSE;
+		stIo_Ref.stWrite.stCommands := stResetCommands;	
+
+	E_StatesAteqHandshake.CMD_RESET:
+        // Clear internal stuff
+        bCmdTrigger := FALSE;
+		stIo_Ref.stWrite.stCommands := stResetCommands;
+        tCmdTimeout(IN := FALSE);
+        //fbF_TRIG_EndOfCycle(CLK := FALSE);
+		fbR_TRIG_CmdTrigger(CLK := FALSE);
+		//fbR_TRIG_ErrorCodeFFFF(CLK := FALSE);
+	
+		IF NOT bResetDWELL THEN
+			bResetDWELL := TRUE;
+		END_IF
+			
+			tResetDWELL(IN := bResetDWELL);
+		
+		IF tResetDWELL.Q THEN
+			tResetDWELL(IN := FALSE);
+			bResetDWELL := FALSE;
+			tCmdInProgressDWELL(IN := FALSE);
+			bCmdInProgressDWELL := FALSE;
+			tCmdDoneDWELL(IN := FALSE);
+			bCmdDoneDWELL := FALSE;
+			
+			bResetDone := TRUE;
+        	eCurrentState := E_StatesAteqHandshake.CMD_IDLE;	
+		END_IF
+        
+		
+END_CASE
+</xhtml>
+          </ST>
+        </body>
+        <addData>
+          <data name="http://www.3s-software.com/plcopenxml/interfaceasplaintext" handleUnknown="implementation">
+            <InterfaceAsPlainText>
+              <xhtml xmlns="http://www.w3.org/1999/xhtml">FUNCTION_BLOCK FB_AteqCmdHandler //This is a child FB to FB_AteqControl
+VAR_INPUT    
+	bCmdEcho        : BOOL; // Command echo bit from ATEQ (TRUE while active)
+    bCmdError       : BOOL; // Error code bit from ATEQ
+END_VAR
+VAR_IN_OUT
+	bResetRequest	: BOOL;
+    bCmdTrigger     : BOOL; // The actual command bit from stIo.stWrite.stCommands (will be set FALSE by this FB)
+    stIo_Ref        : ST_AteqIo; // Reference to the entire mapped I/O structure for ATEQ status checks
+END_VAR
+VAR_OUTPUT
+    eStatesAteqHandshake         : E_StatesAteqHandshake := E_StatesAteqHandshake.CMD_IDLE; // Current status of this command handler instance
+	bResetDone		: BOOL; //Reset Complete Flag used in Auto Sequence Method mainly
+
+	
+	
+	//abDebug         : ARRAY[0..19] OF BOOL; //Debug Remove
+	nFB_init_Debug		: DINT; //Debug Remove
+	stIoDebug		: ST_AteqIo; //Debug Remove
+	
+END_VAR
+VAR
+	eCurrentState   	: E_StatesAteqHandshake; // Internal state of this FB instance
+    stResetCommands		: ST_AteqCommands;
+
+
+	tCmdTimeout     	: TON; // Timer for overall command timeout (e.g., 5 seconds)
+    tCmdInProgressDWELL	: TON;
+	tCmdDoneDWELL		: TON;
+	tResetDWELL			: TON;
+    //cInterCommandDelayTime 	: TIME; // Configurable delay for inter-command spacing
+    
+	bSuccessConditionDetected : BOOL; 
+    fbF_TRIG_EndOfCycle		: F_TRIG;
+	fbR_TRIG_EndOfCycle		: R_TRIG;
+   	fbR_TRIG_CmdTrigger 	: R_TRIG;
+	fbR_TRIG_ErrorCodeFFFF	: R_TRIG;
+	//fbR_TRIG_CmdDone 		: R_TRIG;
+	 
+	i : INT;
+	bCmdInProgressDWELL : BOOL;
+	bResetDWELL			: BOOL;
+	bCmdDoneDWELL		: BOOL;
+END_VAR</xhtml>
+            </InterfaceAsPlainText>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+            <ObjectId>736e6d42-ec43-485f-bfa6-1943d6a22849</ObjectId>
+          </data>
+        </addData>
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations />
+  </instances>
+  <addData>
+    <data name="http://www.3s-software.com/plcopenxml/projectstructure" handleUnknown="discard">
+      <ProjectStructure>
+        <Object Name="FB_AteqCmdHandler" ObjectId="736e6d42-ec43-485f-bfa6-1943d6a22849" />
+      </ProjectStructure>
+    </data>
+  </addData>
+</project>

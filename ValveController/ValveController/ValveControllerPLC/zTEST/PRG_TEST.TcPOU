@@ -3,22 +3,24 @@
   <POU Name="PRG_TEST" Id="{17166b4e-59dc-4826-b23b-b13d729fc1f3}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_TEST
 VAR
-    fbTest_ValveBank : FB_Test_ValveBank;
+// Enable the test FBs to RUN TcUnit
+	//fbTest_AteqControl	: FB_Test_AteqControl;
+	fbTest_ValveBank 		: FB_Test_ValveBank;
+	fbTest_Valve			: FB_Test_Valve;
 END_VAR
 
 
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[	//TcUnit.RUN();
+      <ST><![CDATA[
 	TcUnit.RUN_IN_SEQUENCE();
- 	fbTest_ValveBank();
 
 ]]></ST>
     </Implementation>
     <LineIds Name="PRG_TEST">
       <LineId Id="285" Count="0" />
       <LineId Id="266" Count="0" />
-      <LineId Id="302" Count="1" />
+      <LineId Id="303" Count="0" />
       <LineId Id="25" Count="0" />
     </LineIds>
   </POU>
