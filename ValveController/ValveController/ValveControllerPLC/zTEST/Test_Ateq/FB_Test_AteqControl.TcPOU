@@ -38,15 +38,15 @@ CASE nTestStep OF
         stTestIo.stRead.stRealtimeTestResults.bCycleEnd := TRUE; // Simulate ATEQ ready
         
         fbTestInstance(
-						nProgramNumber 			:= 0,
-						bAutoSeqRunRequest 		:= TRUE,
-						bAutoSeqResetRequest 	:= FALSE,
+						nProgramNumberToRun 			:= 0,
+						bProgramSeqRunRequest 		:= TRUE,
+						bProgramSeqResetRequest 	:= FALSE,
 						stMappedIo 					:= stTestIo
 );
 		nTestStep := 1;
     1: // Call FB, check transition to RESET_FIFO
 
-        IF fbTestInstance.eStatesAteqProgramAuto = SEQ_RESET_FIFO THEN
+        IF fbTestInstance.eProgramSeqSteps = SEQ_RESET_FIFO THEN
             AssertTrue(TRUE, 'Transitioned to SEQ_RESET_FIFO');
             nTestStep := 2;
         END_IF
@@ -55,13 +55,13 @@ CASE nTestStep OF
         stTestIo.stRead.nResultsInFifo := 0;
 
         fbTestInstance(
-						nProgramNumber 			:= 0,
-						bAutoSeqRunRequest 		:= TRUE,
-						bAutoSeqResetRequest 	:= FALSE,
+						nProgramNumberToRun 			:= 0,
+						bProgramSeqRunRequest 		:= TRUE,
+						bProgramSeqResetRequest 	:= FALSE,
 						stMappedIo 					:= stTestIo
 );
 
-        IF fbTestInstance.eStatesAteqProgramAuto = SEQ_AUTO_ZERO THEN
+        IF fbTestInstance.eProgramSeqSteps = SEQ_AUTO_ZERO THEN
             AssertTrue(TRUE, 'Transitioned to SEQ_AUTO_ZERO');
             nTestStep := 3;
         END_IF
@@ -70,13 +70,13 @@ CASE nTestStep OF
         fbTestInstance.bAutoZeroComplete := TRUE;
 
         fbTestInstance(
-						nProgramNumber 			:= 0,
-						bAutoSeqRunRequest 		:= TRUE,
-						bAutoSeqResetRequest 	:= FALSE,
+						nProgramNumberToRun 			:= 0,
+						bProgramSeqRunRequest 		:= TRUE,
+						bProgramSeqResetRequest 	:= FALSE,
 						stMappedIo 					:= stTestIo
 );
 
-        IF fbTestInstance.eStatesAteqProgramAuto = SEQ_PROGRAM_SELECT THEN
+        IF fbTestInstance.eProgramSeqSteps = SEQ_PROGRAM_SELECT THEN
             AssertTrue(TRUE, 'Transitioned to SEQ_PROGRAM_SELECT');
             nTestStep := 4;
         END_IF
@@ -85,22 +85,22 @@ CASE nTestStep OF
         stTestIo.stRead.stEcho.bProgramSelect := TRUE;
 
         fbTestInstance(
-						nProgramNumber 			:= 0,
-						bAutoSeqRunRequest 		:= TRUE,
-						bAutoSeqResetRequest 	:= FALSE,
+						nProgramNumberToRun 			:= 0,
+						bProgramSeqRunRequest 		:= TRUE,
+						bProgramSeqResetRequest 	:= FALSE,
 						stMappedIo 					:= stTestIo
 );
 
         fbTestInstance.bProgramSelectComplete := TRUE;
 
         fbTestInstance(
-						nProgramNumber 			:= 0,
-						bAutoSeqRunRequest 		:= TRUE,
-						bAutoSeqResetRequest 	:= FALSE,
+						nProgramNumberToRun 			:= 0,
+						bProgramSeqRunRequest 		:= TRUE,
+						bProgramSeqResetRequest 	:= FALSE,
 						stMappedIo 					:= stTestIo
 );
 
-        IF fbTestInstance.eStatesAteqProgramAuto = SEQ_START_PROGRAM THEN
+        IF fbTestInstance.eProgramSeqSteps = SEQ_START_PROGRAM THEN
             AssertTrue(TRUE, 'Transitioned to SEQ_START_PROGRAM');
             nTestStep := 100;
         END_IF
@@ -128,7 +128,7 @@ FOR nIndex1 := 0 TO 255 DO
 	stTestAteqRawIo.anInput[nIndex1 / 64][nIndex1 MOD 64] := 0;
 END_FOR
 
-GVL_AteqConfig.eDeviceEndianSetTo := E_StatesAteqEndian.BigEndian;
+GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.BigEndian;
 
 // Reuse the **same** byte order inputs (low byte first in index 6)
 stTestAteqRawIo.anInput[0][6] := 16#07;  // ProgramInUse Low byte
@@ -225,7 +225,7 @@ FOR nIndex1 := 0 TO 255 DO
 	stTestAteqRawIo.anInput[nIndex1 / 64][nIndex1 MOD 64] := 0;
 END_FOR
 
-GVL_AteqConfig.eDeviceEndianSetTo := E_StatesAteqEndian.LittleEndian;
+GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.LittleEndian;
 
 // Setup bytes (same order for both tests - low byte first)
 stTestAteqRawIo.anInput[0][6] := 16#07;  // ProgramInUse Low byte
@@ -315,7 +315,7 @@ END_VAR
       <Implementation>
         <ST><![CDATA[// -------- Big Endian Test --------
 TEST('OutputMapping_BigEndian');
-GVL_AteqConfig.eDeviceEndianSetTo := E_StatesAteqEndian.BigEndian;
+GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.BigEndian;
 
 stTestAteqMappedIo.stWrite.nProgramNumber := 16#2211;
 stTestAteqMappedIo.stWrite.nSpecialCycle := 16#4433;
@@ -339,7 +339,7 @@ VAR
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[TEST('OutputMapping_LittleEndian');
-GVL_AteqConfig.eDeviceEndianSetTo := E_StatesAteqEndian.LittleEndian;
+GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.LittleEndian;
 
 // Set known values
 stTestAteqMappedIo.stWrite.stCommands.bReset               := TRUE;

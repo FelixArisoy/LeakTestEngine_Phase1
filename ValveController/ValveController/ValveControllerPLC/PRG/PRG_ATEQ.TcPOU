@@ -66,25 +66,21 @@ CASE eAteqCallerState OF
 	E_AteqCallerState.CONTROL:
 *)	
 
-GVL_AteqConfig.eDeviceEndianSetTo := E_StatesAteqEndian.BigEndian;
+GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.BigEndian;
 nMaxDeviceCount := GVL_AteqConfig.nMaxDeviceCount;	
 
 	IF nMaxDeviceCount > 0 THEN
 		
 		FOR nDeviceIndex := 0 TO nMaxDeviceCount - 1 DO
-			
-		afbAteqControl[nDeviceIndex](
-									nProgramNumber 			:= nProgramNumber[nDeviceIndex],
-									bAutoSeqRunRequest 		:= bAutoSeqRun[nDeviceIndex],
-									bAutoSeqResetRequest 	:= bAutoSeqResetRequest[nDeviceIndex],
-									stRawIo 				:= astAteqRawIo[nDeviceIndex],
-									stMappedIo 				:= astAteqIo[nDeviceIndex]
-);
+			afbAteqControl[nDeviceIndex].pProgramSeqRunRequest 		:= bAutoSeqRun[nDeviceIndex];
+			afbAteqControl[nDeviceIndex].pProgramSeqResetRequest 	:= bAutoSeqResetRequest[nDeviceIndex];
+			afbAteqControl[nDeviceIndex].pProgramNumberToRun		:= nProgramNumber[nDeviceIndex];
 		
-		afbAteqResult[nDeviceIndex](
-									bAutoSeqDone			:= afbAteqControl[nDeviceIndex].bAutoSeqDone,
-									anExchangeZone			:= astAteqIo[nDeviceIndex].stRead.anExchangeZone,
-);		
+	afbAteqControl[nDeviceIndex](stRawIo 	:= astAteqRawIo[nDeviceIndex], 
+								stMappedIo 	:= astAteqIo[nDeviceIndex]);
+		
+	afbAteqResult[nDeviceIndex](bAutoSeqDone 	:= afbAteqControl[nDeviceIndex].pProgramSeqDone,
+								anExchangeZone	:= astAteqIo[nDeviceIndex].stRead.anExchangeZone);		
 				
 
 		END_FOR
@@ -174,13 +170,12 @@ END_IF
       <LineId Id="1993" Count="0" />
       <LineId Id="2084" Count="0" />
       <LineId Id="1994" Count="0" />
-      <LineId Id="2000" Count="3" />
-      <LineId Id="2168" Count="0" />
-      <LineId Id="2004" Count="2" />
+      <LineId Id="2308" Count="1" />
+      <LineId Id="2000" Count="0" />
+      <LineId Id="2310" Count="1" />
+      <LineId Id="2006" Count="0" />
       <LineId Id="2131" Count="0" />
-      <LineId Id="2125" Count="0" />
       <LineId Id="2127" Count="0" />
-      <LineId Id="2126" Count="0" />
       <LineId Id="2124" Count="0" />
       <LineId Id="2122" Count="0" />
       <LineId Id="2121" Count="0" />

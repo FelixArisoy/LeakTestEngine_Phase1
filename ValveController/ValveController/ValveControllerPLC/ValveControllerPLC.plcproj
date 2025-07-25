@@ -42,6 +42,12 @@
     <Compile Include="2_ValveBank\POUs\FB_ValveBank.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="3_Ateq\DUTs_Control\E_AteqControlErrorFlags.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="3_Ateq\DUTs_Io\E_AteqStepsTable.TcTLEO">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="3_Ateq\POUs\FB_AteqCmdHandler.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -54,16 +60,16 @@
     <Compile Include="3_Ateq\POUs\FB_AteqResultHandler.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_Ateq\DUTs_Control\E_StatesAteqEndian.TcDUT">
+    <Compile Include="3_Ateq\DUTs_Control\E_AteqEndianType.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_Ateq\DUTs_Control\E_StatesAteqHandshake.TcDUT">
+    <Compile Include="3_Ateq\DUTs_Control\E_AteqHandshakeSteps.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_Ateq\DUTs_Control\E_StatesAteqProgramAuto.TcDUT">
+    <Compile Include="3_Ateq\DUTs_Control\E_AteqProgramSeqSteps.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_Ateq\DUTs_Control\E_StatesAteqRecipeHandler.TcDUT">
+    <Compile Include="3_Ateq\DUTs_Control\E_AteqRecipeHandlerSteps.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="3_Ateq\DUTs_Control\ST_AteqResultsDecoded.TcDUT">
@@ -109,6 +115,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\GenericFieldDevice\ST_FieldDevice.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GARBAGE\E_AteqProgramSeqStateFlags.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="GVLs\GVL_AteqConfig.TcGVL">
@@ -173,6 +182,7 @@
     <Folder Include="3_Ateq" />
     <Folder Include="4_Sequence" />
     <Folder Include="0_Interfaces" />
+    <Folder Include="GARBAGE" />
     <Folder Include="PRG" />
     <Folder Include="zTEST" />
     <Folder Include="zTEST\Test_Valve" />

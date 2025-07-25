@@ -1,0 +1,1687 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0200">
+  <fileHeader companyName="Beckhoff Automation GmbH" productName="TwinCAT PLC Control" productVersion="3.5.13.21" creationDateTime="2025-07-25T10:55:49.5517264" />
+  <contentHeader name="ValveControllerPLC" modificationDateTime="2025-07-25T10:55:49.5555569">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="1" y="1" />
+      </fbd>
+      <ld>
+        <scaling x="1" y="1" />
+      </ld>
+      <sfc>
+        <scaling x="1" y="1" />
+      </sfc>
+    </coordinateInfo>
+    <addData>
+      <data name="http://www.3s-software.com/plcopenxml/projectinformation" handleUnknown="implementation">
+        <ProjectInformation />
+      </data>
+    </addData>
+  </contentHeader>
+  <types>
+    <dataTypes />
+    <pous>
+      <pou name="FB_AteqControl" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="nProgramNumber">
+              <type>
+                <WORD />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> program number to be executed</xhtml>
+              </documentation>
+            </variable>
+          </inputVars>
+          <inOutVars>
+            <variable name="bAutoSeqRunRequest">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="bAutoSeqResetRequest">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="stRawIo">
+              <type>
+                <derived name="ST_AteqRawIo" />
+              </type>
+            </variable>
+            <variable name="stMappedIo">
+              <type>
+                <derived name="ST_AteqIo" />
+              </type>
+            </variable>
+          </inOutVars>
+          <outputVars>
+            <variable name="eStatesAteqProgramAuto">
+              <type>
+                <derived name="E_StatesAteqProgramAuto" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> holds M_AutoSeq step status</xhtml>
+              </documentation>
+            </variable>
+            <variable name="bAutoSeqActive">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> TRUE between Seq Started and Reset Done </xhtml>
+              </documentation>
+            </variable>
+            <variable name="bAutoSeqDone">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="bAutoSeqError">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="bAutoSeqResetDone">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+          </outputVars>
+          <localVars>
+            <variable name="fbCmdHandler">
+              <type>
+                <derived name="FB_AteqCmdHandler" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">
+fbCmdHandler works in body of the FB, do not ever declare in the Methods. 
+That causes the instance FB calls overwrite the internal vars. 
+Therefore, CASE stucks on IDLE, does not progress to the next steps. 
+For future: FB_init may be required
+</xhtml>
+              </documentation>
+            </variable>
+            <variable name="bCmdHandlerResetRequest">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="tSeqTimeout">
+              <type>
+                <derived name="TON" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">!!!!!!!!!!!!!! For future integration								
+ astFIFO				: ARRAY[0..7] OF ST_AteqResultsDecoded;
+ Internal timers USED IN ProgramAutoSeq method</xhtml>
+              </documentation>
+            </variable>
+            <variable name="bFifoResetComplete">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Auto Seq Step Flags. For future: Use STRUCT instead of individual flags </xhtml>
+              </documentation>
+            </variable>
+            <variable name="bAutoZeroComplete">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="bProgramSelectComplete">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="bProgramRunComplete">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="bReadLastResultComplete">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="bReadFIFOComplete">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="bResetDeviceDone">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml">
+M_InputMap();
+M_OutputMap();
+M_ProgramAutoSeq();
+
+// Add other monitoring or manual command calls here...
+// ProgramAutoSequence to be the primary driver for running Ateq programs in production.</xhtml>
+          </ST>
+        </body>
+        <addData>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="M_InputMap" ObjectId="94ae9230-e4e6-4b89-b299-6e4cade93c2c">
+              <interface>
+                <localVars>
+                  <variable name="nIndex1">
+                    <type>
+                      <INT />
+                    </type>
+                  </variable>
+                  <variable name="byEcho0">
+                    <type>
+                      <BYTE />
+                    </type>
+                  </variable>
+                  <variable name="byEcho1">
+                    <type>
+                      <BYTE />
+                    </type>
+                  </variable>
+                  <variable name="byError0">
+                    <type>
+                      <BYTE />
+                    </type>
+                  </variable>
+                  <variable name="byError1">
+                    <type>
+                      <BYTE />
+                    </type>
+                  </variable>
+                  <variable name="byResult0">
+                    <type>
+                      <BYTE />
+                    </type>
+                  </variable>
+                  <variable name="byResult1">
+                    <type>
+                      <BYTE />
+                    </type>
+                  </variable>
+                  <variable name="anPressureCurValueBuffer">
+                    <type>
+                      <array>
+                        <dimension lower="0" upper="3" />
+                        <baseType>
+                          <BYTE />
+                        </baseType>
+                      </array>
+                    </type>
+                  </variable>
+                  <variable name="anPressureUnitCodeBuffer">
+                    <type>
+                      <array>
+                        <dimension lower="0" upper="3" />
+                        <baseType>
+                          <BYTE />
+                        </baseType>
+                      </array>
+                    </type>
+                  </variable>
+                  <variable name="anLeakCurValueBuffer">
+                    <type>
+                      <array>
+                        <dimension lower="0" upper="3" />
+                        <baseType>
+                          <BYTE />
+                        </baseType>
+                      </array>
+                    </type>
+                  </variable>
+                  <variable name="anLeakUnitCodeBuffer">
+                    <type>
+                      <array>
+                        <dimension lower="0" upper="3" />
+                        <baseType>
+                          <BYTE />
+                        </baseType>
+                      </array>
+                    </type>
+                  </variable>
+                  <variable name="nPressureCurValueBuffer">
+                    <type>
+                      <DWORD />
+                    </type>
+                    <documentation>
+                      <xhtml xmlns="http://www.w3.org/1999/xhtml"> temporary DWORD variables for reconstruction</xhtml>
+                    </documentation>
+                  </variable>
+                  <variable name="nPressureUnitCodeBuffer">
+                    <type>
+                      <DWORD />
+                    </type>
+                  </variable>
+                  <variable name="nLeakCurValueBuffer">
+                    <type>
+                      <DWORD />
+                    </type>
+                  </variable>
+                  <variable name="nLeakUnitCodeBuffer">
+                    <type>
+                      <DWORD />
+                    </type>
+                  </variable>
+                </localVars>
+                <addData>
+                  <data name="http://www.3s-software.com/plcopenxml/accessmodifiers" handleUnknown="implementation">
+                    <AccessModifiers Private="true" />
+                  </data>
+                </addData>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">
+// Direct read from stAteqRawIo
+byEcho0     := stRawIo.anInput[0][0];  // 00h
+byEcho1     := stRawIo.anInput[0][1];  // 01h
+byError0    := stRawIo.anInput[0][2];  // 02h
+byError1    := stRawIo.anInput[0][3];  // 03h
+byResult0   := stRawIo.anInput[0][12]; // 0Ch
+byResult1   := stRawIo.anInput[0][13]; // 0Dh
+
+// Copy bytes into buffers
+stMappedIo.stRead.anEcho[0] 		:= byEcho0;
+stMappedIo.stRead.anEcho[1] 		:= byEcho1;
+stMappedIo.stRead.anErrorCode[0] 	:= byError0;
+stMappedIo.stRead.anErrorCode[1] 	:= byError1;
+
+// -------- 00h - 01h: Decode Echo Status --------
+stMappedIo.stRead.stEcho.bReset             := (byEcho0 AND 16#01) &lt;&gt; 0;
+stMappedIo.stRead.stEcho.bStart             := (byEcho0 AND 16#02) &lt;&gt; 0;
+stMappedIo.stRead.stEcho.bSpecialCycle      := (byEcho0 AND 16#04) &lt;&gt; 0;
+stMappedIo.stRead.stEcho.bProgramSelect     := (byEcho0 AND 16#08) &lt;&gt; 0;
+stMappedIo.stRead.stEcho.bReadFIFO          := (byEcho0 AND 16#10) &lt;&gt; 0;
+stMappedIo.stRead.stEcho.bReadParams        := (byEcho0 AND 16#20) &lt;&gt; 0;
+stMappedIo.stRead.stEcho.bWriteParams       := (byEcho0 AND 16#40) &lt;&gt; 0;
+stMappedIo.stRead.stEcho.bResetFIFO         := (byEcho0 AND 16#80) &lt;&gt; 0;
+
+stMappedIo.stRead.stEcho.bReadInstrumentConfig        := (byEcho1 AND 16#01) &lt;&gt; 0;
+stMappedIo.stRead.stEcho.bReadConfigMenuBits       := (byEcho1 AND 16#02) &lt;&gt; 0;
+stMappedIo.stRead.stEcho.bReadFunctionBits  := (byEcho1 AND 16#04) &lt;&gt; 0;
+stMappedIo.stRead.stEcho.bWriteExtMenu      := (byEcho1 AND 16#08) &lt;&gt; 0;
+stMappedIo.stRead.stEcho.bWriteFunctionBits := (byEcho1 AND 16#10) &lt;&gt; 0;
+stMappedIo.stRead.stEcho.bReadProgramName   := (byEcho1 AND 16#20) &lt;&gt; 0;
+stMappedIo.stRead.stEcho.bWriteProgramName  := (byEcho1 AND 16#40) &lt;&gt; 0;
+stMappedIo.stRead.stEcho.bReadLastResult    := (byEcho1 AND 16#80) &lt;&gt; 0;
+
+// -------- 02h - 03h: Decode Error Codes --------
+stMappedIo.stRead.stErrorCode.bReset             := (byError0 AND 16#01) &lt;&gt; 0;
+stMappedIo.stRead.stErrorCode.bStart             := (byError0 AND 16#02) &lt;&gt; 0;
+stMappedIo.stRead.stErrorCode.bSpecialCycle      := (byError0 AND 16#04) &lt;&gt; 0;
+stMappedIo.stRead.stErrorCode.bProgramSelect     := (byError0 AND 16#08) &lt;&gt; 0;
+stMappedIo.stRead.stErrorCode.bReadFIFO          := (byError0 AND 16#10) &lt;&gt; 0;
+stMappedIo.stRead.stErrorCode.bReadParams        := (byError0 AND 16#20) &lt;&gt; 0;
+stMappedIo.stRead.stErrorCode.bWriteParams       := (byError0 AND 16#40) &lt;&gt; 0;
+stMappedIo.stRead.stErrorCode.bResetFIFO         := (byError0 AND 16#80) &lt;&gt; 0;
+
+stMappedIo.stRead.stErrorCode.bReadInstrumentConfig        := (byError1 AND 16#01) &lt;&gt; 0;
+stMappedIo.stRead.stErrorCode.bReadConfigMenuBits       := (byError1 AND 16#02) &lt;&gt; 0;
+stMappedIo.stRead.stErrorCode.bReadFunctionBits  := (byError1 AND 16#04) &lt;&gt; 0;
+stMappedIo.stRead.stErrorCode.bWriteExtMenu      := (byError1 AND 16#08) &lt;&gt; 0;
+stMappedIo.stRead.stErrorCode.bWriteFunctionBits := (byError1 AND 16#10) &lt;&gt; 0;
+stMappedIo.stRead.stErrorCode.bReadProgramName   := (byError1 AND 16#20) &lt;&gt; 0;
+stMappedIo.stRead.stErrorCode.bWriteProgramName  := (byError1 AND 16#40) &lt;&gt; 0;
+stMappedIo.stRead.stErrorCode.bReadLastResult    := (byError1 AND 16#80) &lt;&gt; 0;
+
+
+stMappedIo.stRead.anReserved[0]	:= stRawIo.anInput[0][4];
+stMappedIo.stRead.anReserved[1]	:= stRawIo.anInput[0][5];
+
+	CASE  GVL_AteqConfig.eDeviceEndianSetTo OF
+		E_StatesAteqEndian.LittleEndian: // Little Endian
+		// Parse WORDs from bytes
+		stMappedIo.stRead.nProgramInUse		:= SHL(BYTE_TO_WORD(stRawIo.anInput[0][6]), 8) OR BYTE_TO_WORD(stRawIo.anInput[0][7]);
+		stMappedIo.stRead.nResultsInFifo	:= SHL(BYTE_TO_WORD(stRawIo.anInput[0][8]), 8) OR BYTE_TO_WORD(stRawIo.anInput[0][9]);
+		stMappedIo.stRead.nTestType			:= SHL(BYTE_TO_WORD(stRawIo.anInput[0][10]), 8) OR BYTE_TO_WORD(stRawIo.anInput[0][11]);
+		stMappedIo.stRead.nProgramStep		:= SHL(BYTE_TO_WORD(stRawIo.anInput[0][14]), 8) OR BYTE_TO_WORD(stRawIo.anInput[0][15]);
+
+		E_StatesAteqEndian.BigEndian: // Big Endian
+		stMappedIo.stRead.nProgramInUse		:= BYTE_TO_WORD(stRawIo.anInput[0][6]) 	OR SHL(BYTE_TO_WORD(stRawIo.anInput[0][7]), 8);
+		stMappedIo.stRead.nResultsInFifo	:= BYTE_TO_WORD(stRawIo.anInput[0][8]) 	OR SHL(BYTE_TO_WORD(stRawIo.anInput[0][9]), 8);
+		stMappedIo.stRead.nTestType			:= BYTE_TO_WORD(stRawIo.anInput[0][10]) OR SHL(BYTE_TO_WORD(stRawIo.anInput[0][11]), 8);
+		stMappedIo.stRead.nProgramStep		:= BYTE_TO_WORD(stRawIo.anInput[0][14]) OR SHL(BYTE_TO_WORD(stRawIo.anInput[0][15]), 8);
+	END_CASE
+		
+
+// -------- 0Ch - 0Dh: Decode Real-Time Test Results --------
+stMappedIo.stRead.stRealtimeTestResults.bPass            := (byResult0 AND 16#01) &lt;&gt; 0;
+stMappedIo.stRead.stRealtimeTestResults.bFailPart        := (byResult0 AND 16#02) &lt;&gt; 0;
+stMappedIo.stRead.stRealtimeTestResults.bFailRef         := (byResult0 AND 16#04) &lt;&gt; 0;
+stMappedIo.stRead.stRealtimeTestResults.bAlarm           := (byResult0 AND 16#08) &lt;&gt; 0;
+stMappedIo.stRead.stRealtimeTestResults.bPressureEror     := (byResult0 AND 16#10) &lt;&gt; 0;
+stMappedIo.stRead.stRealtimeTestResults.bCycleEnd        := (byResult0 AND 16#20) &lt;&gt; 0;
+stMappedIo.stRead.stRealtimeTestResults.bRecoverable     := (byResult0 AND 16#40) &lt;&gt; 0;
+stMappedIo.stRead.stRealtimeTestResults.bCalibEror        := (byResult0 AND 16#80) &lt;&gt; 0;
+
+stMappedIo.stRead.stRealtimeTestResults.bCalibCheckEror   := (byResult1 AND 16#01) &lt;&gt; 0;
+stMappedIo.stRead.stRealtimeTestResults.bATRFault        := (byResult1 AND 16#02) &lt;&gt; 0;
+
+
+
+// Assign the 4 bytes from the raw PressureCurValue input
+anPressureCurValueBuffer [0] := stRawIo.anInput[0][16];
+anPressureCurValueBuffer [1] :=	stRawIo.anInput[0][17];
+anPressureCurValueBuffer [2] :=	stRawIo.anInput[0][18];
+anPressureCurValueBuffer [3] :=	stRawIo.anInput[0][19];
+
+anPressureUnitCodeBuffer [0] := stRawIo.anInput[0][20];
+anPressureUnitCodeBuffer [1] :=	stRawIo.anInput[0][21];
+anPressureUnitCodeBuffer [2] :=	stRawIo.anInput[0][22];
+anPressureUnitCodeBuffer [3] :=	stRawIo.anInput[0][23];
+
+anLeakCurValueBuffer [0] := stRawIo.anInput[0][24];
+anLeakCurValueBuffer [1] :=	stRawIo.anInput[0][25];
+anLeakCurValueBuffer [2] :=	stRawIo.anInput[0][26];
+anLeakCurValueBuffer [3] :=	stRawIo.anInput[0][27];
+
+anLeakUnitCodeBuffer [0] := stRawIo.anInput[0][28];
+anLeakUnitCodeBuffer [1] :=	stRawIo.anInput[0][29];
+anLeakUnitCodeBuffer [2] :=	stRawIo.anInput[0][30];
+anLeakUnitCodeBuffer [3] :=	stRawIo.anInput[0][31];
+
+// Copy into REAL and DWORD vars from Buffer adr to Destination Adr of the ST_AteqInRead
+// --- Endianness-aware conversion for 4-byte values (DWORD and REAL) ---
+CASE GVL_AteqConfig.eDeviceEndianSetTo OF
+    E_StatesAteqEndian.BigEndian: // ATEQ sends LSB first (Byte0, Byte1, Byte2, Byte3)
+        // Reconstruct DWORDs from buffers for Little Endian
+        nPressureCurValueBuffer := 
+            BYTE_TO_DWORD(anPressureCurValueBuffer[0]) 		OR
+            SHL(BYTE_TO_DWORD(anPressureCurValueBuffer[1]), 8) 	OR
+            SHL(BYTE_TO_DWORD(anPressureCurValueBuffer[2]), 16) OR
+            SHL(BYTE_TO_DWORD(anPressureCurValueBuffer[3]), 24);
+
+        nPressureUnitCodeBuffer := 
+            BYTE_TO_DWORD(anPressureUnitCodeBuffer[0]) 		OR
+            SHL(BYTE_TO_DWORD(anPressureUnitCodeBuffer[1]), 8) 	OR
+            SHL(BYTE_TO_DWORD(anPressureUnitCodeBuffer[2]), 16) OR
+            SHL(BYTE_TO_DWORD(anPressureUnitCodeBuffer[3]), 24);
+
+        nLeakCurValueBuffer := 
+            BYTE_TO_DWORD(anLeakCurValueBuffer[0]) 		OR
+            SHL(BYTE_TO_DWORD(anLeakCurValueBuffer[1]), 8) 	OR
+            SHL(BYTE_TO_DWORD(anLeakCurValueBuffer[2]), 16) OR
+            SHL(BYTE_TO_DWORD(anLeakCurValueBuffer[3]), 24);
+
+        nLeakUnitCodeBuffer := 
+            BYTE_TO_DWORD(anLeakUnitCodeBuffer[0]) 		OR
+            SHL(BYTE_TO_DWORD(anLeakUnitCodeBuffer[1]), 8) 	OR
+            SHL(BYTE_TO_DWORD(anLeakUnitCodeBuffer[2]), 16) OR
+            SHL(BYTE_TO_DWORD(anLeakUnitCodeBuffer[3]), 24);
+
+    E_StatesAteqEndian.LittleEndian: // ATEQ sends MSB first (Byte3, Byte2, Byte1, Byte0)
+        // Reconstruct DWORDs from buffers for Big Endian
+        nPressureCurValueBuffer := 
+            SHL(BYTE_TO_DWORD(anPressureCurValueBuffer[0]), 24) OR
+            SHL(BYTE_TO_DWORD(anPressureCurValueBuffer[1]), 16) OR
+            SHL(BYTE_TO_DWORD(anPressureCurValueBuffer[2]), 8) 	OR
+            BYTE_TO_DWORD(anPressureCurValueBuffer[3]);
+
+        nPressureUnitCodeBuffer := 
+            SHL(BYTE_TO_DWORD(anPressureUnitCodeBuffer[0]), 24) OR
+            SHL(BYTE_TO_DWORD(anPressureUnitCodeBuffer[1]), 16) OR
+            SHL(BYTE_TO_DWORD(anPressureUnitCodeBuffer[2]), 8) 	OR
+            BYTE_TO_DWORD(anPressureUnitCodeBuffer[3]);
+
+        nLeakCurValueBuffer := 
+            SHL(BYTE_TO_DWORD(anLeakCurValueBuffer[0]), 24) OR
+            SHL(BYTE_TO_DWORD(anLeakCurValueBuffer[1]), 16) OR
+            SHL(BYTE_TO_DWORD(anLeakCurValueBuffer[2]), 8) 	OR
+            BYTE_TO_DWORD(anLeakCurValueBuffer[3]);
+
+        nLeakUnitCodeBuffer := 
+            SHL(BYTE_TO_DWORD(anLeakUnitCodeBuffer[0]), 24) OR
+            SHL(BYTE_TO_DWORD(anLeakUnitCodeBuffer[1]), 16) OR
+            SHL(BYTE_TO_DWORD(anLeakUnitCodeBuffer[2]), 8) 	OR
+            BYTE_TO_DWORD(anLeakUnitCodeBuffer[3]);
+END_CASE
+
+// Assign unit codes directly without scaling
+stMappedIo.stRead.nPressureUnitCode := nPressureUnitCodeBuffer;  
+stMappedIo.stRead.nLeakUnitCode     := nLeakUnitCodeBuffer;      
+
+// Convert raw DWORD measurement values to REAL and scale
+stMappedIo.stRead.nPressureCurValue := DWORD_TO_REAL(nPressureCurValueBuffer) / 1000;
+stMappedIo.stRead.nLeakCurValue     := DWORD_TO_REAL(nLeakCurValueBuffer) / 10000;
+;
+
+// Exchange Zone: 128 bytes (20h – 9Fh = byte 33 to 160)
+
+//################ Need byte module break
+	FOR nIndex1 := 0 TO 127 DO
+		stMappedIo.stRead.anExchangeZone[nIndex1] := stRawIo.anInput[(32 + nIndex1) / 64][(32 + nIndex1) MOD 64];
+	END_FOR;
+</xhtml>
+                </ST>
+              </body>
+              <InterfaceAsPlainText>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">METHOD PRIVATE M_InputMap
+VAR
+	nIndex1 : INT;
+	
+	byEcho0, byEcho1       : BYTE;
+    byError0, byError1     : BYTE;
+    byResult0, byResult1   : BYTE;
+	
+
+	anPressureCurValueBuffer 	: ARRAY [0..3] OF BYTE;
+	anPressureUnitCodeBuffer	: ARRAY [0..3] OF BYTE;	
+	anLeakCurValueBuffer 		: ARRAY [0..3] OF BYTE;		
+	anLeakUnitCodeBuffer		: ARRAY [0..3] OF BYTE;
+	    // temporary DWORD variables for reconstruction
+    nPressureCurValueBuffer      : DWORD;
+    nPressureUnitCodeBuffer      : DWORD;
+    nLeakCurValueBuffer          : DWORD;
+    nLeakUnitCodeBuffer          : DWORD;
+	
+
+END_VAR
+
+</xhtml>
+              </InterfaceAsPlainText>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="M_OutputMap" ObjectId="51d42db0-b220-416b-bd6a-3a29c1b8bffe">
+              <interface>
+                <localVars>
+                  <variable name="nIndex1">
+                    <type>
+                      <INT />
+                    </type>
+                  </variable>
+                  <variable name="nIndex2">
+                    <type>
+                      <INT />
+                    </type>
+                  </variable>
+                  <variable name="nCommand0">
+                    <type>
+                      <BYTE />
+                    </type>
+                  </variable>
+                  <variable name="nCommand1">
+                    <type>
+                      <BYTE />
+                    </type>
+                  </variable>
+                </localVars>
+                <addData>
+                  <data name="http://www.3s-software.com/plcopenxml/accessmodifiers" handleUnknown="implementation">
+                    <AccessModifiers Private="true" />
+                  </data>
+                </addData>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">// ----- Build byte 0 (00h - Command Byte 0) -----
+
+IF stMappedIo.stWrite.stCommands.bReset THEN
+    nCommand0 := nCommand0 OR 16#01;
+END_IF;
+IF stMappedIo.stWrite.stCommands.bStart THEN
+    nCommand0 := nCommand0 OR 16#02;
+END_IF;
+IF stMappedIo.stWrite.stCommands.bSpecialCycle THEN
+    nCommand0 := nCommand0 OR 16#04;
+END_IF;
+IF stMappedIo.stWrite.stCommands.bProgramSelect THEN
+    nCommand0 := nCommand0 OR 16#08;
+END_IF;
+IF stMappedIo.stWrite.stCommands.bReadFIFO THEN
+    nCommand0 := nCommand0 OR 16#10;
+END_IF;
+IF stMappedIo.stWrite.stCommands.bReadParams THEN
+    nCommand0 := nCommand0 OR 16#20;
+END_IF;
+IF stMappedIo.stWrite.stCommands.bWriteParams THEN
+    nCommand0 := nCommand0 OR 16#40;
+END_IF;
+IF stMappedIo.stWrite.stCommands.bResetFIFO THEN
+    nCommand0 := nCommand0 OR 16#80;
+END_IF;
+
+// ----- Build byte 1 (01h - Command Byte 1) -----
+IF stMappedIo.stWrite.stCommands.bReadInstrumentConfig THEN
+    nCommand1 := nCommand1 OR 16#01;
+END_IF;
+IF stMappedIo.stWrite.stCommands.bReadConfigMenuBits THEN
+    nCommand1 := nCommand1 OR 16#02;
+END_IF;
+IF stMappedIo.stWrite.stCommands.bReadFunctionBits THEN
+    nCommand1 := nCommand1 OR 16#04;
+END_IF;
+IF stMappedIo.stWrite.stCommands.bWriteExtMenu THEN
+    nCommand1 := nCommand1 OR 16#08;
+END_IF;
+IF stMappedIo.stWrite.stCommands.bWriteFunctionBits THEN
+    nCommand1 := nCommand1 OR 16#10;
+END_IF;
+IF stMappedIo.stWrite.stCommands.bReadProgramName THEN
+    nCommand1 := nCommand1 OR 16#20;
+END_IF;
+IF stMappedIo.stWrite.stCommands.bWriteProgramName THEN
+    nCommand1 := nCommand1 OR 16#40;
+END_IF;
+IF stMappedIo.stWrite.stCommands.bReadLastResult THEN
+    nCommand1 := nCommand1 OR 16#80;
+END_IF;
+
+// Assign to MappedIO
+stMappedIo.stWrite.anCommands[0] := nCommand0;
+stMappedIo.stWrite.anCommands[1] := nCommand1;
+
+// Map mappedIO to raw IO
+stRawIo.anOutput[0][0] := nCommand0;
+stRawIo.anOutput[0][1] := nCommand1;
+
+// Reserved output bytes
+stRawIo.anOutput[0][2] := stMappedIo.stWrite.anReservedOut1[0];
+stRawIo.anOutput[0][3] := stMappedIo.stWrite.anReservedOut1[1];
+stRawIo.anOutput[0][4] := stMappedIo.stWrite.anReservedOut1[2];
+stRawIo.anOutput[0][5] := stMappedIo.stWrite.anReservedOut1[3];
+
+CASE  GVL_AteqConfig.eDeviceEndianSetTo OF
+	E_StatesAteqEndian.BigEndian: //little-endian
+	// Program Select
+	stRawIo.anOutput[0][6] := WORD_TO_BYTE(stMappedIo.stWrite.nProgramNumber AND 16#00FF);
+	stRawIo.anOutput[0][7] := WORD_TO_BYTE(SHR(stMappedIo.stWrite.nProgramNumber, 8));
+	// Special Cycle
+	stRawIo.anOutput[0][8] := WORD_TO_BYTE(stMappedIo.stWrite.nSpecialCycle AND 16#00FF);
+	stRawIo.anOutput[0][9] := WORD_TO_BYTE(SHR(stMappedIo.stWrite.nSpecialCycle, 8));
+	
+	E_StatesAteqEndian.LittleEndian: // big-endian
+	// Program Select 
+	stRawIo.anOutput[0][6] := WORD_TO_BYTE(SHR(stMappedIo.stWrite.nProgramNumber, 8));
+	stRawIo.anOutput[0][7] := WORD_TO_BYTE(stMappedIo.stWrite.nProgramNumber AND 16#00FF);
+	// Special Cycle
+	stRawIo.anOutput[0][8] := WORD_TO_BYTE(SHR(stMappedIo.stWrite.nSpecialCycle, 8) );
+	stRawIo.anOutput[0][9] := WORD_TO_BYTE(stMappedIo.stWrite.nSpecialCycle AND 16#00FF);
+END_CASE
+
+
+// Copy ReservedOut2
+FOR nIndex1 := 0 TO 21 DO
+    stRawIo.anOutput[0][10 + nIndex1] := stMappedIo.stWrite.anReservedOut2[nIndex1];
+END_FOR;
+
+// Exchange Zone (byte-matrix to 2D array)
+FOR nIndex1 := 0 TO 127 DO
+    stRawIo.anOutput[(32 + nIndex1) / 64][(32 + nIndex1) MOD 64] := stMappedIo.stWrite.anExchangeZone[nIndex1];
+END_FOR;
+</xhtml>
+                </ST>
+              </body>
+              <InterfaceAsPlainText>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">METHOD PRIVATE M_OutputMap
+VAR
+	nIndex1	: INT;
+	nIndex2 : INT;
+	
+	nCommand0 : BYTE;
+	nCommand1 : BYTE; 
+END_VAR
+
+</xhtml>
+              </InterfaceAsPlainText>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="M_ParamRead" ObjectId="e5267fc8-c940-466e-9918-6092a897a7f1">
+              <interface>
+                <returnType>
+                  <derived name="E_StatesAteqHandshake" />
+                </returnType>
+                <localVars>
+                  <variable name="bReadParamsComplete">
+                    <type>
+                      <BOOL />
+                    </type>
+                  </variable>
+                </localVars>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">(*
+// USED as manual Method call only
+// use later, its a template
+
+	fbCmdHandler(
+					bCmdEcho    	:= stIo.stRead.stEcho.bReadParams,
+    				bCmdError   	:= stIo.stRead.stErrorCode.bReadParams,
+					bCmdTrigger 	:= stIo.stWrite.stCommands.bReadParameters,
+					stIo_Ref		:= StIo,
+					eStatus			=&gt; M_ParamRead
+);
+
+//////////////////// DEBUG HERE /////////////////////////
+
+		CASE M_ParamRead OF
+			CMD_IDLE:
+				IF NOT bReadParamsComplete THEN
+					stIo.stWrite.stCommands.bReadParameters := TRUE; 
+				END_IF
+			CMD_DONE:
+                bReadParamsComplete	:= TRUE;
+				
+        	CMD_FAIL:
+            	Do Something; // Ateq comm failled after retry atempts
+
+        END_CASE;
+
+	IF bReadParamsComplete AND M_ParamRead = CMD_IDLE THEN
+		; // Return here
+	END_IF
+*)</xhtml>
+                </ST>
+              </body>
+              <InterfaceAsPlainText>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">METHOD M_ParamRead : E_StatesAteqHandshake
+VAR 
+	bReadParamsComplete: BOOL;
+END_VAR</xhtml>
+              </InterfaceAsPlainText>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="M_ParamWrite" ObjectId="efef9bf2-d12a-4715-8734-c95ea8380a79">
+              <interface>
+                <returnType>
+                  <derived name="E_StatesAteqHandshake" />
+                </returnType>
+                <localVars>
+                  <variable name="bWriteParamsComplete">
+                    <type>
+                      <BOOL />
+                    </type>
+                  </variable>
+                </localVars>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">(*
+// USED as manual Method call only
+// use later, its a template. Excahange Zone needs to be filled. Follow Ateq Fieldbus Manual
+
+	fbCmdHandler(
+					bCmdEcho    	:= stIo.stRead.stEcho.bWriteParams,
+    				bCmdError   	:= stIo.stRead.stErrorCode.bWriteParams,
+					bCmdTrigger 	:= stIo.stWrite.stCommands.bWriteParams,
+					stIo_Ref		:= StIo,
+					eStatus			=&gt; M_ParamWrite
+);
+
+//////////////////// DEBUG HERE /////////////////////////
+
+		CASE M_ParamWrite OF
+			CMD_IDLE:
+				IF NOT bWriteParamsComplete THEN
+					stIo.stWrite.stCommands.bWriteParams := TRUE; 
+				END_IF
+			CMD_DONE:
+                bWriteParamsComplete	:= TRUE;
+				
+        	CMD_FAIL:
+            	Do Something; // Ateq comm failled after retry atempts
+
+        END_CASE;
+
+	IF bWriteParamsComplete AND M_ParamWrite = CMD_IDLE THEN
+		; // Return here
+	END_IF
+*)</xhtml>
+                </ST>
+              </body>
+              <InterfaceAsPlainText>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">METHOD M_ParamWrite : E_StatesAteqHandshake
+VAR 
+	bWriteParamsComplete: BOOL;
+END_VAR</xhtml>
+              </InterfaceAsPlainText>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="M_ProgramAutoSeq" ObjectId="470ae35c-cda6-49a5-a2ba-29d25da98e8a">
+              <interface>
+                <localVars>
+                  <variable name="fbR_TRIG_RunSequence">
+                    <type>
+                      <derived name="R_TRIG" />
+                    </type>
+                  </variable>
+                  <variable name="fbR_TRIG_AutoSeqResetRequest">
+                    <type>
+                      <derived name="R_TRIG" />
+                    </type>
+                  </variable>
+                  <variable name="bCmdHandlerResetComp">
+                    <type>
+                      <BOOL />
+                    </type>
+                  </variable>
+                  <variable name="eProgramStep">
+                    <type>
+                      <derived name="E_AteqStepsTable" />
+                    </type>
+                  </variable>
+                  <variable name="eStatesAteqHandshake">
+                    <type>
+                      <derived name="E_StatesAteqHandshake" />
+                    </type>
+                  </variable>
+                </localVars>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">//	SEQUENCE TMEOUT
+//############################################################################################
+// SEQ start requested but didnot start check 
+IF fbR_TRIG_RunSequence.Q AND 
+	eStatesAteqProgramAuto &lt;&gt; SEQ_TEST_DONE AND 
+	eStatesAteqProgramAuto &lt;&gt; SEQ_ERROR AND 
+	eStatesAteqProgramAuto &lt;&gt; SEQ_TIMEOUT THEN
+	
+	tSeqTimeout(IN := TRUE, PT := GVL_AteqConfig.tAutoSeqTimeout); 
+	IF tSeqTimeout.Q THEN
+		eStatesAteqProgramAuto := E_StatesAteqProgramAuto.SEQ_TIMEOUT;
+	END_IF 
+END_IF
+
+//ALWAYS call the timer
+tSeqTimeout(IN := tSeqTimeout.IN, PT := tSeqTimeout.PT);
+
+//	SEQUENCE RESET REQUEST
+//############################################################################################
+		fbR_TRIG_AutoSeqResetRequest(CLK := bAutoSeqResetRequest);
+		IF fbR_TRIG_AutoSeqResetRequest.Q THEN
+			bAutoSeqResetRequest 	:= FALSE;
+			eStatesAteqProgramAuto 	:= SEQ_RESET; 		
+		END_IF
+
+	
+CASE eStatesAteqProgramAuto OF
+
+//	SEQUENCE START
+//############################################################################################ 	
+	SEQ_IDLE:
+		IF bAutoSeqResetDone THEN
+			bAutoSeqActive	:= FALSE;
+		END_IF
+		
+		fbR_TRIG_RunSequence(CLK := bAutoSeqRunRequest);		
+//IF ATEQ is BUSY or not connected CycleEnd = 0, if ATEQ is ready CycleEnd = 1
+		IF fbR_TRIG_RunSequence.Q AND stMappedIo.stRead.stRealtimeTestResults.bCycleEnd THEN
+   			bAutoSeqDone 				:= FALSE;
+			bAutoSeqRunRequest			:= FALSE;
+			bAutoSeqActive				:= TRUE;
+    		eStatesAteqProgramAuto		:= SEQ_RESET_FIFO;
+		ELSIF tSeqTimeout.Q THEN
+			eStatesAteqProgramAuto		:= SEQ_TIMEOUT;
+		END_IF
+
+
+//############################################################################################ 	
+    SEQ_RESET_FIFO: 
+	
+		eStatesAteqHandshake := M_ResetFIFO();
+					
+		IF bFifoResetComplete AND eStatesAteqHandshake = CMD_IDLE THEN
+			eStatesAteqProgramAuto := SEQ_AUTO_ZERO;
+		ELSIF eStatesAteqHandshake = CMD_FAIL THEN
+			eStatesAteqProgramAuto := SEQ_ERROR; // Ateq comm failled after retry atempts
+		END_IF
+
+
+//############################################################################################ 
+    SEQ_AUTO_ZERO:  
+		// Special Cycle ID 16#08 for Piezo Auto Zero Reg 2
+		eStatesAteqHandshake := M_SpecialCycle(nSpecialCycleId := GVL_AteqSpecialCycle.PiezoAutoZeroReg2); 
+    	
+		IF bAutoZeroComplete AND eStatesAteqHandshake = CMD_IDLE THEN
+			eStatesAteqProgramAuto := SEQ_PROGRAM_SELECT;
+		ELSIF eStatesAteqHandshake = CMD_FAIL THEN
+			eStatesAteqProgramAuto := SEQ_ERROR; // Ateq comm failed after retry atempts
+		END_IF
+
+		
+//############################################################################################ 
+    SEQ_PROGRAM_SELECT: 
+		
+		eStatesAteqHandshake := M_ProgramSelect(); 
+		
+		IF bProgramSelectComplete AND eStatesAteqHandshake = CMD_IDLE THEN
+			eStatesAteqProgramAuto := SEQ_START_PROGRAM;
+		ELSIF eStatesAteqHandshake = CMD_FAIL THEN
+			eStatesAteqProgramAuto := SEQ_ERROR;
+		END_IF	
+
+
+//############################################################################################ 		
+    SEQ_START_PROGRAM:
+        
+		eStatesAteqHandshake := M_ProgramStart();
+       
+		IF bProgramRunComplete AND eStatesAteqHandshake = CMD_IDLE THEN
+			eStatesAteqProgramAuto := SEQ_READ_LAST_RESULT;
+		ELSIF eStatesAteqHandshake = CMD_FAIL THEN
+			eStatesAteqProgramAuto := SEQ_ERROR; // Ateq comm failled after retry atempts
+		END_IF
+
+		
+//############################################################################################ 				
+    SEQ_READ_LAST_RESULT:
+        
+		eStatesAteqProgramAuto := M_ReadLastResult();
+		
+		IF bReadLastResultComplete AND eStatesAteqProgramAuto = CMD_IDLE THEN
+			eStatesAteqProgramAuto := SEQ_TEST_DONE;
+		ELSIF eStatesAteqProgramAuto = CMD_FAIL THEN
+			eStatesAteqProgramAuto := SEQ_ERROR; // Ateq comm failled after retry atempts
+		END_IF
+		
+
+//############################################################################################         
+	(*
+	SEQ_READ_FIFO_RESULTS:
+		M_ReadFIFO();
+	For future: if multiple programs runs in seq then reads the data in chunk
+	*)	
+
+
+//############################################################################################ 	
+    SEQ_TEST_DONE:
+    	IF bFifoResetComplete
+		AND bAutoZeroComplete  
+		AND bProgramSelectComplete
+		AND bProgramRunComplete
+		AND bReadLastResultComplete 
+		THEN bAutoSeqDone 	:= TRUE;
+		ELSE eStatesAteqProgramAuto := SEQ_ERROR; // Debug Property HMI binding needed
+		END_IF
+
+
+//############################################################################################ 				
+    SEQ_ERROR: 
+	;
+	//ToHMITags := fbCmdHandler.pCmdErrorReceived; //Debug throw alarms to HMI
+	//ToHMITags := fbCmdHandler.pCmdTimeout; //Debug throw alarms to HMI
+	
+	
+//############################################################################################ 	
+	SEQ_TIMEOUT: 
+	;
+	//ToHMITags
+
+
+//############################################################################################ 	
+	SEQ_RESET:
+		bCmdHandlerResetComp := fbCmdHandler.M_Reset(); //Debug throw alarms to HMI
+	IF bCmdHandlerResetComp THEN
+		tSeqTimeout(IN := FALSE);
+		M_ResetDevice(); // will return back to IDLE
+				
+		IF bResetDeviceDone AND eStatesAteqProgramAuto = CMD_IDLE THEN
+			eStatesAteqProgramAuto	:= SEQ_IDLE;
+			bAutoSeqResetDone		:= TRUE;		
+			bFifoResetComplete		:= FALSE;
+			bAutoZeroComplete  		:= FALSE;
+			bProgramSelectComplete	:= FALSE;
+			bProgramRunComplete		:= FALSE;
+			bReadLastResultComplete	:= FALSE;		
+		ELSIF eStatesAteqProgramAuto = CMD_FAIL THEN
+			eStatesAteqProgramAuto := SEQ_ERROR; // Ateq comm failled after retry atempts
+			// Debug: Need hard fail/HMI Tag etc. or else it will infinite loop	
+		END_IF
+	ELSIF tSeqTimeout.Q THEN
+		eStatesAteqProgramAuto := E_StatesAteqProgramAuto.SEQ_TIMEOUT;
+		// Debug: Need hard fail or else it will loop
+	END_IF
+					
+END_CASE</xhtml>
+                </ST>
+              </body>
+              <InterfaceAsPlainText>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">METHOD M_ProgramAutoSeq
+VAR   
+	fbR_TRIG_RunSequence 			: R_TRIG;
+	fbR_TRIG_AutoSeqResetRequest 	: R_TRIG;
+	bCmdHandlerResetComp 			: BOOL;
+	eProgramStep					: E_AteqStepsTable;
+	eStatesAteqHandshake         	: E_StatesAteqHandshake;
+END_VAR</xhtml>
+              </InterfaceAsPlainText>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="M_ProgramSelect" ObjectId="3f180883-986e-4f1d-b18a-91a389fa3ca6">
+              <interface>
+                <returnType>
+                  <derived name="E_StatesAteqHandshake" />
+                </returnType>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">
+stMappedIo.stWrite.nProgramNumber := nProgramNumber; // Sets the program number register
+fbCmdHandler.pCmdTrigger := stMappedIo.stWrite.stCommands.bProgramSelect;
+
+	fbCmdHandler(
+   					bCmdEcho    			:= stMappedIo.stRead.stEcho.bProgramSelect,
+    				bCmdError   			:= stMappedIo.stRead.stErrorCode.bProgramSelect,
+					stIo_Ref				:= stMappedIo,
+					eStatesAteqHandshake	=&gt; M_ProgramSelect
+);
+	
+	CASE M_ProgramSelect OF
+		CMD_IDLE:
+			IF NOT bProgramSelectComplete THEN
+			stMappedIo.stWrite.stCommands.bProgramSelect := TRUE;
+			END_IF
+				
+		CMD_DONE:
+			bProgramSelectComplete := TRUE;
+				
+		CMD_FAIL:
+			; // Ateq comm failled after retry atempts
+			
+			// Add manual call Faults. Create STRUCT for HMI
+	END_CASE;
+	
+
+
+
+
+
+(*
+// Clear the program number if needed
+IF fbCmdHandler.eStatus &lt;&gt; E_AteqHandshake.CMD_IDLE OR fbCmdHandler.eStatus = E_AteqHandshake.CMD_ERROR OR fbCmdHandler.eStatus = E_AteqHandshake.CMD_TIMEOUT THEN
+    stIo.stWrite.nProgramNumber := 0; 
+END_IF
+*)</xhtml>
+                </ST>
+              </body>
+              <InterfaceAsPlainText>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">METHOD M_ProgramSelect : E_StatesAteqHandshake
+VAR
+
+END_VAR</xhtml>
+              </InterfaceAsPlainText>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="M_ProgramStart" ObjectId="df77a28a-31ae-4bb7-aada-fdddd0be9668">
+              <interface>
+                <returnType>
+                  <derived name="E_StatesAteqHandshake" />
+                </returnType>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">
+fbCmdHandler.pCmdTrigger := stMappedIo.stWrite.stCommands.bStart;
+
+	fbCmdHandler(
+					bCmdEcho    			:= stMappedIo.stRead.stEcho.bStart,
+    				bCmdError   			:= stMappedIo.stRead.stErrorCode.bStart,
+					stIo_Ref				:= stMappedIo,
+					eStatesAteqHandshake	=&gt; M_ProgramStart
+);
+
+
+	CASE M_ProgramStart OF
+		CMD_IDLE:
+			IF NOT bProgramRunComplete THEN
+			stMappedIo.stWrite.stCommands.bStart := TRUE; 	
+			END_IF
+		CMD_DONE:
+			bProgramRunComplete	:= TRUE;
+				   
+		CMD_FAIL:
+
+			;// Add manual call Faults. Create STRUCT for HMI
+	END_CASE;
+
+</xhtml>
+                </ST>
+              </body>
+              <InterfaceAsPlainText>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">METHOD M_ProgramStart : E_StatesAteqHandshake
+VAR
+   
+END_VAR</xhtml>
+              </InterfaceAsPlainText>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="M_ReadFIFO" ObjectId="2bd2f2bf-d1e5-497c-8c97-5c4c719656ec">
+              <interface>
+                <returnType>
+                  <derived name="E_StatesAteqHandshake" />
+                </returnType>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">(*
+// This command also might simply trigger a data update from FIFO.
+// Assuming it does have a command bit and echo/error bits for consistency.
+	fbCmdHandler(
+					bCmdEcho    	:= stIo.stRead.stEcho.bReadFIFO,
+    				bCmdError   	:= stIo.stRead.stErrorCode.bReadFIFO,
+					bCmdTrigger 	:= stIo.stWrite.stCommands.bReadFIFO,
+					stIo_Ref		:= StIo,
+					eStatus			=&gt; M_ReadFIFO
+);
+
+//////////////////// DEBUG HERE /////////////////////////
+// IF USED Change bindings to eAutoSequenceState in M_ReadLastResult
+IF bInAutoMode THEN
+		
+		CASE M_ReadFIFO OF
+			CMD_IDLE:
+				IF NOT bReadFIFOComplete THEN
+					stIo.stWrite.stCommands.bReadFIFO := TRUE; 
+				END_IF
+			CMD_DONE:
+                bReadFIFOComplete	:= TRUE;
+				
+        	CMD_FAIL:
+            	eStatesAteqProgramAuto := SEQ_ERROR; // Ateq comm failled after retry atempts
+
+        END_CASE;
+
+	IF bReadFIFOComplete AND M_ReadFIFO = CMD_IDLE THEN
+		eAutoSequenceState := SEQ_TEST_DONE;
+	END_IF
+END_IF
+
+*)</xhtml>
+                </ST>
+              </body>
+              <InterfaceAsPlainText>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">METHOD M_ReadFIFO : E_StatesAteqHandshake
+VAR
+     
+END_VAR</xhtml>
+              </InterfaceAsPlainText>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="M_ReadLastResult" ObjectId="bca66d8f-b4be-4355-b92b-b0dac3f24c0c">
+              <interface>
+                <returnType>
+                  <derived name="E_StatesAteqHandshake" />
+                </returnType>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">
+fbCmdHandler.pCmdTrigger := stMappedIo.stWrite.stCommands.bReadLastResult;
+	fbCmdHandler(
+					bCmdEcho    			:= stMappedIo.stRead.stEcho.bReadLastResult,
+    				bCmdError   			:= stMappedIo.stRead.stErrorCode.bReadLastResult,
+					stIo_Ref				:= stMappedIo,
+					eStatesAteqHandshake	=&gt; M_ReadLastResult
+);
+
+
+	CASE M_ReadLastResult OF
+		CMD_IDLE:
+			IF NOT bReadLastResultComplete THEN
+			stMappedIo.stWrite.stCommands.bReadLastResult := TRUE; 
+			END_IF
+		CMD_DONE:
+			bReadLastResultComplete	:= TRUE;
+				
+		CMD_FAIL:
+			;// Add manual call Faults. Create STRUCT for HMI
+	END_CASE;
+
+</xhtml>
+                </ST>
+              </body>
+              <InterfaceAsPlainText>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">METHOD M_ReadLastResult : E_StatesAteqHandshake
+VAR
+	
+END_VAR</xhtml>
+              </InterfaceAsPlainText>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="M_ResetDevice" ObjectId="d83d834a-bdff-4813-91dd-64475ca219aa">
+              <interface>
+                <returnType>
+                  <derived name="E_StatesAteqHandshake" />
+                </returnType>
+                <localVars>
+                  <variable name="bResetRequired">
+                    <type>
+                      <BOOL />
+                    </type>
+                    <initialValue>
+                      <simpleValue value="FALSE" />
+                    </initialValue>
+                  </variable>
+                </localVars>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">
+fbCmdHandler.pCmdTrigger := stMappedIo.stWrite.stCommands.bReset;
+	fbCmdHandler(
+					bCmdEcho        		:= stMappedIo.stRead.stEcho.bReset,
+    				bCmdError       		:= stMappedIo.stRead.stErrorCode.bReset, // This is the IN_OUT - FB_CommandHandler will manage it
+    				stIo_Ref        		:= stMappedIo,
+					eStatesAteqHandshake	=&gt; M_ResetDevice 
+);
+
+
+		//Verify Reset Conditions when requested
+	IF stMappedIo.stRead.stRealtimeTestResults.bPass 
+	OR stMappedIo.stRead.stRealtimeTestResults.bFailPart
+	OR stMappedIo.stRead.stRealtimeTestResults.bFailRef
+	OR stMappedIo.stRead.stRealtimeTestResults.bAlarm 
+	OR stMappedIo.stRead.anErrorCode[0] &lt;&gt; 0 
+	OR stMappedIo.stRead.anErrorCode[1] &lt;&gt; 0 THEN
+	bResetRequired := TRUE;
+	END_IF
+	
+	CASE M_ResetDevice OF
+			
+		CMD_IDLE:
+			IF bResetRequired THEN
+			stMappedIo.stWrite.stCommands.bReset := TRUE;
+			ELSE
+			bResetDeviceDone := TRUE;
+			END_IF
+				
+		CMD_DONE:	
+			bResetDeviceDone := TRUE;
+				
+		CMD_FAIL:
+			;
+	END_CASE
+		
+</xhtml>
+                </ST>
+              </body>
+              <InterfaceAsPlainText>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">METHOD M_ResetDevice : E_StatesAteqHandshake
+VAR
+	bResetRequired  	: BOOL := FALSE;
+END_VAR</xhtml>
+              </InterfaceAsPlainText>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="M_ResetFIFO" ObjectId="d2dd068a-bc41-4e1b-8fe3-37e11fad9b4b">
+              <interface>
+                <returnType>
+                  <derived name="E_StatesAteqHandshake" />
+                </returnType>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">
+fbCmdHandler.pCmdTrigger := stMappedIo.stWrite.stCommands.bResetFIFO;
+	fbCmdHandler(
+					bCmdEcho        		:= stMappedIo.stRead.stEcho.bResetFIFO,
+    				bCmdError       		:= stMappedIo.stRead.stErrorCode.bResetFIFO,
+					stIo_Ref        		:= stMappedIo,
+					eStatesAteqHandshake	=&gt; M_ResetFIFO 
+);
+
+	
+	
+	CASE M_ResetFIFO OF
+		CMD_IDLE:
+			IF NOT bFifoResetComplete THEN	
+			stMappedIo.stWrite.stCommands.bResetFIFO 	:= TRUE;
+			END_IF
+		
+		CMD_DONE:
+		IF stMappedIo.stRead.nResultsInFifo = 0 THEN
+			bFifoResetComplete	:= TRUE;
+		END_IF
+				
+		CMD_FAIL:
+
+	END_CASE
+
+
+</xhtml>
+                </ST>
+              </body>
+              <InterfaceAsPlainText>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">METHOD M_ResetFIFO : E_StatesAteqHandshake
+VAR
+  		
+END_VAR
+</xhtml>
+              </InterfaceAsPlainText>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="M_SpecialCycle" ObjectId="d187d757-2cbf-4176-839b-3ef7d7928184">
+              <interface>
+                <returnType>
+                  <derived name="E_StatesAteqHandshake" />
+                </returnType>
+                <inputVars>
+                  <variable name="nSpecialCycleId">
+                    <type>
+                      <WORD />
+                    </type>
+                    <documentation>
+                      <xhtml xmlns="http://www.w3.org/1999/xhtml"> Input for the special cycle ID (GVL_AteqSpecialCycle.PiezoAutoZeroReg2 for AutoZero 16#08)</xhtml>
+                    </documentation>
+                  </variable>
+                </inputVars>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">
+stMappedIo.stWrite.nSpecialCycle := nSpecialCycleId; // Sets the special cycle ID register
+fbCmdHandler.pCmdTrigger := stMappedIo.stWrite.stCommands.bSpecialCycle;
+	fbCmdHandler(
+   					bCmdEcho    			:= stMappedIo.stRead.stEcho.bSpecialCycle,
+    				bCmdError   			:= stMappedIo.stRead.stErrorCode.bSpecialCycle,
+					stIo_Ref				:= stMappedIo,
+					eStatesAteqHandshake	=&gt; M_SpecialCycle
+);
+
+	
+	CASE M_SpecialCycle OF
+		CMD_IDLE:
+			IF NOT bAutoZeroComplete THEN
+			stMappedIo.stWrite.stCommands.bSpecialCycle 	:= TRUE;
+			stMappedIo.stWrite.stCommands.bStart 			:= TRUE; 
+			// Only Special Cycle cmd needs Start bit TRUE to run
+			END_IF
+				
+		CMD_DONE:
+			stMappedIo.stWrite.nSpecialCycle := 0; // Clear; prevent re-triggering
+			stMappedIo.stWrite.stCommands.bStart 	:= FALSE;
+			bAutoZeroComplete	:= TRUE;
+
+		CMD_FAIL:
+			stMappedIo.stWrite.nSpecialCycle := 0; // Clear; prevent re-triggering
+
+	END_CASE;
+	
+
+
+
+</xhtml>
+                </ST>
+              </body>
+              <InterfaceAsPlainText>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">METHOD M_SpecialCycle : E_StatesAteqHandshake
+VAR_INPUT
+    nSpecialCycleId	: WORD; // Input for the special cycle ID (GVL_AteqSpecialCycle.PiezoAutoZeroReg2 for AutoZero 16#08)
+END_VAR</xhtml>
+              </InterfaceAsPlainText>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/property" handleUnknown="implementation">
+            <Property name="pProgramSelectFail" ObjectId="54ec844c-81c0-4767-836b-e13612898a0e">
+              <interface>
+                <returnType>
+                  <BOOL />
+                </returnType>
+              </interface>
+              <GetAccessor>
+                <interface />
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml" />
+                  </ST>
+                </body>
+                <InterfaceAsPlainText>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">VAR
+END_VAR
+</xhtml>
+                </InterfaceAsPlainText>
+                <addData />
+              </GetAccessor>
+              <InterfaceAsPlainText>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">PROPERTY pProgramSelectFail : BOOL</xhtml>
+              </InterfaceAsPlainText>
+              <addData />
+            </Property>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/property" handleUnknown="implementation">
+            <Property name="pParamReadFail" ObjectId="8d5d2fd2-1ed3-4c7c-9509-435b69ec6b9f">
+              <interface>
+                <returnType>
+                  <BOOL />
+                </returnType>
+              </interface>
+              <GetAccessor>
+                <interface />
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml" />
+                  </ST>
+                </body>
+                <InterfaceAsPlainText>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">VAR
+END_VAR
+</xhtml>
+                </InterfaceAsPlainText>
+                <addData />
+              </GetAccessor>
+              <InterfaceAsPlainText>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">PROPERTY pParamReadFail : BOOL</xhtml>
+              </InterfaceAsPlainText>
+              <addData />
+            </Property>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/property" handleUnknown="implementation">
+            <Property name="pParamWriteFail" ObjectId="8e1666da-329a-41c1-94fe-6995d2f7ceba">
+              <interface>
+                <returnType>
+                  <BOOL />
+                </returnType>
+              </interface>
+              <GetAccessor>
+                <interface />
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml" />
+                  </ST>
+                </body>
+                <InterfaceAsPlainText>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">VAR
+END_VAR
+</xhtml>
+                </InterfaceAsPlainText>
+                <addData />
+              </GetAccessor>
+              <InterfaceAsPlainText>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">PROPERTY pParamWriteFail : BOOL</xhtml>
+              </InterfaceAsPlainText>
+              <addData />
+            </Property>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/property" handleUnknown="implementation">
+            <Property name="pProgramStartFail" ObjectId="f1ac5434-66d1-47bd-8037-43d62b72660b">
+              <interface>
+                <returnType>
+                  <BOOL />
+                </returnType>
+              </interface>
+              <GetAccessor>
+                <interface />
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml" />
+                  </ST>
+                </body>
+                <InterfaceAsPlainText>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">VAR
+END_VAR
+</xhtml>
+                </InterfaceAsPlainText>
+                <addData />
+              </GetAccessor>
+              <InterfaceAsPlainText>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">PROPERTY pProgramStartFail : BOOL</xhtml>
+              </InterfaceAsPlainText>
+              <addData />
+            </Property>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/property" handleUnknown="implementation">
+            <Property name="pReadLastResultFail" ObjectId="ce1a7886-ecd8-4979-bf3f-b6d5dc0ea90a">
+              <interface>
+                <returnType>
+                  <BOOL />
+                </returnType>
+              </interface>
+              <GetAccessor>
+                <interface />
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml" />
+                  </ST>
+                </body>
+                <InterfaceAsPlainText>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">VAR
+END_VAR
+</xhtml>
+                </InterfaceAsPlainText>
+                <addData />
+              </GetAccessor>
+              <InterfaceAsPlainText>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">PROPERTY pReadLastResultFail : BOOL</xhtml>
+              </InterfaceAsPlainText>
+              <addData />
+            </Property>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/property" handleUnknown="implementation">
+            <Property name="pResetDeviceFail" ObjectId="68fad3d3-62ff-45f1-a03d-09f8a81671c4">
+              <interface>
+                <returnType>
+                  <BOOL />
+                </returnType>
+              </interface>
+              <GetAccessor>
+                <interface />
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml" />
+                  </ST>
+                </body>
+                <InterfaceAsPlainText>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">VAR
+END_VAR
+</xhtml>
+                </InterfaceAsPlainText>
+                <addData />
+              </GetAccessor>
+              <InterfaceAsPlainText>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">PROPERTY pResetDeviceFail : BOOL</xhtml>
+              </InterfaceAsPlainText>
+              <addData />
+            </Property>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/property" handleUnknown="implementation">
+            <Property name="pResetFIFOFail" ObjectId="cc1af698-907a-433b-89f4-ff6560dcfb1a">
+              <interface>
+                <returnType>
+                  <BOOL />
+                </returnType>
+              </interface>
+              <SetAccessor>
+                <interface />
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml" />
+                  </ST>
+                </body>
+                <InterfaceAsPlainText>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">VAR
+END_VAR
+</xhtml>
+                </InterfaceAsPlainText>
+                <addData />
+              </SetAccessor>
+              <GetAccessor>
+                <interface />
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml" />
+                  </ST>
+                </body>
+                <InterfaceAsPlainText>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">VAR
+END_VAR
+</xhtml>
+                </InterfaceAsPlainText>
+                <addData />
+              </GetAccessor>
+              <InterfaceAsPlainText>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">PROPERTY pResetFIFOFail : BOOL</xhtml>
+              </InterfaceAsPlainText>
+              <addData />
+            </Property>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/property" handleUnknown="implementation">
+            <Property name="pSpecialCycleFail" ObjectId="b87762f5-f720-42ee-9d7e-adf1e8b76009">
+              <interface>
+                <returnType>
+                  <BOOL />
+                </returnType>
+              </interface>
+              <SetAccessor>
+                <interface />
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml" />
+                  </ST>
+                </body>
+                <InterfaceAsPlainText>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">VAR
+END_VAR
+</xhtml>
+                </InterfaceAsPlainText>
+                <addData />
+              </SetAccessor>
+              <GetAccessor>
+                <interface />
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml" />
+                  </ST>
+                </body>
+                <InterfaceAsPlainText>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">VAR
+END_VAR
+</xhtml>
+                </InterfaceAsPlainText>
+                <addData />
+              </GetAccessor>
+              <InterfaceAsPlainText>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">PROPERTY pSpecialCycleFail : BOOL</xhtml>
+              </InterfaceAsPlainText>
+              <addData />
+            </Property>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/interfaceasplaintext" handleUnknown="implementation">
+            <InterfaceAsPlainText>
+              <xhtml xmlns="http://www.w3.org/1999/xhtml">FUNCTION_BLOCK FB_AteqControl 
+// v1.0 TESTED OK. - 2025-07 by Felix Arisoy, VTMS Application Engineering
+(* 
+FB_AteqControl was developed to manage handshake and test execution logic 
+against any ATEQ instrument via a mapped I/O abstraction layer. 
+M_ProgramAutoSeq coordinates the sequence of program execution.
+Results passed to the recipe handler FB. 
+*)
+VAR_INPUT
+   	nProgramNumber : WORD; // program number to be executed
+END_VAR
+VAR_IN_OUT
+	bAutoSeqRunRequest 		: BOOL;
+	bAutoSeqResetRequest	: BOOL;
+	stRawIo : ST_AteqRawIo;
+    stMappedIo	: ST_AteqIo; 
+(*
+Mapped Io Exchange Zone will be passing the data to ResultRaw Struct 
+then will be decoded in M_ReadLastResult (ResultDecoded Struct) 
+*)
+END_VAR
+VAR_OUTPUT
+	eStatesAteqProgramAuto 	: E_StatesAteqProgramAuto; // holds M_AutoSeq step status
+	bAutoSeqActive 		: BOOL; // TRUE between Seq Started and Reset Done 
+   	bAutoSeqDone 		: BOOL; 
+	bAutoSeqError		: BOOL;
+   	bAutoSeqResetDone	: BOOL;   	
+END_VAR
+VAR
+(*
+fbCmdHandler works in body of the FB, do not ever declare in the Methods. 
+That causes the instance FB calls overwrite the internal vars. 
+Therefore, CASE stucks on IDLE, does not progress to the next steps. 
+For future: FB_init may be required
+*)	
+	fbCmdHandler : FB_AteqCmdHandler;									
+	bCmdHandlerResetRequest : BOOL;
+
+//!!!!!!!!!!!!!! For future integration								
+   // astFIFO				: ARRAY[0..7] OF ST_AteqResultsDecoded;
+
+// Internal timers USED IN ProgramAutoSeq method
+    tSeqTimeout 	: TON;
+
+//Auto Seq Step Flags. For future: Use STRUCT instead of individual flags 
+	bFifoResetComplete		: BOOL;
+	bAutoZeroComplete		: BOOL;   
+	bProgramSelectComplete	: BOOL;
+	bProgramRunComplete		: BOOL;
+	bReadLastResultComplete	: BOOL;
+	bReadFIFOComplete		: BOOL;
+	bResetDeviceDone 		: BOOL;
+END_VAR</xhtml>
+            </InterfaceAsPlainText>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+            <ObjectId>7f132da6-4770-42a7-a01e-2190c92a7cb5</ObjectId>
+          </data>
+        </addData>
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations />
+  </instances>
+  <addData>
+    <data name="http://www.3s-software.com/plcopenxml/projectstructure" handleUnknown="discard">
+      <ProjectStructure>
+        <Object Name="FB_AteqControl" ObjectId="7f132da6-4770-42a7-a01e-2190c92a7cb5">
+          <Object Name="M_InputMap" ObjectId="94ae9230-e4e6-4b89-b299-6e4cade93c2c" />
+          <Object Name="M_OutputMap" ObjectId="51d42db0-b220-416b-bd6a-3a29c1b8bffe" />
+          <Object Name="M_ParamRead" ObjectId="e5267fc8-c940-466e-9918-6092a897a7f1" />
+          <Object Name="M_ParamWrite" ObjectId="efef9bf2-d12a-4715-8734-c95ea8380a79" />
+          <Object Name="M_ProgramAutoSeq" ObjectId="470ae35c-cda6-49a5-a2ba-29d25da98e8a" />
+          <Object Name="M_ProgramSelect" ObjectId="3f180883-986e-4f1d-b18a-91a389fa3ca6" />
+          <Object Name="M_ProgramStart" ObjectId="df77a28a-31ae-4bb7-aada-fdddd0be9668" />
+          <Object Name="M_ReadFIFO" ObjectId="2bd2f2bf-d1e5-497c-8c97-5c4c719656ec" />
+          <Object Name="M_ReadLastResult" ObjectId="bca66d8f-b4be-4355-b92b-b0dac3f24c0c" />
+          <Object Name="M_ResetDevice" ObjectId="d83d834a-bdff-4813-91dd-64475ca219aa" />
+          <Object Name="M_ResetFIFO" ObjectId="d2dd068a-bc41-4e1b-8fe3-37e11fad9b4b" />
+          <Object Name="M_SpecialCycle" ObjectId="d187d757-2cbf-4176-839b-3ef7d7928184" />
+          <Object Name="pProgramSelectFail" ObjectId="54ec844c-81c0-4767-836b-e13612898a0e" />
+          <Object Name="pParamReadFail" ObjectId="8d5d2fd2-1ed3-4c7c-9509-435b69ec6b9f" />
+          <Object Name="pParamWriteFail" ObjectId="8e1666da-329a-41c1-94fe-6995d2f7ceba" />
+          <Object Name="pProgramStartFail" ObjectId="f1ac5434-66d1-47bd-8037-43d62b72660b" />
+          <Object Name="pReadLastResultFail" ObjectId="ce1a7886-ecd8-4979-bf3f-b6d5dc0ea90a" />
+          <Object Name="pResetDeviceFail" ObjectId="68fad3d3-62ff-45f1-a03d-09f8a81671c4" />
+          <Object Name="pResetFIFOFail" ObjectId="cc1af698-907a-433b-89f4-ff6560dcfb1a" />
+          <Object Name="pSpecialCycleFail" ObjectId="b87762f5-f720-42ee-9d7e-adf1e8b76009" />
+        </Object>
+      </ProjectStructure>
+    </data>
+  </addData>
+</project>

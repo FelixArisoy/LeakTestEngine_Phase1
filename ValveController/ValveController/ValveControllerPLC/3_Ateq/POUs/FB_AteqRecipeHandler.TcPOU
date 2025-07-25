@@ -7,7 +7,7 @@ VAR_INPUT
 	bLastResultsStored		: BOOL;
     anProgramNumber		: ARRAY[0..GVL_AteqConfig.nMaxProgramsToRun - 1] OF WORD;
     anValveMask			: ARRAY[0..GVL_AteqConfig.nMaxProgramsToRun - 1] OF DWORD;
-	eAteqProgramAutoSeqStates 		: E_StatesAteqProgramAuto;
+	eAteqProgramAutoSeqStates 		: E_AteqProgramSeqSteps;
     ValveStabilizationTime : TIME := T#200MS;	
 END_VAR
 VAR_IN_OUT
@@ -23,7 +23,7 @@ VAR_OUTPUT
 END_VAR
 
 VAR
-	eStatesAteqRecipeHandler : E_StatesAteqRecipeHandler;
+	eStatesAteqRecipeHandler : E_AteqRecipeHandlerSteps;
 	tRecipeHandlerTimeout : TON;
 	nIndexToCurrentProgram	: INT;
     tValveStable : TON;
@@ -35,18 +35,18 @@ END_VAR
       <ST><![CDATA[tRecipeHandlerTimeout(In := TRUE, PT := T#15S);    
 	CASE eStatesAteqRecipeHandler OF
 
-        E_StatesAteqRecipeHandler.RECIPE_IDLE: // Idle 
+        E_AteqRecipeHandlerSteps.RECIPE_IDLE: // Idle 
 			
 			IF bAutoTestRecipeStart AND eAteqProgramAutoSeqStates = SEQ_IDLE THEN
 				tValveStable.PT := ValveStabilizationTime;
 				nIndexToCurrentProgram := 0;
 				bAteqSeqResetCmd := TRUE;
 				bAutoTestRecipeStart := FALSE;
-				eStatesAteqRecipeHandler := E_StatesAteqRecipeHandler.RECIPE_TRIGGER_VALVES;
+				eStatesAteqRecipeHandler := E_AteqRecipeHandlerSteps.RECIPE_TRIGGER_VALVES;
 			END_IF
 			
 			
-        E_StatesAteqRecipeHandler.RECIPE_TRIGGER_VALVES: // Valve Cmd On From Mask
+        E_AteqRecipeHandlerSteps.RECIPE_TRIGGER_VALVES: // Valve Cmd On From Mask
             IF NOT bValveBankHasAnyError THEN
 				tRecipeHandlerTimeout(IN := FALSE);
 				bAteqSeqResetCmd := FALSE;
@@ -57,17 +57,17 @@ END_VAR
 			END_IF
 			
 
-        E_StatesAteqRecipeHandler.RECIPE_WAIT_VALVES: //  Wait for valve stabilization
+        E_AteqRecipeHandlerSteps.RECIPE_WAIT_VALVES: //  Wait for valve stabilization
             tValveStable(IN := TRUE);
 			
             IF tValveStable.Q  THEN
                 tValveStable(IN := FALSE);
 				eStatesAteqRecipeHandler := 3;
 			ELSIF tRecipeHandlerTimeout.Q THEN
-					eStatesAteqRecipeHandler := E_StatesAteqRecipeHandler.RECIPE_TIMEOUT;
+					eStatesAteqRecipeHandler := E_AteqRecipeHandlerSteps.RECIPE_TIMEOUT;
             END_IF
 		
-		E_StatesAteqRecipeHandler.RECIPE_RUN_ATEQ: // Set Program Number to the Ateq Control AutoSeq and Run
+		E_AteqRecipeHandlerSteps.RECIPE_RUN_ATEQ: // Set Program Number to the Ateq Control AutoSeq and Run
             nProgramNumber := anProgramNumber[nIndexToCurrentProgram];
             bAteqSeqRunCmd := TRUE;
 			
@@ -75,12 +75,12 @@ END_VAR
 				bAteqSeqRunCmd := FALSE;
 				
 			ELSIF eAteqProgramAutoSeqStates = SEQ_ERROR OR eAteqProgramAutoSeqStates = SEQ_TIMEOUT THEN
-				eStatesAteqRecipeHandler := E_StatesAteqRecipeHandler.RECIPE_TIMEOUT;
+				eStatesAteqRecipeHandler := E_AteqRecipeHandlerSteps.RECIPE_TIMEOUT;
 			END_IF
 			
            
 			
-		E_StatesAteqRecipeHandler.RECIPE_RESULT_STORED: //Recipe Handler Error
+		E_AteqRecipeHandlerSteps.RECIPE_RESULT_STORED: //Recipe Handler Error
 			IF bLastResultsStored THEN
 				bAteqSeqResetCmd := TRUE; // Reset ATEQ
 				 IF nIndexToCurrentProgram >= GVL_AteqConfig.nMaxProgramsToRun - 1 THEN
@@ -91,9 +91,9 @@ END_VAR
             	END_IF
 			END_IF
 		
-			E_StatesAteqRecipeHandler.RECIPE_ERROR:
+			E_AteqRecipeHandlerSteps.RECIPE_ERROR:
 			;
-			E_StatesAteqRecipeHandler.RECIPE_TIMEOUT:
+			E_AteqRecipeHandlerSteps.RECIPE_TIMEOUT:
 			;
     END_CASE
 

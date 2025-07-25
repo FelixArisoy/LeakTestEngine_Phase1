@@ -118,7 +118,7 @@ END_VAR]]></Declaration>
         <ST><![CDATA[
 nLowWord := M_GetWord(nIndex := nIndex);
 nHighWord := M_GetWord(nIndex := nIndex + 2);
-IF GVL_AteqConfig.eDeviceEndianSetTo = E_StatesAteqEndian.LittleEndian THEN
+IF GVL_AteqConfig.eDeviceEndianSetTo = E_AteqEndianType.LittleEndian THEN
 	M_GetDword := SHL(WORD_TO_DWORD(nLowWord), 16) OR WORD_TO_DWORD(nHighWord);
 ELSE
 	M_GetDword := SHL(WORD_TO_DWORD(nHighWord), 16) OR WORD_TO_DWORD(nLowWord);
@@ -147,7 +147,7 @@ VAR_INPUT
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
-IF GVL_AteqConfig.eDeviceEndianSetTo = E_StatesAteqEndian.LittleEndian THEN
+IF GVL_AteqConfig.eDeviceEndianSetTo = E_AteqEndianType.LittleEndian THEN
 	M_GetWord := SHL(BYTE_TO_WORD(anExchangeZone[nIndex]), 8) OR BYTE_TO_WORD(anExchangeZone[nIndex + 1]);
 ELSE
 	M_GetWord := BYTE_TO_WORD(anExchangeZone[nIndex]) OR SHL(BYTE_TO_WORD(anExchangeZone[nIndex + 1]), 8);
