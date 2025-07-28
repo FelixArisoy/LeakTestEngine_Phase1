@@ -23,8 +23,9 @@ then will be decoded in M_ReadLastResult (ResultDecoded Struct)
 *)
 END_VAR
 VAR_OUTPUT
-	eProgramSeqSteps 	: E_AteqProgramSeqSteps;  // Monitor ProgramSeq StepStates -> HMI
-	eErrorFlags			: E_AteqControlErrorFlags;	// Monitor Ateq Device and ProgramSeq Errors -> HMI
+	eProgramSeqSteps 		: E_AteqProgramSeqSteps;  // Monitor ProgramSeq StepStates -> HMI
+	eProgramInternalSteps	: E_AteqStepsTable;
+	eErrorFlags				: E_AteqControlErrorFlags;	// Monitor Ateq Device and ProgramSeq Errors -> HMI
 END_VAR
 VAR
 (*
@@ -33,8 +34,9 @@ That causes the instance FB calls overwrite the internal vars.
 Therefore, CASE stucks on IDLE, does not progress to the next steps. 
 For future: FB_init may be required
 *)	
-	fbCmdHandler : FB_AteqCmdHandler;									
+	fbCmdHandler			: FB_AteqCmdHandler;									
 	bCmdHandlerResetRequest : BOOL;
+	
 
 //!!!!!!!!!!!!!! For future integration								
    // astFIFO				: ARRAY[0..7] OF ST_AteqResultsDecoded;
@@ -63,11 +65,9 @@ END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[M_InputMap();
 M_OutputMap();
-
-
-
 M_ProgramSeq();
 
+eProgramInternalSteps := M_ProgramInternalSteps(stMappedIo.stRead.nProgramStep);
 // Add other monitoring or manual command calls here...
 // ProgramAutoSequence to be the primary driver for running Ateq programs in production.]]></ST>
     </Implementation>
@@ -467,6 +467,26 @@ END_VAR]]></Declaration>
 *)]]></ST>
       </Implementation>
     </Method>
+    <Method Name="M_ProgramInternalSteps" Id="{3018ab2e-77fc-46ae-91da-718a64d69d9e}">
+      <Declaration><![CDATA[METHOD M_ProgramInternalSteps : E_AteqStepsTable
+VAR_INPUT
+	nProgramStep : WORD;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE nProgramStep OF
+    0:        M_ProgramInternalSteps := E_AteqStepsTable.PreFill;
+    1:        M_ProgramInternalSteps := E_AteqStepsTable.PreDump;
+    4:        M_ProgramInternalSteps := E_AteqStepsTable.Fill;
+    5:        M_ProgramInternalSteps := E_AteqStepsTable.Stabilization;
+    6:        M_ProgramInternalSteps := E_AteqStepsTable.Test;
+    7:        M_ProgramInternalSteps := E_AteqStepsTable.Dump;
+    65535:    M_ProgramInternalSteps := E_AteqStepsTable.NoStepInProgress;
+ELSE
+    M_ProgramInternalSteps := E_AteqStepsTable.NoStepInProgress;
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="M_ProgramSelect" Id="{3f180883-986e-4f1d-b18a-91a389fa3ca6}">
       <Declaration><![CDATA[METHOD M_ProgramSelect : E_AteqHandshakeSteps
 VAR
@@ -506,7 +526,6 @@ VAR
 	fbR_TRIG_RunSequence 			: R_TRIG;
 	fbR_TRIG_AutoSeqResetRequest 	: R_TRIG;
 	
-	eProgramStep					: E_AteqStepsTable;
 	eStatesAteqHandshake         	: E_AteqHandshakeSteps;
 END_VAR]]></Declaration>
       <Implementation>
@@ -1012,10 +1031,7 @@ END_VAR
       </Get>
     </Property>
     <LineIds Name="FB_AteqControl">
-      <LineId Id="1377" Count="1" />
-      <LineId Id="1444" Count="0" />
-      <LineId Id="1442" Count="1" />
-      <LineId Id="1379" Count="2" />
+      <LineId Id="1637" Count="5" />
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_InputMap">
@@ -1065,6 +1081,10 @@ END_VAR
       <LineId Id="51" Count="1" />
       <LineId Id="38" Count="5" />
       <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqControl.M_ProgramInternalSteps">
+      <LineId Id="23" Count="9" />
+      <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ProgramSelect">
       <LineId Id="137" Count="0" />

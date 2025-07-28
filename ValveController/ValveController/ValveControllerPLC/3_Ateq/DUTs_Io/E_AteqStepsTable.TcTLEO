@@ -8,7 +8,8 @@
 	Fill			:= 4,
 	Stabilization	:= 5,
 	Test			:= 6,
-	Dump			:= 7
+	Dump			:= 7,
+	NoStepInProgress	:= 65535
 );
 END_TYPE
 ]]></Declaration>
@@ -44,6 +45,11 @@ END_TYPE
             <o>
               <v n="TextID">"Dump"</v>
               <v n="TextDefault">"7"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"NoStepInProgress"</v>
+              <v n="TextDefault">"65535"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
