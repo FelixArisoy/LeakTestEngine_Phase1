@@ -13,7 +13,8 @@ VAR_OUTPUT
     eStatesAteqHandshake         : E_AteqHandshakeSteps := E_AteqHandshakeSteps.CMD_IDLE; // Current status of this command handler instance	
 END_VAR
 VAR
-	bDeviceReady		: BOOL;
+	//bDeviceReady		: BOOL;
+	bReady				: BOOL;
 	bCmdTrigger     	: BOOL; // The actual command bit from stIo.stWrite.stCommands (will be set FALSE by this FB)
 	bCmdErrorReceived	: BOOL;
 	bCmdTimeout			: BOOL;
@@ -38,16 +39,16 @@ END_IF
 CASE eStatesAteqHandshake OF
 //############################################################################################
     CMD_IDLE:
-        IF stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd THEN
-			bDeviceReady := TRUE;
-		END_IF
+        bReady := TRUE;
 		IF bCmdTrigger THEN
 			tCmdTimeout			(IN := TRUE);
 		END_IF	
 					
 		IF bCmdTrigger AND stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd AND
 			stIo_Ref.stRead.anErrorCode[0] = 0 AND 
-			stIo_Ref.stRead.anErrorCode[1] = 0 THEN //Error not exist					
+			stIo_Ref.stRead.anErrorCode[1] = 0 THEN //Error not exist
+
+			bReady := FALSE;					
             eStatesAteqHandshake 	:= CMD_IN_PROGRESS;
             tCmdTimeout			(IN := FALSE);			
 		ELSIF tCmdTimeout.Q THEN
@@ -82,14 +83,14 @@ CASE eStatesAteqHandshake OF
 
 //############################################################################################
 	CMD_EOC:
-	IF bCmdTrigger AND bCmdEcho THEN
+	
 		IF (stIo_Ref.stRead.anErrorCode[0] = 0 AND stIo_Ref.stRead.anErrorCode[1] = 0) THEN
 			eStatesAteqHandshake 	:= CMD_DONE;
 		ELSIF bCmdError 
 		OR (stIo_Ref.stRead.anErrorCode[0] <> 0 AND stIo_Ref.stRead.anErrorCode[1] <> 0) THEN
 			eStatesAteqHandshake 	:= CMD_ERROR;            
 		END_IF
-	END_IF
+	
 
 
 //############################################################################################		
@@ -103,8 +104,7 @@ CASE eStatesAteqHandshake OF
 
 //############################################################################################        	
     CMD_ERROR:
-        bDeviceReady 				:= FALSE;
-    	bCmdTrigger 				:= FALSE;
+        bCmdTrigger 				:= FALSE;
 		stIo_Ref.stWrite.stCommands := stClearCmdOut; // Clear Output
 		tCmdTimeout				(IN := FALSE);
 		
@@ -120,7 +120,6 @@ CASE eStatesAteqHandshake OF
 
 //############################################################################################		
     CMD_TIMEOUT:
-        bDeviceReady 				:= FALSE;
 		bCmdTrigger 				:= FALSE;
 		stIo_Ref.stWrite.stCommands := stClearCmdOut; // Clear Output
 		tCmdTimeout				(IN := FALSE);
@@ -212,24 +211,16 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
-    <Property Name="pDeviceReady" Id="{ec4038fd-4312-469e-b419-667bc8b778ce}">
-      <Declaration><![CDATA[PROPERTY pDeviceReady : BOOL]]></Declaration>
-      <Get Name="Get" Id="{9921fd20-468e-4452-920a-50fcd36bd1c6}">
+    <Property Name="pReady" Id="{1633ccc5-c07f-4624-9ff8-ae4a97d2285e}">
+      <Declaration><![CDATA[PROPERTY pReady : bool]]></Declaration>
+      <Get Name="Get" Id="{68d6f6d6-c2b7-4f6c-bb4c-5c94d20975b2}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[pDeviceReady := bDeviceReady;]]></ST>
+          <ST><![CDATA[pReady := bReady;]]></ST>
         </Implementation>
       </Get>
-      <Set Name="Set" Id="{658df1c3-8e3e-402a-b0d5-b0cd8decb9dc}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[bDeviceReady := pDeviceReady;]]></ST>
-        </Implementation>
-      </Set>
     </Property>
     <Property Name="pResetRequest" Id="{a8ff3587-e156-4ff8-94b8-ba87e1168174}">
       <Declaration><![CDATA[PROPERTY pResetRequest : BOOL]]></Declaration>
@@ -256,9 +247,14 @@ END_VAR
       <LineId Id="4860" Count="0" />
       <LineId Id="4748" Count="0" />
       <LineId Id="4862" Count="1" />
-      <LineId Id="4749" Count="4" />
-      <LineId Id="4864" Count="1" />
-      <LineId Id="4754" Count="105" />
+      <LineId Id="4749" Count="3" />
+      <LineId Id="4865" Count="0" />
+      <LineId Id="4754" Count="6" />
+      <LineId Id="4893" Count="0" />
+      <LineId Id="4892" Count="0" />
+      <LineId Id="4761" Count="55" />
+      <LineId Id="4818" Count="14" />
+      <LineId Id="4834" Count="25" />
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqCmdHandler.M_Reset">
@@ -286,10 +282,7 @@ END_VAR
     <LineIds Name="FB_AteqCmdHandler.pCmdTrigger.Set">
       <LineId Id="2" Count="0" />
     </LineIds>
-    <LineIds Name="FB_AteqCmdHandler.pDeviceReady.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_AteqCmdHandler.pDeviceReady.Set">
+    <LineIds Name="FB_AteqCmdHandler.pReady.Get">
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqCmdHandler.pResetRequest.Get">

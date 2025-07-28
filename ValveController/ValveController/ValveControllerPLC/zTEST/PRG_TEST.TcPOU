@@ -5,8 +5,8 @@
 VAR
 // Enable the test FBs to RUN TcUnit
 	//fbTest_AteqControl	: FB_Test_AteqControl;
-	fbTest_ValveBank 		: FB_Test_ValveBank;
-	fbTest_Valve			: FB_Test_Valve;
+	//fbTest_ValveBank 		: FB_Test_ValveBank;
+	//fbTest_Valve			: FB_Test_Valve;
 END_VAR
 
 

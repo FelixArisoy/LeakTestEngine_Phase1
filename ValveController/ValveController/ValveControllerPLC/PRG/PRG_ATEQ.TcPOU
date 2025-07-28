@@ -72,14 +72,17 @@ nMaxDeviceCount := GVL_AteqConfig.nMaxDeviceCount;
 	IF nMaxDeviceCount > 0 THEN
 		
 		FOR nDeviceIndex := 0 TO nMaxDeviceCount - 1 DO
-			afbAteqControl[nDeviceIndex].pProgramSeqRunRequest 		:= bAutoSeqRun[nDeviceIndex];
-			afbAteqControl[nDeviceIndex].pProgramSeqResetRequest 	:= bAutoSeqResetRequest[nDeviceIndex];
-			afbAteqControl[nDeviceIndex].pProgramNumberToRun		:= nProgramNumber[nDeviceIndex];
+
+				
+	afbAteqControl[nDeviceIndex](
+								nProgramNumberToRun 	:= nProgramNumber[nDeviceIndex], 
+								bProgramSeqRunRequest 	:= bAutoSeqRun[nDeviceIndex],
+								bProgramSeqResetRequest	:= bAutoSeqResetRequest[nDeviceIndex],		
+								stRawIo 				:= astAteqRawIo[nDeviceIndex], 
+								stMappedIo 				:= astAteqIo[nDeviceIndex]);
 		
-	afbAteqControl[nDeviceIndex](stRawIo 	:= astAteqRawIo[nDeviceIndex], 
-								stMappedIo 	:= astAteqIo[nDeviceIndex]);
-		
-	afbAteqResult[nDeviceIndex](bAutoSeqDone 	:= afbAteqControl[nDeviceIndex].pProgramSeqDone,
+	afbAteqResult[nDeviceIndex](
+								bAutoSeqDone 	:= afbAteqControl[nDeviceIndex].pProgramSeqDone,
 								anExchangeZone	:= astAteqIo[nDeviceIndex].stRead.anExchangeZone);		
 				
 
@@ -169,12 +172,14 @@ END_IF
       <LineId Id="2083" Count="0" />
       <LineId Id="1993" Count="0" />
       <LineId Id="2084" Count="0" />
-      <LineId Id="1994" Count="0" />
-      <LineId Id="2308" Count="1" />
-      <LineId Id="2000" Count="0" />
-      <LineId Id="2310" Count="1" />
+      <LineId Id="2308" Count="2" />
+      <LineId Id="2348" Count="0" />
+      <LineId Id="2350" Count="1" />
+      <LineId Id="2347" Count="0" />
+      <LineId Id="2311" Count="0" />
       <LineId Id="2006" Count="0" />
       <LineId Id="2131" Count="0" />
+      <LineId Id="2353" Count="0" />
       <LineId Id="2127" Count="0" />
       <LineId Id="2124" Count="0" />
       <LineId Id="2122" Count="0" />

@@ -10,8 +10,11 @@ M_ProgramAutoSeq coordinates the sequence of program execution.
 Results passed to the recipe handler FB. 
 *)
 VAR_INPUT
+	nProgramNumberToRun 		: WORD; // program number to be executed
 END_VAR
 VAR_IN_OUT
+	bProgramSeqRunRequest 		: BOOL;
+	bProgramSeqResetRequest		: BOOL;
 	stRawIo 	: ST_AteqRawIo;
     stMappedIo	: ST_AteqIo; 
 (*
@@ -47,12 +50,11 @@ For future: FB_init may be required
 	bReadFIFOComplete			: BOOL;
 	bResetDeviceDone 			: BOOL;	
 	
-// Property bindings
-	nProgramNumberToRun 		: WORD; // program number to be executed
-	bProgramSeqRunRequest 		: BOOL;
-	bProgramSeqResetRequest		: BOOL;
+// Property bindings	
+	bDeviceReady				: BOOL;
+	bProgramSeqReady				: BOOL;
 	bHandshakeToDeviceFailed 	: BOOL;
-	bProgramSeqFailed			: BOOL;
+	bProgramSeqError			: BOOL;
 	bProgramSeqTimeout			: BOOL;	
 	bProgramSeqDone 			: BOOL; 
 	bProgramSeqActive 			: BOOL; // TRUE between Seq Started and Reset Done
@@ -61,6 +63,9 @@ END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[M_InputMap();
 M_OutputMap();
+
+
+
 M_ProgramSeq();
 
 // Add other monitoring or manual command calls here...
@@ -508,7 +513,9 @@ END_VAR]]></Declaration>
         <ST><![CDATA[//	SEQUENCE TMEOUT
 //############################################################################################
 // SEQ start requested but didnot start check 
-IF fbR_TRIG_RunSequence.Q AND 
+bDeviceReady := stMappedIo.stRead.stRealtimeTestResults.bCycleEnd;
+
+IF fbR_TRIG_RunSequence.Q AND
 	eProgramSeqSteps <> SEQ_TEST_DONE AND 
 	eProgramSeqSteps <> SEQ_ERROR AND 
 	eProgramSeqSteps <> SEQ_TIMEOUT THEN
@@ -527,7 +534,7 @@ tSeqTimeout(IN := tSeqTimeout.IN, PT := tSeqTimeout.PT);
 		fbR_TRIG_AutoSeqResetRequest(CLK := bProgramSeqResetRequest);
 		IF fbR_TRIG_AutoSeqResetRequest.Q THEN
 			bProgramSeqResetRequest 	:= FALSE;
-			eProgramSeqSteps 	:= SEQ_RESET; 		
+			eProgramSeqSteps 			:= SEQ_RESET; 		
 		END_IF
 
 	
@@ -537,15 +544,18 @@ CASE eProgramSeqSteps OF
 //############################################################################################ 	
 	SEQ_IDLE:
 		IF bProgramSeqResetComp THEN
-			bProgramSeqActive	:= FALSE;
+			bProgramSeqActive		:= FALSE;
+			bProgramSeqResetComp	:= FALSE;
+			bProgramSeqReady		:= TRUE;
 		END_IF
 		
 		fbR_TRIG_RunSequence(CLK := bProgramSeqRunRequest);		
 //IF ATEQ is BUSY or not connected CycleEnd = 0, if ATEQ is ready CycleEnd = 1
-		IF fbR_TRIG_RunSequence.Q AND stMappedIo.stRead.stRealtimeTestResults.bCycleEnd THEN
-   			bProgramSeqDone 				:= FALSE;
-			bProgramSeqRunRequest			:= FALSE;
-			bProgramSeqActive				:= TRUE;
+		IF fbR_TRIG_RunSequence.Q AND bDeviceReady THEN
+			bResetDeviceDone		:= FALSE;
+   			bProgramSeqDone 		:= FALSE;
+			bProgramSeqRunRequest	:= FALSE;
+			bProgramSeqActive		:= TRUE;
     		eProgramSeqSteps		:= SEQ_RESET_FIFO;
 		ELSIF tSeqTimeout.Q THEN
 			eProgramSeqSteps		:= SEQ_TIMEOUT;
@@ -603,11 +613,11 @@ CASE eProgramSeqSteps OF
 //############################################################################################ 				
     SEQ_READ_LAST_RESULT:
         
-		eProgramSeqSteps := M_ReadLastResult();
+		eStatesAteqHandshake := M_ReadLastResult();
 		
-		IF bReadLastResultComplete AND eProgramSeqSteps = CMD_IDLE THEN
+		IF bReadLastResultComplete AND eStatesAteqHandshake = CMD_IDLE THEN
 			eProgramSeqSteps := SEQ_TEST_DONE;
-		ELSIF eProgramSeqSteps = CMD_FAIL THEN
+		ELSIF eStatesAteqHandshake = CMD_FAIL THEN
 			eProgramSeqSteps := SEQ_ERROR; // Ateq comm failled after retry atempts
 		END_IF
 		
@@ -634,25 +644,25 @@ CASE eProgramSeqSteps OF
 
 //############################################################################################ 				
     SEQ_ERROR: 
-	;
+	bProgramSeqError := TRUE;
 	//ToHMITags := fbCmdHandler.pCmdErrorReceived; //Debug throw alarms to HMI
 	//ToHMITags := fbCmdHandler.pCmdTimeout; //Debug throw alarms to HMI
 	
 	
 //############################################################################################ 	
 	SEQ_TIMEOUT: 
-	;
+	bProgramSeqTimeout := TRUE;
 	//ToHMITags
 
 
 //############################################################################################ 	
 	SEQ_RESET:
-		fbCmdHandler.pResetRequest := TRUE; //Debug throw alarms to HMI
-	IF fbCmdHandler.pDeviceReady THEN
-		tSeqTimeout(IN := FALSE);
-		M_ResetDevice(); // will return back to IDLE
 				
-		IF bResetDeviceDone AND eProgramSeqSteps = CMD_IDLE THEN
+	IF bDeviceReady THEN
+		tSeqTimeout(IN := FALSE);
+		eStatesAteqHandshake := M_ResetDevice(); // will return back to IDLE
+				
+		IF bResetDeviceDone AND eStatesAteqHandshake = CMD_IDLE THEN
 			eProgramSeqSteps		:= SEQ_IDLE;
 			bProgramSeqResetComp	:= TRUE;		
 			bFifoResetComplete		:= FALSE;
@@ -660,7 +670,7 @@ CASE eProgramSeqSteps OF
 			bProgramSelectComplete	:= FALSE;
 			bProgramRunComplete		:= FALSE;
 			bReadLastResultComplete	:= FALSE;		
-		ELSIF eProgramSeqSteps = CMD_FAIL THEN
+		ELSIF eStatesAteqHandshake = CMD_FAIL THEN
 			eProgramSeqSteps := SEQ_ERROR; // Ateq comm failled after retry atempts
 			// Debug: Need hard fail/HMI Tag etc. or else it will infinite loop	
 		END_IF
@@ -784,10 +794,11 @@ fbCmdHandler.pCmdTrigger := stMappedIo.stWrite.stCommands.bReadLastResult;
     <Method Name="M_ResetDevice" Id="{d83d834a-bdff-4813-91dd-64475ca219aa}">
       <Declaration><![CDATA[METHOD M_ResetDevice : E_AteqHandshakeSteps
 VAR
-	bResetRequired  	: BOOL := FALSE;
+	
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
+        <ST><![CDATA[fbCmdHandler.pResetRequest := TRUE; //Debug throw alarms to HMI
+
 fbCmdHandler.pCmdTrigger := stMappedIo.stWrite.stCommands.bReset;
 	fbCmdHandler(
 					bCmdEcho        		:= stMappedIo.stRead.stEcho.bReset,
@@ -798,6 +809,7 @@ fbCmdHandler.pCmdTrigger := stMappedIo.stWrite.stCommands.bReset;
 
 
 		//Verify Reset Conditions when requested
+	(*
 	IF stMappedIo.stRead.stRealtimeTestResults.bPass 
 	OR stMappedIo.stRead.stRealtimeTestResults.bFailPart
 	OR stMappedIo.stRead.stRealtimeTestResults.bFailRef
@@ -806,14 +818,12 @@ fbCmdHandler.pCmdTrigger := stMappedIo.stWrite.stCommands.bReset;
 	OR stMappedIo.stRead.anErrorCode[1] <> 0 THEN
 	bResetRequired := TRUE;
 	END_IF
-	
+	*)
 	CASE M_ResetDevice OF
 			
 		CMD_IDLE:
-			IF bResetRequired THEN
+			IF fbCmdHandler.pReady AND NOT bResetDeviceDone THEN
 			stMappedIo.stWrite.stCommands.bReset := TRUE;
-			ELSE
-			bResetDeviceDone := TRUE;
 			END_IF
 				
 		CMD_DONE:	
@@ -821,6 +831,7 @@ fbCmdHandler.pCmdTrigger := stMappedIo.stWrite.stCommands.bReset;
 				
 		CMD_FAIL:
 			eErrorFlags := E_AteqControlErrorFlags.ResetDeviceFail;
+			
 	END_CASE
 		
 ]]></ST>
@@ -904,6 +915,25 @@ fbCmdHandler.pCmdTrigger := stMappedIo.stWrite.stCommands.bSpecialCycle;
 ]]></ST>
       </Implementation>
     </Method>
+    <Property Name="pDeviceReady" Id="{b8e764cc-6104-4a97-89af-8f76af0e3fba}">
+      <Declaration><![CDATA[PROPERTY pDeviceReady : bool]]></Declaration>
+      <Get Name="Get" Id="{5da439f8-889f-4cfa-9f0b-b6a78c482690}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pDeviceReady := bDeviceReady;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{59fe234c-6159-4d6b-a2fc-7a8b530b4e1e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bDeviceReady := pDeviceReady;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
     <Property Name="pHandshakeToDeviceFailed" Id="{11bf0bf0-51ac-4f52-81fe-d811236e055f}">
       <Declaration><![CDATA[PROPERTY pHandshakeToDeviceFailed : BOOL]]></Declaration>
       <Get Name="Get" Id="{64faf420-55e9-4c4b-b289-a9d605e109b1}">
@@ -914,25 +944,6 @@ END_VAR
           <ST><![CDATA[pHandshakeToDeviceFailed := bHandshakeToDeviceFailed;]]></ST>
         </Implementation>
       </Get>
-    </Property>
-    <Property Name="pProgramNumberToRun" Id="{424b6f43-1076-4dac-9fbd-4fa5cf9361b4}">
-      <Declaration><![CDATA[PROPERTY pProgramNumberToRun : WORD]]></Declaration>
-      <Get Name="Get" Id="{c0c1cb21-fce0-4871-bac1-254246a5f5a9}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[pProgramNumberToRun := nProgramNumberToRun;]]></ST>
-        </Implementation>
-      </Get>
-      <Set Name="Set" Id="{51db774c-4b9c-4535-83d7-77b15a3b355d}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[nProgramNumberToRun := pProgramNumberToRun;]]></ST>
-        </Implementation>
-      </Set>
     </Property>
     <Property Name="pProgramSeqActive" Id="{4ba56c8f-a417-4b30-98d5-496655723c77}">
       <Declaration><![CDATA[PROPERTY pProgramSeqActive : BOOL]]></Declaration>
@@ -956,14 +967,25 @@ END_VAR
         </Implementation>
       </Get>
     </Property>
-    <Property Name="pProgramSeqFailed" Id="{f1ac5434-66d1-47bd-8037-43d62b72660b}">
-      <Declaration><![CDATA[PROPERTY pProgramSeqFailed : BOOL]]></Declaration>
+    <Property Name="pProgramSeqError" Id="{f1ac5434-66d1-47bd-8037-43d62b72660b}">
+      <Declaration><![CDATA[PROPERTY pProgramSeqError : BOOL]]></Declaration>
       <Get Name="Get" Id="{560a71ec-e37b-4560-9e59-792d9b886637}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[pProgramSeqFailed := bProgramSeqFailed;]]></ST>
+          <ST><![CDATA[pProgramSeqError := bProgramSeqError;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="pProgramSeqReady" Id="{5a79bb88-e603-4731-8774-8deb5d2b0bba}">
+      <Declaration><![CDATA[PROPERTY pProgramSeqReady : bool]]></Declaration>
+      <Get Name="Get" Id="{898ef93f-c4fd-47ca-9143-ab231658ddaf}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pProgramSeqReady := bProgramSeqReady;]]></ST>
         </Implementation>
       </Get>
     </Property>
@@ -978,44 +1000,6 @@ END_VAR
         </Implementation>
       </Get>
     </Property>
-    <Property Name="pProgramSeqResetRequest" Id="{622db143-2ae5-409c-aa4e-4aba502ab29b}">
-      <Declaration><![CDATA[PROPERTY pProgramSeqResetRequest : BOOL]]></Declaration>
-      <Get Name="Get" Id="{2487e7ec-d69b-4e0f-8c4d-7b28ed72013f}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[pProgramSeqResetRequest := bProgramSeqResetRequest;]]></ST>
-        </Implementation>
-      </Get>
-      <Set Name="Set" Id="{ffeab3ff-7f53-4cff-8b82-46863ee977f6}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[bProgramSeqResetRequest := pProgramSeqResetRequest;]]></ST>
-        </Implementation>
-      </Set>
-    </Property>
-    <Property Name="pProgramSeqRunRequest" Id="{de1151a7-3655-4c6b-bf64-3532eb971abb}">
-      <Declaration><![CDATA[PROPERTY pProgramSeqRunRequest : BOOL]]></Declaration>
-      <Get Name="Get" Id="{234b8c43-a3a0-46a3-b7c3-87020a0f5653}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[pProgramSeqRunRequest := bProgramSeqRunRequest;]]></ST>
-        </Implementation>
-      </Get>
-      <Set Name="Set" Id="{f8359334-5f94-42a3-a106-9b0b30407bda}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[bProgramSeqRunRequest := pProgramSeqRunRequest;]]></ST>
-        </Implementation>
-      </Set>
-    </Property>
     <Property Name="pProgramSeqTimeout" Id="{ce1a7886-ecd8-4979-bf3f-b6d5dc0ea90a}">
       <Declaration><![CDATA[PROPERTY pProgramSeqTimeout : BOOL]]></Declaration>
       <Get Name="Get" Id="{ce14e2db-4d29-4488-bfb2-a466580edfd9}">
@@ -1028,7 +1012,10 @@ END_VAR
       </Get>
     </Property>
     <LineIds Name="FB_AteqControl">
-      <LineId Id="1377" Count="4" />
+      <LineId Id="1377" Count="1" />
+      <LineId Id="1444" Count="0" />
+      <LineId Id="1442" Count="1" />
+      <LineId Id="1379" Count="2" />
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_InputMap">
@@ -1102,7 +1089,13 @@ END_VAR
       <LineId Id="75" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ProgramSeq">
-      <LineId Id="3641" Count="163" />
+      <LineId Id="3641" Count="2" />
+      <LineId Id="3812" Count="1" />
+      <LineId Id="3644" Count="29" />
+      <LineId Id="3815" Count="1" />
+      <LineId Id="3674" Count="4" />
+      <LineId Id="3814" Count="0" />
+      <LineId Id="3679" Count="125" />
       <LineId Id="190" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ProgramStart">
@@ -1168,12 +1161,15 @@ END_VAR
     </LineIds>
     <LineIds Name="FB_AteqControl.M_ResetDevice">
       <LineId Id="135" Count="0" />
+      <LineId Id="141" Count="0" />
       <LineId Id="64" Count="0" />
       <LineId Id="122" Count="0" />
       <LineId Id="66" Count="1" />
       <LineId Id="69" Count="3" />
       <LineId Id="74" Count="1" />
-      <LineId Id="114" Count="3" />
+      <LineId Id="114" Count="0" />
+      <LineId Id="139" Count="0" />
+      <LineId Id="115" Count="2" />
       <LineId Id="120" Count="1" />
       <LineId Id="118" Count="0" />
       <LineId Id="113" Count="0" />
@@ -1181,11 +1177,11 @@ END_VAR
       <LineId Id="76" Count="2" />
       <LineId Id="111" Count="0" />
       <LineId Id="80" Count="0" />
-      <LineId Id="104" Count="1" />
       <LineId Id="82" Count="2" />
       <LineId Id="86" Count="1" />
       <LineId Id="127" Count="0" />
       <LineId Id="134" Count="0" />
+      <LineId Id="140" Count="0" />
       <LineId Id="92" Count="1" />
       <LineId Id="42" Count="0" />
     </LineIds>
@@ -1243,13 +1239,13 @@ END_VAR
       <LineId Id="103" Count="1" />
       <LineId Id="52" Count="0" />
     </LineIds>
+    <LineIds Name="FB_AteqControl.pDeviceReady.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqControl.pDeviceReady.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
     <LineIds Name="FB_AteqControl.pHandshakeToDeviceFailed.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_AteqControl.pProgramNumberToRun.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_AteqControl.pProgramNumberToRun.Set">
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.pProgramSeqActive.Get">
@@ -1258,22 +1254,13 @@ END_VAR
     <LineIds Name="FB_AteqControl.pProgramSeqDone.Get">
       <LineId Id="2" Count="0" />
     </LineIds>
-    <LineIds Name="FB_AteqControl.pProgramSeqFailed.Get">
+    <LineIds Name="FB_AteqControl.pProgramSeqError.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqControl.pProgramSeqReady.Get">
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.pProgramSeqResetComp.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_AteqControl.pProgramSeqResetRequest.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_AteqControl.pProgramSeqResetRequest.Set">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_AteqControl.pProgramSeqRunRequest.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_AteqControl.pProgramSeqRunRequest.Set">
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.pProgramSeqTimeout.Get">
