@@ -2,9 +2,26 @@
 <TcLicenseInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2011/11/TcLicenseInfo">
 	<LicenseInfo>
 		<SystemId>{53D62CDD-E9A3-0EF9-9441-A3D836E609DF}</SystemId>
-		<IssueTime>2025-07-25T13:05:00</IssueTime>
-		<ExpireTime>2025-08-02T00:00:00</ExpireTime>
-		<LicenseKey>7cbb91ff61d1db9d8ff9509adc78de3196711f805b3ff656beba3549b3d1eb7bd17e8dbf77f68e2d26d500b86187dcbe415e27009636888e3235b708e4ed025f7d852bfe5d803ce8d757c844b3fb01902e457094df724083d579d531b9074e7589b8a715a5ac7f51ae711ca931eb00fa3da7ba42f559a0ca9c9c53c127c09edac1e7c1acd3e7447148f274829d1ce0fb85f67370f4f4f008fd32b1a8858bc37b42bf53f9cb9d149e72b19a1dc840bdecc8e8d8c56454d1f161c8e3769fa2165f253e4ed1712fe32b7f5aa12ee0f8c85d1cb4c6cbb201af52756bc2285b1ed7e448086cd70c05d8e8133c3920252ff13c6573cfb66d52825df627c16ca1fbea47</LicenseKey>
+		<IssueTime>2025-07-29T20:28:00</IssueTime>
+		<ExpireTime>2025-08-06T00:00:00</ExpireTime>
+		<LicenseKey>eea4f0ce205863e621f99f86fa16f1d843a1f49a15be975a6a72255371a75226e3f8a57aa2cf20efb92bee8687e328b7015e6d1fe00d05ae5cfbc9803a5ad096ee3ca43c5738242fb78500e3f68b4d270fc8c8fd6c3a3966800603d39ac8755e48adbc2e749ea5352b5173343ba7b6fab9054c604f4d815cf5294eb5313cb9730d62b837cce79cc2f9024d9dd20361d0bf51c247465e4c86081cdb58a93bb6e665ba7b8810632db512bc3d475a6f65a6de00993adf7d7ef929793532fbd5b4f049db035abe62e9a687491bfc4c571ebb9213c53b0a5a746e309e08dc5a71cdb2e70f300f9c9b00cea01441e71987dd13fbe77654724060eb543f1f0c218fb8cb</LicenseKey>
+		<License>
+			<LicenseId>{AE83F222-BB78-448F-BDED-7494A70CD776}</LicenseId>
+			<Name>TC3 EtherNet/IP Adapter (Slave)</Name>
+			<OrderNo>TF6280</OrderNo>
+			<Instances>1</Instances>
+		</License>
+		<License>
+			<LicenseId>{081AC839-28D0-49CA-9792-72680E1F3249}</LicenseId>
+			<Name>TC3 TCP/UDP RT</Name>
+			<OrderNo>TF6311</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{87DBEEFC-A548-4B37-9797-C9521D3A43A2}</LicenseId>
+			<Name>TC3 EtherNet/IP Scanner (Master)</Name>
+			<OrderNo>TF6281</OrderNo>
+			<Instances>1</Instances>
+		</License>
 		<License>
 			<LicenseId>{4C256767-E6E6-4AF5-BD68-9F7ABAD0C200}</LicenseId>
 			<Name>TC3 ADS</Name>
