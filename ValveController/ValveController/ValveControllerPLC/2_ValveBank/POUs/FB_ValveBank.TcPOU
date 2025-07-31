@@ -5,14 +5,16 @@
 VAR_INPUT   
 
 END_VAR
-VAR_IN_OUT
-	
+VAR_IN_OUT	
 	anReqOpenManual	: ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF BOOL; 
 	anReqCloseManual: ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF BOOL;
 END_VAR
 VAR_OUTPUT
+	bValveBankHeartbeat	: BOOL;
+	eValveBankStatus	: E_StatusFieldDevice;
 	abValveHeartbeat	: ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF BOOL;
-    aeValveStatus		: ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF E_StatusFieldDevice;    
+    aeValveStatus		: ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF E_StatusFieldDevice;
+	   
 END_VAR
 VAR
 	aipValveReal	: ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF I_Valve; // Max size; NumOfValves limits how many are used 
@@ -21,12 +23,51 @@ VAR
 	stFieldDevice	: ST_FieldDevice;
 	nNumOfValvesAvailable 	: INT ; // Total number of valves conncected in this valve bank
 	nValveMask 	: DWORD;		// Each bit enables corresponding valve
+	tDeviceEnableTimeout	: TON;
+	bInitAllValves	: BOOL;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[M_DeviceHeartbeat();
-M_DeviceStatus();
+      <ST><![CDATA[
+//###########	Device Enable	###########
+IF NOT stFieldDevice.bDeviceEnabled THEN
+	tDeviceEnableTimeout(	IN := stFieldDevice.bDeviceEnableCmd, 
+							PT := GVL_ValveBankConfig.tDeviceEnableTimeout);
+	stFieldDevice.bDeviceEnabled := M_DeviceEnable();
+			
+	ELSIF tDeviceEnableTimeout.Q THEN
+		stFieldDevice.bDeviceFaulted := TRUE;		
+END_IF
 
-]]></ST>
+//###########	Device Stats	###########
+IF stFieldDevice.bDeviceEnabled THEN
+	tDeviceEnableTimeout(IN := FALSE);
+	bValveBankHeartbeat := M_DeviceHeartbeat(); // Work on later if needed. Debug, add loop timer
+	eValveBankStatus 	:= M_DeviceStatus(); // Work on later if needed. Debug
+END_IF
+
+//###########	init All Valves	###########
+IF bValveBankHeartbeat AND eValveBankStatus = E_StatusFieldDevice.OK THEN
+	IF nNumOfValvesAvailable > 0 
+	AND nNumOfValvesAvailable <= GVL_ValveBankConfig.nMaxNumOfValveSlots 
+	THEN		
+		bInitAllValves := M_InitValves();
+	END_IF	
+END_IF
+
+
+//###########	If All Valves are init and healty, Then Call the Trigger methods	###########
+(* Once the trig request comes thru ValveMask Property or Manual IN_OUT Arrays 
+from outside of this FB, methods will handle FB_Valve calls per valve *)
+IF bInitAllValves THEN
+	M_TrigValvesFromMask();
+	M_TrigValvesManual();
+END_IF
+
+
+//###########	Device Fault Reset Call	###########
+IF stFieldDevice.bDeviceFaulted AND stFieldDevice.bDeviceReset THEN
+	M_DeviceReset(); // Call Device Reset Sequence
+END_IF]]></ST>
     </Implementation>
     <Method Name="FB_init" Id="{44768775-9fab-41ea-9cf3-9fa1b86775b6}">
       <Declaration><![CDATA[METHOD FB_init : BOOL
@@ -73,9 +114,9 @@ METHOD M_DeviceEnable : BOOL
 METHOD M_DeviceReset : BOOL
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF stFieldDevice.bDeviceReset THEN
+        <ST><![CDATA[
 	stFieldDevice.bDeviceFaulted := FALSE;
-END_IF]]></ST>
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_DeviceStatus" Id="{49dfdca5-5b79-4752-a62e-fc568e236d58}">
@@ -84,26 +125,34 @@ VAR
     i : INT;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[// mapp the hardware specific valve bank Status bits here if available]]></ST>
+        <ST><![CDATA[M_DeviceStatus := E_StatusFieldDevice.OK;
+// mapp the hardware specific valve bank Status bits here if available]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_InitValves" Id="{ac7296a0-4fd1-48dd-acf9-7aefb8e3ff93}">
-      <Declaration><![CDATA[METHOD M_InitValves
+      <Declaration><![CDATA[METHOD M_InitValves	: BOOL;
 VAR
     i : INT;
+	nDeviceIndex	: INT;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
 FOR i := 0 TO nNumOfValvesAvailable - 1 DO
 	//afbValve[i]();
-	apipValve[i]^.pDeviceCommOK := TRUE; // Map Individual valve HB from VB if available
+	apipValve[i]^.pDeviceCommOK := TRUE; // Map Individual valve HB from VB to FB_Valve, if available
 	apipValve[i]^.pDeviceEnableCmd := TRUE; // Enable all
 	
 	abValveHeartbeat[i] := apipValve[i]^.M_DeviceHeartbeat(); // init all valves that are connected to the bank
 	aeValveStatus[i] 	:= apipValve[i]^.M_DeviceStatus(); // Array will be mapped to HMI	
 END_FOR
 
-
+IF abValveHeartbeat[nDeviceIndex] = TRUE 
+AND aeValveStatus[nDeviceIndex] = E_StatusFieldDevice.OK THEN
+	nDeviceIndex 	:= nDeviceIndex + 1;
+	M_InitValves	:= TRUE;
+	ELSE
+		M_InitValves	:= FALSE;
+END_IF
 //OR mapp the VB Status  bits here]]></ST>
       </Implementation>
     </Method>
@@ -285,6 +334,17 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
+    <Property Name="pInitAllValvesComplete" Id="{ad686bfb-036f-4445-b6dd-842554f43740}">
+      <Declaration><![CDATA[PROPERTY pInitAllValvesComplete : BOOL]]></Declaration>
+      <Get Name="Get" Id="{6254edc8-3873-4163-b6fa-01d299b38f66}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pInitAllValvesComplete := bInitAllValves;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
     <Property Name="pNumOfValvesAvailable" Id="{f8a2e382-60a6-46fc-a865-d245d7f4f32b}">
       <Declaration><![CDATA[PROPERTY pNumOfValvesAvailable : INT
 ]]></Declaration>
@@ -317,10 +377,38 @@ END_VAR
       </Set>
     </Property>
     <LineIds Name="FB_ValveBank">
-      <LineId Id="195" Count="0" />
-      <LineId Id="9" Count="0" />
+      <LineId Id="227" Count="0" />
+      <LineId Id="226" Count="0" />
+      <LineId Id="216" Count="1" />
+      <LineId Id="230" Count="0" />
+      <LineId Id="229" Count="0" />
+      <LineId Id="221" Count="0" />
+      <LineId Id="231" Count="1" />
+      <LineId Id="218" Count="0" />
+      <LineId Id="242" Count="0" />
+      <LineId Id="235" Count="0" />
+      <LineId Id="234" Count="0" />
+      <LineId Id="239" Count="0" />
+      <LineId Id="236" Count="0" />
+      <LineId Id="238" Count="0" />
+      <LineId Id="247" Count="1" />
+      <LineId Id="263" Count="0" />
+      <LineId Id="249" Count="0" />
+      <LineId Id="268" Count="3" />
+      <LineId Id="266" Count="0" />
+      <LineId Id="265" Count="0" />
+      <LineId Id="277" Count="1" />
+      <LineId Id="250" Count="0" />
+      <LineId Id="279" Count="1" />
+      <LineId Id="251" Count="0" />
+      <LineId Id="273" Count="0" />
+      <LineId Id="275" Count="0" />
+      <LineId Id="274" Count="0" />
+      <LineId Id="276" Count="0" />
+      <LineId Id="252" Count="0" />
       <LineId Id="15" Count="0" />
       <LineId Id="14" Count="0" />
+      <LineId Id="254" Count="1" />
     </LineIds>
     <LineIds Name="FB_ValveBank.FB_init">
       <LineId Id="17" Count="2" />
@@ -338,6 +426,7 @@ END_VAR
       <LineId Id="4" Count="0" />
     </LineIds>
     <LineIds Name="FB_ValveBank.M_DeviceStatus">
+      <LineId Id="20" Count="0" />
       <LineId Id="16" Count="0" />
     </LineIds>
     <LineIds Name="FB_ValveBank.M_InitValves">
@@ -348,6 +437,11 @@ END_VAR
       <LineId Id="23" Count="1" />
       <LineId Id="9" Count="0" />
       <LineId Id="15" Count="2" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="32" Count="1" />
+      <LineId Id="30" Count="0" />
       <LineId Id="4" Count="0" />
     </LineIds>
     <LineIds Name="FB_ValveBank.M_TrigValvesFromMask">
@@ -410,6 +504,9 @@ END_VAR
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_ValveBank.pDeviceStatusFeedback.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveBank.pInitAllValvesComplete.Get">
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_ValveBank.pNumOfValvesAvailable.Get">

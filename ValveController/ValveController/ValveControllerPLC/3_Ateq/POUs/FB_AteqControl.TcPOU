@@ -13,8 +13,6 @@ VAR_INPUT
 	nProgramNumberToRun 		: WORD; // program number to be executed
 END_VAR
 VAR_IN_OUT
-	bProgramSeqRunRequest 		: BOOL;
-	bProgramSeqResetRequest		: BOOL;
 	stRawIo 	: ST_AteqRawIo;
     stMappedIo	: ST_AteqIo; 
 (*
@@ -34,8 +32,11 @@ That causes the instance FB calls overwrite the internal vars.
 Therefore, CASE stucks on IDLE, does not progress to the next steps. 
 For future: FB_init may be required
 *)	
-	fbCmdHandler			: FB_AteqCmdHandler;									
-	bCmdHandlerResetRequest : BOOL;
+	
+	bProgramSeqRunRequest 		: BOOL;
+	bProgramSeqResetRequest		: BOOL;
+	fbCmdHandler				: FB_AteqCmdHandler;									
+	bCmdHandlerResetRequest 	: BOOL;
 	
 
 //!!!!!!!!!!!!!! For future integration								
@@ -1019,6 +1020,44 @@ END_VAR
         </Implementation>
       </Get>
     </Property>
+    <Property Name="pProgramSeqResetRequest" Id="{867b53d2-295f-46e2-80d8-b9d112d8f9e1}">
+      <Declaration><![CDATA[PROPERTY pProgramSeqResetRequest : BOOL]]></Declaration>
+      <Get Name="Get" Id="{f60c9e94-9a4a-4475-a113-cf89a8be332e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pProgramSeqResetRequest := bProgramSeqResetRequest;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{08345714-f024-414b-ad2c-f4155de8903a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bProgramSeqResetRequest := pProgramSeqResetRequest;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pProgramSeqRunRequest" Id="{ff50b551-08e1-491b-a09f-0da7ab325217}">
+      <Declaration><![CDATA[PROPERTY pProgramSeqRunRequest : BOOL]]></Declaration>
+      <Get Name="Get" Id="{fbb087dc-84a1-4c2a-9e61-6c7fdee0556b}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pProgramSeqRunRequest := bProgramSeqRunRequest;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{e890b352-fb0a-4eb9-a556-2bc520292729}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bProgramSeqRunRequest := pProgramSeqRunRequest;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
     <Property Name="pProgramSeqTimeout" Id="{ce1a7886-ecd8-4979-bf3f-b6d5dc0ea90a}">
       <Declaration><![CDATA[PROPERTY pProgramSeqTimeout : BOOL]]></Declaration>
       <Get Name="Get" Id="{ce14e2db-4d29-4488-bfb2-a466580edfd9}">
@@ -1281,6 +1320,18 @@ END_VAR
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.pProgramSeqResetComp.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqControl.pProgramSeqResetRequest.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqControl.pProgramSeqResetRequest.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqControl.pProgramSeqRunRequest.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqControl.pProgramSeqRunRequest.Set">
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_AteqControl.pProgramSeqTimeout.Get">

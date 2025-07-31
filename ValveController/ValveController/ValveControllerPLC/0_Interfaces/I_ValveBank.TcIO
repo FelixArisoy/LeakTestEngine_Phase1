@@ -4,7 +4,7 @@
     <Declaration><![CDATA[INTERFACE I_ValveBank EXTENDS I_FieldDevice
 ]]></Declaration>
     <Method Name="M_InitValves" Id="{99b1af9c-c961-427c-8e22-ce77fce012a4}">
-      <Declaration><![CDATA[METHOD M_InitValves
+      <Declaration><![CDATA[METHOD M_InitValves : BOOL;
 VAR_INPUT
 END_VAR
 ]]></Declaration>
@@ -28,6 +28,12 @@ VAR_INPUT
     refValve: POINTER TO I_Valve;
 END_VAR]]></Declaration>
     </Method>
+    <Property Name="pInitAllValvesComplete" Id="{79893891-7394-48e2-ba65-ab86630c1900}">
+      <Declaration><![CDATA[PROPERTY pInitAllValvesComplete : BOOL]]></Declaration>
+      <Get Name="Get" Id="{4a501ef4-dc44-4f25-bfee-da844aa0dc99}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
     <Property Name="pNumOfValvesAvailable" Id="{f7ac2a41-ab7b-4416-8cf9-6ea4b760921c}">
       <Declaration><![CDATA[PROPERTY pNumOfValvesAvailable : INT]]></Declaration>
       <Get Name="Get" Id="{1fb65154-0e04-4899-90af-8f762ad2b37c}">

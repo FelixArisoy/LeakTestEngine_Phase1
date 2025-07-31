@@ -4,8 +4,9 @@
     <Declaration><![CDATA[VAR_GLOBAL CONSTANT
 	nMaxDeviceCount			: INT 	:= 2;
 	nMaxNumOfValveSlots		: INT	:= 32;
+	tDeviceEnableTimeout	: TIME	:= T#2S;
 	bValveActTimeout		: TIME 	:= T#2S;
-	ValveStabilizationTime 	: TIME 	:= T#200MS;
+	tValveStabilizationTime : TIME 	:= T#200MS;
 END_VAR
 VAR_GLOBAL
 	bValvePosSensorUsed 	: BOOL;
