@@ -22,12 +22,14 @@ VAR
 	// Property bindings
 	stFieldDevice	: ST_FieldDevice;
 	nNumOfValvesAvailable 	: INT ; // Total number of valves conncected in this valve bank
-	nValveMask 	: DWORD;		// Each bit enables corresponding valve
+	nValveMaskPerVB 	: DWORD;		// Each bit enables corresponding valve
 	tDeviceEnableTimeout	: TON;
 	bInitAllValves	: BOOL;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
+      <ST><![CDATA[// Always Call DeviceStatus bindings
+eValveBankStatus 	:= M_DeviceStatus(); // Work on later if needed. Debug
+
 //###########	Device Enable	###########
 IF NOT stFieldDevice.bDeviceEnabled THEN
 	tDeviceEnableTimeout(	IN := stFieldDevice.bDeviceEnableCmd, 
@@ -42,7 +44,7 @@ END_IF
 IF stFieldDevice.bDeviceEnabled THEN
 	tDeviceEnableTimeout(IN := FALSE);
 	bValveBankHeartbeat := M_DeviceHeartbeat(); // Work on later if needed. Debug, add loop timer
-	eValveBankStatus 	:= M_DeviceStatus(); // Work on later if needed. Debug
+	
 END_IF
 
 //###########	init All Valves	###########
@@ -94,11 +96,8 @@ METHOD M_DeviceEnable : BOOL
         <ST><![CDATA[IF stFieldDevice.bDeviceEnableCmd AND stFieldDevice.bDeviceCommOK THEN
 	stFieldDevice.bDeviceEnabled := TRUE;
 	M_DeviceEnable := TRUE;
-	ELSE
-		stFieldDevice.bDeviceFaulted := TRUE;
-		M_DeviceEnable := FALSE;
-	END_IF
-	
+END_IF
+
 ]]></ST>
       </Implementation>
     </Method>
@@ -166,7 +165,7 @@ END_VAR]]></Declaration>
         <ST><![CDATA[FOR i := 0 TO nNumOfValvesAvailable - 1 DO
     
 	IF i >= 0 AND i < 32 THEN // Prevent accidental bit shifting
-		bitSet := (nValveMask AND SHL(1, i)) <> 0;
+		bitSet := (nValveMaskPerVB AND SHL(1, i)) <> 0;
 	END_IF
 	
  
@@ -365,19 +364,21 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
-    <Property Name="pValveMask" Id="{8e3086c9-7aa4-46ab-a768-77399a7bd519}">
-      <Declaration><![CDATA[PROPERTY pValveMask : DWORD]]></Declaration>
+    <Property Name="pValveMaskPerVB" Id="{8e3086c9-7aa4-46ab-a768-77399a7bd519}">
+      <Declaration><![CDATA[PROPERTY pValveMaskPerVB : DWORD]]></Declaration>
       <Set Name="Set" Id="{90ba2342-6052-4cb3-bd75-c2cb8826199c}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[nValveMask := pValveMask;]]></ST>
+          <ST><![CDATA[nValveMaskPerVB := pValveMaskPerVB;]]></ST>
         </Implementation>
       </Set>
     </Property>
     <LineIds Name="FB_ValveBank">
+      <LineId Id="282" Count="0" />
       <LineId Id="227" Count="0" />
+      <LineId Id="281" Count="0" />
       <LineId Id="226" Count="0" />
       <LineId Id="216" Count="1" />
       <LineId Id="230" Count="0" />
@@ -415,7 +416,8 @@ END_VAR
       <LineId Id="7" Count="0" />
     </LineIds>
     <LineIds Name="FB_ValveBank.M_DeviceEnable">
-      <LineId Id="5" Count="7" />
+      <LineId Id="5" Count="2" />
+      <LineId Id="11" Count="1" />
       <LineId Id="4" Count="0" />
     </LineIds>
     <LineIds Name="FB_ValveBank.M_DeviceHeartbeat">
@@ -515,7 +517,7 @@ END_VAR
     <LineIds Name="FB_ValveBank.pNumOfValvesAvailable.Set">
       <LineId Id="2" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveBank.pValveMask.Set">
+    <LineIds Name="FB_ValveBank.pValveMaskPerVB.Set">
       <LineId Id="2" Count="0" />
     </LineIds>
   </POU>

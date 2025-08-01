@@ -34,7 +34,7 @@ FOR i := 0 TO 3 DO
 END_FOR
 
 // Simulate: only Valve 0 and 2 should be commanded open (binary 0101)
-fbValveBank.pValveMask := 16#00000005;
+fbValveBank.pValveMaskPerVB := 16#00000005;
 fbValveBank.pDeviceFaulted := FALSE;
 // Trigger the method under test
 fbValveBank.M_TrigValvesFromMask();

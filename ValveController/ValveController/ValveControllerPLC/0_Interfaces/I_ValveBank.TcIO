@@ -43,8 +43,8 @@ END_VAR]]></Declaration>
         <Declaration><![CDATA[]]></Declaration>
       </Set>
     </Property>
-    <Property Name="pValveMask" Id="{a2bf4f17-8acc-4c24-9eb3-27d4979bba01}">
-      <Declaration><![CDATA[PROPERTY pValveMask : DWORD]]></Declaration>
+    <Property Name="pValveMaskPerVB" Id="{a2bf4f17-8acc-4c24-9eb3-27d4979bba01}">
+      <Declaration><![CDATA[PROPERTY pValveMaskPerVB : DWORD]]></Declaration>
       <Set Name="Set" Id="{0cd549e6-c2c7-4c72-bc8b-00d6685b8fd8}">
         <Declaration><![CDATA[]]></Declaration>
       </Set>

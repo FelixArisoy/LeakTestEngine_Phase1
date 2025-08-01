@@ -36,10 +36,25 @@
     <Compile Include="1_PLC\FB_MainPLC.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="2_ValveBank\DUTs\E_ValveTransitionMode.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="2_ValveBank\DUTs\ST_AteqValveMap.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="2_ValveBank\DUTs\ST_ValveMask128.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="2_ValveBank\DUTs\ST_ValveMaskStep.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="2_ValveBank\POUs\FB_Valve.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="2_ValveBank\POUs\FB_ValveBank.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="2_ValveBank\POUs\FB_ValveMaskHandler.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="3_Ateq\DUTs_Control\E_AteqControlErrorFlags.TcDUT">

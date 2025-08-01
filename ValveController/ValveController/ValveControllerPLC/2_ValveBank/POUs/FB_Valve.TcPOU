@@ -105,10 +105,7 @@ METHOD M_DeviceEnable : BOOL
         <ST><![CDATA[IF stFieldDevice.bDeviceEnableCmd AND stFieldDevice.bDeviceCommOK THEN
 	stFieldDevice.bDeviceEnabled := TRUE;
 	M_DeviceEnable := TRUE;
-	ELSE
-		stFieldDevice.bDeviceFaulted := TRUE;
-		M_DeviceEnable := FALSE;
-	END_IF
+END_IF
 	
 ]]></ST>
       </Implementation>
@@ -157,7 +154,7 @@ ELSIF bManualOverride THEN
 ELSIF GVL_ValveBankConfig.bValvePosSensorUsed AND NOT (bOpenedPosSensor OR bClosedPosSensor) THEN
 	M_DeviceStatus := E_StatusFieldDevice.UNKNOWN; // Valve Position unknown
 ELSE
-    M_DeviceStatus := E_StatusFieldDevice.OK; // Comm or heartbeat bits maybe binded 
+    M_DeviceStatus := E_StatusFieldDevice.OK; // Comm or heartbeat bits maybe binded
 END_IF
 ]]></ST>
       </Implementation>
@@ -410,7 +407,7 @@ END_VAR
     <LineIds Name="FB_Valve.M_DeviceEnable">
       <LineId Id="5" Count="1" />
       <LineId Id="15" Count="0" />
-      <LineId Id="8" Count="4" />
+      <LineId Id="11" Count="1" />
       <LineId Id="4" Count="0" />
     </LineIds>
     <LineIds Name="FB_Valve.M_DeviceHeartbeat">

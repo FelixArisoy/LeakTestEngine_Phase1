@@ -61,15 +61,13 @@ END_FOR;
 //M_TestingAteqHandshakeSpeed();
 
 GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.BigEndian;
-M_ScanValveBanks();
+
 
 	IF GVL_AteqConfig.nMaxDeviceCount > 0 THEN
 		
 		FOR nDeviceIndex := 0 TO GVL_AteqConfig.nMaxDeviceCount - 1 DO
 
-		IF bValveBankHasAnyError THEN
-			EXIT;
-		END_IF
+	M_ScanValveBanks();
 		
 	afbAteqRecipeHandler[nDeviceIndex](
 										bValveBankHasAnyError	:= bValveBankHasAnyError, // may remove this check from the recipe handler
@@ -78,7 +76,6 @@ M_ScanValveBanks();
 										eAteqProgramSeqStates	:= afbAteqControl[nDeviceIndex].eProgramSeqSteps,
 										eProgramInternalSteps	:= afbAteqControl[nDeviceIndex].eProgramInternalSteps,
 										bAutoTestRecipeStart	:= abAutoTestRecipeStart);
-			
 	
 	afbAteqControl[nDeviceIndex].pProgramSeqRunRequest 		:= afbAteqRecipeHandler[nDeviceIndex].pProgramSeqRunCmdToAteq;
 	afbAteqControl[nDeviceIndex].pProgramSeqResetRequest	:= afbAteqRecipeHandler[nDeviceIndex].pProgramSeqResetCmdToAteq;		
@@ -176,13 +173,22 @@ IF GVL_ValveBankConfig.nMaxDeviceCount > 0 THEN
 	
 	FOR nDeviceIndex := 0 TO GVL_ValveBankConfig.nMaxDeviceCount - 1 DO
 		
-		afbValveBank[nDeviceIndex].pValveMask := anValveMask[nDeviceIndex]; // Mask Recipe will be feeded here
+	IF NOT afbValveBank[nDeviceIndex].pDeviceFaulted THEN
+		afbValveBank[nDeviceIndex].pDeviceCommOK := TRUE; // Direct DEvice Comm OK feedback binding, replace this if exist.
+		afbValveBank[nDeviceIndex].pDeviceEnableCmd	:= TRUE; // Enable logic, expand if needed
+	END_IF	
 
+//###### Call FB_ValveBank	######
 		afbValveBank[nDeviceIndex](
 									anReqOpenManual 	:= anReqOpenManual[nDeviceIndex],
 									anReqCloseManual	:= anReqCloseManual[nDeviceIndex],
 );
 
+	IF afbValveBank[nDeviceIndex].pDeviceEnabled THEN
+		afbValveBank[nDeviceIndex].pValveMaskPerVB := afbAteqRecipeHandler; // Mask Recipe will be feeded here
+		ELSE
+		EXIT; // Throw fault on HMI then goto reset
+	END_IF
 
 	END_FOR
 END_IF
@@ -274,10 +280,10 @@ END_IF
     </Method>
     <LineIds Name="PRG_ATEQ">
       <LineId Id="2806" Count="14" />
-      <LineId Id="2851" Count="0" />
-      <LineId Id="2821" Count="0" />
-      <LineId Id="2852" Count="2" />
-      <LineId Id="2822" Count="8" />
+      <LineId Id="2853" Count="1" />
+      <LineId Id="2859" Count="0" />
+      <LineId Id="2822" Count="6" />
+      <LineId Id="2830" Count="0" />
       <LineId Id="2858" Count="0" />
       <LineId Id="2855" Count="0" />
       <LineId Id="2831" Count="0" />
@@ -300,11 +306,18 @@ END_IF
       <LineId Id="8" Count="0" />
       <LineId Id="10" Count="0" />
       <LineId Id="23" Count="0" />
-      <LineId Id="25" Count="0" />
-      <LineId Id="24" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="40" Count="1" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="42" Count="0" />
       <LineId Id="11" Count="0" />
       <LineId Id="16" Count="2" />
+      <LineId Id="43" Count="0" />
       <LineId Id="30" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="46" Count="1" />
+      <LineId Id="45" Count="0" />
       <LineId Id="29" Count="0" />
       <LineId Id="12" Count="0" />
       <LineId Id="9" Count="0" />

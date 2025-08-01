@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Refactors>
+  <Renames>
+    <RenamedSymbol>
+      <Type guid="6fd479d4-9175-4488-b2ec-fe7d4059738b">FB_ValveBank</Type>
+      <From>nValveMask</From>
+      <To>nValveMaskPerVB</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="912e2ede-3ff2-4af3-9484-d20fa1177a89">FB_ValveMaskHandler</Type>
+      <From>nCurrentStepIndex</From>
+      <To>nCurrentSeqStepIndex</To>
+    </RenamedSymbol>
+  </Renames>
+</Refactors>
