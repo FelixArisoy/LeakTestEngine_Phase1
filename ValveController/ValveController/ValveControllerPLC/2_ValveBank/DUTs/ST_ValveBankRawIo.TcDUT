@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <DUT Name="ST_ValveBankRawIo" Id="{7477c171-3d1a-41ee-a249-f531bd2a293e}">
+    <Declaration><![CDATA[TYPE ST_ValveBankRawIo :
+STRUCT
+	
+   // Each valve bank or IO block RAW IO should be parsed by bytes (8bits) before mapped to these tags in FB_ValveBank
+    anInput  AT %I* : ARRAY[0..1] OF BYTE; // Input size can vary based on model type of the valve bank
+	anOutput AT %Q* : ARRAY[0..3] OF BYTE;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
-  <fileHeader companyName="Beckhoff Automation GmbH" productName="TwinCAT PLC Control" productVersion="3.5.13.21" creationDateTime="2025-08-01T11:36:41.4136175" />
-  <contentHeader name="ValveControllerPLC" modificationDateTime="2025-08-01T11:36:41.4177535">
+  <fileHeader companyName="Beckhoff Automation GmbH" productName="TwinCAT PLC Control" productVersion="3.5.13.21" creationDateTime="2025-08-26T07:55:48.663287" />
+  <contentHeader name="ValveControllerPLC" modificationDateTime="2025-08-26T07:55:48.6666405">
     <coordinateInfo>
       <fbd>
         <scaling x="1" y="1" />
@@ -63,12 +63,17 @@
                 <array>
                   <dimension lower="0" upper="(GVL_AteqConfig.nMaxDeviceCount - 1)" />
                   <baseType>
-                    <DWORD />
+                    <array>
+                      <dimension lower="0" upper="3" />
+                      <baseType>
+                        <DWORD />
+                      </baseType>
+                    </array>
                   </baseType>
                 </array>
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> relative masks per ATEQ</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Up to 128 valves per ATEQ</xhtml>
               </documentation>
             </variable>
           </inputVars>
@@ -78,12 +83,20 @@
                 <BOOL />
               </type>
             </variable>
-            <variable name="nCurrentValveMask">
+            <variable name="aCurrentValveMask">
               <type>
-                <DWORD />
+                <array>
+                  <dimension lower="0" upper="3" />
+                  <baseType>
+                    <DWORD />
+                  </baseType>
+                </array>
               </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Composite output mask across up to 4 valve banks (128 valves)</xhtml>
+              </documentation>
             </variable>
-            <variable name="nCurrentStepIndex">
+            <variable name="nCurrentSeqStepIndex">
               <type>
                 <INT />
               </type>
@@ -112,14 +125,24 @@
                 </data>
               </addData>
             </variable>
-            <variable name="nPreviousMask">
+            <variable name="aPreviousMask">
               <type>
-                <DWORD />
+                <array>
+                  <dimension lower="0" upper="3" />
+                  <baseType>
+                    <DWORD />
+                  </baseType>
+                </array>
               </type>
             </variable>
-            <variable name="nIntermediateMask">
+            <variable name="aIntermediateMask">
               <type>
-                <DWORD />
+                <array>
+                  <dimension lower="0" upper="3" />
+                  <baseType>
+                    <DWORD />
+                  </baseType>
+                </array>
               </type>
             </variable>
             <variable name="i">
@@ -138,11 +161,10 @@
         </interface>
         <body>
           <ST>
-            <xhtml xmlns="http://www.w3.org/1999/xhtml">
-// === Step readiness check ===
+            <xhtml xmlns="http://www.w3.org/1999/xhtml">// Step readiness check 
 bStepReady := TRUE;
 FOR i := 0 TO GVL_AteqConfig.nMaxDeviceCount - 1 DO
-    IF (aValveMaskSteps[nCurrentStepIndex].nExpectedDoneMask AND SHL(1, i)) &lt;&gt; 0 THEN
+    IF (aValveMaskSteps[nCurrentSeqStepIndex].nExpectedDoneMask AND SHL(1, i)) &lt;&gt; 0 THEN
         IF NOT abValveMaskSetRequest[i] THEN
             bStepReady := FALSE;
             EXIT;
@@ -151,44 +173,44 @@ FOR i := 0 TO GVL_AteqConfig.nMaxDeviceCount - 1 DO
 END_FOR
 
 CASE eState OF
-
     IDLE:
         IF bStepReady THEN
-            nPreviousMask := nCurrentValveMask;
-            nIntermediateMask := 0;
-            
-            CASE aValveMaskSteps[nCurrentStepIndex].eTransitionMode OF
+            aPreviousMask := aCurrentValveMask;
+            CASE aValveMaskSteps[nCurrentSeqStepIndex].eTransitionMode OF
 
-                HoldPrevious_ON:
-                    nIntermediateMask := nPreviousMask OR M_ComposeValveBankMask(aAteqValveMaps, aAteqValveMasks);
-                    nCurrentValveMask := nIntermediateMask;
+                HoldPrevious_ON: // OBC Open Next before Closing Previous
+                    aIntermediateMask := M_ComposeValveBankMask(aAteqValveMaps, aAteqValveMasks);
+                    FOR i := 0 TO 3 DO
+                        aCurrentValveMask[i] := aPreviousMask[i] OR aIntermediateMask[i];
+                    END_FOR
                     eState := TRANSITION_HOLD;
-                    tTransitionHold(IN := TRUE, PT := aValveMaskSteps[nCurrentStepIndex].tTransitionHoldTime);
-
-                HoldNext_OFF:
-                    nIntermediateMask := nPreviousMask AND NOT M_ComposeValveBankMask(aAteqValveMaps, aAteqValveMasks);
-                    nCurrentValveMask := nIntermediateMask;
+                   
+                HoldNext_OFF: // CBO Close Previous before Openning Next
+                    aIntermediateMask := M_ComposeValveBankMask(aAteqValveMaps, aAteqValveMasks);
+                    FOR i := 0 TO 3 DO
+                        aCurrentValveMask[i] := aPreviousMask[i] AND NOT aIntermediateMask[i];
+                    END_FOR
                     eState := TRANSITION_HOLD;
-                    tTransitionHold(IN := TRUE, PT := aValveMaskSteps[nCurrentStepIndex].tTransitionHoldTime);
-
+                    
                 Immediate:
-                    nCurrentValveMask := M_ComposeValveBankMask(aAteqValveMaps, aAteqValveMasks);
+                    aCurrentValveMask := M_ComposeValveBankMask(aAteqValveMaps, aAteqValveMasks);
                     bValveMaskSetDone := TRUE;
-                    nCurrentStepIndex := nCurrentStepIndex + 1;
+                    nCurrentSeqStepIndex := nCurrentSeqStepIndex + 1;
             END_CASE
         END_IF
 
     TRANSITION_HOLD:
-        tTransitionHold(IN := TRUE);
+       tTransitionHold(IN := TRUE, PT := aValveMaskSteps[nCurrentSeqStepIndex].tTransitionHoldTime);
+
         IF tTransitionHold.Q THEN
             eState := APPLY_FINAL;
             tTransitionHold(IN := FALSE);
         END_IF
 
     APPLY_FINAL:
-        nCurrentValveMask := M_ComposeValveBankMask(aAteqValveMaps, aAteqValveMasks);
+        aCurrentValveMask := M_ComposeValveBankMask(aAteqValveMaps, aAteqValveMasks);
         bValveMaskSetDone := TRUE;
-        nCurrentStepIndex := nCurrentStepIndex + 1;
+        nCurrentSeqStepIndex := nCurrentSeqStepIndex + 1;
         eState := IDLE;
 END_CASE
 </xhtml>
@@ -199,7 +221,12 @@ END_CASE
             <Method name="M_ComposeValveBankMask" ObjectId="02ff877c-ba6f-43fd-98c2-2957bc2319d2">
               <interface>
                 <returnType>
-                  <DWORD />
+                  <array>
+                    <dimension lower="0" upper="3" />
+                    <baseType>
+                      <DWORD />
+                    </baseType>
+                  </array>
                 </returnType>
                 <inputVars>
                   <variable name="aValveMaps">
@@ -217,7 +244,12 @@ END_CASE
                       <array>
                         <dimension lower="0" upper="(GVL_AteqConfig.nMaxDeviceCount - 1)" />
                         <baseType>
-                          <DWORD />
+                          <array>
+                            <dimension lower="0" upper="3" />
+                            <baseType>
+                              <DWORD />
+                            </baseType>
+                          </array>
                         </baseType>
                       </array>
                     </type>
@@ -226,15 +258,53 @@ END_CASE
                 <localVars>
                   <variable name="result">
                     <type>
-                      <DWORD />
+                      <array>
+                        <dimension lower="0" upper="3" />
+                        <baseType>
+                          <DWORD />
+                        </baseType>
+                      </array>
                     </type>
                     <initialValue>
-                      <simpleValue value="0" />
+                      <arrayValue>
+                        <value>
+                          <simpleValue value="0" />
+                        </value>
+                        <value>
+                          <simpleValue value="0" />
+                        </value>
+                        <value>
+                          <simpleValue value="0" />
+                        </value>
+                        <value>
+                          <simpleValue value="0" />
+                        </value>
+                      </arrayValue>
                     </initialValue>
                   </variable>
-                  <variable name="i">
+                  <variable name="idx">
                     <type>
-                      <INT />
+                      <UINT />
+                    </type>
+                  </variable>
+                  <variable name="bitOffset">
+                    <type>
+                      <UINT />
+                    </type>
+                  </variable>
+                  <variable name="wordIndex">
+                    <type>
+                      <UINT />
+                    </type>
+                  </variable>
+                  <variable name="shiftedMask">
+                    <type>
+                      <array>
+                        <dimension lower="0" upper="3" />
+                        <baseType>
+                          <DWORD />
+                        </baseType>
+                      </array>
                     </type>
                   </variable>
                 </localVars>
@@ -246,23 +316,36 @@ END_CASE
               </interface>
               <body>
                 <ST>
-                  <xhtml xmlns="http://www.w3.org/1999/xhtml">FOR i := 0 TO GVL_AteqConfig.nMaxDeviceCount - 1 DO
-    result := result OR SHL(aMasks[i], aValveMaps[i].nValveStartIndex);
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">
+FOR idx := 0 TO GVL_AteqConfig.nMaxDeviceCount - 1 DO
+    FOR wordIndex := 0 TO 3 DO
+        bitOffset := aValveMaps[idx].nValveStartIndex;
+        IF bitOffset &lt; 32 THEN
+            result[0] := result[0] OR SHL(aMasks[idx][wordIndex], bitOffset);
+        ELSIF bitOffset &lt; 64 THEN
+            result[1] := result[1] OR SHL(aMasks[idx][wordIndex], bitOffset - 32);
+        ELSIF bitOffset &lt; 96 THEN
+            result[2] := result[2] OR SHL(aMasks[idx][wordIndex], bitOffset - 64);
+        ELSE
+            result[3] := result[3] OR SHL(aMasks[idx][wordIndex], bitOffset - 96);
+        END_IF
+    END_FOR
 END_FOR
-M_ComposeValveBankMask := result;
-</xhtml>
+M_ComposeValveBankMask := result;</xhtml>
                 </ST>
               </body>
               <InterfaceAsPlainText>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">METHOD PRIVATE M_ComposeValveBankMask : DWORD
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">METHOD PRIVATE M_ComposeValveBankMask : ARRAY[0..3] OF DWORD
 VAR_INPUT
     aValveMaps : ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqValveMap;
-    aMasks : ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF DWORD;
+    aMasks     : ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ARRAY[0..3] OF DWORD;
 END_VAR
 VAR
-    result : DWORD := 0;
-    i : INT;
-END_VAR</xhtml>
+    result : ARRAY[0..3] OF DWORD := [0, 0, 0, 0];
+    idx, bitOffset, wordIndex : UINT;
+    shiftedMask : ARRAY[0..3] OF DWORD;
+END_VAR
+</xhtml>
               </InterfaceAsPlainText>
               <addData />
             </Method>
@@ -274,23 +357,26 @@ VAR_INPUT
     abValveMaskSetRequest : ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF BOOL; // From ATEQ handlers
     aValveMaskSteps : ARRAY[0..GVL_AteqConfig.nMaxTestSteps - 1] OF ST_ValveMaskStep;
     aAteqValveMaps : ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqValveMap;
-    aAteqValveMasks : ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF DWORD; // relative masks per ATEQ
+    aAteqValveMasks : ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ARRAY[0..3] OF DWORD; // Up to 128 valves per ATEQ
 END_VAR
 
 VAR_OUTPUT
     bValveMaskSetDone : BOOL;
-    nCurrentValveMask : DWORD;
-    nCurrentStepIndex : INT;
+    aCurrentValveMask : ARRAY[0..3] OF DWORD; // Composite output mask across up to 4 valve banks (128 valves)
+    nCurrentSeqStepIndex : INT;
 END_VAR
 
 VAR
     bStepReady : BOOL;
     tTransitionHold : TON;
     eState : (IDLE, TRANSITION_HOLD, APPLY_FINAL);
-    nPreviousMask : DWORD;
-    nIntermediateMask : DWORD;
-	i : UINT;
-END_VAR</xhtml>
+    aPreviousMask : ARRAY[0..3] OF DWORD;
+    aIntermediateMask : ARRAY[0..3] OF DWORD;
+    i : UINT;
+END_VAR
+
+
+</xhtml>
             </InterfaceAsPlainText>
           </data>
           <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">

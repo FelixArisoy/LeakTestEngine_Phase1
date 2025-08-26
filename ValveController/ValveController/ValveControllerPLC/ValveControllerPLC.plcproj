@@ -42,6 +42,9 @@
     <Compile Include="2_ValveBank\DUTs\ST_AteqValveMap.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="2_ValveBank\DUTs\ST_ValveBankRawIo.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="2_ValveBank\DUTs\ST_ValveMask128.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -135,6 +138,10 @@
     <Compile Include="GARBAGE\E_AteqProgramSeqStateFlags.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="GVLs\GVL_ADSLOG.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
     <Compile Include="GVLs\GVL_AteqConfig.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
@@ -174,6 +181,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="zTEST\Test_ValveBank\FB_Test_ValveBank.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="zTEST\Test_ValveBank\FB_Test_ValveMaskHandler.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="zTEST\Test_ValveBank\FB_ValveMock.TcPOU">

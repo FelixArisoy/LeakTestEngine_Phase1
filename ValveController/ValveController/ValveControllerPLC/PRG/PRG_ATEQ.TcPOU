@@ -185,7 +185,7 @@ IF GVL_ValveBankConfig.nMaxDeviceCount > 0 THEN
 );
 
 	IF afbValveBank[nDeviceIndex].pDeviceEnabled THEN
-		afbValveBank[nDeviceIndex].pValveMaskPerVB := afbAteqRecipeHandler; // Mask Recipe will be feeded here
+		// error;    afbValveBank[nDeviceIndex].pValveMaskPerVB := afbAteqRecipeHandler; // Mask Recipe will be feeded here
 		ELSE
 		EXIT; // Throw fault on HMI then goto reset
 	END_IF

@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_Test_ValveMaskHandler" Id="{2ed27400-4e55-4e55-b28d-caaa63e6c174}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Test_ValveMaskHandler
+VAR
+    uut : FB_ValveMaskHandler; // Unit under test (UUT)
+
+    // Test input setup
+    aValveMaskSteps : ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_ValveMaskStep;
+    aAteqValveMaps  : ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqValveMap;
+    aAteqValveMasks : ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ARRAY[0..3] OF DWORD;
+
+    abValveMaskSetRequest : ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF BOOL;
+
+    // Local helper
+    stepIndex : INT := 0;
+    logStr : STRING(255);
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// ==================== TEST LOGIC ====================
+IF stepIndex = 0 THEN
+    // ---------- Setup for OBC ----------
+    abValveMaskSetRequest[0] := TRUE; // all ready
+	abValveMaskSetRequest[1] := TRUE;
+	
+    // Recipe step definition
+    aValveMaskSteps[0].eTransitionMode := HoldPrevious_ON;
+    aValveMaskSteps[0].tTransitionHoldTime := T#100MS;
+    aValveMaskSteps[0].nExpectedDoneMask := 2#11;
+
+    // Ateq valve maps
+    aAteqValveMaps[0].nValveStartIndex := 0;
+    aAteqValveMaps[1].nValveStartIndex := 4;
+
+    // Previous state: 1100 (valves 2,3 ON)
+    uut.aCurrentValveMask[0] := 2#1100;
+    uut.aPreviousMask[0]     := 2#1100;
+
+    // Next state mask: 0011 (valves 0,1 ON)
+    aAteqValveMasks[0][0] := 2#0011;
+    aAteqValveMasks[1][0] := 0;
+
+    // Run handler
+    uut(
+        abValveMaskSetRequest := abValveMaskSetRequest,
+        aValveMaskSteps := aValveMaskSteps,
+        aAteqValveMaps := aAteqValveMaps,
+        aAteqValveMasks := aAteqValveMasks
+    );
+
+    // Log intermediate OBC mask
+    logStr := CONCAT('OBC Intermediate = ', DINT_TO_STRING(uut.aCurrentValveMask[0]));
+    ADSLOGSTR(GVL_ADSLOG.ADSLOG_MSGTYPE_INFO, '%s', logStr);
+
+
+   	stepIndex := 1; // move to CBO test
+END_IF
+
+
+IF stepIndex = 1 THEN
+    // ---------- Setup for CBO ----------
+    abValveMaskSetRequest[0] := TRUE; // all ready
+	abValveMaskSetRequest[1] := TRUE;
+
+    // Recipe step definition
+    aValveMaskSteps[0].eTransitionMode := HoldNext_OFF;
+    aValveMaskSteps[0].tTransitionHoldTime := T#100MS;
+    aValveMaskSteps[0].nExpectedDoneMask := 2#11;
+
+    // Ateq valve maps
+    aAteqValveMaps[0].nValveStartIndex := 0;
+    aAteqValveMaps[1].nValveStartIndex := 4;
+
+    // Previous state: 1100
+    uut.aCurrentValveMask[0] := 2#1100;
+    uut.aPreviousMask[0]     := 2#1100;
+
+    // Next state mask: 0011
+    aAteqValveMasks[0][0] := 2#0011;
+    aAteqValveMasks[1][0] := 0;
+
+    // Run handler
+    uut(
+        abValveMaskSetRequest := abValveMaskSetRequest,
+        aValveMaskSteps := aValveMaskSteps,
+        aAteqValveMaps := aAteqValveMaps,
+        aAteqValveMasks := aAteqValveMasks
+    );
+
+    // Log intermediate CBO mask
+    logStr := CONCAT('CBO Intermediate = ', DINT_TO_STRING(uut.aCurrentValveMask[0]));
+    ADSLOGSTR(GVL_ADSLOG.ADSLOG_MSGTYPE_INFO, '%s', logStr);
+
+    stepIndex := 2; // stop after both tests
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="FB_Test_ValveMaskHandler">
+      <LineId Id="23" Count="4" />
+      <LineId Id="95" Count="0" />
+      <LineId Id="28" Count="27" />
+      <LineId Id="96" Count="0" />
+      <LineId Id="56" Count="7" />
+      <LineId Id="97" Count="0" />
+      <LineId Id="64" Count="30" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
