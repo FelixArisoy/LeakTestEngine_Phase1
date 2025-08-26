@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
   <Itf Name="I_ValveBank" Id="{9abff4a5-9dc4-4338-a357-8d967cc6368b}">
-    <Declaration><![CDATA[INTERFACE I_ValveBank EXTENDS I_FieldDevice
+    <Declaration><![CDATA[INTERFACE I_ValveBank EXTENDS I_Device
 ]]></Declaration>
     <Method Name="M_InitValves" Id="{99b1af9c-c961-427c-8e22-ce77fce012a4}">
       <Declaration><![CDATA[METHOD M_InitValves : BOOL;

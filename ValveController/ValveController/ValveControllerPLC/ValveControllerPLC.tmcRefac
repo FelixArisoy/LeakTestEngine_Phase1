@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Refactors>
+  <Renames>
+    <RenamedType>
+      <Type guid="da4e5490-5768-4d44-b47a-f8648bda148f">I_FIELDDEVICE</Type>
+      <From>I_FieldDevice</From>
+      <To>I_Device</To>
+    </RenamedType>
+  </Renames>
+</Refactors>

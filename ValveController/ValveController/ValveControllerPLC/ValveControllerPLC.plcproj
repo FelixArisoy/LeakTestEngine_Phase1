@@ -21,10 +21,7 @@
     <Compile Include="0_Interfaces\I_PLC.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="0_Interfaces\I_FieldDevice.TcIO">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="0_Interfaces\I_Valve.TcIO">
+    <Compile Include="0_Interfaces\I_Device.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="0_Interfaces\I_ValveBank.TcIO">
@@ -49,9 +46,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="2_ValveBank\DUTs\ST_ValveMaskStep.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="2_ValveBank\POUs\FB_Valve.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="2_ValveBank\POUs\FB_ValveBank.TcPOU">
@@ -189,9 +183,6 @@
     <Compile Include="zTEST\Test_ValveBank\FB_ValveMock.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="zTEST\Test_Valve\FB_Test_Valve.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="2_ValveBank\DUTs" />
@@ -210,7 +201,6 @@
     <Folder Include="GARBAGE" />
     <Folder Include="PRG" />
     <Folder Include="zTEST" />
-    <Folder Include="zTEST\Test_Valve" />
     <Folder Include="zTEST\Test_Ateq" />
     <Folder Include="zTEST\Test_ValveBank" />
     <Folder Include="VISUs" />

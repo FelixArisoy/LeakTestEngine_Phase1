@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
   <POU Name="FB_MainPLC" Id="{c2bbdccd-edf6-4203-96ae-745c9a753c49}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_MainPLC IMPLEMENTS IController
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_MainPLC IMPLEMENTS I_Device
 VAR_INPUT
 END_VAR
 VAR_OUTPUT
