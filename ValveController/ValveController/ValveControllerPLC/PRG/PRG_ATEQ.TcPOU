@@ -18,7 +18,7 @@ VAR
 	afbAteqResult		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF FB_AteqResultHandler;
   	abAutoTestRecipeStart : BOOL; /// Flag will be binded to Main PLC Run Cmd... Debug
 //####### ValveBanks #######
-	afbValveBank		: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF FB_ValveBank;
+	afbValveBank		: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF FB_ValveIo32Ch;
 	anValveMask			: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF DWORD; // per valve bank
 	anReqOpenManual		: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF BOOL; 
 	anReqCloseManual	: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF BOOL;
@@ -195,8 +195,7 @@ END_IF
 
 //######### Top Level Fault check per Valvebank and per Valves ###########
 FOR nDeviceIndex := 0 TO GVL_ValveBankConfig.nMaxDeviceCount - 1 DO
-	IF afbValveBank[nDeviceIndex].pDeviceFaulted 
-	OR NOT afbValveBank[nDeviceIndex].pInitAllValvesComplete THEN
+	IF afbValveBank[nDeviceIndex].pDeviceFaulted THEN
 		bValveBankHasAnyError := TRUE;
 		EXIT;
 	ELSE
@@ -323,7 +322,6 @@ END_IF
       <LineId Id="9" Count="0" />
       <LineId Id="20" Count="2" />
       <LineId Id="32" Count="0" />
-      <LineId Id="36" Count="0" />
       <LineId Id="34" Count="0" />
       <LineId Id="37" Count="2" />
       <LineId Id="35" Count="0" />

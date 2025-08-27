@@ -6,5 +6,70 @@
       <From>I_FieldDevice</From>
       <To>I_Device</To>
     </RenamedType>
+    <RenamedType>
+      <Type guid="02ff877c-ba6f-43fd-98c2-2957bc2319d2">M_COMPOSEVALVEBANKMASK</Type>
+      <From>M_ComposeValveBankMask</From>
+      <To>M_ComposeValveMask</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="7477c171-3d1a-41ee-a249-f531bd2a293e">ST_VALVEBANKRAWIO</Type>
+      <From>ST_ValveBankRawIo</From>
+      <To>ST_ValveRawIo</To>
+    </RenamedType>
+    <RenamedSymbol>
+      <Type guid="6fd479d4-9175-4488-b2ec-fe7d4059738b">FB_ValveIO</Type>
+      <From>eValveBankStatus</From>
+      <To>eValveStatus</To>
+    </RenamedSymbol>
+    <RenamedType>
+      <Type guid="755f9910-c101-4fb7-90ee-bcba44a6a4a3">M_TRIGVALVESFROMMASK</Type>
+      <From>M_TrigValvesFromMask</From>
+      <To>M_MapMaskToOutBytes</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="fe376a1d-db65-4f96-89c4-385f8cf1d130">M_TRIGVALVESFROMMASK</Type>
+      <From>M_TrigValvesFromMask</From>
+      <To>M_MapMaskToOutBytes</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="63fac6b4-9286-4ff2-830b-5a885f2ba6a0">M_TRIGVALVESMANUAL</Type>
+      <From>M_TrigValvesManual</From>
+      <To>M_ValveManualControl</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="8af14a3c-2dc8-4674-a94b-adeb0c9e665c">M_TRIGVALVESMANUAL</Type>
+      <From>M_TrigValvesManual</From>
+      <To>M_ValveManualControl</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="9abff4a5-9dc4-4338-a357-8d967cc6368b">I_VALVEIO</Type>
+      <From>I_ValveBank</From>
+      <To>I_ValveIo32Ch</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="6fd479d4-9175-4488-b2ec-fe7d4059738b">FB_VALVEIO</Type>
+      <From>FB_ValveBank</From>
+      <To>FB_ValveIo32Ch</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="6403c9a0-e886-4732-bc80-dcabea435e2a">I_VALVEIO32CH_1</Type>
+      <From>I_ValveIo32Ch_1</From>
+      <To>I_ValveIo16Ch</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="08b3cf5a-1b39-407d-890d-6cc9fddf3026">I_VALVEIO16CH_1</Type>
+      <From>I_ValveIo16Ch_1</From>
+      <To>I_ValveIo8Ch</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="21fe8bee-4d42-4d62-bbae-8b3cbb5d0bf6">FB_VALVEIO32CH_1</Type>
+      <From>FB_ValveIo32Ch_1</From>
+      <To>FB_ValveIo8Ch</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="feb94f25-6816-46a7-b062-ae033f0d85ad">FB_VALVEIO8CH_1</Type>
+      <From>FB_ValveIo8Ch_1</From>
+      <To>FB_ValveIo16Ch</To>
+    </RenamedType>
   </Renames>
 </Refactors>

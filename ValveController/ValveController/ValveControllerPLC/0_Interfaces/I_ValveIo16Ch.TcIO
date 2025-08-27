@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <Itf Name="I_ValveIo16Ch" Id="{6403c9a0-e886-4732-bc80-dcabea435e2a}">
+    <Declaration><![CDATA[INTERFACE I_ValveIo16Ch EXTENDS I_Device
+]]></Declaration>
+    <Method Name="M_MapMaskToOutBytes" Id="{6dde0c57-72db-4678-8ed6-e8a6dfa7ddc9}">
+      <Declaration><![CDATA[METHOD M_MapMaskToOutBytes : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="M_ValveManualControl" Id="{36dbeed1-a11f-4baf-809c-07f9d03d029e}">
+      <Declaration><![CDATA[METHOD M_ValveManualControl : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="pNumOfValvesAvailable" Id="{c886f22b-f768-453c-8805-4c9d224bf64f}">
+      <Declaration><![CDATA[PROPERTY pNumOfValvesAvailable : INT]]></Declaration>
+      <Get Name="Get" Id="{527634d1-dab1-495b-8ae0-ce665b13c15a}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{2fc874a3-f34c-4b10-a18b-9aea8e8d4e9e}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="pValveMaskIn16bit" Id="{8e822b1a-2a37-49ba-b520-760a804abc4d}">
+      <Declaration><![CDATA[PROPERTY pValveMaskIn16bit : WORD]]></Declaration>
+      <Set Name="Set" Id="{793d7797-8bc9-48ea-b22d-ca3c291979a8}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="pValveMaskOutByte1" Id="{31028aff-268b-4cb4-8e6c-747a8c6f283d}">
+      <Declaration><![CDATA[PROPERTY pValveMaskOutByte1 : BYTE]]></Declaration>
+      <Get Name="Get" Id="{c9e5e204-7628-4d46-a2f0-f3a9aa12702a}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{267cb9f6-34f9-47b1-bfdd-75a3a3ba471e}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="pValveMaskOutByte2" Id="{20ca4755-96b5-40a1-bc38-995087cb39e5}">
+      <Declaration><![CDATA[PROPERTY pValveMaskOutByte2 : BYTE]]></Declaration>
+      <Get Name="Get" Id="{0de02f84-b700-485e-8b0f-323286379cbe}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{9505b9e2-02e3-4464-b08c-4610e341eead}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>

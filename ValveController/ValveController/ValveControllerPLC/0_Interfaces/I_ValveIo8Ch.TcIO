@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <Itf Name="I_ValveIo8Ch" Id="{08b3cf5a-1b39-407d-890d-6cc9fddf3026}">
+    <Declaration><![CDATA[INTERFACE I_ValveIo8Ch EXTENDS I_Device
+]]></Declaration>
+    <Method Name="M_MapMaskToOutBytes" Id="{9ca1aa95-ee6e-4762-9b48-664c3e9f87fb}">
+      <Declaration><![CDATA[METHOD M_MapMaskToOutBytes : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="M_ValveManualControl" Id="{784aa1e0-73d5-44bb-832f-bc845d0133e6}">
+      <Declaration><![CDATA[METHOD M_ValveManualControl : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="pNumOfValvesAvailable" Id="{31a576a9-368c-413b-940a-c918018808d3}">
+      <Declaration><![CDATA[PROPERTY pNumOfValvesAvailable : INT]]></Declaration>
+      <Get Name="Get" Id="{f982c722-c72c-49cd-90ff-a759c3ae8c4d}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{70bf654b-405d-4b83-9ce0-2aa6e436428c}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="pValveMaskIn8bit" Id="{eb154c34-3b07-49a2-9596-fc3e3e1062c1}">
+      <Declaration><![CDATA[PROPERTY pValveMaskIn8bit : BYTE]]></Declaration>
+      <Set Name="Set" Id="{5c14dd28-b386-4c61-afb4-a0663b00c85d}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="pValveMaskOutByte1" Id="{bf2d3ab4-710f-4063-a782-30f86a49e8cc}">
+      <Declaration><![CDATA[PROPERTY pValveMaskOutByte1 : BYTE]]></Declaration>
+      <Get Name="Get" Id="{637b756f-a98c-474e-81fa-e8997395c7c9}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{3cc2743c-95cc-4524-93bc-11b0cde5ba30}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>

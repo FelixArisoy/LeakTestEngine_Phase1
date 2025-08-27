@@ -45,21 +45,21 @@ CASE eState OF
             CASE aValveMaskSteps[nCurrentSeqStepIndex].eTransitionMode OF
 
                 HoldPrevious_ON: // OBC Open Next before Closing Previous
-                    aIntermediateMask := M_ComposeValveBankMask(aAteqValveMaps, aAteqValveMasks);
+                    aIntermediateMask := M_ComposeValveMask(aAteqValveMaps, aAteqValveMasks);
                     FOR i := 0 TO 3 DO
                         aCurrentValveMask[i] := aPreviousMask[i] OR aIntermediateMask[i];
                     END_FOR
                     eState := TRANSITION_HOLD;
                    
                 HoldNext_OFF: // CBO Close Previous before Openning Next
-                    aIntermediateMask := M_ComposeValveBankMask(aAteqValveMaps, aAteqValveMasks);
+                    aIntermediateMask := M_ComposeValveMask(aAteqValveMaps, aAteqValveMasks);
                     FOR i := 0 TO 3 DO
                         aCurrentValveMask[i] := aPreviousMask[i] AND NOT aIntermediateMask[i];
                     END_FOR
                     eState := TRANSITION_HOLD;
                     
                 Immediate:
-                    aCurrentValveMask := M_ComposeValveBankMask(aAteqValveMaps, aAteqValveMasks);
+                    aCurrentValveMask := M_ComposeValveMask(aAteqValveMaps, aAteqValveMasks);
                     bValveMaskSetDone := TRUE;
                     nCurrentSeqStepIndex := nCurrentSeqStepIndex + 1;
             END_CASE
@@ -74,15 +74,15 @@ CASE eState OF
         END_IF
 
     APPLY_FINAL:
-        aCurrentValveMask := M_ComposeValveBankMask(aAteqValveMaps, aAteqValveMasks);
+        aCurrentValveMask := M_ComposeValveMask(aAteqValveMaps, aAteqValveMasks);
         bValveMaskSetDone := TRUE;
         nCurrentSeqStepIndex := nCurrentSeqStepIndex + 1;
         eState := IDLE;
 END_CASE
 ]]></ST>
     </Implementation>
-    <Method Name="M_ComposeValveBankMask" Id="{02ff877c-ba6f-43fd-98c2-2957bc2319d2}">
-      <Declaration><![CDATA[METHOD PRIVATE M_ComposeValveBankMask : ARRAY[0..3] OF DWORD
+    <Method Name="M_ComposeValveMask" Id="{02ff877c-ba6f-43fd-98c2-2957bc2319d2}">
+      <Declaration><![CDATA[METHOD PRIVATE M_ComposeValveMask : ARRAY[0..3] OF DWORD
 VAR_INPUT
     aValveMaps : ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqValveMap;
     aMasks     : ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ARRAY[0..3] OF DWORD;
@@ -109,14 +109,14 @@ FOR idx := 0 TO GVL_AteqConfig.nMaxDeviceCount - 1 DO
         END_IF
     END_FOR
 END_FOR
-M_ComposeValveBankMask := result;]]></ST>
+M_ComposeValveMask := result;]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_ValveMaskHandler">
-      <LineId Id="359" Count="51" />
+      <LineId Id="435" Count="51" />
       <LineId Id="9" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveMaskHandler.M_ComposeValveBankMask">
+    <LineIds Name="FB_ValveMaskHandler.M_ComposeValveMask">
       <LineId Id="38" Count="14" />
       <LineId Id="5" Count="0" />
     </LineIds>

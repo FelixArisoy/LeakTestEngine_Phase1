@@ -7,7 +7,7 @@ END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
-    fbValveBank     : FB_ValveBank;
+    fbValveBank     : FB_ValveIo32Ch;
     afbValveMock   	: ARRAY[0..3] OF FB_ValveMock; // Only 4 for demo
 	aipValveMock 	: ARRAY[0..3] OF I_Valve;
 END_VAR]]></Declaration>
@@ -34,10 +34,10 @@ FOR i := 0 TO 3 DO
 END_FOR
 
 // Simulate: only Valve 0 and 2 should be commanded open (binary 0101)
-fbValveBank.pValveMaskPerVB := 16#00000005;
+fbValveBank.pValveMaskIn32bit := 16#00000005;
 fbValveBank.pDeviceFaulted := FALSE;
 // Trigger the method under test
-fbValveBank.M_TrigValvesFromMask();
+fbValveBank.M_MapMaskToOutBytes();
 
 // Validate expected behavior
 AssertTrue(afbValveMock[0].bOpenCalled, 'Valve 0 should open');

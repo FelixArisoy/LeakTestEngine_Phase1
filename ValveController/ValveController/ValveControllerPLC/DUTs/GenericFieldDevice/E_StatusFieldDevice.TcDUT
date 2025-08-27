@@ -9,6 +9,8 @@ TYPE E_StatusFieldDevice :
     COMM_ERROR,
     SHORT_CIRCUIT,
     OPEN_CIRCUIT,
+	POWER_NORMAL, // State of power supply to the device normal
+	POWER_UNDER_VOLTAGE, // State of power supply to the device abnormal
     MANUAL_OVERRIDE,
 	DEVICE_FAULT,
     TIMEOUT,

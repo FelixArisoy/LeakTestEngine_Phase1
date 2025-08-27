@@ -1,34 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
-  <POU Name="FB_ValveBank" Id="{6fd479d4-9175-4488-b2ec-fe7d4059738b}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_ValveBank IMPLEMENTS I_ValveBank
+  <POU Name="FB_ValveIo32Ch" Id="{6fd479d4-9175-4488-b2ec-fe7d4059738b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ValveIo32Ch IMPLEMENTS I_ValveIo32Ch
 VAR_INPUT   
 
 END_VAR
 VAR_IN_OUT	
-	anReqOpenManual	: ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF BOOL; 
-	anReqCloseManual: ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF BOOL;
+	stValveRawIo		: ST_ValveRawIo;
+	anReqOpenManual		: ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF BOOL; 
+	anReqCloseManual	: ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF BOOL;
 END_VAR
 VAR_OUTPUT
 	bValveBankHeartbeat	: BOOL;
-	eValveBankStatus	: E_StatusFieldDevice;
-	abValveHeartbeat	: ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF BOOL;
-    aeValveStatus		: ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF E_StatusFieldDevice;
+	eValveStatus	: E_StatusFieldDevice;
 	   
 END_VAR
 VAR
-	aipValveReal	: ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF I_Valve; // Max size; NumOfValves limits how many are used 
-	apipValve		: ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF POINTER TO I_Valve; // Interface pointers
 	// Property bindings
-	stFieldDevice	: ST_FieldDevice;
+	stFieldDevice			: ST_FieldDevice;
 	nNumOfValvesAvailable 	: INT ; // Total number of valves conncected in this valve bank
-	nValveMaskPerVB 	: DWORD;		// Each bit enables corresponding valve
+	nValveMaskPerVB 		: DWORD;		// Each bit enables corresponding valve
 	tDeviceEnableTimeout	: TON;
-	bInitAllValves	: BOOL;
+
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[// Always Call DeviceStatus bindings
-eValveBankStatus 	:= M_DeviceStatus(); // Work on later if needed. Debug
+eValveStatus 	:= M_DeviceStatus(); // Work on later if needed. Debug
 
 //###########	Device Enable	###########
 IF NOT stFieldDevice.bDeviceEnabled THEN
@@ -44,26 +41,18 @@ END_IF
 IF stFieldDevice.bDeviceEnabled THEN
 	tDeviceEnableTimeout(IN := FALSE);
 	bValveBankHeartbeat := M_DeviceHeartbeat(); // Work on later if needed. Debug, add loop timer
-	
 END_IF
 
-//###########	init All Valves	###########
-IF bValveBankHeartbeat AND eValveBankStatus = E_StatusFieldDevice.OK THEN
-	IF nNumOfValvesAvailable > 0 
-	AND nNumOfValvesAvailable <= GVL_ValveBankConfig.nMaxNumOfValveSlots 
-	THEN		
-		bInitAllValves := M_InitValves();
-	END_IF	
-END_IF
+
 
 
 //###########	If All Valves are init and healty, Then Call the Trigger methods	###########
 (* Once the trig request comes thru ValveMask Property or Manual IN_OUT Arrays 
 from outside of this FB, methods will handle FB_Valve calls per valve *)
-IF bInitAllValves THEN
-	M_TrigValvesFromMask();
-	M_TrigValvesManual();
-END_IF
+
+	M_MapMaskToOutBytes();
+	M_ValveManualControl();
+
 
 
 //###########	Device Fault Reset Call	###########
@@ -71,23 +60,6 @@ IF stFieldDevice.bDeviceFaulted AND stFieldDevice.bDeviceReset THEN
 	M_DeviceReset(); // Call Device Reset Sequence
 END_IF]]></ST>
     </Implementation>
-    <Method Name="FB_init" Id="{44768775-9fab-41ea-9cf3-9fa1b86775b6}">
-      <Declaration><![CDATA[METHOD FB_init : BOOL
-VAR_INPUT
-	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
-	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
-END_VAR
-
-VAR
-	i: INT;
-END_VAR]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[FOR i := 0 TO nNumOfValvesAvailable - 1 DO
-    apipValve[i] := ADR(aipValveReal[i]); // Cast pointer to interface
-END_FOR
-]]></ST>
-      </Implementation>
-    </Method>
     <Method Name="M_DeviceEnable" Id="{d27b4188-153f-44f5-b9f4-cd702c02a5d3}">
       <Declaration><![CDATA[{warning 'add method implementation '}
 METHOD M_DeviceEnable : BOOL
@@ -128,62 +100,88 @@ END_VAR]]></Declaration>
 // mapp the hardware specific valve bank Status bits here if available]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_InitValves" Id="{ac7296a0-4fd1-48dd-acf9-7aefb8e3ff93}">
-      <Declaration><![CDATA[METHOD M_InitValves	: BOOL;
-VAR
-    i : INT;
-	nDeviceIndex	: INT;
-END_VAR]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[
-FOR i := 0 TO nNumOfValvesAvailable - 1 DO
-	//afbValve[i]();
-	apipValve[i]^.pDeviceCommOK := TRUE; // Map Individual valve HB from VB to FB_Valve, if available
-	apipValve[i]^.pDeviceEnableCmd := TRUE; // Enable all
-	
-	abValveHeartbeat[i] := apipValve[i]^.M_DeviceHeartbeat(); // init all valves that are connected to the bank
-	aeValveStatus[i] 	:= apipValve[i]^.M_DeviceStatus(); // Array will be mapped to HMI	
-END_FOR
+    <Method Name="M_MapMaskToOutBytes" Id="{fe376a1d-db65-4f96-89c4-385f8cf1d130}">
+      <Declaration><![CDATA[METHOD M_MapMaskToOutBytes : BOOL
+VAR_INPUT
+    abValveMaskSetRequest : ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF BOOL; // From ATEQ handlers
+    aValveMaskSteps : ARRAY[0..GVL_AteqConfig.nMaxTestSteps - 1] OF ST_ValveMaskStep;
+    aAteqValveMaps : ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqValveMap;
+    aAteqValveMasks : ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ARRAY[0..3] OF DWORD; // Up to 128 valves per ATEQ
+END_VAR
 
-IF abValveHeartbeat[nDeviceIndex] = TRUE 
-AND aeValveStatus[nDeviceIndex] = E_StatusFieldDevice.OK THEN
-	nDeviceIndex 	:= nDeviceIndex + 1;
-	M_InitValves	:= TRUE;
-	ELSE
-		M_InitValves	:= FALSE;
-END_IF
-//OR mapp the VB Status  bits here]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="M_TrigValvesFromMask" Id="{fe376a1d-db65-4f96-89c4-385f8cf1d130}">
-      <Declaration><![CDATA[METHOD M_TrigValvesFromMask : BOOL
+VAR_OUTPUT
+    bValveMaskSetDone : BOOL;
+    aCurrentValveMask : ARRAY[0..3] OF DWORD; // Composite output mask across up to 4 valve banks (128 valves)
+    nCurrentSeqStepIndex : INT;
+END_VAR
+
 VAR
-    i : INT;
-    bitSet : BOOL;
-END_VAR]]></Declaration>
+    bStepReady : BOOL;
+    tTransitionHold : TON;
+    eState : (IDLE, TRANSITION_HOLD, APPLY_FINAL);
+    aPreviousMask : ARRAY[0..3] OF DWORD;
+    aIntermediateMask : ARRAY[0..3] OF DWORD;
+    i : UINT;
+END_VAR
+]]></Declaration>
       <Implementation>
-        <ST><![CDATA[FOR i := 0 TO nNumOfValvesAvailable - 1 DO
-    
-	IF i >= 0 AND i < 32 THEN // Prevent accidental bit shifting
-		bitSet := (nValveMaskPerVB AND SHL(1, i)) <> 0;
-	END_IF
-	
- 
-    IF NOT apipValve[i]^.pDeviceFaulted  THEN
-        IF bitSet THEN
-			apipValve[i]^.M_ActOpen();
-        ELSE
-            apipValve[i]^.M_ActClose();
+        <ST><![CDATA[// Step readiness check 
+bStepReady := TRUE;
+FOR i := 0 TO GVL_AteqConfig.nMaxDeviceCount - 1 DO
+    IF (aValveMaskSteps[nCurrentSeqStepIndex].nExpectedDoneMask AND SHL(1, i)) <> 0 THEN
+        IF NOT abValveMaskSetRequest[i] THEN
+            bStepReady := FALSE;
+            EXIT;
         END_IF
     END_IF
 END_FOR
 
-M_TrigValvesFromMask := TRUE;
+CASE eState OF
+    IDLE:
+        IF bStepReady THEN
+            aPreviousMask := aCurrentValveMask;
+            CASE aValveMaskSteps[nCurrentSeqStepIndex].eTransitionMode OF
+
+                HoldPrevious_ON: // OBC Open Next before Closing Previous
+                    aIntermediateMask := M_ComposeValveMask(aAteqValveMaps, aAteqValveMasks);
+                    FOR i := 0 TO 3 DO
+                        aCurrentValveMask[i] := aPreviousMask[i] OR aIntermediateMask[i];
+                    END_FOR
+                    eState := TRANSITION_HOLD;
+                   
+                HoldNext_OFF: // CBO Close Previous before Openning Next
+                    aIntermediateMask := M_ComposeValveMask(aAteqValveMaps, aAteqValveMasks);
+                    FOR i := 0 TO 3 DO
+                        aCurrentValveMask[i] := aPreviousMask[i] AND NOT aIntermediateMask[i];
+                    END_FOR
+                    eState := TRANSITION_HOLD;
+                    
+                Immediate:
+                    aCurrentValveMask := M_ComposeValveMask(aAteqValveMaps, aAteqValveMasks);
+                    bValveMaskSetDone := TRUE;
+                    nCurrentSeqStepIndex := nCurrentSeqStepIndex + 1;
+            END_CASE
+        END_IF
+
+    TRANSITION_HOLD:
+       tTransitionHold(IN := TRUE, PT := aValveMaskSteps[nCurrentSeqStepIndex].tTransitionHoldTime);
+
+        IF tTransitionHold.Q THEN
+            eState := APPLY_FINAL;
+            tTransitionHold(IN := FALSE);
+        END_IF
+
+    APPLY_FINAL:
+        aCurrentValveMask := M_ComposeValveMask(aAteqValveMaps, aAteqValveMasks);
+        bValveMaskSetDone := TRUE;
+        nCurrentSeqStepIndex := nCurrentSeqStepIndex + 1;
+        eState := IDLE;
+END_CASE
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_TrigValvesManual" Id="{8af14a3c-2dc8-4674-a94b-adeb0c9e665c}">
-      <Declaration><![CDATA[METHOD M_TrigValvesManual : BOOL
+    <Method Name="M_ValveManualControl" Id="{8af14a3c-2dc8-4674-a94b-adeb0c9e665c}">
+      <Declaration><![CDATA[METHOD M_ValveManualControl : BOOL
 VAR
     i : INT;
 END_VAR]]></Declaration>
@@ -202,20 +200,6 @@ FOR i := 0 TO nNumOfValvesAvailable - 1 DO
 		
     END_IF
 END_FOR
-]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="M_UnitTestInjectValveMock" Id="{84e6aba4-f54e-40e9-90cf-54eb31c58b35}">
-      <Declaration><![CDATA[METHOD PUBLIC M_UnitTestInjectValveMock // Used for TcUnit FB_ValveMock injection
-VAR_INPUT
-    idx: INT;
-    refValve: POINTER TO I_Valve;
-END_VAR]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[
-IF idx >= 0 AND idx < nNumOfValvesAvailable THEN
-    apipValve[idx] := refValve;
-END_IF
 ]]></ST>
       </Implementation>
     </Method>
@@ -333,17 +317,6 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
-    <Property Name="pInitAllValvesComplete" Id="{ad686bfb-036f-4445-b6dd-842554f43740}">
-      <Declaration><![CDATA[PROPERTY pInitAllValvesComplete : BOOL]]></Declaration>
-      <Get Name="Get" Id="{6254edc8-3873-4163-b6fa-01d299b38f66}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[pInitAllValvesComplete := bInitAllValves;]]></ST>
-        </Implementation>
-      </Get>
-    </Property>
     <Property Name="pNumOfValvesAvailable" Id="{f8a2e382-60a6-46fc-a865-d245d7f4f32b}">
       <Declaration><![CDATA[PROPERTY pNumOfValvesAvailable : INT
 ]]></Declaration>
@@ -364,99 +337,126 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
-    <Property Name="pValveMaskPerVB" Id="{8e3086c9-7aa4-46ab-a768-77399a7bd519}">
-      <Declaration><![CDATA[PROPERTY pValveMaskPerVB : DWORD]]></Declaration>
+    <Property Name="pValveMaskIn32bit" Id="{8e3086c9-7aa4-46ab-a768-77399a7bd519}">
+      <Declaration><![CDATA[PROPERTY pValveMaskIn32bit : DWORD]]></Declaration>
       <Set Name="Set" Id="{90ba2342-6052-4cb3-bd75-c2cb8826199c}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[nValveMaskPerVB := pValveMaskPerVB;]]></ST>
+          <ST><![CDATA[nValveMaskPerVB := pValveMaskIn32bit;]]></ST>
         </Implementation>
       </Set>
     </Property>
-    <LineIds Name="FB_ValveBank">
-      <LineId Id="282" Count="0" />
-      <LineId Id="227" Count="0" />
-      <LineId Id="281" Count="0" />
-      <LineId Id="226" Count="0" />
-      <LineId Id="216" Count="1" />
-      <LineId Id="230" Count="0" />
-      <LineId Id="229" Count="0" />
-      <LineId Id="221" Count="0" />
-      <LineId Id="231" Count="1" />
-      <LineId Id="218" Count="0" />
-      <LineId Id="242" Count="0" />
-      <LineId Id="235" Count="0" />
-      <LineId Id="234" Count="0" />
-      <LineId Id="239" Count="0" />
-      <LineId Id="236" Count="0" />
-      <LineId Id="238" Count="0" />
-      <LineId Id="247" Count="1" />
-      <LineId Id="263" Count="0" />
-      <LineId Id="249" Count="0" />
-      <LineId Id="268" Count="3" />
-      <LineId Id="266" Count="0" />
-      <LineId Id="265" Count="0" />
-      <LineId Id="277" Count="1" />
-      <LineId Id="250" Count="0" />
-      <LineId Id="279" Count="1" />
-      <LineId Id="251" Count="0" />
-      <LineId Id="273" Count="0" />
-      <LineId Id="275" Count="0" />
-      <LineId Id="274" Count="0" />
-      <LineId Id="276" Count="0" />
-      <LineId Id="252" Count="0" />
-      <LineId Id="15" Count="0" />
-      <LineId Id="14" Count="0" />
-      <LineId Id="254" Count="1" />
+    <Property Name="pValveMaskOutByte1" Id="{655d530d-5511-49b1-b9da-8b849e547a90}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pValveMaskOutByte1 : BYTE
+]]></Declaration>
+      <Get Name="Get" Id="{a1a96185-d92d-49a2-840d-d08a14dbc737}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{8a56bbc5-038b-4679-90f0-d9fc831e47cb}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pValveMaskOutByte2" Id="{96935665-585d-4adc-a2af-3596a77d0879}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pValveMaskOutByte2 : BYTE
+]]></Declaration>
+      <Get Name="Get" Id="{ec499706-ab54-4268-8379-830209de6d34}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{27fd1a26-36d8-4543-903e-6a3275fb80e4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pValveMaskOutByte3" Id="{97217900-0d1c-42f9-90d3-dff440f9b319}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pValveMaskOutByte3 : BYTE
+]]></Declaration>
+      <Get Name="Get" Id="{317bd7db-1fc0-4565-9353-92b4084b04ea}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{142db8e9-adf3-4981-87b5-e4a351b8240a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pValveMaskOutByte4" Id="{459ba23d-2f8a-4e13-b84a-b794dbaaf279}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pValveMaskOutByte4 : BYTE
+]]></Declaration>
+      <Get Name="Get" Id="{183cabb2-d94d-4c43-b2cb-30ac5554c6a3}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{9fbb896d-61ac-4845-89b6-60e019d0fd36}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_ValveIo32Ch">
+      <LineId Id="352" Count="33" />
+      <LineId Id="255" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveBank.FB_init">
-      <LineId Id="17" Count="2" />
-      <LineId Id="7" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_ValveBank.M_DeviceEnable">
+    <LineIds Name="FB_ValveIo32Ch.M_DeviceEnable">
       <LineId Id="5" Count="2" />
       <LineId Id="11" Count="1" />
       <LineId Id="4" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveBank.M_DeviceHeartbeat">
+    <LineIds Name="FB_ValveIo32Ch.M_DeviceHeartbeat">
       <LineId Id="5" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveBank.M_DeviceReset">
+    <LineIds Name="FB_ValveIo32Ch.M_DeviceReset">
       <LineId Id="5" Count="1" />
       <LineId Id="4" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveBank.M_DeviceStatus">
+    <LineIds Name="FB_ValveIo32Ch.M_DeviceStatus">
       <LineId Id="20" Count="0" />
       <LineId Id="16" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveBank.M_InitValves">
-      <LineId Id="5" Count="1" />
-      <LineId Id="22" Count="0" />
-      <LineId Id="25" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="23" Count="1" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="15" Count="2" />
-      <LineId Id="36" Count="0" />
-      <LineId Id="29" Count="0" />
-      <LineId Id="35" Count="0" />
-      <LineId Id="32" Count="1" />
-      <LineId Id="30" Count="0" />
-      <LineId Id="4" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_ValveBank.M_TrigValvesFromMask">
-      <LineId Id="54" Count="1" />
-      <LineId Id="71" Count="0" />
-      <LineId Id="69" Count="1" />
-      <LineId Id="68" Count="0" />
-      <LineId Id="57" Count="2" />
-      <LineId Id="72" Count="0" />
-      <LineId Id="61" Count="6" />
+    <LineIds Name="FB_ValveIo32Ch.M_MapMaskToOutBytes">
+      <LineId Id="77" Count="51" />
       <LineId Id="20" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveBank.M_TrigValvesManual">
+    <LineIds Name="FB_ValveIo32Ch.M_ValveManualControl">
       <LineId Id="19" Count="0" />
       <LineId Id="5" Count="1" />
       <LineId Id="20" Count="0" />
@@ -471,53 +471,70 @@ END_VAR
       <LineId Id="8" Count="1" />
       <LineId Id="4" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveBank.M_UnitTestInjectValveMock">
-      <LineId Id="10" Count="3" />
-      <LineId Id="4" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_ValveBank.pDeviceCommOK.Get">
+    <LineIds Name="FB_ValveIo32Ch.pDeviceCommOK.Get">
       <LineId Id="2" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveBank.pDeviceCommOK.Set">
+    <LineIds Name="FB_ValveIo32Ch.pDeviceCommOK.Set">
       <LineId Id="2" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveBank.pDeviceEnableCmd.Get">
+    <LineIds Name="FB_ValveIo32Ch.pDeviceEnableCmd.Get">
       <LineId Id="2" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveBank.pDeviceEnableCmd.Set">
+    <LineIds Name="FB_ValveIo32Ch.pDeviceEnableCmd.Set">
       <LineId Id="2" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveBank.pDeviceEnabled.Get">
+    <LineIds Name="FB_ValveIo32Ch.pDeviceEnabled.Get">
       <LineId Id="2" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveBank.pDeviceEnabled.Set">
+    <LineIds Name="FB_ValveIo32Ch.pDeviceEnabled.Set">
       <LineId Id="2" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveBank.pDeviceFaulted.Get">
+    <LineIds Name="FB_ValveIo32Ch.pDeviceFaulted.Get">
       <LineId Id="2" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveBank.pDeviceFaulted.Set">
+    <LineIds Name="FB_ValveIo32Ch.pDeviceFaulted.Set">
       <LineId Id="5" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveBank.pDeviceReset.Set">
+    <LineIds Name="FB_ValveIo32Ch.pDeviceReset.Set">
       <LineId Id="2" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveBank.pDeviceStatusFeedback.Get">
+    <LineIds Name="FB_ValveIo32Ch.pDeviceStatusFeedback.Get">
       <LineId Id="2" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveBank.pDeviceStatusFeedback.Set">
+    <LineIds Name="FB_ValveIo32Ch.pDeviceStatusFeedback.Set">
       <LineId Id="2" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveBank.pInitAllValvesComplete.Get">
+    <LineIds Name="FB_ValveIo32Ch.pNumOfValvesAvailable.Get">
       <LineId Id="2" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveBank.pNumOfValvesAvailable.Get">
+    <LineIds Name="FB_ValveIo32Ch.pNumOfValvesAvailable.Set">
       <LineId Id="2" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveBank.pNumOfValvesAvailable.Set">
+    <LineIds Name="FB_ValveIo32Ch.pValveMaskIn32bit.Set">
       <LineId Id="2" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveBank.pValveMaskPerVB.Set">
+    <LineIds Name="FB_ValveIo32Ch.pValveMaskOutByte1.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveIo32Ch.pValveMaskOutByte1.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveIo32Ch.pValveMaskOutByte2.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveIo32Ch.pValveMaskOutByte2.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveIo32Ch.pValveMaskOutByte3.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveIo32Ch.pValveMaskOutByte3.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveIo32Ch.pValveMaskOutByte4.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ValveIo32Ch.pValveMaskOutByte4.Set">
       <LineId Id="2" Count="0" />
     </LineIds>
   </POU>
