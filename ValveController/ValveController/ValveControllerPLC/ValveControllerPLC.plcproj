@@ -24,13 +24,7 @@
     <Compile Include="0_Interfaces\I_Device.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="0_Interfaces\I_ValveIo8Ch.TcIO">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="0_Interfaces\I_ValveIo32Ch.TcIO">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="0_Interfaces\I_ValveIo16Ch.TcIO">
+    <Compile Include="0_Interfaces\I_ValveIo.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="1_PLC\FB_DwellTime.TcPOU">
@@ -45,7 +39,7 @@
     <Compile Include="2_ValveBank\DUTs\ST_AteqValveMap.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="2_ValveBank\DUTs\ST_ValveRawIo.TcDUT">
+    <Compile Include="2_ValveBank\DUTs\ST_ValveRawIo_EX260.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="2_ValveBank\DUTs\ST_ValveMask128.TcDUT">
@@ -54,16 +48,13 @@
     <Compile Include="2_ValveBank\DUTs\ST_ValveMaskStep.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="2_ValveBank\POUs\FB_ValveIo32Ch.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="2_ValveBank\POUs\FB_ValveIo8Ch.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="2_ValveBank\POUs\FB_ValveIo16Ch.TcPOU">
+    <Compile Include="2_ValveBank\POUs\FB_ValveIo.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="2_ValveBank\POUs\FB_ValveMaskHandler.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="2_ValveBank\POUs\FB_ValveMaskHandlerOld.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="3_Ateq\DUTs_Control\E_AteqControlErrorFlags.TcDUT">

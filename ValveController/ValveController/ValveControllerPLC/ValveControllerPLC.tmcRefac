@@ -11,11 +11,6 @@
       <From>M_ComposeValveBankMask</From>
       <To>M_ComposeValveMask</To>
     </RenamedType>
-    <RenamedType>
-      <Type guid="7477c171-3d1a-41ee-a249-f531bd2a293e">ST_VALVEBANKRAWIO</Type>
-      <From>ST_ValveBankRawIo</From>
-      <To>ST_ValveRawIo</To>
-    </RenamedType>
     <RenamedSymbol>
       <Type guid="6fd479d4-9175-4488-b2ec-fe7d4059738b">FB_ValveIO</Type>
       <From>eValveBankStatus</From>
@@ -30,26 +25,6 @@
       <Type guid="fe376a1d-db65-4f96-89c4-385f8cf1d130">M_TRIGVALVESFROMMASK</Type>
       <From>M_TrigValvesFromMask</From>
       <To>M_MapMaskToOutBytes</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="63fac6b4-9286-4ff2-830b-5a885f2ba6a0">M_TRIGVALVESMANUAL</Type>
-      <From>M_TrigValvesManual</From>
-      <To>M_ValveManualControl</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="8af14a3c-2dc8-4674-a94b-adeb0c9e665c">M_TRIGVALVESMANUAL</Type>
-      <From>M_TrigValvesManual</From>
-      <To>M_ValveManualControl</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="9abff4a5-9dc4-4338-a357-8d967cc6368b">I_VALVEIO</Type>
-      <From>I_ValveBank</From>
-      <To>I_ValveIo32Ch</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="6fd479d4-9175-4488-b2ec-fe7d4059738b">FB_VALVEIO</Type>
-      <From>FB_ValveBank</From>
-      <To>FB_ValveIo32Ch</To>
     </RenamedType>
     <RenamedType>
       <Type guid="6403c9a0-e886-4732-bc80-dcabea435e2a">I_VALVEIO32CH_1</Type>
@@ -71,5 +46,100 @@
       <From>FB_ValveIo8Ch_1</From>
       <To>FB_ValveIo16Ch</To>
     </RenamedType>
+    <RenamedType>
+      <Type guid="6fd479d4-9175-4488-b2ec-fe7d4059738b">FB_VALVEIO32CH</Type>
+      <From>FB_ValveBank</From>
+      <To>FB_ValveIo</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="9abff4a5-9dc4-4338-a357-8d967cc6368b">I_VALVEIO32CH</Type>
+      <From>I_ValveBank</From>
+      <To>I_ValveIo</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="63fac6b4-9286-4ff2-830b-5a885f2ba6a0">M_VALVEMANUALCONTROL</Type>
+      <From>M_TrigValvesManual</From>
+      <To>M_ManualControl</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="8af14a3c-2dc8-4674-a94b-adeb0c9e665c">M_VALVEMANUALCONTROL</Type>
+      <From>M_TrigValvesManual</From>
+      <To>M_ManualControl</To>
+    </RenamedType>
+    <RenamedSymbol>
+      <Type guid="6fd479d4-9175-4488-b2ec-fe7d4059738b">FB_ValveIo</Type>
+      <From>bNumOfChannels</From>
+      <To>nNumOfChannels</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="6fd479d4-9175-4488-b2ec-fe7d4059738b">FB_ValveIo</Type>
+      <From>nValveMaskPerVB</From>
+      <To>nValveMaskInput</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="6fd479d4-9175-4488-b2ec-fe7d4059738b">FB_ValveIo</Type>
+      <From>nValveMaskOutByte4</From>
+      <To>nValveMaskOutWORD</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="6fd479d4-9175-4488-b2ec-fe7d4059738b">FB_ValveIo</Type>
+      <From>nValveMaskOutByte2</From>
+      <To>nValveMaskOutSINT</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="6fd479d4-9175-4488-b2ec-fe7d4059738b">FB_ValveIo</Type>
+      <From>nValveMaskOutByte3</From>
+      <To>nValveMaskOutINT</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="6fd479d4-9175-4488-b2ec-fe7d4059738b">FB_ValveIo</Type>
+      <From>nValveMaskOutByte1</From>
+      <To>nValveMaskOutBYTE</To>
+    </RenamedSymbol>
+    <RenamedType>
+      <Type guid="7477c171-3d1a-41ee-a249-f531bd2a293e">ST_VALVERAWIO</Type>
+      <From>ST_ValveBankRawIo</From>
+      <To>ST_ValveRawIo_EX260</To>
+    </RenamedType>
+    <RenamedSymbol>
+      <Type guid="fe376a1d-db65-4f96-89c4-385f8cf1d130">M_MapMaskToOutBytes</Type>
+      <From>tempMask</From>
+      <To>OutputMask</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="a0d8eee1-e0e9-4485-9452-d3d5f4c9260b">FB_ValveMaskRouter</Type>
+      <From>ateq</From>
+      <To>nAteqIndex</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="a0d8eee1-e0e9-4485-9452-d3d5f4c9260b">FB_ValveMaskRouter</Type>
+      <From>bank</From>
+      <To>nBankIndex</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="a0d8eee1-e0e9-4485-9452-d3d5f4c9260b">FB_ValveMaskRouter</Type>
+      <From>globalOffset</From>
+      <To>nSlotOffset</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="a0d8eee1-e0e9-4485-9452-d3d5f4c9260b">FB_ValveMaskRouter</Type>
+      <From>valveIndex</From>
+      <To>nValveIndex</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="a0d8eee1-e0e9-4485-9452-d3d5f4c9260b">FB_ValveMaskRouter</Type>
+      <From>destIndex</From>
+      <To>nDestIndex</To>
+    </RenamedSymbol>
+    <RenamedType>
+      <Type guid="912e2ede-3ff2-4af3-9484-d20fa1177a89">FB_VALVEMASKHANDLER</Type>
+      <From>FB_ValveMaskHandler</From>
+      <To>FB_ValveMaskHandlerOld</To>
+    </RenamedType>
+    <RenamedSymbol>
+      <Type guid="852b63b7-129e-4d4e-b0a2-86d27375b5d0">FB_ValveMaskHandler</Type>
+      <From>step</From>
+      <To>stSeqCurrentStep</To>
+    </RenamedSymbol>
   </Renames>
 </Refactors>

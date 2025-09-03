@@ -1,123 +1,205 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
-  <POU Name="FB_ValveMaskHandler" Id="{912e2ede-3ff2-4af3-9484-d20fa1177a89}" SpecialFunc="None">
+  <POU Name="FB_ValveMaskHandler" Id="{852b63b7-129e-4d4e-b0a2-86d27375b5d0}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_ValveMaskHandler
 VAR_INPUT
-    abValveMaskSetRequest : ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF BOOL; // From ATEQ handlers
-    aValveMaskSteps : ARRAY[0..GVL_AteqConfig.nMaxTestSteps - 1] OF ST_ValveMaskStep;
-    aAteqValveMaps : ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqValveMap;
-    aAteqValveMasks : ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ARRAY[0..3] OF DWORD; // Up to 128 valves per ATEQ
+    abValveMaskSetRequest : BOOL; // single ATEQ: request/ack from ATEQ handler
+    aValveMaskSteps       : ARRAY[0..GVL_AteqConfig.nMaxTestSteps - 1] OF ST_ValveMaskStep;
+    aAteqValveMask        : ARRAY[0..3] OF DWORD; // next/target mask (4 DWORDs)
 END_VAR
 
 VAR_OUTPUT
-    bValveMaskSetDone : BOOL;
-    aCurrentValveMask : ARRAY[0..3] OF DWORD; // Composite output mask across up to 4 valve banks (128 valves)
-    nCurrentSeqStepIndex : INT;
+    bValveMaskSetDone     : BOOL;
+    aCurrentValveMask     : ARRAY[0..3] OF DWORD; // currently applied mask (to FB_ValveIo)
+    nCurrentSeqStepIndex  : INT;
 END_VAR
 
 VAR
-    bStepReady : BOOL;
-    tTransitionHold : TON;
-    eState : (IDLE, TRANSITION_HOLD, APPLY_FINAL);
-    aPreviousMask : ARRAY[0..3] OF DWORD;
-    aIntermediateMask : ARRAY[0..3] OF DWORD;
-    i : UINT;
-END_VAR
+    eState                : (IDLE, TRANSITION_HOLD, APPLY_FINAL);
 
+    aPreviousMask         : ARRAY[0..3] OF DWORD;
+    aIntermediateMask     : ARRAY[0..3] OF DWORD; // phase-A mask (applied during hold)
 
-]]></Declaration>
+    tTransitionHold       : TON;
+    bTransitionTimerStarted : BOOL;
+
+    i                     : INT;
+    stSeqCurrentStep                  : ST_ValveMaskStep; // local alias
+END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[// Step readiness check 
-bStepReady := TRUE;
-FOR i := 0 TO GVL_AteqConfig.nMaxDeviceCount - 1 DO
-    IF (aValveMaskSteps[nCurrentSeqStepIndex].nExpectedDoneMask AND SHL(1, i)) <> 0 THEN
-        IF NOT abValveMaskSetRequest[i] THEN
-            bStepReady := FALSE;
-            EXIT;
-        END_IF
+      <ST><![CDATA[// This FB is called by each FB_ValveIo instances.
+// Every ATEQ device will have the dedicated set of ValveBanks or IOBlocks, therefor FB_ValveMaskHandler must be instantiated per ATEQ device.
+// Mask sorting always starts at Slot0 , no offsetting or indexing needed.
+
+stSeqCurrentStep := aValveMaskSteps[nCurrentSeqStepIndex]; // Step check may be removed to higher level recipe handler (FB_SequenceStepsHandler)
+
+// Step readiness check (single ATEQ)
+    IF NOT abValveMaskSetRequest THEN
+			bValveMaskSetDone := FALSE;	// not ready
+        RETURN; // skip state machine until the request is present
     END_IF
-END_FOR
+
 
 CASE eState OF
+
+    IDLE:
+        aPreviousMask := aCurrentValveMask;
+
+        CASE stSeqCurrentStep.eTransitionMode OF
+
+            Immediate:
+                aCurrentValveMask := aAteqValveMask;
+                bValveMaskSetDone := TRUE;
+                nCurrentSeqStepIndex := nCurrentSeqStepIndex + 1;
+
+            HoldPrevious_ON: // OBC (Open Before Close)
+                // Phase A: open next while keeping previous
+                FOR i := 0 TO 3 DO
+                    aIntermediateMask[i] := aPreviousMask[i] OR aAteqValveMask[i];
+                    aCurrentValveMask[i] := aIntermediateMask[i];
+                END_FOR
+
+                bTransitionTimerStarted := FALSE;
+                tTransitionHold(IN := FALSE); // ensure timer is reset
+                bValveMaskSetDone := FALSE;
+                eState := TRANSITION_HOLD;
+
+            HoldNext_OFF: // CBO (Close Before Open)
+                // Phase A: close any conflicting bits first (keep previous but clear any bits that are in next)
+                FOR i := 0 TO 3 DO
+                    aIntermediateMask[i] := aPreviousMask[i] AND NOT aAteqValveMask[i];
+                    aCurrentValveMask[i] := aIntermediateMask[i];
+                END_FOR
+                // prepare timer
+                bTransitionTimerStarted := FALSE;
+                tTransitionHold(IN := FALSE);
+                bValveMaskSetDone := FALSE;
+                eState := TRANSITION_HOLD;
+
+        END_CASE
+
+    TRANSITION_HOLD:
+        // Start the timer on the first cycle in this state with edge
+        IF NOT bTransitionTimerStarted THEN
+            tTransitionHold(IN := TRUE, PT := aValveMaskSteps[nCurrentSeqStepIndex].tTransitionHoldTime);
+            bTransitionTimerStarted := TRUE;
+        ELSE
+            tTransitionHold(IN := TRUE); // Keep timer running
+        END_IF
+
+        // While in hold, aCurrentValveMask remains the intermediateMask (already set)
+        IF tTransitionHold.Q THEN
+            // apply final mask
+            // Stop timer and clear flag
+            tTransitionHold(IN := FALSE);
+            bTransitionTimerStarted := FALSE;
+            eState := APPLY_FINAL;
+        END_IF
+
+    APPLY_FINAL:
+        // Final application: set the target mask
+        FOR i := 0 TO 3 DO
+            aCurrentValveMask[i] := aAteqValveMask[i];
+        END_FOR
+        bValveMaskSetDone := TRUE;
+        // Advance sequence index
+        nCurrentSeqStepIndex := nCurrentSeqStepIndex + 1;
+        // return to IDLE
+        eState := IDLE;
+
+END_CASE
+]]></ST>
+    </Implementation>
+    <Method Name="M_old" Id="{35ed2413-461b-4b06-894b-5bfbb898bd34}">
+      <Declaration><![CDATA[METHOD M_old : BOOL
+VAR_INPUT
+    abValveMaskSetRequest : BOOL; // Single ATEQ handler, just one flag
+    aValveMaskSteps       : ARRAY[0..GVL_AteqConfig.nMaxTestSteps - 1] OF ST_ValveMaskStep;
+    aAteqValveMask        : ARRAY[0..3] OF DWORD; // Up to 128 valves for each ATEQ
+END_VAR
+
+VAR_OUTPUT
+    bValveMaskSetDone     : BOOL;
+    aCurrentValveMask     : ARRAY[0..3] OF DWORD; // Output mask (to valve IO block)
+    nCurrentSeqStepIndex  : INT;
+END_VAR
+
+VAR
+    bStepReady            : BOOL;
+    tTransitionHold       : TON;
+    eState                : IDLE, TRANSITION_HOLD, APPLY_FINAL;
+    aPreviousMask         : ARRAY[0..3] OF DWORD;
+    aIntermediateMask     : ARRAY[0..3] OF DWORD;
+    i                     : UINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// This FB is called by each FB_ValveIo instances.
+// Every ATEQ device will have the dedicated set of ValveBanks or IOBlocks, therefor FB_ValveMaskHandler must be instantiated per ATEQ device.
+// Mask sorting always starts at Slot0 , no offsetting or indexing needed.
+
+
+bStepReady := TRUE;	// Step readiness check
+
+IF (aValveMaskSteps[nCurrentSeqStepIndex].nExpectedDoneMask <> 0) THEN
+    IF NOT abValveMaskSetRequest THEN
+        bStepReady := FALSE;
+    END_IF
+END_IF
+
+
+CASE eState OF
+
     IDLE:
         IF bStepReady THEN
             aPreviousMask := aCurrentValveMask;
+
             CASE aValveMaskSteps[nCurrentSeqStepIndex].eTransitionMode OF
 
                 HoldPrevious_ON: // OBC Open Next before Closing Previous
-                    aIntermediateMask := M_ComposeValveMask(aAteqValveMaps, aAteqValveMasks);
+                    aIntermediateMask := aAteqValveMask;
                     FOR i := 0 TO 3 DO
                         aCurrentValveMask[i] := aPreviousMask[i] OR aIntermediateMask[i];
                     END_FOR
                     eState := TRANSITION_HOLD;
-                   
-                HoldNext_OFF: // CBO Close Previous before Openning Next
-                    aIntermediateMask := M_ComposeValveMask(aAteqValveMaps, aAteqValveMasks);
+
+                HoldNext_OFF: // CBO Close Previous before Opening Next
+                    aIntermediateMask := aAteqValveMask;
                     FOR i := 0 TO 3 DO
                         aCurrentValveMask[i] := aPreviousMask[i] AND NOT aIntermediateMask[i];
                     END_FOR
                     eState := TRANSITION_HOLD;
-                    
+
                 Immediate:
-                    aCurrentValveMask := M_ComposeValveMask(aAteqValveMaps, aAteqValveMasks);
+                    aCurrentValveMask := aAteqValveMask;
                     bValveMaskSetDone := TRUE;
                     nCurrentSeqStepIndex := nCurrentSeqStepIndex + 1;
             END_CASE
         END_IF
 
     TRANSITION_HOLD:
-       tTransitionHold(IN := TRUE, PT := aValveMaskSteps[nCurrentSeqStepIndex].tTransitionHoldTime);
-
+        tTransitionHold(IN := TRUE, PT := aValveMaskSteps[nCurrentSeqStepIndex].tTransitionHoldTime);
         IF tTransitionHold.Q THEN
             eState := APPLY_FINAL;
             tTransitionHold(IN := FALSE);
         END_IF
 
     APPLY_FINAL:
-        aCurrentValveMask := M_ComposeValveMask(aAteqValveMaps, aAteqValveMasks);
+        aCurrentValveMask := aAteqValveMask;
         bValveMaskSetDone := TRUE;
         nCurrentSeqStepIndex := nCurrentSeqStepIndex + 1;
         eState := IDLE;
+
 END_CASE
 ]]></ST>
-    </Implementation>
-    <Method Name="M_ComposeValveMask" Id="{02ff877c-ba6f-43fd-98c2-2957bc2319d2}">
-      <Declaration><![CDATA[METHOD PRIVATE M_ComposeValveMask : ARRAY[0..3] OF DWORD
-VAR_INPUT
-    aValveMaps : ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqValveMap;
-    aMasks     : ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ARRAY[0..3] OF DWORD;
-END_VAR
-VAR
-    result : ARRAY[0..3] OF DWORD := [0, 0, 0, 0];
-    idx, bitOffset, wordIndex : UINT;
-    shiftedMask : ARRAY[0..3] OF DWORD;
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[
-FOR idx := 0 TO GVL_AteqConfig.nMaxDeviceCount - 1 DO
-    FOR wordIndex := 0 TO 3 DO
-        bitOffset := aValveMaps[idx].nValveStartIndex;
-        IF bitOffset < 32 THEN
-            result[0] := result[0] OR SHL(aMasks[idx][wordIndex], bitOffset);
-        ELSIF bitOffset < 64 THEN
-            result[1] := result[1] OR SHL(aMasks[idx][wordIndex], bitOffset - 32);
-        ELSIF bitOffset < 96 THEN
-            result[2] := result[2] OR SHL(aMasks[idx][wordIndex], bitOffset - 64);
-        ELSE
-            result[3] := result[3] OR SHL(aMasks[idx][wordIndex], bitOffset - 96);
-        END_IF
-    END_FOR
-END_FOR
-M_ComposeValveMask := result;]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_ValveMaskHandler">
-      <LineId Id="435" Count="51" />
+      <LineId Id="274" Count="2" />
+      <LineId Id="278" Count="77" />
       <LineId Id="9" Count="0" />
     </LineIds>
-    <LineIds Name="FB_ValveMaskHandler.M_ComposeValveMask">
-      <LineId Id="38" Count="14" />
+    <LineIds Name="FB_ValveMaskHandler.M_old">
+      <LineId Id="6" Count="56" />
       <LineId Id="5" Count="0" />
     </LineIds>
   </POU>

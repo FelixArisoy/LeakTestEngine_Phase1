@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
-  <fileHeader companyName="Beckhoff Automation GmbH" productName="TwinCAT PLC Control" productVersion="3.5.13.21" creationDateTime="2025-08-26T07:55:48.663287" />
-  <contentHeader name="ValveControllerPLC" modificationDateTime="2025-08-26T07:55:48.6666405">
+  <fileHeader companyName="Beckhoff Automation GmbH" productName="TwinCAT PLC Control" productVersion="3.5.13.21" creationDateTime="2025-08-28T04:41:22.868778" />
+  <contentHeader name="ValveControllerPLC" modificationDateTime="2025-08-28T04:41:22.868778">
     <coordinateInfo>
       <fbd>
         <scaling x="1" y="1" />
@@ -179,21 +179,21 @@ CASE eState OF
             CASE aValveMaskSteps[nCurrentSeqStepIndex].eTransitionMode OF
 
                 HoldPrevious_ON: // OBC Open Next before Closing Previous
-                    aIntermediateMask := M_ComposeValveBankMask(aAteqValveMaps, aAteqValveMasks);
+                    aIntermediateMask := M_ComposeValveMask(aAteqValveMaps, aAteqValveMasks);
                     FOR i := 0 TO 3 DO
                         aCurrentValveMask[i] := aPreviousMask[i] OR aIntermediateMask[i];
                     END_FOR
                     eState := TRANSITION_HOLD;
                    
                 HoldNext_OFF: // CBO Close Previous before Openning Next
-                    aIntermediateMask := M_ComposeValveBankMask(aAteqValveMaps, aAteqValveMasks);
+                    aIntermediateMask := M_ComposeValveMask(aAteqValveMaps, aAteqValveMasks);
                     FOR i := 0 TO 3 DO
                         aCurrentValveMask[i] := aPreviousMask[i] AND NOT aIntermediateMask[i];
                     END_FOR
                     eState := TRANSITION_HOLD;
                     
                 Immediate:
-                    aCurrentValveMask := M_ComposeValveBankMask(aAteqValveMaps, aAteqValveMasks);
+                    aCurrentValveMask := M_ComposeValveMask(aAteqValveMaps, aAteqValveMasks);
                     bValveMaskSetDone := TRUE;
                     nCurrentSeqStepIndex := nCurrentSeqStepIndex + 1;
             END_CASE
@@ -208,7 +208,7 @@ CASE eState OF
         END_IF
 
     APPLY_FINAL:
-        aCurrentValveMask := M_ComposeValveBankMask(aAteqValveMaps, aAteqValveMasks);
+        aCurrentValveMask := M_ComposeValveMask(aAteqValveMaps, aAteqValveMasks);
         bValveMaskSetDone := TRUE;
         nCurrentSeqStepIndex := nCurrentSeqStepIndex + 1;
         eState := IDLE;
@@ -218,7 +218,7 @@ END_CASE
         </body>
         <addData>
           <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
-            <Method name="M_ComposeValveBankMask" ObjectId="02ff877c-ba6f-43fd-98c2-2957bc2319d2">
+            <Method name="M_ComposeValveMask" ObjectId="02ff877c-ba6f-43fd-98c2-2957bc2319d2">
               <interface>
                 <returnType>
                   <array>
@@ -331,11 +331,11 @@ FOR idx := 0 TO GVL_AteqConfig.nMaxDeviceCount - 1 DO
         END_IF
     END_FOR
 END_FOR
-M_ComposeValveBankMask := result;</xhtml>
+M_ComposeValveMask := result;</xhtml>
                 </ST>
               </body>
               <InterfaceAsPlainText>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">METHOD PRIVATE M_ComposeValveBankMask : ARRAY[0..3] OF DWORD
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">METHOD PRIVATE M_ComposeValveMask : ARRAY[0..3] OF DWORD
 VAR_INPUT
     aValveMaps : ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqValveMap;
     aMasks     : ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ARRAY[0..3] OF DWORD;
@@ -393,7 +393,7 @@ END_VAR
     <data name="http://www.3s-software.com/plcopenxml/projectstructure" handleUnknown="discard">
       <ProjectStructure>
         <Object Name="FB_ValveMaskHandler" ObjectId="912e2ede-3ff2-4af3-9484-d20fa1177a89">
-          <Object Name="M_ComposeValveBankMask" ObjectId="02ff877c-ba6f-43fd-98c2-2957bc2319d2" />
+          <Object Name="M_ComposeValveMask" ObjectId="02ff877c-ba6f-43fd-98c2-2957bc2319d2" />
         </Object>
       </ProjectStructure>
     </data>

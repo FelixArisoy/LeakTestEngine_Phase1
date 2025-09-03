@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <Itf Name="I_ValveIo" Id="{9abff4a5-9dc4-4338-a357-8d967cc6368b}">
+    <Declaration><![CDATA[INTERFACE I_ValveIo EXTENDS I_Device
+]]></Declaration>
+    <Method Name="M_ManualControl" Id="{63fac6b4-9286-4ff2-830b-5a885f2ba6a0}">
+      <Declaration><![CDATA[METHOD M_ManualControl : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="M_MapMaskToOutBytes" Id="{755f9910-c101-4fb7-90ee-bcba44a6a4a3}">
+      <Declaration><![CDATA[METHOD M_MapMaskToOutBytes : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="M_ValvePositionOK" Id="{a1eac1b7-3181-4ced-9150-59d0318060bd}">
+      <Declaration><![CDATA[METHOD M_ValvePositionOK : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="pNumOfChannels" Id="{e2f540e3-a647-4887-b05a-79e0b0c456f7}">
+      <Declaration><![CDATA[PROPERTY pNumOfChannels : INT]]></Declaration>
+      <Get Name="Get" Id="{e67456f8-dd4a-4c5e-ab39-b721f030e82f}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{b48f9988-9810-4cc2-b8f1-1c3d55fe87ae}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="pNumOfValvesAvailable" Id="{f7ac2a41-ab7b-4416-8cf9-6ea4b760921c}">
+      <Declaration><![CDATA[PROPERTY pNumOfValvesAvailable : INT]]></Declaration>
+      <Get Name="Get" Id="{1fb65154-0e04-4899-90af-8f762ad2b37c}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{f59aaf3d-2dea-4a6d-9e63-928ca745b81c}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="pValveMaskInput" Id="{a2bf4f17-8acc-4c24-9eb3-27d4979bba01}">
+      <Declaration><![CDATA[PROPERTY pValveMaskInput : DWORD]]></Declaration>
+      <Set Name="Set" Id="{0cd549e6-c2c7-4c72-bc8b-00d6685b8fd8}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="pValveMaskOutBYTE" Id="{1ee32bb6-fd44-4bb7-94af-44c409f2bc06}">
+      <Declaration><![CDATA[PROPERTY pValveMaskOutBYTE : ARRAY[0..3] OF BYTE
+
+]]></Declaration>
+      <Get Name="Get" Id="{3f2a80d1-2a49-447a-8947-7db9a1c75cf2}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="pValveMaskOutDINT" Id="{cfaea788-7599-476d-9bc2-31b81c3bc89c}">
+      <Declaration><![CDATA[PROPERTY pValveMaskOutDINT : DINT]]></Declaration>
+      <Get Name="Get" Id="{843e320a-605f-48a1-a25a-6faceccb9cc5}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="pValveMaskOutDWORD" Id="{ac7ba397-3b3b-4a5c-acc8-c7f7d62d2ed3}">
+      <Declaration><![CDATA[PROPERTY pValveMaskOutDWORD : DWORD]]></Declaration>
+      <Get Name="Get" Id="{37006514-9632-4a5d-bb42-7ec39080674d}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="pValveMaskOutINT" Id="{0907e569-f36c-4bcb-b139-f461796d20c3}">
+      <Declaration><![CDATA[PROPERTY pValveMaskOutINT : ARRAY[0..1] OF INT]]></Declaration>
+      <Get Name="Get" Id="{59cf7d33-61bd-4b00-85a6-881a8718f31c}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="pValveMaskOutSINT" Id="{ea11584c-ad6f-4276-bf76-f031e87e0e90}">
+      <Declaration><![CDATA[PROPERTY pValveMaskOutSINT : ARRAY[0..3] OF SINT]]></Declaration>
+      <Get Name="Get" Id="{7ab9c677-32a9-4418-90ad-4ce8ab205e3e}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="pValveMaskOutWORD" Id="{02b1fa7a-6aea-45ae-bfb8-803a72216ab7}">
+      <Declaration><![CDATA[PROPERTY pValveMaskOutWORD : ARRAY[0..1] OF WORD]]></Declaration>
+      <Get Name="Get" Id="{2c0e895e-7086-4d0e-8430-60874d40d872}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="pValvePositionFeedback" Id="{c55bfe97-8d3b-45da-a426-2abf1a4d9ef0}">
+      <Declaration><![CDATA[PROPERTY pValvePositionFeedback : DWORD]]></Declaration>
+      <Set Name="Set" Id="{084da671-2287-4f87-9230-3828fc2a8438}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>

@@ -3,7 +3,7 @@
   <POU Name="FB_Test_ValveMaskHandler" Id="{2ed27400-4e55-4e55-b28d-caaa63e6c174}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Test_ValveMaskHandler
 VAR
-    uut : FB_ValveMaskHandler; // Unit under test (UUT)
+    uut : FB_ValveMaskHandlerOld; // Unit under test (UUT)
 
     // Test input setup
     aValveMaskSteps : ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_ValveMaskStep;
