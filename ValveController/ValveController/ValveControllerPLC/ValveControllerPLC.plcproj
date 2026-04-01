@@ -27,103 +27,103 @@
     <Compile Include="0_Interfaces\I_ValveIo.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="1_PLC\FB_DwellTime.TcPOU">
+    <Compile Include="2_Devices\1_PLC\FB_DwellTime.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="1_PLC\FB_MainPLC.TcPOU">
+    <Compile Include="2_Devices\1_PLC\FB_MainPLC.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="2_ValveBank\DUTs\E_ValveTransitionMode.TcDUT">
+    <Compile Include="2_Devices\2_ValveBank\DUTs\E_ValveTransitionMode.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="2_ValveBank\DUTs\ST_AteqValveMap.TcDUT">
+    <Compile Include="2_Devices\2_ValveBank\DUTs\ST_AteqValveMap.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="2_ValveBank\DUTs\ST_ValveRawIo_EX260.TcDUT">
+    <Compile Include="2_Devices\2_ValveBank\DUTs\ST_ValveMask128.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="2_ValveBank\DUTs\ST_ValveMask128.TcDUT">
+    <Compile Include="2_Devices\2_ValveBank\DUTs\ST_ValveMaskStep.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="2_ValveBank\DUTs\ST_ValveMaskStep.TcDUT">
+    <Compile Include="2_Devices\2_ValveBank\DUTs\ST_ValveRawIo_EX260.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="2_ValveBank\POUs\FB_ValveIo.TcPOU">
+    <Compile Include="2_Devices\2_ValveBank\POUs\FB_ValveIo.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="2_ValveBank\POUs\FB_ValveMaskHandler.TcPOU">
+    <Compile Include="2_Devices\2_ValveBank\POUs\FB_ValveMaskHandler.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="2_ValveBank\POUs\FB_ValveMaskHandlerOld.TcPOU">
+    <Compile Include="2_Devices\2_ValveBank\POUs\FB_ValveMaskHandlerOld.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_Ateq\DUTs_Control\E_AteqControlErrorFlags.TcDUT">
+    <Compile Include="2_Devices\3_Ateq\DUTs_Control\E_AteqControlErrorFlags.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_Ateq\DUTs_Io\E_AteqStepsTable.TcTLEO">
+    <Compile Include="2_Devices\3_Ateq\DUTs_Control\E_AteqEndianType.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_Ateq\POUs\FB_AteqCmdHandler.TcPOU">
+    <Compile Include="2_Devices\3_Ateq\DUTs_Control\E_AteqHandshakeSteps.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_Ateq\POUs\FB_AteqControl.TcPOU">
+    <Compile Include="2_Devices\3_Ateq\DUTs_Control\E_AteqProgramSeqSteps.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_Ateq\POUs\FB_AteqRecipeHandler.TcPOU">
+    <Compile Include="2_Devices\3_Ateq\DUTs_Control\E_AteqRecipeHandlerSteps.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_Ateq\POUs\FB_AteqResultHandler.TcPOU">
+    <Compile Include="2_Devices\3_Ateq\DUTs_Control\ST_AteqResultsDecoded.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_Ateq\DUTs_Control\E_AteqEndianType.TcDUT">
+    <Compile Include="2_Devices\3_Ateq\DUTs_Control\ST_AteqResultsRaw.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_Ateq\DUTs_Control\E_AteqHandshakeSteps.TcDUT">
+    <Compile Include="2_Devices\3_Ateq\DUTs_Io\E_AteqStepsTable.TcTLEO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_Ateq\DUTs_Control\E_AteqProgramSeqSteps.TcDUT">
+    <Compile Include="2_Devices\3_Ateq\DUTs_Io\ST_AteqCommands.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_Ateq\DUTs_Control\E_AteqRecipeHandlerSteps.TcDUT">
+    <Compile Include="2_Devices\3_Ateq\DUTs_Io\ST_AteqEcho.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_Ateq\DUTs_Control\ST_AteqResultsDecoded.TcDUT">
+    <Compile Include="2_Devices\3_Ateq\DUTs_Io\ST_AteqErrorCode.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_Ateq\DUTs_Control\ST_AteqResultsRaw.TcDUT">
+    <Compile Include="2_Devices\3_Ateq\DUTs_Io\ST_AteqIo.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_Ateq\DUTs_Io\ST_AteqCommands.TcDUT">
+    <Compile Include="2_Devices\3_Ateq\DUTs_Io\ST_AteqRawIo.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_Ateq\DUTs_Io\ST_AteqEcho.TcDUT">
+    <Compile Include="2_Devices\3_Ateq\DUTs_Io\ST_AteqRead.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_Ateq\DUTs_Io\ST_AteqErrorCode.TcDUT">
+    <Compile Include="2_Devices\3_Ateq\DUTs_Io\ST_AteqRealtimeTestResults.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_Ateq\DUTs_Io\ST_AteqIo.TcDUT">
+    <Compile Include="2_Devices\3_Ateq\DUTs_Io\ST_AteqWrite.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_Ateq\DUTs_Io\ST_AteqRawIo.TcDUT">
+    <Compile Include="2_Devices\3_Ateq\POUs\FB_AteqCmdHandler.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_Ateq\DUTs_Io\ST_AteqRead.TcDUT">
+    <Compile Include="2_Devices\3_Ateq\POUs\FB_AteqControl.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_Ateq\DUTs_Io\ST_AteqRealtimeTestResults.TcDUT">
+    <Compile Include="2_Devices\3_Ateq\POUs\FB_AteqRecipeHandler.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_Ateq\DUTs_Io\ST_AteqWrite.TcDUT">
+    <Compile Include="2_Devices\3_Ateq\POUs\FB_AteqResultHandler.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="4_Sequence\FB_HexDecoder.TcPOU">
+    <Compile Include="3_Instructions\FB_HexDecoder.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="4_Sequence\FB_Sequencer.TcPOU">
+    <Compile Include="3_Instructions\FB_Sequencer.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="4_Sequence\FB_TextFile.TcPOU">
+    <Compile Include="3_Instructions\FB_TextFile.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\GenericFieldDevice\E_StatusFieldDevice.TcDUT">
@@ -159,50 +159,51 @@
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
-    <Compile Include="PRG\AteqControl.TcTTO">
+    <Compile Include="1_MainTasks\AteqControl.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PRG\PlcTask.TcTTO">
+    <Compile Include="1_MainTasks\PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PRG\PRG_ATEQ.TcPOU">
+    <Compile Include="1_MainTasks\PRG_ATEQ.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PRG\PRG_MAIN.TcPOU">
+    <Compile Include="1_MainTasks\PRG_MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="zTEST\Test_Ateq\FB_Test_AteqControl.TcPOU">
+    <Compile Include="zTcUnitCalls\Test_Ateq\FB_Test_AteqControl.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="zTEST\PRG_TEST.TcPOU">
+    <Compile Include="zTcUnitCalls\PRG_TEST.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="zTEST\Test_ValveBank\FB_Test_ValveBank.TcPOU">
+    <Compile Include="zTcUnitCalls\Test_ValveBank\FB_Test_ValveBank.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="zTEST\Test_ValveBank\FB_Test_ValveMaskHandler.TcPOU">
+    <Compile Include="zTcUnitCalls\Test_ValveBank\FB_Test_ValveMaskHandler.TcPOU">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="2_ValveBank\DUTs" />
-    <Folder Include="2_ValveBank\POUs" />
-    <Folder Include="3_Ateq\POUs" />
-    <Folder Include="3_Ateq\DUTs_Control" />
-    <Folder Include="3_Ateq\DUTs_Io" />
+    <Folder Include="2_Devices\1_PLC" />
+    <Folder Include="2_Devices\2_ValveBank" />
+    <Folder Include="2_Devices\2_ValveBank\DUTs" />
+    <Folder Include="2_Devices\2_ValveBank\POUs" />
+    <Folder Include="2_Devices\3_Ateq" />
+    <Folder Include="2_Devices\3_Ateq\DUTs_Control" />
+    <Folder Include="2_Devices\3_Ateq\DUTs_Io" />
+    <Folder Include="2_Devices\3_Ateq\POUs" />
     <Folder Include="DUTs" />
     <Folder Include="DUTs\GenericFieldDevice" />
     <Folder Include="GVLs" />
-    <Folder Include="1_PLC" />
-    <Folder Include="2_ValveBank" />
-    <Folder Include="3_Ateq" />
-    <Folder Include="4_Sequence" />
+    <Folder Include="3_Instructions" />
     <Folder Include="0_Interfaces" />
     <Folder Include="GARBAGE" />
-    <Folder Include="PRG" />
-    <Folder Include="zTEST" />
-    <Folder Include="zTEST\Test_Ateq" />
-    <Folder Include="zTEST\Test_ValveBank" />
+    <Folder Include="2_Devices" />
+    <Folder Include="1_MainTasks" />
+    <Folder Include="zTcUnitCalls" />
+    <Folder Include="zTcUnitCalls\Test_Ateq" />
+    <Folder Include="zTcUnitCalls\Test_ValveBank" />
     <Folder Include="VISUs" />
   </ItemGroup>
   <ItemGroup>
@@ -216,6 +217,7 @@
     </PlaceholderReference>
     <PlaceholderReference Include="Tc2_Utilities">
       <DefaultResolution>Tc2_Utilities, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_Utilities</Namespace>
     </PlaceholderReference>
     <PlaceholderReference Include="Tc3_Module">
       <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>

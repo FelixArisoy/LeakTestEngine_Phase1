@@ -1,16 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
   <Itf Name="I_ValveIo" Id="{9abff4a5-9dc4-4338-a357-8d967cc6368b}">
     <Declaration><![CDATA[INTERFACE I_ValveIo EXTENDS I_Device
 ]]></Declaration>
     <Method Name="M_ManualControl" Id="{63fac6b4-9286-4ff2-830b-5a885f2ba6a0}">
       <Declaration><![CDATA[METHOD M_ManualControl : BOOL
 VAR_INPUT
+	ManualTrigValve : ARRAY[0..31] OF BOOL;
 END_VAR
+
 ]]></Declaration>
     </Method>
     <Method Name="M_MapMaskToOutBytes" Id="{755f9910-c101-4fb7-90ee-bcba44a6a4a3}">
-      <Declaration><![CDATA[METHOD M_MapMaskToOutBytes : BOOL
+      <Declaration><![CDATA[METHOD M_MapMaskToOutBytes
 VAR_INPUT
 END_VAR
 ]]></Declaration>

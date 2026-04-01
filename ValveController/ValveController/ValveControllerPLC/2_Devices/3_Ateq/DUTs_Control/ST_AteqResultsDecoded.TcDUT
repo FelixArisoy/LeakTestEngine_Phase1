@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="ST_AteqResultsDecoded" Id="{76dbbe4c-3efb-4e8f-98ea-bd8ac81cd241}">
+    <Declaration><![CDATA[TYPE ST_AteqResultsDecoded :
+STRUCT
+	
+    nProgramNumber      : WORD;
+    nTestType           : WORD;
+    nRelayImage         : WORD;  // Original raw word
+
+    // Relay status image decoded bits
+    bPassPart           : BOOL;  // Bit 0 = 1: pass
+    bFailMaxFlowReject	: BOOL;  // Bit 1 = 1: fail (max)
+    bFailMinFlowReject	: BOOL;  // Bit 2 = 1: fail (min)
+    bAlarm              : BOOL;  // Bit 3 = 1: alarm
+    bUnusedBit4         : BOOL;  // Bit 4
+    bUnusedBit5			: BOOL;  // Bit 5
+    bUnusedBit6			: BOOL;  // Bit 6
+    bUnusedBit7			: BOOL;  // Bit 7
+
+    nAlarmCode          : WORD;
+
+    fPressure          	: REAL;
+    nPressureUnitCode   : DWORD;
+
+    fLeak              	: REAL;
+    nLeakUnitCode       : DWORD;
+
+    fPressurePiezo2    			: REAL;
+    nPressurePiezo2UnitCode     : DWORD;
+
+    fTestCheckResult    		: REAL;
+    nTestCheckResultUnitCode  	: DWORD;
+
+    fLargeLeak         	: REAL;
+    nLargeLeakUnitCode  : DWORD;
+
+    fPaLeakResult      	: REAL;
+
+	aReserved			: ARRAY[27..36] OF WORD; // Word 27-36
+	
+    fAtmPressure    	: REAL;
+    fTempCelcius     	: REAL;
+
+   	dtTestTimeStamp		: DT;
+	
+END_STRUCT
+END_TYPE
+
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

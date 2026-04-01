@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.67">
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.71">
 	<DataTypes>
 		<DataType>
 			<Name GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Name>
@@ -24,7 +24,7 @@
 			</ArrayInfo>
 		</DataType>
 	</DataTypes>
-	<Project ProjectGUID="{A76AF4C2-744F-4C27-A416-5035FFBECB46}" AmlIdsEnabled="true" TargetNetId="5.76.71.245.1.1" Target64Bit="true" ShowHideConfigurations="#x6">
+	<Project ProjectGUID="{A76AF4C2-744F-4C27-A416-5035FFBECB46}" AmlIdsEnabled="true" TargetNetId="5.76.71.245.1.1" ShowHideConfigurations="#x6">
 		<System>
 			<Settings MaxCpus="4">
 				<Cpu CpuId="3"/>
@@ -48,7 +48,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{FF505B91-FACF-4A2B-B73E-9C5E3B10185D}" Name="ValveControllerPLC" PrjFilePath="ValveControllerPLC\ValveControllerPLC.plcproj" TmcFilePath="ValveControllerPLC\ValveControllerPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{6E87CDC8-5D11-D4CB-9A8D-9CBF38DA7EDC}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{65B0C8FF-9CDF-B90A-E483-7552F4050610}">
 					<Name>ValveControllerPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
@@ -102,7 +102,10 @@
 				</Image>
 				<Box Id="1" AmlId="{4D0E8789-E929-49EB-9FEF-70E07FAF4004}" BoxType="9121">
 					<Name>ateqf620</Name>
-					<Comment><![CDATA[GSDML Name: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
+					<Comment><![CDATA[
+The GSDML is not available!
+
+GSDML Name: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
 Path: \\vmware-host\Shared Folders\VMShared\(X)Research\2025_05_ValveControllerOOP\
 VendorName: Hilscher Gesellschaft für Systemautomation mbH
 OrderNumber: 153x.10x

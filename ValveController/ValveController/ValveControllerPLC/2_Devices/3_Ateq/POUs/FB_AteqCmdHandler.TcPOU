@@ -1,0 +1,295 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <POU Name="FB_AteqCmdHandler" Id="{736e6d42-ec43-485f-bfa6-1943d6a22849}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AteqCmdHandler //This is a child FB to FB_AteqControl
+VAR_INPUT    
+	bCmdEcho        : BOOL; // Command echo bit from ATEQ (TRUE while active)
+    bCmdError       : BOOL; // Error code bit from ATEQ
+END_VAR
+VAR_IN_OUT
+    stIo_Ref        : ST_AteqIo; // Reference to the entire mapped I/O structure for ATEQ status checks
+END_VAR
+VAR_OUTPUT
+    eStatesAteqHandshake         : E_AteqHandshakeSteps := E_AteqHandshakeSteps.CMD_IDLE; // Current status of this command handler instance	
+END_VAR
+VAR
+	//bDeviceReady		: BOOL;
+	bReady				: BOOL;
+	bCmdTrigger     	: BOOL; // The actual command bit from stIo.stWrite.stCommands (will be set FALSE by this FB)
+	bCmdErrorReceived	: BOOL;
+	bCmdTimeout			: BOOL;
+	stClearCmdOut		: ST_AteqCommands;
+	nRetryAttempts 		: INT := 0;
+	nMaxRetries 		: INT := 3;
+	tCmdTimeout     	: TON; // Timer for overall command timeout (e.g., 5 seconds)
+    tCmdInProgressDWELL	: TON;
+	tCmdDoneDWELL		: TON;
+	bResetCallComp		: BOOL;
+	bResetRequest		: BOOL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[tCmdTimeout.PT 			:= GVL_AteqConfig.tCmdTimeout;
+tCmdInProgressDWELL.PT 	:= GVL_AteqConfig.tCmdInProgressDWELL;
+tCmdDoneDWELL.PT		:= GVL_AteqConfig.tCmdDoneDWELL;
+
+IF bResetRequest THEN
+	eStatesAteqHandshake 	:= CMD_RESET;
+END_IF
+
+CASE eStatesAteqHandshake OF
+//############################################################################################
+    CMD_IDLE:
+        bReady := TRUE;
+		IF bCmdTrigger THEN
+			tCmdTimeout			(IN := TRUE);
+		END_IF	
+					
+		IF bCmdTrigger AND stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd AND
+			stIo_Ref.stRead.anErrorCode[0] = 0 AND 
+			stIo_Ref.stRead.anErrorCode[1] = 0 THEN //Error not exist
+
+			bReady := FALSE;					
+            eStatesAteqHandshake 	:= CMD_IN_PROGRESS;
+            tCmdTimeout			(IN := FALSE);			
+		ELSIF tCmdTimeout.Q THEN
+			eStatesAteqHandshake 	:= CMD_TIMEOUT;
+        END_IF
+
+//############################################################################################
+    CMD_IN_PROGRESS:
+        
+		tCmdTimeout				(IN := TRUE);
+		tCmdInProgressDWELL		(IN := TRUE);	// Buffer for execution to begin	
+	IF tCmdInProgressDWELL.Q THEN
+		tCmdInProgressDWELL		(IN := FALSE);			
+        IF bCmdEcho THEN
+			eStatesAteqHandshake 	:= CMD_WAIT_CYCLE_END;
+			tCmdTimeout			(IN := FALSE);			
+		ELSIF bCmdError AND (stIo_Ref.stRead.anErrorCode[0] <> 16#FF AND stIo_Ref.stRead.anErrorCode[1] <> 16#FF) THEN
+			eStatesAteqHandshake 	:= CMD_ERROR;			
+		ELSIF tCmdTimeout.Q THEN
+			eStatesAteqHandshake 	:= CMD_TIMEOUT;
+        END_IF
+	END_IF
+		
+
+//############################################################################################		
+    CMD_WAIT_CYCLE_END:
+        // Debug: Cmd cycle monitor need to be added
+		IF stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd THEN
+			eStatesAteqHandshake 	:= CMD_EOC;
+        END_IF
+
+
+//############################################################################################
+	CMD_EOC:
+	
+		IF (stIo_Ref.stRead.anErrorCode[0] = 0 AND stIo_Ref.stRead.anErrorCode[1] = 0) THEN
+			eStatesAteqHandshake 	:= CMD_DONE;
+		ELSIF bCmdError 
+		OR (stIo_Ref.stRead.anErrorCode[0] <> 0 AND stIo_Ref.stRead.anErrorCode[1] <> 0) THEN
+			eStatesAteqHandshake 	:= CMD_ERROR;            
+		END_IF
+	
+
+
+//############################################################################################		
+	CMD_DONE:
+				
+		tCmdDoneDWELL(IN := TRUE); //Reset CmdTrigger after dwell
+		IF tCmdDoneDWELL.Q THEN
+			eStatesAteqHandshake 	:= CMD_RESET;
+		END_IF
+		
+
+//############################################################################################        	
+    CMD_ERROR:
+        bCmdTrigger 				:= FALSE;
+		stIo_Ref.stWrite.stCommands := stClearCmdOut; // Clear Output
+		tCmdTimeout				(IN := FALSE);
+		
+    	IF nRetryAttempts < nMaxRetries THEN
+        	nRetryAttempts 			:= nRetryAttempts + 1;
+			bCmdTrigger 			:= TRUE;
+        	eStatesAteqHandshake 	:= CMD_IDLE; // Retry
+		ELSE
+			bCmdErrorReceived 		:= TRUE;
+        	eStatesAteqHandshake	:= CMD_FAIL; //hard fail
+		END_IF
+		
+
+//############################################################################################		
+    CMD_TIMEOUT:
+		bCmdTrigger 				:= FALSE;
+		stIo_Ref.stWrite.stCommands := stClearCmdOut; // Clear Output
+		tCmdTimeout				(IN := FALSE);
+		
+    	IF nRetryAttempts < nMaxRetries THEN
+        	nRetryAttempts 			:= nRetryAttempts + 1;
+			bCmdTrigger 			:= TRUE;
+        	eStatesAteqHandshake 	:= CMD_IDLE; // Retry
+    	ELSE
+        	bCmdTimeout				:= TRUE;
+			eStatesAteqHandshake 	:= CMD_FAIL; //hard fail
+    	END_IF
+
+
+//############################################################################################
+	CMD_RESET:
+		bResetCallComp := M_Reset();
+		IF bResetCallComp THEN
+			eStatesAteqHandshake 	:= CMD_IDLE;
+		END_IF
+
+		
+//############################################################################################
+	CMD_FAIL:
+		; // Throw Fault and HOLD STATE UNTIL Reset Request
+END_CASE
+]]></ST>
+    </Implementation>
+    <Method Name="M_Reset" Id="{fdad7fb2-10b9-4753-be55-6426b3d99521}">
+      <Declaration><![CDATA[METHOD PRIVATE M_Reset : BOOL
+VAR
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[M_Reset := FALSE;
+
+IF NOT M_Reset THEN
+	bResetRequest				:= FALSE;
+	nRetryAttempts 				:= 0; // Clear on full reset done
+	bCmdTrigger 				:= FALSE;
+	stIo_Ref.stWrite.stCommands := stClearCmdOut; // Clear Output
+	tCmdTimeout			(IN 	:= FALSE);
+	tCmdInProgressDWELL	(IN 	:= FALSE);
+	tCmdDoneDWELL		(IN 	:= FALSE);
+				
+M_Reset := TRUE;
+END_IF		
+]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="pCmdErrorReceived" Id="{19a390f9-1c7a-485a-abab-19b0cc333a8c}">
+      <Declaration><![CDATA[PROPERTY pCmdErrorReceived : BOOL]]></Declaration>
+      <Get Name="Get" Id="{1bff8b49-e4a5-4154-a31b-2dd658fda9b6}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pCmdErrorReceived := bCmdErrorReceived;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="pCmdTimeout" Id="{6b63aa50-42fe-4d41-ab3e-6a71c184bc5b}">
+      <Declaration><![CDATA[PROPERTY pCmdTimeout : BOOL]]></Declaration>
+      <Get Name="Get" Id="{b43f2b9a-8cc1-4ec0-8435-378e69e18b6e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pCmdTimeout := bCmdTimeout;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="pCmdTrigger" Id="{a36188e1-a3ae-44da-9f3e-7a942d33c579}">
+      <Declaration><![CDATA[PROPERTY pCmdTrigger : BOOL]]></Declaration>
+      <Get Name="Get" Id="{fb2bc3ba-f46c-436e-81a9-cbb71e24443f}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pCmdTrigger := bCmdTrigger;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{48bb60f7-52f6-4478-873a-9820a059b18a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bCmdTrigger := pCmdTrigger;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pReady" Id="{1633ccc5-c07f-4624-9ff8-ae4a97d2285e}">
+      <Declaration><![CDATA[PROPERTY pReady : bool]]></Declaration>
+      <Get Name="Get" Id="{68d6f6d6-c2b7-4f6c-bb4c-5c94d20975b2}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pReady := bReady;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="pResetRequest" Id="{a8ff3587-e156-4ff8-94b8-ba87e1168174}">
+      <Declaration><![CDATA[PROPERTY pResetRequest : BOOL]]></Declaration>
+      <Get Name="Get" Id="{12546fa9-38a7-4321-8156-85efab8f5d6a}">
+        <Declaration><![CDATA[
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pResetRequest := bResetRequest;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{66f4abb0-7b82-4c68-87c0-4061f5da7484}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pResetRequest := bResetRequest;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_AteqCmdHandler">
+      <LineId Id="4745" Count="2" />
+      <LineId Id="4860" Count="0" />
+      <LineId Id="4748" Count="0" />
+      <LineId Id="4862" Count="1" />
+      <LineId Id="4749" Count="3" />
+      <LineId Id="4865" Count="0" />
+      <LineId Id="4754" Count="6" />
+      <LineId Id="4893" Count="0" />
+      <LineId Id="4892" Count="0" />
+      <LineId Id="4761" Count="55" />
+      <LineId Id="4818" Count="14" />
+      <LineId Id="4834" Count="25" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqCmdHandler.M_Reset">
+      <LineId Id="32" Count="0" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="42" Count="2" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="48" Count="1" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqCmdHandler.pCmdErrorReceived.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqCmdHandler.pCmdTimeout.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqCmdHandler.pCmdTrigger.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqCmdHandler.pCmdTrigger.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqCmdHandler.pReady.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqCmdHandler.pResetRequest.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AteqCmdHandler.pResetRequest.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

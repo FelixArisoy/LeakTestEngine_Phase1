@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="ST_ValveMaskStep" Id="{d26b4115-7994-4b4b-a058-c6c8efbe4b0e}">
+    <Declaration><![CDATA[TYPE ST_ValveMaskStep :
+STRUCT
+    nExpectedDoneMask        : DWORD;
+    nTargetValveMask         : DWORD;
+    eTransitionMode          : E_ValveTransitionMode;
+    tTransitionHoldTime      : TIME;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

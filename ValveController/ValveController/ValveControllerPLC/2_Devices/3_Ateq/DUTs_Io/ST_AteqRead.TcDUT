@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+  <DUT Name="ST_AteqRead" Id="{8a4137b9-3dbd-462a-bd9d-b82ade66909a}">
+    <Declaration><![CDATA[TYPE ST_AteqRead :
+STRUCT	
+//Reading table structure (From ATEQ To PLC)
+//Status: (@: 00h – 0Fh)
+	anEcho					: ARRAY[0..1] OF BYTE;			// 00h–01h Echo buffer
+	stEcho         			: ST_AteqEcho;					// 00h–01h Echo bitmap
+	anErrorCode				: ARRAY[0..1] OF BYTE;			// 02h–03h ErrorCode buffer
+    stErrorCode      		: ST_AteqErrorCode;				// 02h–03h ErrorCode bitmap
+    anReserved 				: ARRAY[0..1] OF BYTE;     		// 04h–05h Not Used; Current module in use. ATEQ "Head" in use only if multiple heads are connected together via RS485 with an ATEQ C540 central controller
+    nProgramInUse 			: WORD;                    		// 06h–07h Current program in use
+    nResultsInFifo   		: WORD;                    		// 08h–09h Number of results in FIFO (quantity of available results recorded in the FIFO).
+    nTestType 				: WORD;                    		// 0Ah–0Bh Type of test in progress
+	stRealtimeTestResults   : ST_AteqRealtimeTestResults;	// 0Ch–0Dh Real time test results bitmap
+    nProgramStep  			: WORD;                    		// 0Eh–0Fh Program step in progress
+    
+//Real time measurements: (@: 10h – 1Fh)
+	nPressureCurValue		: REAL;    	// 10h–13h Pressure current value Example: reading of 524000 (7FEE0h) = 524 x 1000, thus the real value is 524.
+	nPressureUnitCode		: DWORD;	// 14h–17h Pressure unit code Example: reading 6000 (1770h) = 6 x 1000, thus the value is 6 which corresponds to Pa (see Unit table).
+	nLeakCurValue 			: REAL;		// 18h–1Bh Leak current value Examples: reading 20000 (4E20h) = 20 x 1000, thus the real value is 20 reading - 108 (FFFFFF94h) = - 0.108 x 1000, thus the real value is - 0.108(see Basic notions)
+	nLeakUnitCode			: DWORD;	// 1Ch–1Fh Leak unit code Example: reading 8000 (1F40h) = 8 x 1000 thus the value is 8, which corresponds to the Pa/s unity.
+
+// Exchange zone: (@: 20h – 9Fh)	
+	anExchangeZone 			: ARRAY[0..127] OF BYTE;   // 20h–9Fh Cycle results exchange zone. Parameters reading and writing exchange zone.
+
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
