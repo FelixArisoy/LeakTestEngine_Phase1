@@ -6,6 +6,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.~u
 ValveController.project.~u/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
