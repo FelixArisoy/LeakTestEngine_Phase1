@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+<TcPlcObject Version="1.1.0.1">
   <Itf Name="I_Device" Id="{da4e5490-5768-4d44-b47a-f8648bda148f}">
     <Declaration><![CDATA[INTERFACE I_Device
 ]]></Declaration>
@@ -21,7 +21,7 @@ END_VAR
 ]]></Declaration>
     </Method>
     <Method Name="M_DeviceStatus" Id="{78fe631b-ed6a-4e93-bc55-568c4437fab0}">
-      <Declaration><![CDATA[METHOD M_DeviceStatus : E_StatusFieldDevice
+      <Declaration><![CDATA[METHOD M_DeviceStatus : E_DeviceStatus
 VAR_INPUT
 END_VAR]]></Declaration>
     </Method>

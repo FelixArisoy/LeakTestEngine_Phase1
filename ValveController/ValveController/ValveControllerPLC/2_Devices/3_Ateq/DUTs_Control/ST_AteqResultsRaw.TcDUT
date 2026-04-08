@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+<TcPlcObject Version="1.1.0.1">
   <DUT Name="ST_AteqResultsRaw" Id="{3da4913a-8629-4ea8-bd6b-58104d8307fa}">
     <Declaration><![CDATA[TYPE ST_AteqResultsRaw : //will be disregarded
 STRUCT

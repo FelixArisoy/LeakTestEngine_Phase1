@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+<TcPlcObject Version="1.1.0.1">
   <DUT Name="ST_ValveRawIo_EX260" Id="{7477c171-3d1a-41ee-a249-f531bd2a293e}">
     <Declaration><![CDATA[TYPE ST_ValveRawIo_EX260 : //SEN1 32Ch  valve bank
 STRUCT	

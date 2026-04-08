@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="FB_AteqCmdHandler" Id="{736e6d42-ec43-485f-bfa6-1943d6a22849}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_AteqCmdHandler //This is a child FB to FB_AteqControl
 VAR_INPUT    
@@ -242,54 +242,5 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
-    <LineIds Name="FB_AteqCmdHandler">
-      <LineId Id="4745" Count="2" />
-      <LineId Id="4860" Count="0" />
-      <LineId Id="4748" Count="0" />
-      <LineId Id="4862" Count="1" />
-      <LineId Id="4749" Count="3" />
-      <LineId Id="4865" Count="0" />
-      <LineId Id="4754" Count="6" />
-      <LineId Id="4893" Count="0" />
-      <LineId Id="4892" Count="0" />
-      <LineId Id="4761" Count="55" />
-      <LineId Id="4818" Count="14" />
-      <LineId Id="4834" Count="25" />
-      <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_AteqCmdHandler.M_Reset">
-      <LineId Id="32" Count="0" />
-      <LineId Id="39" Count="0" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="53" Count="0" />
-      <LineId Id="52" Count="0" />
-      <LineId Id="42" Count="2" />
-      <LineId Id="46" Count="0" />
-      <LineId Id="48" Count="1" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="40" Count="0" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_AteqCmdHandler.pCmdErrorReceived.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_AteqCmdHandler.pCmdTimeout.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_AteqCmdHandler.pCmdTrigger.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_AteqCmdHandler.pCmdTrigger.Set">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_AteqCmdHandler.pReady.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_AteqCmdHandler.pResetRequest.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_AteqCmdHandler.pResetRequest.Set">
-      <LineId Id="2" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

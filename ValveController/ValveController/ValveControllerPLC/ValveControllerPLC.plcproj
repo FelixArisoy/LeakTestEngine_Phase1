@@ -6,7 +6,7 @@
     <ProjectGuid>{ff505b91-facf-4a2b-b73e-9c5e3b10185d}</ProjectGuid>
     <SubObjectsSortedByName>True</SubObjectsSortedByName>
     <DownloadApplicationInfo>true</DownloadApplicationInfo>
-    <WriteProductVersion>true</WriteProductVersion>
+    <WriteProductVersion>false</WriteProductVersion>
     <GenerateTpy>false</GenerateTpy>
     <Name>ValveControllerPLC</Name>
     <ProgramVersion>3.1.4024.0</ProgramVersion>
@@ -16,6 +16,8 @@
     <Implicit_KindOfTask>{26dddd17-a5c0-4a73-8676-a0da2142ccea}</Implicit_KindOfTask>
     <Implicit_Jitter_Distribution>{55869996-b6d5-4c57-98e4-75849dfab125}</Implicit_Jitter_Distribution>
     <LibraryReferences>{e3ffa19d-a824-4988-b4c3-ae7a2335fb76}</LibraryReferences>
+    <Released>false</Released>
+    <CombineIds>true</CombineIds>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="0_Interfaces\I_PLC.TcIO">
@@ -126,13 +128,24 @@
     <Compile Include="3_Instructions\FB_TextFile.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\GenericFieldDevice\E_StatusFieldDevice.TcDUT">
+    <Compile Include="DUTs\GenericFieldDevice\E_DeviceStatus.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\GenericFieldDevice\ST_FieldDevice.TcDUT">
+    <Compile Include="DUTs\GenericFieldDevice\ST_EX260Io.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="GARBAGE\E_AteqProgramSeqStateFlags.TcDUT">
+    <Compile Include="DUTs\GenericFieldDevice\ST_DeviceState.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GVLs\GVL_MapIo.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="GVLs\GVL_MapIoDevice2.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="zzGARBAGE\E_AteqProgramSeqStateFlags.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="GVLs\GVL_ADSLOG.TcGVL">
@@ -198,7 +211,7 @@
     <Folder Include="GVLs" />
     <Folder Include="3_Instructions" />
     <Folder Include="0_Interfaces" />
-    <Folder Include="GARBAGE" />
+    <Folder Include="zzGARBAGE" />
     <Folder Include="2_Devices" />
     <Folder Include="1_MainTasks" />
     <Folder Include="zTcUnitCalls" />

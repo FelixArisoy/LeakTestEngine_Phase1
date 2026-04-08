@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+<TcPlcObject Version="1.1.0.1">
   <Itf Name="I_PLC" Id="{3b68cac9-f0b9-4228-8818-339033b4fec3}">
     <Declaration><![CDATA[INTERFACE I_PLC EXTENDS I_Device
 ]]></Declaration>

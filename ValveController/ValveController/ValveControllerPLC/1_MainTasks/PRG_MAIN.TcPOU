@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="PRG_MAIN" Id="{075ea502-c30b-43b0-8467-21d133ac9e69}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_MAIN
 VAR
@@ -26,13 +26,5 @@ GVL_Controller.dtSystemTime := dtCurrentTime;
 
 ]]></ST>
     </Implementation>
-    <LineIds Name="PRG_MAIN">
-      <LineId Id="86" Count="8" />
-      <LineId Id="98" Count="0" />
-      <LineId Id="100" Count="1" />
-      <LineId Id="103" Count="1" />
-      <LineId Id="78" Count="0" />
-      <LineId Id="27" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

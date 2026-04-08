@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_EX260Io" Id="{2bd75630-0ef5-465d-a5c0-af6587498ff2}">
+    <Declaration><![CDATA[TYPE ST_EX260Io :
+STRUCT
+	State AT %I* : UINT;
+	Ctrl AT %Q* : UINT;
+	In0 AT %I* : SINT;
+	In1 AT %I* : SINT;
+	Out0 AT %Q* : SINT;
+	Out1 AT %Q* : SINT;
+	Out2 AT %Q* : SINT;
+	Out3 AT %Q* : SINT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

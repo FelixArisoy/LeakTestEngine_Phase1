@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="FB_ValveMaskHandlerOld" Id="{912e2ede-3ff2-4af3-9484-d20fa1177a89}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_ValveMaskHandlerOld
 VAR_INPUT
@@ -112,13 +112,5 @@ END_FOR
 M_ComposeValveMask := result;]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FB_ValveMaskHandlerOld">
-      <LineId Id="435" Count="51" />
-      <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_ValveMaskHandlerOld.M_ComposeValveMask">
-      <LineId Id="38" Count="14" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

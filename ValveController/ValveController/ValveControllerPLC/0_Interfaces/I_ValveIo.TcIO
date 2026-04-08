@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+<TcPlcObject Version="1.1.0.1">
   <Itf Name="I_ValveIo" Id="{9abff4a5-9dc4-4338-a357-8d967cc6368b}">
     <Declaration><![CDATA[INTERFACE I_ValveIo EXTENDS I_Device
 ]]></Declaration>

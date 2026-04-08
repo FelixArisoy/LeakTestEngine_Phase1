@@ -7,6 +7,11 @@
 *.userosscache
 *.sln.docstates
 
+#added by Felix A.
+*.project.~u
+LineIDs.dbg
+LineIDs.dbg.bak
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 

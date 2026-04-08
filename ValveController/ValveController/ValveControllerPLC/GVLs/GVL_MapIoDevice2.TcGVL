@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <GVL Name="GVL_MapIoDevice2" Id="{fd1f383a-7896-4e83-a2b2-f0ead0b58a9e}">
+    <Declaration><![CDATA[//Device 2 EtherCAT Terminal EL6070
+VAR_GLOBAL
+	Frm0State AT %I*	: UINT;	
+(*			
+0x0001 = 1. EtherCAT command NOT sent (NOP requested)							
+0x0002 = 2. EtherCAT command not sent (NOP requested)																				
+0x0004 = 3. EtherCAT command not sent (NOP requested)																				
+...																				
+0x4000 = 15. EtherCAT command not sent (NOP requested)																				
+0x8000 = complete frame not sent										
+*)										
+										
+	Frm0WcState	AT %I*	: UINT;	
+
+(*			
+0x0001 = wrong working counter of 1. EtherCAT command received								
+0x0002 = wrong working counter of 2. EtherCAT command received																	
+0x0004 = wrong working counter of 3. EtherCAT command received																				
+...																				
+0x4000 = wrong working counter of 15. EtherCAT command received																				
+0x8000 = complete frame missing										
+*)										
+										
+	Frm0InputToggle	AT %I*	: UINT;
+(*				
+0x0001 = Toggle BIT: 1. EtherCAT command received new inputs							
+0x0002 = Toggle Bit: 2. EtherCAT command received new inputs																				
+0x0004 = Toggle Bit: 3. EtherCAT command received new inputs																				
+...																				
+0x4000 = Toggle Bit: 15. EtherCAT command received new inputs																				
+0x8000 = Old frame - not from the actual cycle - received										
+*)										
+										
+	SlaveCount AT %I*	: UINT; // Actual count OF EtherCAT slaves received	
+	DevState AT %I*		: UINT;
+	
+(*
+0x0001 = Link error		
+								
+0x0002 = I/O locked after link error (I/O reset required)										
+										
+0x0004 = Link error (redundancy adapter)										
+										
+0x0008 = Missing one frame (redundancy mode)										
+										
+0x0010 = Out of send resources (I/O reset required)										
+										
+0x0020 = Watchdog triggered										
+										
+0x0040 = Ethernet driver (miniport) not found										
+										
+0x0080 = I/O reset active										
+										
+0x0100 = At least one device in 'INIT' state										
+										
+0x0200 = At least one device in 'PRE-OP' state										
+										
+0x0400 = At least one device in 'SAFE-OP' state										
+										
+0x0800 = At least one device indicates an error state										
+										
+0x1000 = DC not in sync										
+*)										
+										
+	Frm0Ctrl AT %Q*		: UINT;
+	
+(*
+0x0001 = prevent 1. EtherCAT command FROM sending (request NOP)										
+0x0002 = prevent 2. EtherCAT command from sending (request NOP)																				
+0x0004 = prevent 3. EtherCAT command from sending (request NOP)																				
+...										
+										
+0x4000 = prevent 15. EtherCAT command from sending (request NOP)																				
+0x8000 = prevent complete frame from sending										
+*)										
+										
+	Frm0WcCtrl AT %Q*	: UINT;		
+
+(*		
+0x0001 = copy data with wrong working counter OF 1. EtherCAT command								
+0x0002 = copy data with wrong working counter of 2. EtherCAT command																			
+0x0004 = copy data with wrong working counter of 3. EtherCAT command																				
+...																				
+0x4000 = copy data with wrong working counter of 15. EtherCAT command										
+*)										
+										
+	DevCtrl	AT %Q*		: UINT;	
+	
+	//InfoData
+	
+	ChangeCount AT %I*	: UINT;	
+	DevId 		AT %I*	: UINT;	
+	AmsNetId	AT %I*	: AMSNETID;	
+	CfgSlaveCount AT %I* : UINT;
+
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

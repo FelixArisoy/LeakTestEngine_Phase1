@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="FB_MainPLC" Id="{c2bbdccd-edf6-4203-96ae-745c9a753c49}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_MainPLC IMPLEMENTS I_Device
 VAR_INPUT
@@ -38,17 +38,5 @@ METHOD CommOK : BOOL
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FB_MainPLC">
-      <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_MainPLC.CmdLeakTestStart">
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_MainPLC.CmdLeakTestStop">
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_MainPLC.CommOK">
-      <LineId Id="4" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+<TcPlcObject Version="1.1.0.1">
   <DUT Name="ST_AteqErrorCode" Id="{ca34406b-f405-4d37-a2b3-a9b3cb2956fb}">
     <Declaration><![CDATA[TYPE ST_AteqErrorCode :
 STRUCT	
