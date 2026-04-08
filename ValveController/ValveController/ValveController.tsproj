@@ -80,7 +80,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{FF505B91-FACF-4A2B-B73E-9C5E3B10185D}" Name="ValveControllerPLC" PrjFilePath="ValveControllerPLC\ValveControllerPLC.plcproj" TmcFilePath="ValveControllerPLC\ValveControllerPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{2585B596-CA4A-7DCC-A913-B5F17D9FFDDC}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{21142762-FA54-C02C-4696-DB1D50F02BD3}">
 					<Name>ValveControllerPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
@@ -105,15 +105,15 @@
 							<Type GUID="{391652FB-7F01-987E-1D53-3B165841CFCE}">ARRAY [1..8] OF UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIo.aEX260Io[0].State</Name>
+							<Name>GVL_MapIo.aIoEx260[0].State</Name>
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIo.aEX260Io[0].In0</Name>
+							<Name>GVL_MapIo.aIoEx260[0].In0</Name>
 							<Type>SINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIo.aEX260Io[0].In1</Name>
+							<Name>GVL_MapIo.aIoEx260[0].In1</Name>
 							<Type>SINT</Type>
 						</Var>
 						<Var>
@@ -178,23 +178,23 @@
 							<Type GUID="{391652FB-7F01-987E-1D53-3B165841CFCE}">ARRAY [1..8] OF UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIo.aEX260Io[0].Ctrl</Name>
+							<Name>GVL_MapIo.aIoEx260[0].Ctrl</Name>
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIo.aEX260Io[0].Out0</Name>
+							<Name>GVL_MapIo.aIoEx260[0].Out0</Name>
 							<Type>SINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIo.aEX260Io[0].Out1</Name>
+							<Name>GVL_MapIo.aIoEx260[0].Out1</Name>
 							<Type>SINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIo.aEX260Io[0].Out2</Name>
+							<Name>GVL_MapIo.aIoEx260[0].Out2</Name>
 							<Type>SINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIo.aEX260Io[0].Out3</Name>
+							<Name>GVL_MapIo.aIoEx260[0].Out3</Name>
 							<Type>SINT</Type>
 						</Var>
 						<Var>
@@ -304,19 +304,16 @@
 			</Project>
 		</Plc>
 		<Io>
-			<Device Id="1" AmlId="{A86A7610-2FF5-4427-A1F1-68F3806A7625}" Disabled="true" DevType="113" AmsPort="28673" AmsNetId="10.1.176.222.2.1" RemoteName="Device 1 (Profinet Controller)">
+			<Device Id="1" AmlId="{A86A7610-2FF5-4427-A1F1-68F3806A7625}" DevType="113" AmsPort="28673" AmsNetId="10.1.176.222.2.1" RemoteName="Device 1 (Profinet Controller)">
 				<Name>Device 1 (Profinet Controller)</Name>
-				<DevData>00000000000000000000000000000000656d300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100780aa8c000ffffff0001054c47f4040000000000000000000000000000000000010aa8c00000000000000000000000000000000000000000</DevData>
-				<Image Id="1" AddrType="1" ImageType="3" SizeIn="2" SizeOut="6">
+				<DevData>000000000000000000000000409c00005c4445564943455c7b38464341303341392d323033422d343545302d424333322d4437394231423338333433417d000000000000000001000a02a8c000ffffff000105a4bc780400000000000000000000000000000000000102a8c00000000000000000000000000000000000000000</DevData>
+				<Image Id="1" AddrType="1" ImageType="3" SizeIn="260" SizeOut="266">
 					<Name>Image</Name>
 				</Image>
 				<Box Id="1" AmlId="{4D0E8789-E929-49EB-9FEF-70E07FAF4004}" BoxType="9121">
 					<Name>ateqf620</Name>
-					<Comment><![CDATA[
-The GSDML is not available!
-
-GSDML Name: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
-Path: \\vmware-host\Shared Folders\VMShared\(X)Research\2025_05_ValveControllerOOP\
+					<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
+GSDML path: C:\Users\rt59t\Source\Repos\ValiantTMSControls\ValveController\ateqGSDML\
 VendorName: Hilscher Gesellschaft für Systemautomation mbH
 OrderNumber: 153x.10x
 HW Release Version: 2
@@ -373,7 +370,7 @@ SW Release Version: 3.4.19]]></Comment>
 							<Type>UINT</Type>
 						</Var>
 					</Vars>
-					<Profinet DeviceId="257" VendorId="286" FrameOffset="49152" Flags="16" IPAdd="c0a80a0a" ProtocolType="3" BoxOnDeviceTyp="113" MaxPhysSlotNr="255" AvailableSlots="0..255" InstanceServerPort="61000" InstanceClientPort="60000" InstanceId="1" InstanceNumberOfARs="1" InstanceNumberOfAPIs="1" MinDeviceInterval="32" NrOfGsdmlDap="3" SavePnIoBoxValues="0100" MultipleWriteSupported="true" Phase="1" WatchdogFaktor="3" ReductionRatio="8" SendClockFaktor="32" MaxInputLen="1024" MaxOutputLen="1024" SendClockFactorData="200040008000" SendClockFactorRTC3="200040008000" RedRatio="0100020004000800100020004000800000010002" RedRatioRTC3="01000200040008001000" BoxTypeInfo="Firmware version V3.4.19 - V3.4.x. Supports FastStartup, Identification &amp; Maintenance 1-4, RT and IRT Communication." GSDMLPath="\\vmware-host\Shared Folders\VMShared\(X)Research\2025_05_ValveControllerOOP\GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml" ImagePath="\\vmware-host\Shared Folders\VMShared\(X)Research\2025_05_ValveControllerOOP\GSDML-011E-0101-COMXREPNS.bmp" MainFamily="I/O" ProductFamily="PNS" OrderNr="153x.10x" DefaultDNSName="comxrepns" VendorName="Hilscher Gesellschaft für Systemautomation mbH" FamDescription="ProfiNet IO-Device communication module." GraphicFile="GSDML-011E-0101-COMXREPNS" SWVersion="3.4.19" HWVersion="2" AltLanguage="7">
+					<Profinet DeviceId="257" VendorId="286" FrameOffset="49152" Flags="16" IPAdd="c0a8020f" ProtocolType="3" BoxOnDeviceTyp="113" MaxPhysSlotNr="255" AvailableSlots="0..255" InstanceServerPort="61000" InstanceClientPort="60000" InstanceId="1" InstanceNumberOfARs="1" InstanceNumberOfAPIs="1" MinDeviceInterval="32" SavePnIoBoxValues="0100" MultipleWriteSupported="true" Phase="1" WatchdogFaktor="3" ReductionRatio="4" SendClockFaktor="32" MaxInputLen="1024" MaxOutputLen="1024" SendClockFactorData="200040008000" SendClockFactorRTC3="200040008000" RedRatio="0100020004000800100020004000800000010002" RedRatioRTC3="01000200040008001000" BoxTypeInfo="Firmware version V3.4.19 - V3.4.x. Supports FastStartup, Identification &amp; Maintenance 1-4, RT and IRT Communication." GSDMLPath="C:\Users\rt59t\Source\Repos\ValiantTMSControls\ValveController\ateqGSDML\GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml" ImagePath="C:\Users\rt59t\Source\Repos\ValiantTMSControls\ValveController\ateqGSDML\GSDML-011E-0101-COMXREPNS.bmp" MainFamily="I/O" ProductFamily="PNS" OrderNr="153x.10x" DefaultDNSName="comxrepns" VendorName="Hilscher Gesellschaft für Systemautomation mbH" FamDescription="ProfiNet IO-Device communication module." GraphicFile="GSDML-011E-0101-COMXREPNS" SWVersion="3.4.19" HWVersion="2" AltLanguage="7">
 						<UsedGsdmlModule ModuleIdentNumber="4353" ModuleName="DAP Module" InfoText="Firmware version V3.4.19 - V3.4.x. Supports FastStartup, Identification &amp; Maintenance 1-4, RT and IRT Communication." OrderNumber="153x.10x">
 							<Slot>0</Slot>
 						</UsedGsdmlModule>
@@ -1161,8 +1158,8 @@ Submodule Info: 64 Bytes Output Submodule
 					</Profinet>
 				</Box>
 				<Profinet PLCPortNr="851" AddPortCount="1">
-					<Ethernet DeviceDesc="em0"/>
-					<PNController ClientPort="60000" ServerPort="61000" VendorId="288" DeviceId="35" IPData="00000000c0a80a78ffffff00c0a80a01" SystemName="tc-pncontroller" IRTSendClock="32">
+					<Ethernet DeviceDesc="Ethernet 2 X001 (TwinCAT-Intel PCI Ethernet Adapter (Gigabit) V2 #2)" SpecialTask="true"/>
+					<PNController ClientPort="60000" ServerPort="61000" VendorId="288" DeviceId="35" IPData="00000000c0a8020bffffff00c0a80201" SystemName="tc-pncontroller" IRTSendClock="32">
 						<RTData CableLength="10"/>
 					</PNController>
 				</Profinet>
@@ -1298,7 +1295,7 @@ Submodule Info: 64 Bytes Output Submodule
 					<Pnp>
 						<DeviceDesc>Ethernet X000 (TwinCAT-Intel PCI Ethernet Adapter (</DeviceDesc>
 						<DeviceName>\DEVICE\{3D6EF8C6-E2CD-4935-9F5E-C64BB27F2F03}</DeviceName>
-						<DeviceData>000000000000</DeviceData>
+						<DeviceData>000105a4bc77</DeviceData>
 					</Pnp>
 				</AddressInfo>
 				<Image Id="9" AddrType="1" ImageType="3">
@@ -1391,6 +1388,7 @@ C:\TwinCAT\3.1\Config\Io\EtherNetIP\ex260_sen1_x194_24_v12.eds
 		<MappingInfo Identifier="{00000000-2001-0850-0120-500820000403}" Id="#x02030030"/>
 		<MappingInfo Identifier="{00000000-2001-0850-0120-500831000403}" Id="#x02030040"/>
 		<MappingInfo Identifier="{00000000-2001-0850-0120-500890000403}" Id="#x02030020"/>
+		<MappingInfo Identifier="{00000000-2002-0850-0020-500810000403}" Id="#x02030010"/>
 		<OwnerA Name="TIPC^ValveControllerPLC^ValveControllerPLC Instance">
 			<OwnerB Name="TIID^Device 1 (Profinet Controller)^ateqf620">
 				<Link VarA="AteqControl Inputs^PRG_ATEQ.astAteqRawIo[0].anInput[0]" VarB="API^Term 2 (64 Bytes Input)^Subterm 5 (64 Bytes Input)^Inputs^Inputs"/>
@@ -1433,14 +1431,14 @@ C:\TwinCAT\3.1\Config\Io\EtherNetIP\ex260_sen1_x194_24_v12.eds
 				<Link VarA="PlcTask Outputs^GVL_MapIo.devCtrl[8]" VarB="Outputs^DevCtrl"/>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 8 (TC3 EIP Scanner)^ValveBank1 (EX260-SEN1-X194)">
-				<Link VarA="PlcTask Inputs^GVL_MapIo.aEX260Io[0].In0" VarB="Connection 1 (Input/Output)^Inputs^Input size"/>
-				<Link VarA="PlcTask Inputs^GVL_MapIo.aEX260Io[0].In1" VarB="Connection 1 (Input/Output)^Inputs^Input size_1"/>
-				<Link VarA="PlcTask Inputs^GVL_MapIo.aEX260Io[0].State" VarB="Inputs^State"/>
-				<Link VarA="PlcTask Outputs^GVL_MapIo.aEX260Io[0].Ctrl" VarB="Outputs^Ctrl"/>
-				<Link VarA="PlcTask Outputs^GVL_MapIo.aEX260Io[0].Out0" VarB="Connection 1 (Input/Output)^Outputs^Output size"/>
-				<Link VarA="PlcTask Outputs^GVL_MapIo.aEX260Io[0].Out1" VarB="Connection 1 (Input/Output)^Outputs^Output size_1"/>
-				<Link VarA="PlcTask Outputs^GVL_MapIo.aEX260Io[0].Out2" VarB="Connection 1 (Input/Output)^Outputs^Output size_2"/>
-				<Link VarA="PlcTask Outputs^GVL_MapIo.aEX260Io[0].Out3" VarB="Connection 1 (Input/Output)^Outputs^Output size_3"/>
+				<Link VarA="PlcTask Inputs^GVL_MapIo.aIoEx260[0].In0" VarB="Connection 1 (Input/Output)^Inputs^Input size"/>
+				<Link VarA="PlcTask Inputs^GVL_MapIo.aIoEx260[0].In1" VarB="Connection 1 (Input/Output)^Inputs^Input size_1"/>
+				<Link VarA="PlcTask Inputs^GVL_MapIo.aIoEx260[0].State" VarB="Inputs^State"/>
+				<Link VarA="PlcTask Outputs^GVL_MapIo.aIoEx260[0].Ctrl" VarB="Outputs^Ctrl"/>
+				<Link VarA="PlcTask Outputs^GVL_MapIo.aIoEx260[0].Out0" VarB="Connection 1 (Input/Output)^Outputs^Output size"/>
+				<Link VarA="PlcTask Outputs^GVL_MapIo.aIoEx260[0].Out1" VarB="Connection 1 (Input/Output)^Outputs^Output size_1"/>
+				<Link VarA="PlcTask Outputs^GVL_MapIo.aIoEx260[0].Out2" VarB="Connection 1 (Input/Output)^Outputs^Output size_2"/>
+				<Link VarA="PlcTask Outputs^GVL_MapIo.aIoEx260[0].Out3" VarB="Connection 1 (Input/Output)^Outputs^Output size_3"/>
 			</OwnerB>
 		</OwnerA>
 	</Mappings>

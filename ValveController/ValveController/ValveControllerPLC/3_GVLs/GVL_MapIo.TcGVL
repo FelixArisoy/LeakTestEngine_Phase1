@@ -2,10 +2,11 @@
 <TcPlcObject Version="1.1.0.1">
   <GVL Name="GVL_MapIo" Id="{adb7f683-6d23-4d57-bfb6-8fa505603cea}">
     <Declaration><![CDATA[VAR_GLOBAL
-	devState AT %I* 	: ARRAY[1..8] OF UINT;
-	devCtrl AT %Q* 	: ARRAY[1..8] OF UINT;
+	devState 	AT %I* 	: ARRAY[1..8] OF UINT;
+	devCtrl 	AT %Q* 	: ARRAY[1..8] OF UINT;
 	
-	aEX260Io : ARRAY [0..GVL_ValveBankConfig.nMaxDeviceCount -1] OF ST_EX260Io;
+	aIoEx260 	: ARRAY [0..GVL_ValveBankConfig.nMaxDeviceCount -1] OF ST_EX260Io;
+//	aIoAteq		: ARRAY [0..GVL_ateqconfig.nMaxDeviceCount -1] OF ST_ateqrawio;  //TBD; consider moving ATEQ Io here from FB_AteqControl
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

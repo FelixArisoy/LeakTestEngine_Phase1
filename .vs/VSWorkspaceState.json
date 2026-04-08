@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\ValveController",
+    "\\ValveController\\ValveController",
+    "\\ValveController\\ValveController\\ValveControllerPLC",
+    "\\ValveController\\ValveController\\ValveControllerPLC\\0_Interfaces",
+    "\\ValveController\\ValveController\\ValveControllerPLC\\1_MainTasks",
+    "\\ValveController\\ValveController\\ValveControllerPLC\\2_Devices",
+    "\\ValveController\\ValveController\\ValveControllerPLC\\2_Devices\\2_ValveBank",
+    "\\ValveController\\ValveController\\ValveControllerPLC\\2_Devices\\2_ValveBank\\POUs",
+    "\\ValveController\\ValveController\\XML_Exports"
+  ],
+  "SelectedNode": "\\ValveController\\ValveController\\ValveControllerPLC\\1_MainTasks\\PRG_MAIN.TcPOU",
+  "PreviewInSolutionExplorer": false
+}
