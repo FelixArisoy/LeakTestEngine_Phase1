@@ -53,7 +53,7 @@ END_VAR
             IF NOT bValveBankHasAnyError THEN
 				tRecipeHandlerTimeout(IN := FALSE);
 				bProgramSeqResetCmdToAteq := FALSE;
-				nValveMask := anValveMask[nIndexToCurrentProgram];            
+				nValveMask := anValveMask[nIndexToCurrentProgram];
             	eStatesAteqRecipeHandler := 2;
 			ELSIF tRecipeHandlerTimeout.Q THEN
 					eStatesAteqRecipeHandler := 4;

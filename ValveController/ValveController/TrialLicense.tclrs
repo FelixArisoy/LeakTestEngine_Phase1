@@ -2,9 +2,9 @@
 <TcLicenseInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2011/11/TcLicenseInfo">
 	<LicenseInfo>
 		<SystemId>{2AF7D35C-FFED-FA89-5839-179175EF7A33}</SystemId>
-		<IssueTime>2026-04-01T19:24:00</IssueTime>
-		<ExpireTime>2026-04-09T00:00:00</ExpireTime>
-		<LicenseKey>736ddb7da4dfe3482fa2a54ce5b99337cad13019fe2d118c66d24bc859a2dc1acd719fbca980aa8d58b869d8895dc00389939e362042f7d77c724ec06bb4b873f1e09c04720f525b6cd9f780a8ba9f35cf60eab636a1394c6cc152041123fdf4eaf6d628c1577915be0bab8771d53d39e98eaac116b127152909fd4753bf8a05311e8ed4c1b138d6be061def7d00c9833048b9afe8acdc104624284c3826d2fac30b0c9f3a8485e165ec3ea17225b3cef89076f04d837599277ea3d659614ac2dd22e7478b22c475edb8246ebae0933fb831c0f6a85d51aeaf2b2b3472ec66fab33f1391b7cfcaec8b70fdfb17725f7740ff7f692d6bed854375607bc7eb2b62</LicenseKey>
+		<IssueTime>2026-04-10T13:40:00</IssueTime>
+		<ExpireTime>2026-04-18T00:00:00</ExpireTime>
+		<LicenseKey>ecce3ef4f99ba3a1268004de4a9feaa2f4fea332f91667f480ac86725e43492e00df42e8243b89fb5f15b9461caa3b9ae6c81ba2c213c0edf819fca543945ca0e5770d90bcdf32cbeedd8a6804f9e3c8c9095ed27c1202f26a2685b529f06ce0125df9aba1cef174014ba7962d7b241a7f7d3026f8cac5eb8e93e2f1ae393164ef3e0a2f93e4d16404a9769b449992b1e787897e44ac2f815cb4f7d09caf9bd80586ca2f85270e966c0df12608812f4bbd59f119cc6121bc8017f035946a1f54b97f767c92502b9e14c0ed7562a67bb28af364bac8955412f6a2016f92d15c504111f853513b0d4d6dfc85eb6732052eec1c132a8f4065fea7dbf22edd306256</LicenseKey>
 		<License>
 			<LicenseId>{4C256767-E6E6-4AF5-BD68-9F7ABAD0C200}</LicenseId>
 			<Name>TC3 ADS</Name>
@@ -29,23 +29,6 @@
 			<LicenseId>{EA2D2277-B540-4BF0-A581-CF62D3140F06}</LicenseId>
 			<Name>TC3 Profinet Controller</Name>
 			<OrderNo>TF6271</OrderNo>
-			<Instances>1</Instances>
-		</License>
-		<License>
-			<LicenseId>{AE83F222-BB78-448F-BDED-7494A70CD776}</LicenseId>
-			<Name>TC3 EtherNet/IP Adapter (Slave)</Name>
-			<OrderNo>TF6280</OrderNo>
-			<Instances>1</Instances>
-		</License>
-		<License>
-			<LicenseId>{081AC839-28D0-49CA-9792-72680E1F3249}</LicenseId>
-			<Name>TC3 TCP/UDP RT</Name>
-			<OrderNo>TF6311</OrderNo>
-		</License>
-		<License>
-			<LicenseId>{87DBEEFC-A548-4B37-9797-C9521D3A43A2}</LicenseId>
-			<Name>TC3 EtherNet/IP Scanner (Master)</Name>
-			<OrderNo>TF6281</OrderNo>
 			<Instances>1</Instances>
 		</License>
 	</LicenseInfo>

@@ -8,7 +8,7 @@
 	tAutoSeqTimeout	: TIME 	:= T#300S;
 	nMaxResultStore	: INT	:= 99;	//FB_ResultHandler Result buffer array limit
 	nMaxTestSteps	: INT	:= 10;	
-	nMaxProgramsToRun	: INT := 33;
+	nMaxProgramsToRun	: INT := 2;
 	
 	// CmdHandler Timers
 	tCmdTimeout 		: TIME := T#5000MS; // Debug Future; can be limitted by the TestRunTime tru ParamRead
