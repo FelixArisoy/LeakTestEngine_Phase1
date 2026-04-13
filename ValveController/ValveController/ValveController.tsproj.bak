@@ -80,7 +80,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{FF505B91-FACF-4A2B-B73E-9C5E3B10185D}" Name="ValveControllerPLC" PrjFilePath="ValveControllerPLC\ValveControllerPLC.plcproj" TmcFilePath="ValveControllerPLC\ValveControllerPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{1DD40D7B-8995-7B99-2A14-711322869686}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{B999ECE6-2E58-A12C-21BE-56E649858561}">
 					<Name>ValveControllerPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
@@ -97,9 +97,17 @@
 							<Name>PRG_ATEQ.astAteqRawIo[0].anOutput</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
+						<Var>
+							<Name>GVL_MapIo.aIoEx260[0].Out0</Name>
+							<Type>SINT</Type>
+						</Var>
 					</Vars>
 					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
 						<Name>PlcTask Inputs</Name>
+						<Var>
+							<Name>GVL_MapIoDevice2.Frm0State</Name>
+							<Type>UINT</Type>
+						</Var>
 						<Var>
 							<Name>GVL_MapIo.devState</Name>
 							<Type GUID="{391652FB-7F01-987E-1D53-3B165841CFCE}">ARRAY [1..8] OF UINT</Type>
@@ -109,21 +117,12 @@
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIoDevice2.ChangeCount</Name>
-							<Comment><![CDATA[InfoData]]></Comment>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
 							<Name>GVL_MapIo.aIoEx260[0].In0</Name>
 							<Type>SINT</Type>
 						</Var>
 						<Var>
 							<Name>GVL_MapIo.aIoEx260[0].In1</Name>
 							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapIoDevice2.Frm0State</Name>
-							<Type>UINT</Type>
 						</Var>
 						<Var>
 							<Name>GVL_MapIoDevice2.Frm0WcState</Name>
@@ -159,6 +158,11 @@
 							<Type>UINT</Type>
 						</Var>
 						<Var>
+							<Name>GVL_MapIoDevice2.ChangeCount</Name>
+							<Comment><![CDATA[InfoData]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
 							<Name>GVL_MapIoDevice2.DevId</Name>
 							<Type>UINT</Type>
 						</Var>
@@ -180,10 +184,6 @@
 						<Var>
 							<Name>GVL_MapIo.aIoEx260[0].Ctrl</Name>
 							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapIo.aIoEx260[0].Out0</Name>
-							<Type>SINT</Type>
 						</Var>
 						<Var>
 							<Name>GVL_MapIo.aIoEx260[0].Out1</Name>
@@ -1217,80 +1217,8 @@ Submodule Info: 64 Bytes Output Submodule
 				</Box>
 				<EtherCAT/>
 			</Device>
-			<Device Id="3" AmlId="{CBACB9B1-61AA-46A9-8382-A3D97B1B33D2}" Disabled="true" DevType="112" AmsPort="28675" AmsNetId="10.1.176.222.4.1" RemoteName="Device 3 (EtherCAT Automation Protocol)">
-				<Name>Device 3 (EtherCAT Automation Protocol)</Name>
-				<AddressInfo>
-					<Pnp>
-						<DeviceDesc>Ethernet 3 X600 (TwinCAT-Intel PCI Ethernet Adapter</DeviceDesc>
-						<DeviceName>\DEVICE\{4CE52F5C-C7B4-460C-83D0-F08D48B17A80}</DeviceName>
-						<DeviceData>000105a04577</DeviceData>
-					</Pnp>
-				</AddressInfo>
-				<Image Id="4" AddrType="1" ImageType="3">
-					<Name>Image</Name>
-				</Image>
-				<Ethernet DeviceDesc="Ethernet 3 X600 (TwinCAT-Intel PCI Ethernet Adapter"/>
-				<Eap EapDeviceGuid="{8510D0B6-C88D-49D8-BF2E-C0BC86F76A9B}"/>
-			</Device>
-			<Device Id="4" AmlId="{01EB5959-03A0-4D02-83A7-83BC328F6F5E}" Disabled="true" DevType="112" AmsPort="28676" AmsNetId="10.1.176.222.5.1" RemoteName="Device 4 (EtherCAT Automation Protocol)">
-				<Name>Device 4 (EtherCAT Automation Protocol)</Name>
-				<AddressInfo>
-					<TcCom>
-						<ObjectId>#x00000000</ObjectId>
-					</TcCom>
-				</AddressInfo>
-				<Image Id="5" AddrType="1" ImageType="3">
-					<Name>Image</Name>
-				</Image>
-				<Ethernet/>
-				<Eap EapDeviceGuid="{211A5F83-E1D1-4247-9FC6-B98D69AAD05D}"/>
-			</Device>
-			<Device Id="5" AmlId="{3610DB19-B299-40CC-AA67-E9CDFDC0BC66}" Disabled="true" DevType="112" AmsPort="28677" AmsNetId="10.1.176.222.6.1" RemoteName="Device 5 (EtherCAT Automation Protocol)">
-				<Name>Device 5 (EtherCAT Automation Protocol)</Name>
-				<AddressInfo>
-					<Pnp>
-						<DeviceDesc>Ethernet 4 X601 (TwinCAT-Intel PCI Ethernet Adapter</DeviceDesc>
-						<DeviceName>\DEVICE\{C6A797F0-ADBF-49F9-8FB6-3265BD91EDE7}</DeviceName>
-						<DeviceData>000105a04578</DeviceData>
-					</Pnp>
-				</AddressInfo>
-				<Image Id="6" AddrType="1" ImageType="3">
-					<Name>Image</Name>
-				</Image>
-				<Ethernet DeviceDesc="Ethernet 4 X601 (TwinCAT-Intel PCI Ethernet Adapter"/>
-				<Eap EapDeviceGuid="{A739D4B2-EDC3-474C-A8CE-8658F6E53A85}"/>
-			</Device>
-			<Device Id="6" AmlId="{C95919FE-D37B-431C-9B4C-2C7AE21AA4FA}" Disabled="true" DevType="112" AmsPort="28678" AmsNetId="10.1.176.222.7.1" RemoteName="Device 6 (EtherCAT Automation Protocol)">
-				<Name>Device 6 (EtherCAT Automation Protocol)</Name>
-				<AddressInfo>
-					<Pnp>
-						<DeviceDesc></DeviceDesc>
-						<DeviceName></DeviceName>
-						<DeviceData>000105a4bc77</DeviceData>
-					</Pnp>
-				</AddressInfo>
-				<Image Id="7" AddrType="1" ImageType="3">
-					<Name>Image</Name>
-				</Image>
-				<Ethernet/>
-				<Eap EapDeviceGuid="{7BA3C801-471F-4658-B253-C06DC758322B}"/>
-			</Device>
-			<Device Id="7" AmlId="{6197A1D1-01E6-4507-9424-89812033ED7C}" Disabled="true" DevType="11" AmsPort="28679">
-				<Name>Device 7 (COM Port)</Name>
-				<AddressInfo>
-					<Pnp>
-						<DeviceDesc>COM5</DeviceDesc>
-						<DeviceName>ACPI/PNP0501/SERIALIOUART1</DeviceName>
-						<DeviceData>504e503035303100</DeviceData>
-					</Pnp>
-				</AddressInfo>
-				<Image Id="8" AddrType="1" ImageType="1">
-					<Name>Image</Name>
-				</Image>
-				<Serial Baud="38400" Parity="1" StopBit="1" RsType="1" WaitTimeToShutdown="60" BufSize="4096" DataBit="8" ComPortNo="5" Timeout="300"/>
-			</Device>
-			<Device Id="8" AmlId="{A935D71F-EE97-435B-93FC-D4374DE9DFA3}" Disabled="true" DevType="133" AmsPort="28680" AmsNetId="10.1.176.222.9.1" RemoteName="Device 8 (TC3 EIP Scanner)">
-				<Name>Device 8 (TC3 EIP Scanner)</Name>
+			<Device Id="8" AmlId="{A935D71F-EE97-435B-93FC-D4374DE9DFA3}" Disabled="true" DevType="133" AmsPort="28680" AmsNetId="10.1.176.222.9.1" RemoteName="Device 3 (TC3 EIP Scanner)">
+				<Name>Device 3 (TC3 EIP Scanner)</Name>
 				<AddressInfo>
 					<Pnp>
 						<DeviceDesc>Ethernet X000 (TwinCAT-Intel PCI Ethernet Adapter (</DeviceDesc>
@@ -1299,7 +1227,7 @@ Submodule Info: 64 Bytes Output Submodule
 					</Pnp>
 				</AddressInfo>
 				<Image Id="9" AddrType="1" ImageType="3">
-					<Name>Device 8 (TC3 EIP Scanner)-Image</Name>
+					<Name>Device 3 (TC3 EIP Scanner)-Image</Name>
 				</Image>
 				<Box Id="5" AmlId="{88CB47C4-1467-48A5-B77B-39F4632C7781}" BoxType="9134">
 					<Name>ValveBank1 (EX260-SEN1-X194)</Name>
@@ -1382,11 +1310,13 @@ C:\TwinCAT\3.1\Config\Io\EtherNetIP\ex260_sen1_x194_24_v12.eds
 				<Ethernet DeviceDesc="Ethernet X000 (TwinCAT-Intel PCI Ethernet Adapter (Gigabit) V2)" SpecialTask="true"/>
 				<EtherNetIPMasterDev m_EthIpMasterDevPar="080000004465766963652038202854433320454950205363616e6e6572290000000000000c0000006c00000089180000030100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020105a4bc770b01a8c000ffffff0101a8c00000800001001e000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"/>
 			</Device>
+			<Device File="Device 4 X000 (EtherCAT).xti" Id="4" AmlId="{542F2303-6C5F-4C83-BAF9-64903B6426F3}"/>
 		</Io>
 	</Project>
 	<Mappings>
 		<MappingInfo Identifier="{00000000-2001-0850-0120-500820000403}" Id="#x02030030"/>
 		<MappingInfo Identifier="{00000000-2001-0850-0120-500831000403}" Id="#x02030040"/>
+		<MappingInfo Identifier="{00000000-2001-0850-0120-500850000403}" Id="#x02030020"/>
 		<MappingInfo Identifier="{00000000-2002-0850-0020-500810000403}" Id="#x02030010"/>
 		<OwnerA Name="TIPC^ValveControllerPLC^ValveControllerPLC Instance">
 			<OwnerB Name="TIID^Device 1 (Profinet Controller)^ateqf620">
@@ -1413,31 +1343,11 @@ C:\TwinCAT\3.1\Config\Io\EtherNetIP\ex260_sen1_x194_24_v12.eds
 				<Link VarA="PlcTask Outputs^GVL_MapIoDevice2.Frm0Ctrl" VarB="Outputs^Frm0Ctrl"/>
 				<Link VarA="PlcTask Outputs^GVL_MapIoDevice2.Frm0WcCtrl" VarB="Outputs^Frm0WcCtrl"/>
 			</OwnerB>
-			<OwnerB Name="TIID^Device 3 (EtherCAT Automation Protocol)">
-				<Link VarA="PlcTask Inputs^GVL_MapIo.devState[3]" VarB="Inputs^DevState"/>
-				<Link VarA="PlcTask Outputs^GVL_MapIo.devCtrl[3]" VarB="Outputs^DevCtrl"/>
-			</OwnerB>
-			<OwnerB Name="TIID^Device 4 (EtherCAT Automation Protocol)">
-				<Link VarA="PlcTask Inputs^GVL_MapIo.devState[4]" VarB="Inputs^DevState"/>
-				<Link VarA="PlcTask Outputs^GVL_MapIo.devCtrl[4]" VarB="Outputs^DevCtrl"/>
-			</OwnerB>
-			<OwnerB Name="TIID^Device 5 (EtherCAT Automation Protocol)">
-				<Link VarA="PlcTask Inputs^GVL_MapIo.devState[5]" VarB="Inputs^DevState"/>
-				<Link VarA="PlcTask Outputs^GVL_MapIo.devCtrl[5]" VarB="Outputs^DevCtrl"/>
-			</OwnerB>
-			<OwnerB Name="TIID^Device 8 (TC3 EIP Scanner)">
-				<Link VarA="PlcTask Inputs^GVL_MapIo.devState[8]" VarB="Inputs^DevState"/>
-				<Link VarA="PlcTask Outputs^GVL_MapIo.devCtrl[8]" VarB="Outputs^DevCtrl"/>
-			</OwnerB>
-			<OwnerB Name="TIID^Device 8 (TC3 EIP Scanner)^ValveBank1 (EX260-SEN1-X194)">
-				<Link VarA="PlcTask Inputs^GVL_MapIo.aIoEx260[0].In0" VarB="Connection 1 (Input/Output)^Inputs^Input size"/>
-				<Link VarA="PlcTask Inputs^GVL_MapIo.aIoEx260[0].In1" VarB="Connection 1 (Input/Output)^Inputs^Input size_1"/>
-				<Link VarA="PlcTask Inputs^GVL_MapIo.aIoEx260[0].State" VarB="Inputs^State"/>
-				<Link VarA="PlcTask Outputs^GVL_MapIo.aIoEx260[0].Ctrl" VarB="Outputs^Ctrl"/>
-				<Link VarA="PlcTask Outputs^GVL_MapIo.aIoEx260[0].Out0" VarB="Connection 1 (Input/Output)^Outputs^Output size"/>
-				<Link VarA="PlcTask Outputs^GVL_MapIo.aIoEx260[0].Out1" VarB="Connection 1 (Input/Output)^Outputs^Output size_1"/>
-				<Link VarA="PlcTask Outputs^GVL_MapIo.aIoEx260[0].Out2" VarB="Connection 1 (Input/Output)^Outputs^Output size_2"/>
-				<Link VarA="PlcTask Outputs^GVL_MapIo.aIoEx260[0].Out3" VarB="Connection 1 (Input/Output)^Outputs^Output size_3"/>
+			<OwnerB Name="TIID^Device 4 X000 (EtherCAT)^Box 6 (EX260-SEC1)">
+				<Link VarA="AteqControl Outputs^GVL_MapIo.aIoEx260[0].Out0" VarB="Byte 0^Output"/>
+				<Link VarA="PlcTask Outputs^GVL_MapIo.aIoEx260[0].Out1" VarB="Byte 1^Output"/>
+				<Link VarA="PlcTask Outputs^GVL_MapIo.aIoEx260[0].Out2" VarB="Byte 2^Output"/>
+				<Link VarA="PlcTask Outputs^GVL_MapIo.aIoEx260[0].Out3" VarB="Byte 3^Output"/>
 			</OwnerB>
 		</OwnerA>
 	</Mappings>

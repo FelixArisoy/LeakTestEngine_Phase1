@@ -84,6 +84,7 @@ END_VAR
 
 			         	
 		E_AteqRecipeHandlerSteps.RECIPE_RESULT_STORED: //Recipe Handler Error
+		nValveMask := 0; // Reset Valves
 			IF bLastResultsStored THEN
 				bProgramSeqResetCmdToAteq := TRUE; // Reset ATEQ
 				 IF nIndexToCurrentProgram >= GVL_AteqConfig.nMaxProgramsToRun - 1 THEN

@@ -75,7 +75,9 @@ GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.BigEndian;
 										anProgramNumberRecipe	:= anProgramNumberRecipe[nDeviceIndex],
 										eAteqProgramSeqStates	:= afbAteqControl[nDeviceIndex].eProgramSeqSteps,
 										eProgramInternalSteps	:= afbAteqControl[nDeviceIndex].eProgramInternalSteps,
-										bAutoTestRecipeStart	:= abAutoTestRecipeStart);
+										bAutoTestRecipeStart	:= abAutoTestRecipeStart,
+										nValveMask				=> GVL_MapIo.nValveMaskRaw );
+	GVL_MapIo.aIoEx260[0].Out0 := DWORD_TO_SINT(GVL_MapIo.nValveMaskRaw);
 	
 	afbAteqControl[nDeviceIndex].pProgramSeqRunRequest 		:= afbAteqRecipeHandler[nDeviceIndex].pProgramSeqRunCmdToAteq;
 	afbAteqControl[nDeviceIndex].pProgramSeqResetRequest	:= afbAteqRecipeHandler[nDeviceIndex].pProgramSeqResetCmdToAteq;		

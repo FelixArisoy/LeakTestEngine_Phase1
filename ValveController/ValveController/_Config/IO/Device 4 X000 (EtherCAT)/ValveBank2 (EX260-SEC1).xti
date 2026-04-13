@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.74" ClassName="CFlbTermDef" SubType="9099">
+	<ImageDatas>
+		<ImageData Id="1000">424de6000000000000007600000028000000100000000e000000010004000000000070000000ea0e0000ea0e000000000000000000000000000000008000008000000080800080000000800080008080000080808000c0c0c0000000ff0000ff000000ffff00ff000000ff00ff00ffff0000ffffff00777f7f7f77f77f777fff7f7f7ff77f77777f878f77f77f777fff7f7ff7f7ff77777f7f7f77f77f77fffffffffffffffff8888888888888888877777777777777777887888888888777788786ccccc66778788786ccccc6677f78878666666687887ff7fffffffff7ff77777777777777</ImageData>
+	</ImageDatas>
+	<Box Id="7" AmlId="{6AFCAC56-6D8E-45E6-B8A5-BB9FB12C02A6}" BoxType="9099">
+		<Name>ValveBank2 (EX260-SEC1)</Name>
+		<ImageId>1000</ImageId>
+		<EtherCAT SlaveType="1" PdiType="#x0104" CycleMBoxPollingTime="0" VendorId="#x00000114" ProductCode="#x01000001" RevisionNo="#x00010002" PortPhys="17" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EX260-SEC1 EtherCAT SI Unit (32DO_PNP) Rev1.2" Desc="EX260-SEC1">
+			<SyncMan>000f01004400010003000000000000000000000f44090000</SyncMan>
+			<SyncMan>010f01004400010003000000000000000000010f44090000</SyncMan>
+			<SyncMan>020f01004400010003000000000000000000020f44090000</SyncMan>
+			<SyncMan>030f01004400010003000000000000000000030f44090000</SyncMan>
+			<Fmmu>0000000000000000000f00020100000001000000000000000000000000000000</Fmmu>
+			<Pdo Name="Byte 0" Index="#x1600" InOut="1" Flags="#x0011" SyncMan="0">
+				<Entry Name="Output" Index="#x3101" Sub="#x01">
+					<Type>USINT</Type>
+				</Entry>
+			</Pdo>
+			<Pdo Name="Byte 1" Index="#x1601" InOut="1" Flags="#x0011" SyncMan="1">
+				<Entry Name="Output" Index="#x3101" Sub="#x02">
+					<Type>USINT</Type>
+				</Entry>
+			</Pdo>
+			<Pdo Name="Byte 2" Index="#x1602" InOut="1" Flags="#x0011" SyncMan="2">
+				<Entry Name="Output" Index="#x3101" Sub="#x03">
+					<Type>USINT</Type>
+				</Entry>
+			</Pdo>
+			<Pdo Name="Byte 3" Index="#x1603" InOut="1" Flags="#x0011" SyncMan="3">
+				<Entry Name="Output" Index="#x3101" Sub="#x04">
+					<Type>USINT</Type>
+				</Entry>
+			</Pdo>
+		</EtherCAT>
+	</Box>
+</TcSmItem>

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.74" ClassName="CDevEtherCATDef" SubType="111">
 	<Device Id="4" AmlId="{542F2303-6C5F-4C83-BAF9-64903B6426F3}" DevType="111" DevFlags="#x0003" AmsPort="28676" AmsNetId="10.1.176.222.5.1" RemoteName="Device 4 X000 (EtherCAT)" InfoImageId="10">
-		<Name>Device 4 X000 (EtherCAT)</Name>
+		<Name>__FILENAME__</Name>
 		<AddressInfo>
 			<Pnp>
 				<DeviceDesc>Ethernet X000 (TwinCAT-Intel PCI Ethernet Adapter (</DeviceDesc>
@@ -12,11 +12,8 @@
 		<Image Id="5" AddrType="9" ImageType="3">
 			<Name>Image</Name>
 		</Image>
-		<Box File="ValveBank1 (EX260-SEC1).xti" Id="6" AmlId="{68AA57F8-D489-482B-855A-FE07D3B66548}">
+		<Box File="Box 6 (EX260-SEC1).xti" Id="6" AmlId="{68AA57F8-D489-482B-855A-FE07D3B66548}">
 			<EtherCAT PortABoxInfo="#x00ffffff"/>
-		</Box>
-		<Box File="ValveBank2 (EX260-SEC1).xti" Id="7" AmlId="{6AFCAC56-6D8E-45E6-B8A5-BB9FB12C02A6}">
-			<EtherCAT PortABoxInfo="#x01000006"/>
 		</Box>
 		<EtherCAT/>
 	</Device>
