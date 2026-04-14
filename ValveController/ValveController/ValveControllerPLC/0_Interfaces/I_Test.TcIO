@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_Test" Id="{92b081ea-7d5e-00f9-0589-957ad6ae2748}">
+    <Declaration><![CDATA[INTERFACE I_Test
+]]></Declaration>
+    <Method Name="mTestComp" Id="{16b6544b-19d0-0efb-09c0-a9dd07867c07}">
+      <Declaration><![CDATA[METHOD mTestComp : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="mTestFault" Id="{ee8c5b42-1bb3-0d2c-2788-e6a11962a1ce}">
+      <Declaration><![CDATA[METHOD mTestFault : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="mTestResult" Id="{6ce87a6b-ebc1-0b86-1be3-9333ddc6baaa}">
+      <Declaration><![CDATA[METHOD mTestResult : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="mTestStart" Id="{fc378b72-8f5f-0eb7-1973-29060c5100bf}">
+      <Declaration><![CDATA[METHOD mTestStart : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="mTestStop" Id="{8e4d7de2-898a-03e9-330d-9e21c9f03218}">
+      <Declaration><![CDATA[METHOD mTestStop : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

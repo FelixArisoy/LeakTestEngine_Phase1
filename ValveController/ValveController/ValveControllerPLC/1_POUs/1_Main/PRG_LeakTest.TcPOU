@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <POU Name="PRG_LeakTestMain" Id="{a3d4985a-23a4-4261-9530-cafe9c795619}" SpecialFunc="None">
-    <Declaration><![CDATA[PROGRAM PRG_LeakTestMain
+  <POU Name="PRG_LeakTest" Id="{a3d4985a-23a4-4261-9530-cafe9c795619}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_LeakTest
 VAR
 
 //####### Map Io #######
@@ -18,7 +18,7 @@ VAR
 	afbAteqResult		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF FB_AteqResultHandler;
   	abAutoTestRecipeStart : BOOL; /// Flag will be binded to Main PLC Run Cmd... Debug
 //####### ValveBanks #######
-	afbValveBank		: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF FB_ValveIo;
+	afbValveBank		: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF FB_ValveBankControl;
 	anValveMask			: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF DWORD; // per valve bank
 	anReqOpenManual		: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF BOOL; 
 	anReqCloseManual	: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF BOOL;

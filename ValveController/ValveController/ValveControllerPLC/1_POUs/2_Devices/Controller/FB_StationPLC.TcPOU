@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_StationPLC" Id="{c2bbdccd-edf6-4203-96ae-745c9a753c49}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_StationPLC IMPLEMENTS I_Device, I_Test
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+// Used to Handhsake Test Controller IPC and Station PLC
+mTestStart();
+mTestStop();
+]]></ST>
+    </Implementation>
+    <Method Name="mDeviceComm" Id="{6b1c62f9-afd1-0ed1-1af2-c3fcab9e5ac0}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD mDeviceComm : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mDeviceEnable" Id="{22c773e2-1b2d-0832-05a1-8e46a9989866}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD mDeviceEnable : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mDeviceHeartbeat" Id="{53afa9d6-7a86-02a9-1060-5dfaa73e8c85}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD mDeviceHeartbeat : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mDeviceReset" Id="{19fe8716-a610-0fc6-3d06-68d4d0c31d67}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD mDeviceReset : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mDeviceStatus" Id="{7e9e7920-bba0-0968-2130-913bdc597fdf}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD mDeviceStatus : E_DeviceStatus
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mTestComp" Id="{4402dc0a-65cc-0cc3-0733-13bfaffc6a56}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD mTestComp : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mTestFault" Id="{a285c622-790c-0dc9-2c21-adb29954baa1}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD mTestFault : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mTestResult" Id="{3b83cf7a-caa2-080b-1316-1e6441063419}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD mTestResult : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mTestStart" Id="{d21d38c3-94d0-09be-1e78-d755715e022a}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD mTestStart : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mTestStop" Id="{d3f6af41-3062-0dcd-2377-34ec04c65569}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD mTestStop : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="pDeviceCommOK" Id="{4916703a-b0d4-0bb2-3525-62abe97a6292}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pDeviceCommOK : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{e92bb307-03a6-0f96-17bb-7d285d137f4a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{e21a621c-c315-0a6e-3ec6-65b2447003d5}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pDeviceEnableCmd" Id="{7e815da2-0217-0362-056d-7bb689a0a5ea}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pDeviceEnableCmd : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{cb63ff0a-ba88-0941-1472-99edd2723c80}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{6d478902-1241-0c40-1479-cd02648cf134}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pDeviceEnabled" Id="{6784b490-f0e2-038b-004e-8458e58ffafd}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pDeviceEnabled : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{686c4aef-090b-05dd-3396-43a529d14e88}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{08ebb7be-b1cf-08a5-0d5c-80a25b10fbe0}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pDeviceFaulted" Id="{25c4060c-f954-008d-06d4-6dea69036e9f}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pDeviceFaulted : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{36ca6899-a424-0799-285c-a2ace000ed00}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{5ef681d2-63d6-0ead-2186-e1ab3d7e79b7}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pDeviceReset" Id="{084f9483-9465-0d01-2198-8856abd2a951}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pDeviceReset : BOOL
+]]></Declaration>
+      <Set Name="Set" Id="{b9c10249-9d7f-0716-11fc-cb7afced8b91}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pDeviceStatusFeedback" Id="{94635081-8e06-0d01-2ddb-432446d15997}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pDeviceStatusFeedback : DWORD
+]]></Declaration>
+      <Get Name="Get" Id="{26df44a8-ec21-0dee-2432-e3244a0f00e2}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{f247035b-e819-06f4-00b3-14bbac8a411d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+  </POU>
+</TcPlcObject>

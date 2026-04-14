@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <Task Name="PlcTask" Id="{15e3c139-8b4c-4b68-adc8-d3eb69a02923}">
+  <Task Name="IpcTask" Id="{15e3c139-8b4c-4b68-adc8-d3eb69a02923}">
     <!--CycleTime in micro seconds.-->
     <CycleTime>20000</CycleTime>
     <Priority>20</Priority>
     <PouCall>
-      <Name>PRG_IpcControllerMain</Name>
+      <Name>PRG_IpcController</Name>
     </PouCall>
     <PouCall>
-      <Name>PRG_TcUnitMain</Name>
+      <Name>PRG_TcUnit</Name>
     </PouCall>
     <TaskFBGuid>{2945a21f-1645-4e85-927f-b5d7ddc0d463}</TaskFBGuid>
     <Fb_init>{b0af4c18-2447-4d13-af2c-caa1f1c91310}</Fb_init>

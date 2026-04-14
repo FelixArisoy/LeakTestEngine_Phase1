@@ -1,43 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <Itf Name="I_ValveIo" Id="{9abff4a5-9dc4-4338-a357-8d967cc6368b}">
-    <Declaration><![CDATA[INTERFACE I_ValveIo EXTENDS I_Device
+  <Itf Name="I_ValveBank" Id="{9abff4a5-9dc4-4338-a357-8d967cc6368b}">
+    <Declaration><![CDATA[INTERFACE I_ValveBank EXTENDS I_Device
 ]]></Declaration>
-    <Method Name="M_ManualControl" Id="{63fac6b4-9286-4ff2-830b-5a885f2ba6a0}">
-      <Declaration><![CDATA[METHOD M_ManualControl : BOOL
+    <Method Name="mManual" Id="{63fac6b4-9286-4ff2-830b-5a885f2ba6a0}">
+      <Declaration><![CDATA[METHOD mManual : BOOL
 VAR_INPUT
 	ManualTrigValve : ARRAY[0..31] OF BOOL;
 END_VAR
 
 ]]></Declaration>
     </Method>
-    <Method Name="M_MapMaskToOutBytes" Id="{755f9910-c101-4fb7-90ee-bcba44a6a4a3}">
-      <Declaration><![CDATA[METHOD M_MapMaskToOutBytes
+    <Method Name="mMapMaskToOutBytes" Id="{755f9910-c101-4fb7-90ee-bcba44a6a4a3}">
+      <Declaration><![CDATA[METHOD mMapMaskToOutBytes
 VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
-    <Method Name="M_ValvePositionOK" Id="{a1eac1b7-3181-4ced-9150-59d0318060bd}">
-      <Declaration><![CDATA[METHOD M_ValvePositionOK : BOOL
+    <Method Name="mValvePosition" Id="{a1eac1b7-3181-4ced-9150-59d0318060bd}">
+      <Declaration><![CDATA[METHOD mValvePosition : BOOL
 VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
-    <Property Name="pNumOfChannels" Id="{e2f540e3-a647-4887-b05a-79e0b0c456f7}">
-      <Declaration><![CDATA[PROPERTY pNumOfChannels : INT]]></Declaration>
-      <Get Name="Get" Id="{e67456f8-dd4a-4c5e-ab39-b721f030e82f}">
-        <Declaration><![CDATA[]]></Declaration>
-      </Get>
-      <Set Name="Set" Id="{b48f9988-9810-4cc2-b8f1-1c3d55fe87ae}">
-        <Declaration><![CDATA[]]></Declaration>
-      </Set>
-    </Property>
-    <Property Name="pNumOfValvesAvailable" Id="{f7ac2a41-ab7b-4416-8cf9-6ea4b760921c}">
-      <Declaration><![CDATA[PROPERTY pNumOfValvesAvailable : INT]]></Declaration>
+    <Property Name="pNumOfValvesConnected" Id="{f7ac2a41-ab7b-4416-8cf9-6ea4b760921c}">
+      <Declaration><![CDATA[PROPERTY pNumOfValvesConnected : INT]]></Declaration>
       <Get Name="Get" Id="{1fb65154-0e04-4899-90af-8f762ad2b37c}">
         <Declaration><![CDATA[]]></Declaration>
       </Get>
       <Set Name="Set" Id="{f59aaf3d-2dea-4a6d-9e63-928ca745b81c}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="pNumOfValveSlots" Id="{e2f540e3-a647-4887-b05a-79e0b0c456f7}">
+      <Declaration><![CDATA[PROPERTY pNumOfValveSlots : INT]]></Declaration>
+      <Get Name="Get" Id="{e67456f8-dd4a-4c5e-ab39-b721f030e82f}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{b48f9988-9810-4cc2-b8f1-1c3d55fe87ae}">
         <Declaration><![CDATA[]]></Declaration>
       </Set>
     </Property>

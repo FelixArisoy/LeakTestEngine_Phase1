@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_Ateq" Id="{332f149a-4c26-0f2b-1214-2e0a8ff12416}">
+    <Declaration><![CDATA[INTERFACE I_Ateq
+]]></Declaration>
+  </Itf>
+</TcPlcObject>

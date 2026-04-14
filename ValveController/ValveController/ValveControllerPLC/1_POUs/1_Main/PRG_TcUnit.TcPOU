@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <POU Name="PRG_TcUnitMain" Id="{17166b4e-59dc-4826-b23b-b13d729fc1f3}" SpecialFunc="None">
-    <Declaration><![CDATA[PROGRAM PRG_TcUnitMain
+  <POU Name="PRG_TcUnit" Id="{17166b4e-59dc-4826-b23b-b13d729fc1f3}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_TcUnit
 VAR
 // Enable the test FBs to RUN TcUnit
 	//fbTest_AteqControl	: FB_Test_AteqControl;
@@ -12,8 +12,8 @@ END_VAR
 
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
-	//TcUnit.RUN_IN_SEQUENCE();
+      <ST><![CDATA[// Unit testing calls
+// TcUnit.RUN_IN_SEQUENCE();
 
 ]]></ST>
     </Implementation>

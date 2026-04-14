@@ -3,25 +3,31 @@
   <Itf Name="I_Device" Id="{da4e5490-5768-4d44-b47a-f8648bda148f}">
     <Declaration><![CDATA[INTERFACE I_Device
 ]]></Declaration>
-    <Method Name="M_DeviceEnable" Id="{66611878-468d-4a93-abc8-e579085825ea}">
-      <Declaration><![CDATA[METHOD M_DeviceEnable : BOOL
+    <Method Name="mDeviceComm" Id="{9000028c-4bda-4794-9a59-18d66b3b391a}">
+      <Declaration><![CDATA[METHOD mDeviceComm : BOOL
 VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
-    <Method Name="M_DeviceHeartbeat" Id="{d929bca2-a963-4538-b506-159be56dca41}">
-      <Declaration><![CDATA[METHOD M_DeviceHeartbeat : BOOL
+    <Method Name="mDeviceEnable" Id="{66611878-468d-4a93-abc8-e579085825ea}">
+      <Declaration><![CDATA[METHOD mDeviceEnable : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="mDeviceHeartbeat" Id="{d929bca2-a963-4538-b506-159be56dca41}">
+      <Declaration><![CDATA[METHOD mDeviceHeartbeat : BOOL
 VAR_INPUT
 END_VAR]]></Declaration>
     </Method>
-    <Method Name="M_DeviceReset" Id="{28520df0-2b3b-4670-8924-aeb864750682}">
-      <Declaration><![CDATA[METHOD M_DeviceReset : BOOL
+    <Method Name="mDeviceReset" Id="{28520df0-2b3b-4670-8924-aeb864750682}">
+      <Declaration><![CDATA[METHOD mDeviceReset : BOOL
 VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
-    <Method Name="M_DeviceStatus" Id="{78fe631b-ed6a-4e93-bc55-568c4437fab0}">
-      <Declaration><![CDATA[METHOD M_DeviceStatus : E_DeviceStatus
+    <Method Name="mDeviceStatus" Id="{78fe631b-ed6a-4e93-bc55-568c4437fab0}">
+      <Declaration><![CDATA[METHOD mDeviceStatus : E_DeviceStatus
 VAR_INPUT
 END_VAR]]></Declaration>
     </Method>

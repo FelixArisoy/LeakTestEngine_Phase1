@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_Action" Id="{3db31aa2-9b0e-0f86-3751-52ce7cdd160a}">
+    <Declaration><![CDATA[INTERFACE I_Action
+]]></Declaration>
+    <Method Name="mActive" Id="{fcda8d2f-de47-0f0f-0f27-091c45b3c7cb}">
+      <Declaration><![CDATA[METHOD mActive : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="mClear" Id="{f305195b-f4ad-0dcd-1dca-cd4aaf079542}">
+      <Declaration><![CDATA[METHOD mClear : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="mCmd" Id="{3c9d666b-a006-04a1-1392-e4c094b91c0b}">
+      <Declaration><![CDATA[METHOD mCmd : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="mComp" Id="{a8eb2af8-a423-0d3d-12e4-9ab50009aa73}">
+      <Declaration><![CDATA[METHOD mComp : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="mFault" Id="{7117549f-b8e8-0542-33ea-5bba7a21b05d}">
+      <Declaration><![CDATA[METHOD mFault : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="mOutput" Id="{fa5e6117-12e2-0635-328b-5a2e0a6cc282}">
+      <Declaration><![CDATA[METHOD mOutput : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

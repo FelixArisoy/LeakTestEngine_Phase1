@@ -20,16 +20,28 @@
     <CombineIds>true</CombineIds>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="0_Interfaces\I_PLC.TcIO">
+    <Compile Include="0_Interfaces\I_Action.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="0_Interfaces\I_Ateq.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="0_Interfaces\I_Device.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="0_Interfaces\I_ValveIo.TcIO">
+    <Compile Include="0_Interfaces\I_Test.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="1_POUs\1_Main\PRG_TcUnitMain.TcPOU">
+    <Compile Include="0_Interfaces\I_ValveBank.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="1_POUs\1_Main\PRG_StationPLC.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="1_POUs\1_Main\PRG_TcUnit.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="1_POUs\3_Generic\FB_DwellTime.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="2_DUTs\AteqControl\E_AteqControlErrorFlags.TcDUT">
@@ -112,37 +124,34 @@
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
-    <Compile Include="1_POUs\1_Main\AteqControl.TcTTO">
+    <Compile Include="1_POUs\1_Main\LeakTestTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="1_POUs\1_Main\PlcTask.TcTTO">
+    <Compile Include="1_POUs\1_Main\IpcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="1_POUs\1_Main\PRG_LeakTestMain.TcPOU">
+    <Compile Include="1_POUs\1_Main\PRG_LeakTest.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="1_POUs\1_Main\PRG_IpcControllerMain.TcPOU">
+    <Compile Include="1_POUs\1_Main\PRG_IpcController.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="1_POUs\2_Devices\ATEQ\FB_AteqCmdHandler.TcPOU">
+    <Compile Include="1_POUs\2_Devices\AteqF6\FB_AteqCmdHandler.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="1_POUs\2_Devices\ATEQ\FB_AteqControl.TcPOU">
+    <Compile Include="1_POUs\2_Devices\AteqF6\FB_AteqControl.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="1_POUs\2_Devices\ATEQ\FB_AteqRecipeHandler.TcPOU">
+    <Compile Include="1_POUs\2_Devices\AteqF6\FB_AteqRecipeHandler.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="1_POUs\2_Devices\ATEQ\FB_AteqResultHandler.TcPOU">
+    <Compile Include="1_POUs\2_Devices\AteqF6\FB_AteqResultHandler.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="1_POUs\2_Devices\PLC\FB_DwellTime.TcPOU">
+    <Compile Include="1_POUs\2_Devices\Controller\FB_StationPLC.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="1_POUs\2_Devices\PLC\FB_MainPLC.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="1_POUs\2_Devices\ValveBank\FB_ValveIo.TcPOU">
+    <Compile Include="1_POUs\2_Devices\ValveBank\FB_ValveBankControl.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="1_POUs\2_Devices\ValveBank\FB_ValveMaskHandler.TcPOU">
@@ -151,13 +160,13 @@
     <Compile Include="1_POUs\2_Devices\ValveBank\FB_ValveMaskHandlerOld.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="1_POUs\3_Instructions\FB_HexDecoder.TcPOU">
+    <Compile Include="1_POUs\3_Generic\FB_HexDecoder.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="1_POUs\3_Instructions\FB_Sequencer.TcPOU">
+    <Compile Include="1_POUs\3_Generic\FB_Sequencer.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="1_POUs\3_Instructions\FB_TextFile.TcPOU">
+    <Compile Include="1_POUs\3_Generic\FB_TextFile.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="3_GVLs\GVL_VisVariable.TcGVL">
@@ -170,10 +179,10 @@
     <Compile Include="Visualization Manager.TcVMO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="VISUs\FB_VisControl.TcPOU">
+    <Compile Include="4_VISUs\FB_VisControl.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="VISUs\visMain.TcVIS">
+    <Compile Include="4_VISUs\visMain.TcVIS">
       <SubType>Code</SubType>
       <DependentUpon>Visualization Manager.TcVMO</DependentUpon>
     </Compile>
@@ -225,15 +234,15 @@
     <Folder Include="1_POUs" />
     <Folder Include="1_POUs\1_Main" />
     <Folder Include="1_POUs\2_Devices" />
-    <Folder Include="1_POUs\2_Devices\ATEQ" />
-    <Folder Include="1_POUs\2_Devices\PLC" />
+    <Folder Include="1_POUs\2_Devices\AteqF6" />
+    <Folder Include="1_POUs\2_Devices\Controller" />
     <Folder Include="1_POUs\2_Devices\ValveBank" />
-    <Folder Include="1_POUs\3_Instructions" />
+    <Folder Include="1_POUs\3_Generic" />
     <Folder Include="zDisposables" />
     <Folder Include="zTcUnitCalls" />
     <Folder Include="zTcUnitCalls\Test_Ateq" />
     <Folder Include="zTcUnitCalls\Test_ValveBank" />
-    <Folder Include="VISUs" />
+    <Folder Include="4_VISUs" />
   </ItemGroup>
   <ItemGroup>
     <PlaceholderReference Include="System_VisuElemMeter">
