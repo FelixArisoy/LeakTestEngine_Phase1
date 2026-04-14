@@ -1,7 +1,140 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <Itf Name="I_Ateq" Id="{332f149a-4c26-0f2b-1214-2e0a8ff12416}">
-    <Declaration><![CDATA[INTERFACE I_Ateq
+    <Declaration><![CDATA[INTERFACE I_Ateq EXTENDS I_Device
 ]]></Declaration>
+    <Method Name="mMapInput" Id="{43227f29-ede3-0466-2ef3-590eec183a0d}">
+      <Declaration><![CDATA[METHOD mMapInput
+VAR
+END_VAR
+
+]]></Declaration>
+    </Method>
+    <Method Name="mMapOutput" Id="{3e07a3ca-cbdf-0cc8-0ef1-00cf08c9f7c5}">
+      <Declaration><![CDATA[METHOD mMapOutput
+VAR
+END_VAR
+
+]]></Declaration>
+    </Method>
+    <Method Name="mParamRead" Id="{0904a83c-4469-029d-31a5-f6d9bf2faea0}">
+      <Declaration><![CDATA[METHOD mParamRead : E_AteqHandshakeSteps
+VAR 
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="mParamWrite" Id="{1110f7eb-35f6-0689-3091-dd71473ec71c}">
+      <Declaration><![CDATA[METHOD mParamWrite : E_AteqHandshakeSteps
+VAR 
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="mPrgInternalSteps" Id="{ae67fef3-e079-0d9d-05c4-e32b26bdc57c}">
+      <Declaration><![CDATA[METHOD mPrgInternalSteps : E_AteqStepsTable
+VAR_INPUT
+	nProgramStep : WORD;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="mPrgSelect" Id="{427503f9-388e-0113-0ef5-97dc99b843ee}">
+      <Declaration><![CDATA[METHOD mPrgSelect : E_AteqHandshakeSteps
+VAR
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="mPrgSeq" Id="{cb096298-2c45-0451-3e39-1abf035f28b0}">
+      <Declaration><![CDATA[METHOD mPrgSeq
+VAR   
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="mPrgStart" Id="{f2da6acf-be01-0bd7-302c-e2e44b6622cd}">
+      <Declaration><![CDATA[METHOD mPrgStart : E_AteqHandshakeSteps
+VAR
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="mReadFIFO" Id="{ac5a1ef7-9cd2-0560-064b-e96303d9ec57}">
+      <Declaration><![CDATA[METHOD mReadFIFO : E_AteqHandshakeSteps
+VAR
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="mReadLastResult" Id="{b4a1ba2a-c1c2-0e4a-094e-508abcfbbe4e}">
+      <Declaration><![CDATA[METHOD mReadLastResult : E_AteqHandshakeSteps
+VAR
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="mReset" Id="{7d14ca72-38ad-07c8-12da-7bff3f7b16e2}">
+      <Declaration><![CDATA[METHOD mReset : E_AteqHandshakeSteps
+VAR
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="mResetFIFO" Id="{35d93d3c-f110-0857-29c2-c57b0cfaafa9}">
+      <Declaration><![CDATA[METHOD mResetFIFO : E_AteqHandshakeSteps
+VAR
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="mSpecialCycle" Id="{af1d00e6-23e9-0473-2b55-c61a05f90f66}">
+      <Declaration><![CDATA[METHOD mSpecialCycle : E_AteqHandshakeSteps
+VAR_INPUT
+    nSpecialCycleId	: WORD; // Input for the special cycle ID (GVL_AteqSpecialCycle.PiezoAutoZeroReg2 for AutoZero 16#08)
+END_VAR]]></Declaration>
+    </Method>
+    <Property Name="pHandshakeToDeviceFailed" Id="{efa349e5-9293-0723-0ec2-c636a839572a}">
+      <Declaration><![CDATA[PROPERTY pHandshakeToDeviceFailed : BOOL]]></Declaration>
+      <Get Name="Get" Id="{3c1143a4-7e7a-03b7-0be6-86f6b2b161a5}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="pPrgSeqActive" Id="{586d2d3c-2aaa-0665-3c10-c0fe84771765}">
+      <Declaration><![CDATA[PROPERTY pPrgSeqActive : BOOL]]></Declaration>
+      <Get Name="Get" Id="{b4ef49a3-1dfd-027a-0892-2ce8c759f852}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="pPrgSeqDone" Id="{24d646e0-7add-04e3-008f-8568acdec391}">
+      <Declaration><![CDATA[PROPERTY pPrgSeqDone : BOOL]]></Declaration>
+      <Get Name="Get" Id="{1812d3f7-c13b-095e-0ca1-ae8cb5ad62b5}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="pPrgSeqError" Id="{3a42a146-0f26-058b-0926-8bb1975d6f5a}">
+      <Declaration><![CDATA[PROPERTY pPrgSeqError : BOOL]]></Declaration>
+      <Get Name="Get" Id="{b60f4f39-819e-0725-04c9-6e3a92c8cc2f}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="pPrgSeqReady" Id="{a71c51a3-9ee3-082b-0ba3-b2ffcacdbd6c}">
+      <Declaration><![CDATA[PROPERTY pPrgSeqReady : bool]]></Declaration>
+      <Get Name="Get" Id="{57af2c11-9005-051c-1ad4-10d53dd265be}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="pPrgSeqResetComp" Id="{c612ce8c-3907-045c-026c-e617bb87da66}">
+      <Declaration><![CDATA[PROPERTY pPrgSeqResetComp : BOOL]]></Declaration>
+      <Get Name="Get" Id="{bd9b1aa0-0291-0b06-1a71-7bec92321d5d}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="pPrgSeqResetRequest" Id="{d7b4ead0-c35e-076d-07c2-8ef2413322d3}">
+      <Declaration><![CDATA[PROPERTY pPrgSeqResetRequest : BOOL]]></Declaration>
+      <Get Name="Get" Id="{181eada4-8aab-0f89-27d1-ca76fd130613}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{548e974c-f5a4-0685-073e-a992ea365d57}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="pPrgSeqRunRequest" Id="{9079a57a-a8dd-03ef-0bf0-cd6a2e7006db}">
+      <Declaration><![CDATA[PROPERTY pPrgSeqRunRequest : BOOL]]></Declaration>
+      <Get Name="Get" Id="{041b4604-5b63-03a6-3f9b-249e8b974caa}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{4f31d0c8-4d4e-0710-1ce0-0b5e166d78cf}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="pPrgSeqTimeout" Id="{03e7c44c-b039-05bb-1581-c08df1a08ce7}">
+      <Declaration><![CDATA[PROPERTY pPrgSeqTimeout : BOOL]]></Declaration>
+      <Get Name="Get" Id="{b8068b31-cd4c-02df-0004-a7a16f72ad54}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
   </Itf>
 </TcPlcObject>

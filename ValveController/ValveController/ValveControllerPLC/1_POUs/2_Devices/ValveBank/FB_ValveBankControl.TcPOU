@@ -288,6 +288,27 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
+    <Property Name="pDeviceReady" Id="{4d9454c6-791c-0b05-0b6c-53ea2ada3424}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pDeviceReady : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{5f040783-2be6-0886-24bf-23efde0b08e1}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{90b2e048-5e88-0ba1-1bc4-8896769f410f}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
     <Property Name="pDeviceReset" Id="{b8002858-155a-4303-b666-9f670f070a54}">
       <Declaration><![CDATA[PROPERTY pDeviceReset : BOOL
 ]]></Declaration>

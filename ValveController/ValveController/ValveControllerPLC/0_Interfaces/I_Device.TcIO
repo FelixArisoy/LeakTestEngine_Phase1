@@ -67,6 +67,15 @@ END_VAR]]></Declaration>
         <Declaration><![CDATA[]]></Declaration>
       </Set>
     </Property>
+    <Property Name="pDeviceReady" Id="{ce5fb293-9bb4-0000-1b34-90bf0694caef}">
+      <Declaration><![CDATA[PROPERTY pDeviceReady : bool]]></Declaration>
+      <Get Name="Get" Id="{bbd7721a-4c60-0b29-382c-1849433bdb22}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{7cf179f0-b767-0e64-2818-7d11ad4e0f25}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
     <Property Name="pDeviceReset" Id="{8ffe5666-d627-4cc2-978b-bb0403f28d7a}">
       <Declaration><![CDATA[PROPERTY pDeviceReset : BOOL]]></Declaration>
       <Set Name="Set" Id="{c6befaf6-e2df-44c0-aaff-c3d90284af41}">

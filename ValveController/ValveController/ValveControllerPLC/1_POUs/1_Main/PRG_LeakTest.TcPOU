@@ -92,8 +92,8 @@ END_IF
 	GVL_MapIo.aIoEx260[0].Out0 := DWORD_TO_SINT(GVL_MapIo.nValveMaskRaw);  /// Temp VB Testing Triggers the outputs
 	
 /// ATEQ HIGH LEVEL CMD BINDING
-	afbAteqControl[nDeviceIndex].pProgramSeqRunRequest 		:= afbAteqRecipeHandler[nDeviceIndex].pProgramSeqRunCmdToAteq;
-	afbAteqControl[nDeviceIndex].pProgramSeqResetRequest	:= afbAteqRecipeHandler[nDeviceIndex].pProgramSeqResetCmdToAteq;		
+	afbAteqControl[nDeviceIndex].pPrgSeqRunRequest 		:= afbAteqRecipeHandler[nDeviceIndex].pProgramSeqRunCmdToAteq;
+	afbAteqControl[nDeviceIndex].pPrgSeqResetRequest	:= afbAteqRecipeHandler[nDeviceIndex].pProgramSeqResetCmdToAteq;		
 	
 /// ATEQ DEVICE CONTROL CALLS
 	afbAteqControl[nDeviceIndex](
@@ -103,7 +103,7 @@ END_IF
 
 ///	ATEQ TEST RESULT STORE CALLS	
 	afbAteqResult[nDeviceIndex](
-								bAutoSeqDone 	:= afbAteqControl[nDeviceIndex].pProgramSeqDone,
+								bAutoSeqDone 	:= afbAteqControl[nDeviceIndex].pPrgSeqDone,
 								anExchangeZone	:= astAteqIo[nDeviceIndex].stRead.anExchangeZone);		
 				
 

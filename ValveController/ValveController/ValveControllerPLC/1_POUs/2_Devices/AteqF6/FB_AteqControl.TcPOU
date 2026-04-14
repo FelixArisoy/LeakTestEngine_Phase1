@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_AteqControl" Id="{7f132da6-4770-42a7-a01e-2190c92a7cb5}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_AteqControl 
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AteqControl IMPLEMENTS I_Ateq
 // v1.0 TESTED OK. - 2025-07 by Felix Arisoy, VTMS Application Engineering
 (* 
 FB_AteqControl was developed to manage handshake and test execution logic 
@@ -64,35 +64,73 @@ For future: FB_init may be required
    	bProgramSeqResetComp		: BOOL;   	 
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[M_InputMap();
-M_OutputMap();
-M_ProgramSeq();
+      <ST><![CDATA[mMapInput();
+mMapOutput();
+mPrgSeq();
 
-eProgramInternalSteps := M_ProgramInternalSteps(stMappedIo.stRead.nProgramStep);
+eProgramInternalSteps := mPrgInternalSteps(stMappedIo.stRead.nProgramStep);
 // Add other monitoring or manual command calls here...
-// ProgramAutoSequence to be the primary driver for running Ateq programs in production.]]></ST>
+// mPrgSeq to be the primary driver for running Ateq programs in production.]]></ST>
     </Implementation>
-    <Method Name="M_InputMap" Id="{94ae9230-e4e6-4b89-b299-6e4cade93c2c}">
-      <Declaration><![CDATA[METHOD PRIVATE M_InputMap
+    <Method Name="mDeviceComm" Id="{aa97d9e0-645b-0844-0177-f6bc6c75a604}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD mDeviceComm : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mDeviceEnable" Id="{84f7179a-64f9-0bec-2f65-26b684ef386e}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD mDeviceEnable : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mDeviceHeartbeat" Id="{6dac1820-09ee-067c-2629-8a6c1ead81f4}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD mDeviceHeartbeat : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mDeviceReset" Id="{c660f78d-87b8-0a47-078f-13389178c686}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD mDeviceReset : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mDeviceStatus" Id="{ad222839-6a1f-0a39-3ae7-c713e7da6c00}">
+      <Declaration><![CDATA[{warning 'add method implementation '}
+METHOD mDeviceStatus : E_DeviceStatus
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mMapInput" Id="{94ae9230-e4e6-4b89-b299-6e4cade93c2c}">
+      <Declaration><![CDATA[METHOD mMapInput
 VAR
 	nIndex1 : INT;
-	
+
 	byEcho0, byEcho1       : BYTE;
     byError0, byError1     : BYTE;
     byResult0, byResult1   : BYTE;
-	
 
 	anPressureCurValueBuffer 	: ARRAY [0..3] OF BYTE;
 	anPressureUnitCodeBuffer	: ARRAY [0..3] OF BYTE;	
 	anLeakCurValueBuffer 		: ARRAY [0..3] OF BYTE;		
 	anLeakUnitCodeBuffer		: ARRAY [0..3] OF BYTE;
-	    // temporary DWORD variables for reconstruction
+// temporary DWORD variables for reconstruction
     nPressureCurValueBuffer      : DWORD;
     nPressureUnitCodeBuffer      : DWORD;
     nLeakCurValueBuffer          : DWORD;
     nLeakUnitCodeBuffer          : DWORD;
 	
-
 END_VAR
 
 ]]></Declaration>
@@ -280,8 +318,8 @@ stMappedIo.stRead.nLeakCurValue     := DWORD_TO_REAL(nLeakCurValueBuffer) / 1000
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_OutputMap" Id="{51d42db0-b220-416b-bd6a-3a29c1b8bffe}">
-      <Declaration><![CDATA[METHOD PRIVATE M_OutputMap
+    <Method Name="mMapOutput" Id="{51d42db0-b220-416b-bd6a-3a29c1b8bffe}">
+      <Declaration><![CDATA[METHOD mMapOutput
 VAR
 	nIndex1	: INT;
 	nIndex2 : INT;
@@ -390,8 +428,8 @@ END_FOR;
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_ParamRead" Id="{e5267fc8-c940-466e-9918-6092a897a7f1}">
-      <Declaration><![CDATA[METHOD M_ParamRead : E_AteqHandshakeSteps
+    <Method Name="mParamRead" Id="{e5267fc8-c940-466e-9918-6092a897a7f1}">
+      <Declaration><![CDATA[METHOD mParamRead : E_AteqHandshakeSteps
 VAR 
 	bReadParamsComplete: BOOL;
 END_VAR]]></Declaration>
@@ -429,8 +467,8 @@ END_VAR]]></Declaration>
 *)]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_ParamWrite" Id="{efef9bf2-d12a-4715-8734-c95ea8380a79}">
-      <Declaration><![CDATA[METHOD M_ParamWrite : E_AteqHandshakeSteps
+    <Method Name="mParamWrite" Id="{efef9bf2-d12a-4715-8734-c95ea8380a79}">
+      <Declaration><![CDATA[METHOD mParamWrite : E_AteqHandshakeSteps
 VAR 
 	bWriteParamsComplete: BOOL;
 END_VAR]]></Declaration>
@@ -468,28 +506,28 @@ END_VAR]]></Declaration>
 *)]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_ProgramInternalSteps" Id="{3018ab2e-77fc-46ae-91da-718a64d69d9e}">
-      <Declaration><![CDATA[METHOD M_ProgramInternalSteps : E_AteqStepsTable
+    <Method Name="mPrgInternalSteps" Id="{3018ab2e-77fc-46ae-91da-718a64d69d9e}">
+      <Declaration><![CDATA[METHOD mPrgInternalSteps : E_AteqStepsTable
 VAR_INPUT
 	nProgramStep : WORD;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[CASE nProgramStep OF
-    0:        M_ProgramInternalSteps := E_AteqStepsTable.PreFill;
-    1:        M_ProgramInternalSteps := E_AteqStepsTable.PreDump;
-    4:        M_ProgramInternalSteps := E_AteqStepsTable.Fill;
-    5:        M_ProgramInternalSteps := E_AteqStepsTable.Stabilization;
-    6:        M_ProgramInternalSteps := E_AteqStepsTable.Test;
-    7:        M_ProgramInternalSteps := E_AteqStepsTable.Dump;
-    65535:    M_ProgramInternalSteps := E_AteqStepsTable.NoStepInProgress;
+    0:        mPrgInternalSteps := E_AteqStepsTable.PreFill;
+    1:        mPrgInternalSteps := E_AteqStepsTable.PreDump;
+    4:        mPrgInternalSteps := E_AteqStepsTable.Fill;
+    5:        mPrgInternalSteps := E_AteqStepsTable.Stabilization;
+    6:        mPrgInternalSteps := E_AteqStepsTable.Test;
+    7:        mPrgInternalSteps := E_AteqStepsTable.Dump;
+    65535:    mPrgInternalSteps := E_AteqStepsTable.NoStepInProgress;
 ELSE
-    M_ProgramInternalSteps := E_AteqStepsTable.NoStepInProgress;
+    mPrgInternalSteps := E_AteqStepsTable.NoStepInProgress;
 END_CASE]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_ProgramSelect" Id="{3f180883-986e-4f1d-b18a-91a389fa3ca6}">
-      <Declaration><![CDATA[METHOD M_ProgramSelect : E_AteqHandshakeSteps
+    <Method Name="mPrgSelect" Id="{3f180883-986e-4f1d-b18a-91a389fa3ca6}">
+      <Declaration><![CDATA[METHOD mPrgSelect : E_AteqHandshakeSteps
 VAR
 
 END_VAR]]></Declaration>
@@ -502,10 +540,10 @@ fbCmdHandler.pCmdTrigger := stMappedIo.stWrite.stCommands.bProgramSelect;
    					bCmdEcho    			:= stMappedIo.stRead.stEcho.bProgramSelect,
     				bCmdError   			:= stMappedIo.stRead.stErrorCode.bProgramSelect,
 					stIo_Ref				:= stMappedIo,
-					eStatesAteqHandshake	=> M_ProgramSelect
+					eStatesAteqHandshake	=> mPrgSelect
 );
 	
-	CASE M_ProgramSelect OF
+	CASE mPrgSelect OF
 		CMD_IDLE:
 			IF NOT bProgramSelectComplete THEN
 			stMappedIo.stWrite.stCommands.bProgramSelect := TRUE;
@@ -521,8 +559,8 @@ fbCmdHandler.pCmdTrigger := stMappedIo.stWrite.stCommands.bProgramSelect;
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_ProgramSeq" Id="{470ae35c-cda6-49a5-a2ba-29d25da98e8a}">
-      <Declaration><![CDATA[METHOD M_ProgramSeq
+    <Method Name="mPrgSeq" Id="{470ae35c-cda6-49a5-a2ba-29d25da98e8a}">
+      <Declaration><![CDATA[METHOD mPrgSeq
 VAR   
 	fbR_TRIG_RunSequence 			: R_TRIG;
 	fbR_TRIG_AutoSeqResetRequest 	: R_TRIG;
@@ -585,10 +623,10 @@ CASE eProgramSeqSteps OF
 //############################################################################################ 	
     SEQ_RESET_FIFO: 
 	
-		eStatesAteqHandshake := M_ResetFIFO();
+		eStatesAteqHandshake := mResetFIFO();
 					
 		IF bFifoResetComplete AND eStatesAteqHandshake = CMD_IDLE THEN
-			eProgramSeqSteps := SEQ_AUTO_ZERO;
+			eProgramSeqSteps := SEQ_AUTO_ZERO; // Opt Consider adding IF Auto Zero Required per Program Recipe here If not Then Go To Program Select
 		ELSIF eStatesAteqHandshake = CMD_FAIL THEN
 			eProgramSeqSteps := SEQ_ERROR; // Ateq comm failled after retry atempts
 		END_IF
@@ -597,7 +635,7 @@ CASE eProgramSeqSteps OF
 //############################################################################################ 
     SEQ_AUTO_ZERO:  
 		// Special Cycle ID 16#08 for Piezo Auto Zero Reg 2
-		eStatesAteqHandshake := M_SpecialCycle(nSpecialCycleId := GVL_AteqSpecialCycle.PiezoAutoZeroReg2); 
+		eStatesAteqHandshake := mSpecialCycle(nSpecialCycleId := GVL_AteqSpecialCycle.PiezoAutoZeroReg2); 
     	
 		IF bAutoZeroComplete AND eStatesAteqHandshake = CMD_IDLE THEN
 			eProgramSeqSteps := SEQ_PROGRAM_SELECT;
@@ -609,7 +647,7 @@ CASE eProgramSeqSteps OF
 //############################################################################################ 
     SEQ_PROGRAM_SELECT: 
 		
-		eStatesAteqHandshake := M_ProgramSelect(); 
+		eStatesAteqHandshake := mPrgSelect(); 
 		
 		IF bProgramSelectComplete AND eStatesAteqHandshake = CMD_IDLE THEN
 			eProgramSeqSteps := SEQ_START_PROGRAM;
@@ -621,7 +659,7 @@ CASE eProgramSeqSteps OF
 //############################################################################################ 		
     SEQ_START_PROGRAM:
         
-		eStatesAteqHandshake := M_ProgramStart();
+		eStatesAteqHandshake := mPrgStart();
        
 		IF bProgramRunComplete AND eStatesAteqHandshake = CMD_IDLE THEN
 			eProgramSeqSteps := SEQ_READ_LAST_RESULT;
@@ -633,7 +671,7 @@ CASE eProgramSeqSteps OF
 //############################################################################################ 				
     SEQ_READ_LAST_RESULT:
         
-		eStatesAteqHandshake := M_ReadLastResult();
+		eStatesAteqHandshake := mReadLastResult();
 		
 		IF bReadLastResultComplete AND eStatesAteqHandshake = CMD_IDLE THEN
 			eProgramSeqSteps := SEQ_TEST_DONE;
@@ -680,7 +718,7 @@ CASE eProgramSeqSteps OF
 				
 	IF bDeviceReady THEN
 		tSeqTimeout(IN := FALSE);
-		eStatesAteqHandshake := M_ResetDevice(); // will return back to IDLE
+		eStatesAteqHandshake := mReset(); // will return back to IDLE
 				
 		IF bResetDeviceDone AND eStatesAteqHandshake = CMD_IDLE THEN
 			eProgramSeqSteps		:= SEQ_IDLE;
@@ -702,8 +740,8 @@ CASE eProgramSeqSteps OF
 END_CASE]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_ProgramStart" Id="{df77a28a-31ae-4bb7-aada-fdddd0be9668}">
-      <Declaration><![CDATA[METHOD M_ProgramStart : E_AteqHandshakeSteps
+    <Method Name="mPrgStart" Id="{df77a28a-31ae-4bb7-aada-fdddd0be9668}">
+      <Declaration><![CDATA[METHOD mPrgStart : E_AteqHandshakeSteps
 VAR
    
 END_VAR]]></Declaration>
@@ -715,11 +753,11 @@ fbCmdHandler.pCmdTrigger := stMappedIo.stWrite.stCommands.bStart;
 					bCmdEcho    			:= stMappedIo.stRead.stEcho.bStart,
     				bCmdError   			:= stMappedIo.stRead.stErrorCode.bStart,
 					stIo_Ref				:= stMappedIo,
-					eStatesAteqHandshake	=> M_ProgramStart
+					eStatesAteqHandshake	=> mPrgStart
 );
 
 
-	CASE M_ProgramStart OF
+	CASE mPrgStart OF
 		CMD_IDLE:
 			IF NOT bProgramRunComplete THEN
 			stMappedIo.stWrite.stCommands.bStart := TRUE; 	
@@ -736,8 +774,8 @@ fbCmdHandler.pCmdTrigger := stMappedIo.stWrite.stCommands.bStart;
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_ReadFIFO" Id="{2bd2f2bf-d1e5-497c-8c97-5c4c719656ec}">
-      <Declaration><![CDATA[METHOD M_ReadFIFO : E_AteqHandshakeSteps
+    <Method Name="mReadFIFO" Id="{2bd2f2bf-d1e5-497c-8c97-5c4c719656ec}">
+      <Declaration><![CDATA[METHOD mReadFIFO : E_AteqHandshakeSteps
 VAR
      
 END_VAR]]></Declaration>
@@ -778,8 +816,8 @@ END_IF
 *)]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_ReadLastResult" Id="{bca66d8f-b4be-4355-b92b-b0dac3f24c0c}">
-      <Declaration><![CDATA[METHOD M_ReadLastResult : E_AteqHandshakeSteps
+    <Method Name="mReadLastResult" Id="{bca66d8f-b4be-4355-b92b-b0dac3f24c0c}">
+      <Declaration><![CDATA[METHOD mReadLastResult : E_AteqHandshakeSteps
 VAR
 	
 END_VAR]]></Declaration>
@@ -790,11 +828,11 @@ fbCmdHandler.pCmdTrigger := stMappedIo.stWrite.stCommands.bReadLastResult;
 					bCmdEcho    			:= stMappedIo.stRead.stEcho.bReadLastResult,
     				bCmdError   			:= stMappedIo.stRead.stErrorCode.bReadLastResult,
 					stIo_Ref				:= stMappedIo,
-					eStatesAteqHandshake	=> M_ReadLastResult
+					eStatesAteqHandshake	=> mReadLastResult
 );
 
 
-	CASE M_ReadLastResult OF
+	CASE mReadLastResult OF
 		CMD_IDLE:
 			IF NOT bReadLastResultComplete THEN
 			stMappedIo.stWrite.stCommands.bReadLastResult := TRUE; 
@@ -811,8 +849,8 @@ fbCmdHandler.pCmdTrigger := stMappedIo.stWrite.stCommands.bReadLastResult;
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_ResetDevice" Id="{d83d834a-bdff-4813-91dd-64475ca219aa}">
-      <Declaration><![CDATA[METHOD M_ResetDevice : E_AteqHandshakeSteps
+    <Method Name="mReset" Id="{d83d834a-bdff-4813-91dd-64475ca219aa}">
+      <Declaration><![CDATA[METHOD mReset : E_AteqHandshakeSteps
 VAR
 	
 END_VAR]]></Declaration>
@@ -824,7 +862,7 @@ fbCmdHandler.pCmdTrigger := stMappedIo.stWrite.stCommands.bReset;
 					bCmdEcho        		:= stMappedIo.stRead.stEcho.bReset,
     				bCmdError       		:= stMappedIo.stRead.stErrorCode.bReset, // This is the IN_OUT - FB_CommandHandler will manage it
     				stIo_Ref        		:= stMappedIo,
-					eStatesAteqHandshake	=> M_ResetDevice 
+					eStatesAteqHandshake	=> mReset 
 );
 
 
@@ -839,7 +877,7 @@ fbCmdHandler.pCmdTrigger := stMappedIo.stWrite.stCommands.bReset;
 	bResetRequired := TRUE;
 	END_IF
 	*)
-	CASE M_ResetDevice OF
+	CASE mReset OF
 			
 		CMD_IDLE:
 			IF fbCmdHandler.pReady AND NOT bResetDeviceDone THEN
@@ -857,8 +895,8 @@ fbCmdHandler.pCmdTrigger := stMappedIo.stWrite.stCommands.bReset;
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_ResetFIFO" Id="{d2dd068a-bc41-4e1b-8fe3-37e11fad9b4b}">
-      <Declaration><![CDATA[METHOD M_ResetFIFO : E_AteqHandshakeSteps
+    <Method Name="mResetFIFO" Id="{d2dd068a-bc41-4e1b-8fe3-37e11fad9b4b}">
+      <Declaration><![CDATA[METHOD mResetFIFO : E_AteqHandshakeSteps
 VAR
   		
 END_VAR
@@ -870,12 +908,12 @@ fbCmdHandler.pCmdTrigger := stMappedIo.stWrite.stCommands.bResetFIFO;
 					bCmdEcho        		:= stMappedIo.stRead.stEcho.bResetFIFO,
     				bCmdError       		:= stMappedIo.stRead.stErrorCode.bResetFIFO,
 					stIo_Ref        		:= stMappedIo,
-					eStatesAteqHandshake	=> M_ResetFIFO 
+					eStatesAteqHandshake	=> mResetFIFO 
 );
 
 	
 	
-	CASE M_ResetFIFO OF
+	CASE mResetFIFO OF
 		CMD_IDLE:
 			IF NOT bFifoResetComplete THEN	
 			stMappedIo.stWrite.stCommands.bResetFIFO  := TRUE;
@@ -894,8 +932,8 @@ fbCmdHandler.pCmdTrigger := stMappedIo.stWrite.stCommands.bResetFIFO;
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_SpecialCycle" Id="{d187d757-2cbf-4176-839b-3ef7d7928184}">
-      <Declaration><![CDATA[METHOD M_SpecialCycle : E_AteqHandshakeSteps
+    <Method Name="mSpecialCycle" Id="{d187d757-2cbf-4176-839b-3ef7d7928184}">
+      <Declaration><![CDATA[METHOD mSpecialCycle : E_AteqHandshakeSteps
 VAR_INPUT
     nSpecialCycleId	: WORD; // Input for the special cycle ID (GVL_AteqSpecialCycle.PiezoAutoZeroReg2 for AutoZero 16#08)
 END_VAR]]></Declaration>
@@ -907,11 +945,11 @@ fbCmdHandler.pCmdTrigger := stMappedIo.stWrite.stCommands.bSpecialCycle;
    					bCmdEcho    			:= stMappedIo.stRead.stEcho.bSpecialCycle,
     				bCmdError   			:= stMappedIo.stRead.stErrorCode.bSpecialCycle,
 					stIo_Ref				:= stMappedIo,
-					eStatesAteqHandshake	=> M_SpecialCycle
+					eStatesAteqHandshake	=> mSpecialCycle
 );
 
 	
-	CASE M_SpecialCycle OF
+	CASE mSpecialCycle OF
 		CMD_IDLE:
 			IF NOT bAutoZeroComplete THEN
 			stMappedIo.stWrite.stCommands.bSpecialCycle 	:= TRUE;
@@ -935,6 +973,90 @@ fbCmdHandler.pCmdTrigger := stMappedIo.stWrite.stCommands.bSpecialCycle;
 ]]></ST>
       </Implementation>
     </Method>
+    <Property Name="pDeviceCommOK" Id="{6ee7dc8b-7af6-0450-3f59-ab22ded10e8d}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pDeviceCommOK : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{f66f49eb-dd62-0c4c-16ab-2374355a61a0}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{c9021afe-132d-056b-14ae-e5a06fe08079}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pDeviceEnableCmd" Id="{0abc7363-a4fe-0fa2-0450-8937b2b61f19}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pDeviceEnableCmd : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{16429db5-1dad-0a8c-1353-871ed8273309}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{ebec1395-efec-03a3-3587-7a7cd3b9f7fa}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pDeviceEnabled" Id="{65248f68-65b1-0e3c-3d9f-e54fa2bc4b40}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pDeviceEnabled : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{59d72f47-8729-08e5-3cc5-1884a4aa081f}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{dde3c14b-cec3-0573-31bc-692d972897d0}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pDeviceFaulted" Id="{c777a3fd-9a16-0190-08d8-76528621b080}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pDeviceFaulted : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{e14810bc-7131-057a-0b57-032434b44b33}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{fda81fbd-3722-01b9-0a00-95a8d8609bf6}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
     <Property Name="pDeviceReady" Id="{b8e764cc-6104-4a97-89af-8f76af0e3fba}">
       <Declaration><![CDATA[PROPERTY pDeviceReady : bool]]></Declaration>
       <Get Name="Get" Id="{5da439f8-889f-4cfa-9f0b-b6a78c482690}">
@@ -954,6 +1076,40 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
+    <Property Name="pDeviceReset" Id="{b995698b-6f58-0313-3b60-6c82193d7423}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pDeviceReset : BOOL
+]]></Declaration>
+      <Set Name="Set" Id="{a981de07-3120-0a37-2cba-8634e465f921}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="pDeviceStatusFeedback" Id="{03ec66bf-1fff-0d5b-0381-ce5539b68bc0}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY pDeviceStatusFeedback : DWORD
+]]></Declaration>
+      <Get Name="Get" Id="{1cbde312-8844-0c05-1389-00988c3d67db}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{459e6990-a863-07ba-0b93-62e3e4c109cf}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
     <Property Name="pHandshakeToDeviceFailed" Id="{11bf0bf0-51ac-4f52-81fe-d811236e055f}">
       <Declaration><![CDATA[PROPERTY pHandshakeToDeviceFailed : BOOL]]></Declaration>
       <Get Name="Get" Id="{64faf420-55e9-4c4b-b289-a9d605e109b1}">
@@ -965,69 +1121,69 @@ END_VAR
         </Implementation>
       </Get>
     </Property>
-    <Property Name="pProgramSeqActive" Id="{4ba56c8f-a417-4b30-98d5-496655723c77}">
-      <Declaration><![CDATA[PROPERTY pProgramSeqActive : BOOL]]></Declaration>
+    <Property Name="pPrgSeqActive" Id="{4ba56c8f-a417-4b30-98d5-496655723c77}">
+      <Declaration><![CDATA[PROPERTY pPrgSeqActive : BOOL]]></Declaration>
       <Get Name="Get" Id="{2d926fd9-ef4b-4cf2-b8b3-053385070d9b}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[pProgramSeqActive := bProgramSeqActive;]]></ST>
+          <ST><![CDATA[pPrgSeqActive := bProgramSeqActive;]]></ST>
         </Implementation>
       </Get>
     </Property>
-    <Property Name="pProgramSeqDone" Id="{98cfc131-116c-4507-af1b-6f8f48b2e4c4}">
-      <Declaration><![CDATA[PROPERTY pProgramSeqDone : BOOL]]></Declaration>
+    <Property Name="pPrgSeqDone" Id="{98cfc131-116c-4507-af1b-6f8f48b2e4c4}">
+      <Declaration><![CDATA[PROPERTY pPrgSeqDone : BOOL]]></Declaration>
       <Get Name="Get" Id="{8079f071-edf8-4328-933a-c567af12da93}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[pProgramSeqDone := bProgramSeqDone;]]></ST>
+          <ST><![CDATA[pPrgSeqDone := bProgramSeqDone;]]></ST>
         </Implementation>
       </Get>
     </Property>
-    <Property Name="pProgramSeqError" Id="{f1ac5434-66d1-47bd-8037-43d62b72660b}">
-      <Declaration><![CDATA[PROPERTY pProgramSeqError : BOOL]]></Declaration>
+    <Property Name="pPrgSeqError" Id="{f1ac5434-66d1-47bd-8037-43d62b72660b}">
+      <Declaration><![CDATA[PROPERTY pPrgSeqError : BOOL]]></Declaration>
       <Get Name="Get" Id="{560a71ec-e37b-4560-9e59-792d9b886637}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[pProgramSeqError := bProgramSeqError;]]></ST>
+          <ST><![CDATA[pPrgSeqError := bProgramSeqError;]]></ST>
         </Implementation>
       </Get>
     </Property>
-    <Property Name="pProgramSeqReady" Id="{5a79bb88-e603-4731-8774-8deb5d2b0bba}">
-      <Declaration><![CDATA[PROPERTY pProgramSeqReady : bool]]></Declaration>
+    <Property Name="pPrgSeqReady" Id="{5a79bb88-e603-4731-8774-8deb5d2b0bba}">
+      <Declaration><![CDATA[PROPERTY pPrgSeqReady : bool]]></Declaration>
       <Get Name="Get" Id="{898ef93f-c4fd-47ca-9143-ab231658ddaf}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[pProgramSeqReady := bProgramSeqReady;]]></ST>
+          <ST><![CDATA[pPrgSeqReady := bProgramSeqReady;]]></ST>
         </Implementation>
       </Get>
     </Property>
-    <Property Name="pProgramSeqResetComp" Id="{b81ef765-2b86-4834-98fd-a075580bdea6}">
-      <Declaration><![CDATA[PROPERTY pProgramSeqResetComp : BOOL]]></Declaration>
+    <Property Name="pPrgSeqResetComp" Id="{b81ef765-2b86-4834-98fd-a075580bdea6}">
+      <Declaration><![CDATA[PROPERTY pPrgSeqResetComp : BOOL]]></Declaration>
       <Get Name="Get" Id="{4c9e0b67-7a3f-47fe-8bcd-7701f5cca5a5}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[pProgramSeqResetComp := bProgramSeqResetComp;]]></ST>
+          <ST><![CDATA[pPrgSeqResetComp := bProgramSeqResetComp;]]></ST>
         </Implementation>
       </Get>
     </Property>
-    <Property Name="pProgramSeqResetRequest" Id="{867b53d2-295f-46e2-80d8-b9d112d8f9e1}">
-      <Declaration><![CDATA[PROPERTY pProgramSeqResetRequest : BOOL]]></Declaration>
+    <Property Name="pPrgSeqResetRequest" Id="{867b53d2-295f-46e2-80d8-b9d112d8f9e1}">
+      <Declaration><![CDATA[PROPERTY pPrgSeqResetRequest : BOOL]]></Declaration>
       <Get Name="Get" Id="{f60c9e94-9a4a-4475-a113-cf89a8be332e}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[pProgramSeqResetRequest := bProgramSeqResetRequest;]]></ST>
+          <ST><![CDATA[pPrgSeqResetRequest := bProgramSeqResetRequest;]]></ST>
         </Implementation>
       </Get>
       <Set Name="Set" Id="{08345714-f024-414b-ad2c-f4155de8903a}">
@@ -1035,18 +1191,18 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[bProgramSeqResetRequest := pProgramSeqResetRequest;]]></ST>
+          <ST><![CDATA[bProgramSeqResetRequest := pPrgSeqResetRequest;]]></ST>
         </Implementation>
       </Set>
     </Property>
-    <Property Name="pProgramSeqRunRequest" Id="{ff50b551-08e1-491b-a09f-0da7ab325217}">
-      <Declaration><![CDATA[PROPERTY pProgramSeqRunRequest : BOOL]]></Declaration>
+    <Property Name="pPrgSeqRunRequest" Id="{ff50b551-08e1-491b-a09f-0da7ab325217}">
+      <Declaration><![CDATA[PROPERTY pPrgSeqRunRequest : BOOL]]></Declaration>
       <Get Name="Get" Id="{fbb087dc-84a1-4c2a-9e61-6c7fdee0556b}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[pProgramSeqRunRequest := bProgramSeqRunRequest;]]></ST>
+          <ST><![CDATA[pPrgSeqRunRequest := bProgramSeqRunRequest;]]></ST>
         </Implementation>
       </Get>
       <Set Name="Set" Id="{e890b352-fb0a-4eb9-a556-2bc520292729}">
@@ -1054,18 +1210,18 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[bProgramSeqRunRequest := pProgramSeqRunRequest;]]></ST>
+          <ST><![CDATA[bProgramSeqRunRequest := pPrgSeqRunRequest;]]></ST>
         </Implementation>
       </Set>
     </Property>
-    <Property Name="pProgramSeqTimeout" Id="{ce1a7886-ecd8-4979-bf3f-b6d5dc0ea90a}">
-      <Declaration><![CDATA[PROPERTY pProgramSeqTimeout : BOOL]]></Declaration>
+    <Property Name="pPrgSeqTimeout" Id="{ce1a7886-ecd8-4979-bf3f-b6d5dc0ea90a}">
+      <Declaration><![CDATA[PROPERTY pPrgSeqTimeout : BOOL]]></Declaration>
       <Get Name="Get" Id="{ce14e2db-4d29-4488-bfb2-a466580edfd9}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[pProgramSeqTimeout := bProgramSeqTimeout;]]></ST>
+          <ST><![CDATA[pPrgSeqTimeout := bProgramSeqTimeout;]]></ST>
         </Implementation>
       </Get>
     </Property>

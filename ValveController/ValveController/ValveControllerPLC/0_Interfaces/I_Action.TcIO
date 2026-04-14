@@ -39,5 +39,59 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
+    <Property Name="pActivated" Id="{04711a7d-b419-07b4-244f-8ae065f71bfb}">
+      <Declaration><![CDATA[PROPERTY pActivated : BOOL]]></Declaration>
+      <Get Name="Get" Id="{90ecb2f7-c5e1-0808-0757-1f231f43a225}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{b43a13f9-d84e-0191-20d7-df485d85d941}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="pCleared" Id="{daafbe19-b0b8-099d-0233-c4697b914c04}">
+      <Declaration><![CDATA[PROPERTY pCleared : BOOL]]></Declaration>
+      <Get Name="Get" Id="{c0f192bd-4dd1-0091-3936-41484b80f3fb}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{60b57e4c-95d7-0a31-152f-edfabd449752}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="pCmdRequested" Id="{e03e11e9-6098-070f-21b3-7d2d5f505d6e}">
+      <Declaration><![CDATA[PROPERTY pCmdRequested : BOOL]]></Declaration>
+      <Get Name="Get" Id="{fc2fad2c-a112-067e-1112-b0ef2ae2349f}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{9d7cb77c-99c9-0aa5-0ef8-1d73189c3361}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="pCompleted" Id="{c321b6e1-9d8a-01fa-121a-2c471ad46cec}">
+      <Declaration><![CDATA[PROPERTY pCompleted : BOOL]]></Declaration>
+      <Get Name="Get" Id="{48e725cb-8a2b-0d88-3512-bebc1805397e}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{ada5ba1a-ac75-057d-0261-3a6d6bec1c08}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="pFaulted" Id="{76118985-4cae-07ad-195d-27c907a5aa0a}">
+      <Declaration><![CDATA[PROPERTY pFaulted : BOOL]]></Declaration>
+      <Get Name="Get" Id="{f85d5bb0-c7ea-0fda-1bea-81a5b9a20809}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{ee239b15-fd3c-0a9d-1c21-78cf431bfb60}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="pOutputSet" Id="{415afdf0-50c1-0c46-14a1-b6a86da7db50}">
+      <Declaration><![CDATA[PROPERTY pOutputSet : BOOL]]></Declaration>
+      <Get Name="Get" Id="{87c3d8b5-06eb-0e5a-314f-92a3b88e80d0}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{63679e65-0f31-0c7b-0a9e-37633a6e593b}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
   </Itf>
 </TcPlcObject>
