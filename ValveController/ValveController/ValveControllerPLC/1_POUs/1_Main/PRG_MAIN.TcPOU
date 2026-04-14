@@ -5,11 +5,12 @@
 VAR
 END_VAR
 VAR
-    fbLocalTime      : FB_LocalSystemTime;  // Synchronizes with Windows clock
-    dtCurrentTime    : DT;
+    fbLocalTime     : FB_LocalSystemTime;  // Synchronizes with Windows clock
+    dtCurrentTime   : DT;
+	fbVisControl	: visControl;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
+      <ST><![CDATA[fbVisControl();
 // GET LOCAL TIME - First call start
 fbLocalTime( 
     bEnable := TRUE,        // trigger initial sync

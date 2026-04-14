@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="visControl" Id="{44e419da-d1ca-0ad4-1138-0ce61d4d2251}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK visControl
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	Idx : INT;
+	nPrevIdx : INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+Idx := GVL_visVariableMap.visValveMaskIdx;
+
+
+IF GVL_visVariableMap.nValveMask <> 0 THEN
+	GVL_visVariableMap.anValveMask[Idx] := GVL_visVariableMap.nValveMask;
+	GVL_visVariableMap.nValveMask := 0; // To Clear the Text Box
+END_IF
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

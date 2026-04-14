@@ -3,8 +3,9 @@
   <GVL Name="GVL_visVariableMap" Id="{e66e5bb2-e186-0a7a-1eb9-6daef8b222c0}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 VAR_GLOBAL
-	nValveMask : DWORD;
-	anValveMask : ARRAY [0..GVL_AteqConfig.nMaxProgramsToRun -1] OF DWORD;
+	visValveMaskIdx : INT;
+	nValveMask 		: DWORD;
+	anValveMask 	: ARRAY [0..GVL_AteqConfig.nMaxProgramsToRun -1] OF DWORD;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>
