@@ -95,9 +95,6 @@
     <Compile Include="2_DUTs\GenericFieldDevice\E_DeviceStatus.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="2_DUTs\GenericFieldDevice\ST_EX260Io.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="2_DUTs\GenericFieldDevice\ST_DeviceState.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -105,6 +102,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="2_DUTs\ValveBank\ST_AteqValveMap.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="2_DUTs\ValveBank\ST_EX260Io.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="2_DUTs\ValveBank\ST_ValveMask128.TcDUT">
