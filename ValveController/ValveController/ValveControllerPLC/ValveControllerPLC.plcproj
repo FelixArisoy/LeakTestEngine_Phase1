@@ -29,6 +29,9 @@
     <Compile Include="0_Interfaces\I_ValveIo.TcIO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="1_POUs\1_Main\PRG_TcUnitMain.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="2_DUTs\AteqControl\E_AteqControlErrorFlags.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -115,10 +118,10 @@
     <Compile Include="1_POUs\1_Main\PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="1_POUs\1_Main\PRG_ATEQ.TcPOU">
+    <Compile Include="1_POUs\1_Main\PRG_LeakTestMain.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="1_POUs\1_Main\PRG_MAIN.TcPOU">
+    <Compile Include="1_POUs\1_Main\PRG_IpcControllerMain.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="1_POUs\2_Devices\ATEQ\FB_AteqCmdHandler.TcPOU">
@@ -157,7 +160,7 @@
     <Compile Include="1_POUs\3_Instructions\FB_TextFile.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_GVLs\GVL_visVariableMap.TcGVL">
+    <Compile Include="3_GVLs\GVL_VisVariable.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
@@ -167,10 +170,10 @@
     <Compile Include="Visualization Manager.TcVMO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="VISUs\visControl.TcPOU">
+    <Compile Include="VISUs\FB_VisControl.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="VISUs\visControl.TcVIS">
+    <Compile Include="VISUs\visMain.TcVIS">
       <SubType>Code</SubType>
       <DependentUpon>Visualization Manager.TcVMO</DependentUpon>
     </Compile>
@@ -202,9 +205,6 @@
       <LinkAlways>true</LinkAlways>
     </Compile>
     <Compile Include="zTcUnitCalls\Test_Ateq\FB_Test_AteqControl.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="zTcUnitCalls\PRG_TEST.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="zTcUnitCalls\Test_ValveBank\FB_Test_ValveBank.TcPOU">

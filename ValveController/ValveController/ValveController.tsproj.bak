@@ -80,7 +80,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{FF505B91-FACF-4A2B-B73E-9C5E3B10185D}" Name="ValveControllerPLC" PrjFilePath="ValveControllerPLC\ValveControllerPLC.plcproj" TmcFilePath="ValveControllerPLC\ValveControllerPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{8D19C671-B593-EA07-84B1-78415FFB635E}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{1EC70536-4351-CA24-CD75-44407F898601}">
 					<Name>ValveControllerPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">

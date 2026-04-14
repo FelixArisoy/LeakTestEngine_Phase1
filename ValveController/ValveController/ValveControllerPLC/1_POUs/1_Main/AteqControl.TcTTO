@@ -5,7 +5,7 @@
     <CycleTime>8000</CycleTime>
     <Priority>10</Priority>
     <PouCall>
-      <Name>PRG_ATEQ</Name>
+      <Name>PRG_LeakTestMain</Name>
     </PouCall>
     <TaskFBGuid>{6ad5acdf-9348-4f97-af1c-c0c809d08bd6}</TaskFBGuid>
     <Fb_init>{95855194-34eb-4c8e-b2f2-7845446490b4}</Fb_init>

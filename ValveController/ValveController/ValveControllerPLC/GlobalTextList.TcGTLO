@@ -16,6 +16,61 @@
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"52"</v>
+              <v n="TextDefault">"ATEQ Config"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"959"</v>
+              <v n="TextDefault">"MASK"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"950"</v>
+              <v n="TextDefault">"Num of ATEQ F6"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"828"</v>
+              <v n="TextDefault">"NUM OF ATEQ F6"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"875"</v>
+              <v n="TextDefault">"NUM OF DEVICES"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"351"</v>
+              <v n="TextDefault">"NUM OF PROGRAMS"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"691"</v>
+              <v n="TextDefault">"NUM OF ProgramsToRun"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"538"</v>
+              <v n="TextDefault">"NUM OF STEPS"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"694"</v>
+              <v n="TextDefault">"NUM OF VALVE BANK"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"631"</v>
+              <v n="TextDefault">"NUM OF VALVE BANKS"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"349"</v>
+              <v n="TextDefault">"NUM OF VALVE SLOTS"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"285"</v>
               <v n="TextDefault">"Step"</v>
               <l n="LanguageTexts" t="ArrayList" />
@@ -26,8 +81,23 @@
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"650"</v>
+              <v n="TextDefault">"TOTAL NUM OF VALVE BANK"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"922"</v>
               <v n="TextDefault">"VALVE MASK"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"679"</v>
+              <v n="TextDefault">"Valve Mask Config"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"56"</v>
+              <v n="TextDefault">"Valve Mask Settings"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
           </l>

@@ -5,10 +5,10 @@
     <CycleTime>20000</CycleTime>
     <Priority>20</Priority>
     <PouCall>
-      <Name>PRG_MAIN</Name>
+      <Name>PRG_IpcControllerMain</Name>
     </PouCall>
     <PouCall>
-      <Name>PRG_TEST</Name>
+      <Name>PRG_TcUnitMain</Name>
     </PouCall>
     <TaskFBGuid>{2945a21f-1645-4e85-927f-b5d7ddc0d463}</TaskFBGuid>
     <Fb_init>{b0af4c18-2447-4d13-af2c-caa1f1c91310}</Fb_init>

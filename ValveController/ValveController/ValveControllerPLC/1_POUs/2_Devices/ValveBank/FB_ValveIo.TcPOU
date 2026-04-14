@@ -38,7 +38,7 @@ VAR
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[// Always Call DeviceStatus bindings
-eValveStatus 	:= M_DeviceStatus(); // Work on later if needed. Debug
+//eValveStatus 	:= M_DeviceStatus(); // Work on later if needed. Debug
 
 //###########	Device Enable	###########
 IF NOT stFieldDevice.bDeviceEnabled THEN
@@ -47,7 +47,7 @@ IF NOT stFieldDevice.bDeviceEnabled THEN
 	stFieldDevice.bDeviceEnabled := M_DeviceEnable();
 			
 	ELSIF tDeviceEnableTimeout.Q THEN
-		stFieldDevice.bDeviceFaulted := TRUE;		
+		stFieldDevice.bDeviceFaulted := TRUE;
 END_IF
 
 //###########	Device Stats	###########

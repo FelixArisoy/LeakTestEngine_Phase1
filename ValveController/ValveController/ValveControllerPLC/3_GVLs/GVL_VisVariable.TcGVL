@@ -1,11 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <GVL Name="GVL_visVariableMap" Id="{e66e5bb2-e186-0a7a-1eb9-6daef8b222c0}">
+  <GVL Name="GVL_VisVariable" Id="{e66e5bb2-e186-0a7a-1eb9-6daef8b222c0}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 VAR_GLOBAL
 	visValveMaskIdx : INT;
 	nValveMask 		: DWORD;
 	anValveMask 	: ARRAY [0..GVL_AteqConfig.nMaxProgramsToRun -1] OF DWORD;
+	
+	nNumOfAteqDevices : UINT;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>
