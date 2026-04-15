@@ -3,7 +3,7 @@
   <DUT Name="ST_AteqMapOutput" Id="{176cd949-4a08-07c5-2535-3385e2e35db2}">
     <Declaration><![CDATA[TYPE ST_AteqMapOutput :
 STRUCT
-	Write : ST_AteqWrite;
+	Write : ST_AteqMemoryToWrite;
 END_STRUCT
 END_TYPE
 ]]></Declaration>

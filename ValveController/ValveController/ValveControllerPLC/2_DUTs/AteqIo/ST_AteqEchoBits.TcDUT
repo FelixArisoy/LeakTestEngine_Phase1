@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <DUT Name="ST_AteqCommands" Id="{b1936584-ffcc-4a62-8179-6b1a04071057}">
-    <Declaration><![CDATA[TYPE ST_AteqCommands :
-STRUCT
+  <DUT Name="ST_AteqEchoBits" Id="{80c41e36-cd47-4d38-b0ee-934383f0bb01}">
+    <Declaration><![CDATA[TYPE ST_AteqEchoBits :
+STRUCT	
     // Byte 0 - 00h
     bReset                 	: BOOL; // Bit 0 Reset (stop the current cycle)
     bStart                 	: BOOL; // Bit 1 Start (Used for Test or Special cycle)

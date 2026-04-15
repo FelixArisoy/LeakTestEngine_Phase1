@@ -35,7 +35,7 @@ END_VAR
 CASE nTestStep OF
 
     0: // Initialize inputs and call FB
-        stTestIo.Read.stRealtimeTestResults.bCycleEnd := TRUE; // Simulate ATEQ ready
+        stTestIo.Read.RealtimeStateBit.bCycleEnd := TRUE; // Simulate ATEQ ready
         
         fbTestInstance(
 						nProgramNumberToRun 			:= 0,
@@ -125,51 +125,51 @@ TEST('InputMapping_Big Endian');
 
 // Clear inputs
 FOR nIndex1 := 0 TO 255 DO
-	stTestAteqRawIo.anInput[nIndex1 / 64][nIndex1 MOD 64] := 0;
+	stTestAteqRawIo.InByte[nIndex1 / 64][nIndex1 MOD 64] := 0;
 END_FOR
 
 GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.BigEndian;
 
 // Reuse the **same** byte order inputs (low byte first in index 6)
-stTestAteqRawIo.anInput[0][6] := 16#07;  // ProgramInUse Low byte
-stTestAteqRawIo.anInput[0][7] := 16#08;  // ProgramInUse High byte
+stTestAteqRawIo.InByte[0][6] := 16#07;  // ProgramInUse Low byte
+stTestAteqRawIo.InByte[0][7] := 16#08;  // ProgramInUse High byte
 
-stTestAteqRawIo.anInput[0][8] := 16#09;  // ResultsInFifo Low byte
-stTestAteqRawIo.anInput[0][9] := 16#0A;  // ResultsInFifo High byte
+stTestAteqRawIo.InByte[0][8] := 16#09;  // ResultsInFifo Low byte
+stTestAteqRawIo.InByte[0][9] := 16#0A;  // ResultsInFifo High byte
 
-stTestAteqRawIo.anInput[0][10] := 16#0B; // TestType Low byte
-stTestAteqRawIo.anInput[0][11] := 16#0C; // TestType High byte
+stTestAteqRawIo.InByte[0][10] := 16#0B; // TestType Low byte
+stTestAteqRawIo.InByte[0][11] := 16#0C; // TestType High byte
 
-stTestAteqRawIo.anInput[0][14] := 16#0F; // ProgramStep Low byte
-stTestAteqRawIo.anInput[0][15] := 16#10; // ProgramStep High byte
+stTestAteqRawIo.InByte[0][14] := 16#0F; // ProgramStep Low byte
+stTestAteqRawIo.InByte[0][15] := 16#10; // ProgramStep High byte
 
 // PressureCurValue DWORD
-stTestAteqRawIo.anInput[0][16] := 16#11;
-stTestAteqRawIo.anInput[0][17] := 16#12;
-stTestAteqRawIo.anInput[0][18] := 16#13;
-stTestAteqRawIo.anInput[0][19] := 16#14;
+stTestAteqRawIo.InByte[0][16] := 16#11;
+stTestAteqRawIo.InByte[0][17] := 16#12;
+stTestAteqRawIo.InByte[0][18] := 16#13;
+stTestAteqRawIo.InByte[0][19] := 16#14;
 
 // PressureUnitCode DWORD
-stTestAteqRawIo.anInput[0][20] := 16#15;
-stTestAteqRawIo.anInput[0][21] := 16#16;
-stTestAteqRawIo.anInput[0][22] := 16#17;
-stTestAteqRawIo.anInput[0][23] := 16#18;
+stTestAteqRawIo.InByte[0][20] := 16#15;
+stTestAteqRawIo.InByte[0][21] := 16#16;
+stTestAteqRawIo.InByte[0][22] := 16#17;
+stTestAteqRawIo.InByte[0][23] := 16#18;
 
 // LeakCurValue DWORD
-stTestAteqRawIo.anInput[0][24] := 16#19;
-stTestAteqRawIo.anInput[0][25] := 16#1A;
-stTestAteqRawIo.anInput[0][26] := 16#1B;
-stTestAteqRawIo.anInput[0][27] := 16#1C;
+stTestAteqRawIo.InByte[0][24] := 16#19;
+stTestAteqRawIo.InByte[0][25] := 16#1A;
+stTestAteqRawIo.InByte[0][26] := 16#1B;
+stTestAteqRawIo.InByte[0][27] := 16#1C;
 
 // LeakUnitCode DWORD
-stTestAteqRawIo.anInput[0][28] := 16#1D;
-stTestAteqRawIo.anInput[0][29] := 16#1E;
-stTestAteqRawIo.anInput[0][30] := 16#1F;
-stTestAteqRawIo.anInput[0][31] := 16#20;
+stTestAteqRawIo.InByte[0][28] := 16#1D;
+stTestAteqRawIo.InByte[0][29] := 16#1E;
+stTestAteqRawIo.InByte[0][30] := 16#1F;
+stTestAteqRawIo.InByte[0][31] := 16#20;
 
 // ExchangeZone as before
 FOR nIndex2 := 0 TO 127 DO
-	stTestAteqRawIo.anInput[(32 + nIndex2) / 64][(32 + nIndex2) MOD 64] := 33 + nIndex2;
+	stTestAteqRawIo.InByte[(32 + nIndex2) / 64][(32 + nIndex2) MOD 64] := 33 + nIndex2;
 END_FOR
 
 // Run Mapping
@@ -222,51 +222,51 @@ TEST('InputMapping_Little Endian');
 
 // Clear inputs
 FOR nIndex1 := 0 TO 255 DO
-	stTestAteqRawIo.anInput[nIndex1 / 64][nIndex1 MOD 64] := 0;
+	stTestAteqRawIo.InByte[nIndex1 / 64][nIndex1 MOD 64] := 0;
 END_FOR
 
 GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.LittleEndian;
 
 // Setup bytes (same order for both tests - low byte first)
-stTestAteqRawIo.anInput[0][6] := 16#07;  // ProgramInUse Low byte
-stTestAteqRawIo.anInput[0][7] := 16#08;  // ProgramInUse High byte
+stTestAteqRawIo.InByte[0][6] := 16#07;  // ProgramInUse Low byte
+stTestAteqRawIo.InByte[0][7] := 16#08;  // ProgramInUse High byte
 
-stTestAteqRawIo.anInput[0][8] := 16#09;  // ResultsInFifo Low byte
-stTestAteqRawIo.anInput[0][9] := 16#0A;  // ResultsInFifo High byte
+stTestAteqRawIo.InByte[0][8] := 16#09;  // ResultsInFifo Low byte
+stTestAteqRawIo.InByte[0][9] := 16#0A;  // ResultsInFifo High byte
 
-stTestAteqRawIo.anInput[0][10] := 16#0B; // TestType Low byte
-stTestAteqRawIo.anInput[0][11] := 16#0C; // TestType High byte
+stTestAteqRawIo.InByte[0][10] := 16#0B; // TestType Low byte
+stTestAteqRawIo.InByte[0][11] := 16#0C; // TestType High byte
 
-stTestAteqRawIo.anInput[0][14] := 16#0F; // ProgramStep Low byte
-stTestAteqRawIo.anInput[0][15] := 16#10; // ProgramStep High byte
+stTestAteqRawIo.InByte[0][14] := 16#0F; // ProgramStep Low byte
+stTestAteqRawIo.InByte[0][15] := 16#10; // ProgramStep High byte
 
 // PressureCurValue DWORD (4 bytes, low byte first)
-stTestAteqRawIo.anInput[0][16] := 16#11;
-stTestAteqRawIo.anInput[0][17] := 16#12;
-stTestAteqRawIo.anInput[0][18] := 16#13;
-stTestAteqRawIo.anInput[0][19] := 16#14;
+stTestAteqRawIo.InByte[0][16] := 16#11;
+stTestAteqRawIo.InByte[0][17] := 16#12;
+stTestAteqRawIo.InByte[0][18] := 16#13;
+stTestAteqRawIo.InByte[0][19] := 16#14;
 
 // PressureUnitCode DWORD
-stTestAteqRawIo.anInput[0][20] := 16#15;
-stTestAteqRawIo.anInput[0][21] := 16#16;
-stTestAteqRawIo.anInput[0][22] := 16#17;
-stTestAteqRawIo.anInput[0][23] := 16#18;
+stTestAteqRawIo.InByte[0][20] := 16#15;
+stTestAteqRawIo.InByte[0][21] := 16#16;
+stTestAteqRawIo.InByte[0][22] := 16#17;
+stTestAteqRawIo.InByte[0][23] := 16#18;
 
 // LeakCurValue DWORD
-stTestAteqRawIo.anInput[0][24] := 16#19;
-stTestAteqRawIo.anInput[0][25] := 16#1A;
-stTestAteqRawIo.anInput[0][26] := 16#1B;
-stTestAteqRawIo.anInput[0][27] := 16#1C;
+stTestAteqRawIo.InByte[0][24] := 16#19;
+stTestAteqRawIo.InByte[0][25] := 16#1A;
+stTestAteqRawIo.InByte[0][26] := 16#1B;
+stTestAteqRawIo.InByte[0][27] := 16#1C;
 
 // LeakUnitCode DWORD
-stTestAteqRawIo.anInput[0][28] := 16#1D;
-stTestAteqRawIo.anInput[0][29] := 16#1E;
-stTestAteqRawIo.anInput[0][30] := 16#1F;
-stTestAteqRawIo.anInput[0][31] := 16#20;
+stTestAteqRawIo.InByte[0][28] := 16#1D;
+stTestAteqRawIo.InByte[0][29] := 16#1E;
+stTestAteqRawIo.InByte[0][30] := 16#1F;
+stTestAteqRawIo.InByte[0][31] := 16#20;
 
 // ExchangeZone setup
 FOR nIndex2 := 0 TO 127 DO
-	stTestAteqRawIo.anInput[(32 + nIndex2) / 64][(32 + nIndex2) MOD 64] := 33 + nIndex2;
+	stTestAteqRawIo.InByte[(32 + nIndex2) / 64][(32 + nIndex2) MOD 64] := 33 + nIndex2;
 END_FOR
 
 // Run Mapping

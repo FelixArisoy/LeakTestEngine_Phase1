@@ -26,7 +26,7 @@ VAR
 END_VAR]]></Declaration>
     </Method>
     <Method Name="mPrgInternalSteps" Id="{ae67fef3-e079-0d9d-05c4-e32b26bdc57c}">
-      <Declaration><![CDATA[METHOD mPrgInternalSteps : E_AteqStepsTable
+      <Declaration><![CDATA[METHOD mPrgInternalSteps : E_AteqTestSteps
 VAR_INPUT
 	nProgramStep : WORD;
 END_VAR

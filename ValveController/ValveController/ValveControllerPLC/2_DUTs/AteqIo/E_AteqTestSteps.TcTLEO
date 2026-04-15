@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <EnumerationTextList Name="E_AteqStepsTable" Id="{c143b9f7-60b6-47d3-989b-f620400b7b9d}">
-    <Declaration><![CDATA[TYPE E_AteqStepsTable :
+  <EnumerationTextList Name="E_AteqTestSteps" Id="{c143b9f7-60b6-47d3-989b-f620400b7b9d}">
+    <Declaration><![CDATA[TYPE E_AteqTestSteps :
 (
 	PreFill 		:= 0,
 	PreDump			:= 1,

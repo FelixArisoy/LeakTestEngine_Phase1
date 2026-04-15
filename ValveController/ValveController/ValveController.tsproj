@@ -80,18 +80,23 @@
 		</System>
 		<Plc>
 			<Project GUID="{FF505B91-FACF-4A2B-B73E-9C5E3B10185D}" Name="ValveControllerPLC" PrjFilePath="ValveControllerPLC\ValveControllerPLC.plcproj" TmcFilePath="ValveControllerPLC\ValveControllerPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{68585DDE-ADAC-929B-3CC7-71372B63E19E}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{9F38B03E-68E7-0D59-1C23-2CDA2C5F003A}">
 					<Name>ValveControllerPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
 						<Name>LeakTestTask Inputs</Name>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[0].anInput</Name>
+							<Name>PRG_LeakTest.astInFromFieldAteq[0].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.afbAteqControl[0].stRawIoBuf.anInput</Name>
+							<Name>PRG_LeakTest.afbAteqControl[0].stRawInput.InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+						</Var>
+						<Var>
+							<Name>PRG_LeakTest.afbAteqControl[0].stRawInputBuffer.InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
@@ -99,11 +104,18 @@
 					<Vars VarGrpType="2" AreaNo="1">
 						<Name>LeakTestTask Outputs</Name>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[0].anOutput</Name>
+							<Name>PRG_LeakTest.astOutToFieldAteq[0].OutByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.afbAteqControl[0].stRawIoBuf.anOutput</Name>
+							<Name>PRG_LeakTest.afbAteqControl[0].stRawOutput.OutByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+						</Var>
+						<Var>
+							<Name>PRG_LeakTest.afbAteqControl[0].stRawOutputBuffer.OutByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
@@ -1361,14 +1373,14 @@ C:\TwinCAT\3.1\Config\Io\EtherNetIP\ex260_sen1_x194_24_v12.eds
 		<MappingInfo Identifier="{00000000-2002-0850-0020-500850000403}" Id="#x02030020"/>
 		<OwnerA Name="TIPC^ValveControllerPLC^ValveControllerPLC Instance">
 			<OwnerB Name="TIID^Device 1 (Profinet Controller)^ateqf620">
-				<Link VarA="LeakTestTask Inputs^PRG_LeakTest.astAteqRawIo[0].anInput[0]" VarB="API^Term 2 (64 Bytes Input)^Subterm 5 (64 Bytes Input)^Inputs^Inputs"/>
-				<Link VarA="LeakTestTask Inputs^PRG_LeakTest.astAteqRawIo[0].anInput[1]" VarB="API^Term 3 (64 Bytes Input)^Subterm 6 (64 Bytes Input)^Inputs^Inputs"/>
-				<Link VarA="LeakTestTask Inputs^PRG_LeakTest.astAteqRawIo[0].anInput[2]" VarB="API^Term 4 (64 Bytes Input)^Subterm 7 (64 Bytes Input)^Inputs^Inputs"/>
-				<Link VarA="LeakTestTask Inputs^PRG_LeakTest.astAteqRawIo[0].anInput[3]" VarB="API^Term 5 (64 Bytes Input)^Subterm 8 (64 Bytes Input)^Inputs^Inputs"/>
-				<Link VarA="LeakTestTask Outputs^PRG_LeakTest.astAteqRawIo[0].anOutput[0]" VarB="API^Term 6 (64 Bytes Output)^Subterm 9 (64 Bytes Output)^Outputs^Outputs"/>
-				<Link VarA="LeakTestTask Outputs^PRG_LeakTest.astAteqRawIo[0].anOutput[1]" VarB="API^Term 7 (64 Bytes Output)^Subterm 10 (64 Bytes Output)^Outputs^Outputs"/>
-				<Link VarA="LeakTestTask Outputs^PRG_LeakTest.astAteqRawIo[0].anOutput[2]" VarB="API^Term 8 (64 Bytes Output)^Subterm 11 (64 Bytes Output)^Outputs^Outputs"/>
-				<Link VarA="LeakTestTask Outputs^PRG_LeakTest.astAteqRawIo[0].anOutput[3]" VarB="API^Term 9 (64 Bytes Output)^Subterm 12 (64 Bytes Output)^Outputs^Outputs"/>
+				<Link VarA="LeakTestTask Inputs^PRG_LeakTest.astInFromFieldAteq[0].InByte[0]" VarB="API^Term 2 (64 Bytes Input)^Subterm 5 (64 Bytes Input)^Inputs^Inputs"/>
+				<Link VarA="LeakTestTask Inputs^PRG_LeakTest.astInFromFieldAteq[0].InByte[1]" VarB="API^Term 3 (64 Bytes Input)^Subterm 6 (64 Bytes Input)^Inputs^Inputs"/>
+				<Link VarA="LeakTestTask Inputs^PRG_LeakTest.astInFromFieldAteq[0].InByte[2]" VarB="API^Term 4 (64 Bytes Input)^Subterm 7 (64 Bytes Input)^Inputs^Inputs"/>
+				<Link VarA="LeakTestTask Inputs^PRG_LeakTest.astInFromFieldAteq[0].InByte[3]" VarB="API^Term 5 (64 Bytes Input)^Subterm 8 (64 Bytes Input)^Inputs^Inputs"/>
+				<Link VarA="LeakTestTask Outputs^PRG_LeakTest.astOutToFieldAteq[0].OutByte[0]" VarB="API^Term 6 (64 Bytes Output)^Subterm 9 (64 Bytes Output)^Outputs^Outputs"/>
+				<Link VarA="LeakTestTask Outputs^PRG_LeakTest.astOutToFieldAteq[0].OutByte[1]" VarB="API^Term 7 (64 Bytes Output)^Subterm 10 (64 Bytes Output)^Outputs^Outputs"/>
+				<Link VarA="LeakTestTask Outputs^PRG_LeakTest.astOutToFieldAteq[0].OutByte[2]" VarB="API^Term 8 (64 Bytes Output)^Subterm 11 (64 Bytes Output)^Outputs^Outputs"/>
+				<Link VarA="LeakTestTask Outputs^PRG_LeakTest.astOutToFieldAteq[0].OutByte[3]" VarB="API^Term 9 (64 Bytes Output)^Subterm 12 (64 Bytes Output)^Outputs^Outputs"/>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 2 (EtherCAT)">
 				<Link VarA="IpcTask Inputs^GVL_MapIoDevice2.AmsNetId" VarB="InfoData^AmsNetId"/>

@@ -4,17 +4,17 @@
     <Declaration><![CDATA[PROGRAM PRG_LeakTest
 VAR
 //####### Map Io #######
-	astAteqRawInput   	: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqRawInput;
-	astAteqRawOutput   	: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqRawOutput;
+	astInFromFieldAteq   	: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqRawInput;
+	astOutToFieldAteq   	: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqRawOutput;
     astAteqMapInput 	: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqMapInput;
 	astAteqMapOutput 	: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqMapOutput;
 //####### Control Ateq #######  
 	nAteqIndex			: UINT;
 	afbAteqControl		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF FB_AteqControl;
-	//nProgramNumberToRun		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF WORD;
-	bAutoSeqRun			: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF BOOL;
-	bAutoSeqDone		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF BOOL;
-	bAutoSeqResetRequest: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF BOOL;
+	//nProgramNumberToRun: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF WORD;
+	//bAutoSeqRun		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF BOOL;
+	//bAutoSeqDone		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF BOOL;
+	//bAutoSeqResetRequest: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF BOOL;
 //####### Ateq Result Handler #######
 	afbAteqResult		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF FB_AteqResultHandler;
   	abAutoTestRecipeStart : BOOL; /// Flag will be binded to Main PLC Run Cmd... Debug
@@ -29,12 +29,6 @@ VAR
 
 	afbAteqRecipeHandler 	: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF FB_AteqRecipeHandler;
 	anProgramNumberRecipe	: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF ARRAY[0..GVL_AteqConfig.nMaxProgramsToRun - 1] OF WORD;
-
-
-
-
-
-
 
 // #######M_TestingAteqHandshakeSpeed DEBUG variables for delay and array storage:
 	bCommandSent       : BOOL := FALSE;
@@ -73,7 +67,20 @@ END_VAR]]></Declaration>
 		IF afbValveBank[nValveBankIndex].pDeviceEnabled THEN
 			mValveBankEnable();
 			mValveBankManual();
-			mMapValveMask();
+			
+			// gives error;    afbValveBank[nValveBankIndex].pValveMaskPerVB := afbAteqRecipeHandler; 
+// Mask Recipe will be feeded here - Sort Valve bank global IO from hardware
+// EXIT;  Throw fault on HMI then goto reset
+		GVL_MapIo.aIoEx260[nValveBankIndex].Out0 := DWORD_TO_SINT(GVL_MapIo.nValveMaskRaw);
+		GVL_MapIo.aIoEx260[nValveBankIndex].Out1 := DWORD_TO_SINT(SHR(GVL_MapIo.nValveMaskRaw, 8));
+		GVL_MapIo.aIoEx260[nValveBankIndex].Out2 := DWORD_TO_SINT(SHR(GVL_MapIo.nValveMaskRaw, 16));
+		GVL_MapIo.aIoEx260[nValveBankIndex].Out3 := DWORD_TO_SINT(SHR(GVL_MapIo.nValveMaskRaw, 24));
+(* 
+// FUTURE PROOFING VALVE MASKS UPTO 128BIT (2LWORDS OR MORE) PER VB
+FOR bankIndex := 0 TO NUM_BANKS - 1 DO
+    fbValveBanks[bankIndex].nValveMask := WORD_TO_DWORD(MASK_LWORDS[bankIndex]);
+END_FOR;
+*)
 		ELSE
 			afbValveBank[nValveBankIndex].pDeviceFaulted := TRUE;  /// add fault conditions later
 		END_IF
@@ -83,7 +90,7 @@ END_VAR]]></Declaration>
 ]]></ST>
     </Implementation>
     <Method Name="mAteqControl" Id="{838027f4-1785-0838-3f95-e8330881183c}">
-      <Declaration><![CDATA[METHOD mAteqControl
+      <Declaration><![CDATA[METHOD PRIVATE mAteqControl
 VAR_INPUT
 END_VAR
 VAR
@@ -91,9 +98,10 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[/// ATEQ DEVICE CONTROL CALLS
 	afbAteqControl[nAteqIndex](	nProgramNumberToRun 	:= afbAteqRecipeHandler[nAteqIndex].nProgramNumber,
-								stRawInput 			:= astAteqRawInput[nAteqIndex],
-								stRawOutput 		=> astAteqRawOutput[nAteqIndex], 
-								stMappedIo 			:= astAteqMapInput[nAteqIndex]);
+								stRawInput 			:= astInFromFieldAteq[nAteqIndex],
+								stRawOutput 		=> astOutToFieldAteq[nAteqIndex], 
+								stMapInput 			=> astAteqMapInput[nAteqIndex],
+								stMapOutput 		=> astAteqMapOutput[nAteqIndex]);
 
 ]]></ST>
       </Implementation>
@@ -149,19 +157,7 @@ VAR
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[// gives error;    afbValveBank[nValveBankIndex].pValveMaskPerVB := afbAteqRecipeHandler; 
-// Mask Recipe will be feeded here - Sort Valve bank global IO from hardware
-// EXIT;  Throw fault on HMI then goto reset
-		GVL_MapIo.aIoEx260[nValveBankIndex].Out0 := DWORD_TO_SINT(GVL_MapIo.nValveMaskRaw);
-		GVL_MapIo.aIoEx260[nValveBankIndex].Out1 := DWORD_TO_SINT(SHR(GVL_MapIo.nValveMaskRaw, 8));
-		GVL_MapIo.aIoEx260[nValveBankIndex].Out2 := DWORD_TO_SINT(SHR(GVL_MapIo.nValveMaskRaw, 16));
-		GVL_MapIo.aIoEx260[nValveBankIndex].Out3 := DWORD_TO_SINT(SHR(GVL_MapIo.nValveMaskRaw, 24));
-(* 
-// FUTURE PROOFING VALVE MASKS UPTO 128BIT (2LWORDS OR MORE) PER VB
-FOR bankIndex := 0 TO NUM_BANKS - 1 DO
-    fbValveBanks[bankIndex].nValveMask := WORD_TO_DWORD(MASK_LWORDS[bankIndex]);
-END_FOR;
-*)]]></ST>
+        <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
     <Method Name="mValveBankEnable" Id="{b3ffe984-55bd-41d3-8f04-8d658c77f2b0}">
@@ -272,7 +268,7 @@ IF bTestActive THEN
     // Only send the command if not already sent and the delay for the next trigger has finished
     IF NOT bCommandSent AND bDelayFinished THEN
        
-		astAteqMapOutput[0].Write.CmdBit.bStart := TRUE; // Set command
+		// astAteqMapOutput[0].Write.CmdBit.bStart := TRUE; // Set command // This line will no longer work as mapped IO modifed, no longer InOut Variable 
 		
         tStartTime 		:= T#0S + TIME();                          // Record current time
         bCommandSent 	:= TRUE;
@@ -299,7 +295,7 @@ IF bTestActive THEN
         END_IF
 
         // Reset command and prepare for next cycle
-        astAteqMapOutput[0].Write.CmdBit.bStart := FALSE;
+        // astAteqMapOutput[0].Write.CmdBit.bStart := FALSE; This line will no longer work as mapped IO modifed, no longer InOut Variable 
         bCommandSent := FALSE;
         // Now, start the delay before the next trigger
         bTriggerReady := FALSE; // Ensure delay timer starts

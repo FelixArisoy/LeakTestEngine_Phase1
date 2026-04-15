@@ -65,16 +65,16 @@
     <Compile Include="2_DUTs\AteqControl\ST_AteqResultsRaw.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="2_DUTs\AteqIo\E_AteqStepsTable.TcTLEO">
+    <Compile Include="2_DUTs\AteqIo\E_AteqTestSteps.TcTLEO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="2_DUTs\AteqIo\ST_AteqCommands.TcDUT">
+    <Compile Include="2_DUTs\AteqIo\ST_AteqCmdBits.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="2_DUTs\AteqIo\ST_AteqEcho.TcDUT">
+    <Compile Include="2_DUTs\AteqIo\ST_AteqEchoBits.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="2_DUTs\AteqIo\ST_AteqErrorCode.TcDUT">
+    <Compile Include="2_DUTs\AteqIo\ST_AteqErrorBits.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="2_DUTs\AteqIo\ST_AteqMapInput.TcDUT">
@@ -89,13 +89,13 @@
     <Compile Include="2_DUTs\AteqIo\ST_AteqRawOutput.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="2_DUTs\AteqIo\ST_AteqRead.TcDUT">
+    <Compile Include="2_DUTs\AteqIo\ST_AteqMemoryToRead.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="2_DUTs\AteqIo\ST_AteqRealtimeTestResults.TcDUT">
+    <Compile Include="2_DUTs\AteqIo\ST_AteqRealtimeStateBits.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="2_DUTs\AteqIo\ST_AteqWrite.TcDUT">
+    <Compile Include="2_DUTs\AteqIo\ST_AteqMemoryToWrite.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="2_DUTs\GenericFieldDevice\E_DeviceStatus.TcDUT">

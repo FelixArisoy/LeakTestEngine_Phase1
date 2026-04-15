@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <DUT Name="ST_AteqWrite" Id="{f95d188e-1239-4081-a836-c3d8105eeb45}">
-    <Declaration><![CDATA[TYPE ST_AteqWrite :
+  <DUT Name="ST_AteqMemoryToWrite" Id="{f95d188e-1239-4081-a836-c3d8105eeb45}">
+    <Declaration><![CDATA[TYPE ST_AteqMemoryToWrite :
 STRUCT
 //Writing table structure (From PLC To ATEQ)
-	CmdByte			: ARRAY[0..1] OF BYTE; 	// 00h–01h Commands buffer
-	CmdBit			: ST_AteqCommands;		// 00h–01h Commands bitmap
-    nProgramNumber 	: WORD;	// 06h–07h Address 06h: Number of the program to be selected. Address 07h = 0
-	nSpecialCycleId	: WORD;	// 08h–09h Address 08h: Special cycle. Address 09h=0
+	CmdByte				: ARRAY[0..1] OF BYTE; 	// 00h–01h Commands buffer
+	CmdBit				: ST_AteqCmdBits;		// 00h–01h Commands bitmap
+    nProgramNumber 		: WORD;	// 06h–07h Address 06h: Number of the program to be selected. Address 07h = 0
+	nSpecialCycleId		: WORD;	// 08h–09h Address 08h: Special cycle. Address 09h=0
 	ReservedOut1Byte	: ARRAY[0..3] OF BYTE;      // 02h–05h Not Used
 	ReservedOut2Byte	: ARRAY[0..21] OF BYTE;     // 0Ah–1Fh Reserved
 // Exchange zone: (@: 20h – 9Fh)

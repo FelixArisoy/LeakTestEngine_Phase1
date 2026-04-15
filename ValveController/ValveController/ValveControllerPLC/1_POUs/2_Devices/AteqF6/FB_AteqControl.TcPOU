@@ -10,22 +10,17 @@ M_ProgramAutoSeq coordinates the sequence of program execution.
 Results passed to the recipe handler FB. 
 *)
 VAR_INPUT
-	nProgramNumberToRun 		: WORD; // program number to be executed
-	stRawInput 	: ST_AteqRawInput;
-END_VAR
-VAR_IN_OUT
-
-    stMappedIo	: ST_AteqMapInput; 
-(*
-Mapped Io Exchange Zone will be passing the data to ResultRaw Struct 
-then will be decoded in M_ReadLastResult (ResultDecoded Struct) 
-*)
+	nProgramNumberToRun : WORD; // program number to be executed
+	stRawInput 			: ST_AteqRawInput;
+	
 END_VAR
 VAR_OUTPUT
 	eProgramSeqSteps 		: E_AteqProgramSeqSteps;  // Monitor ProgramSeq StepStates -> HMI
-	eProgramInternalSteps	: E_AteqStepsTable;
+	eProgramInternalSteps	: E_AteqTestSteps;
 	eErrorFlags				: E_AteqControlErrorFlags;	// Monitor Ateq Device and ProgramSeq Errors -> HMI
 	stRawOutput				: ST_AteqRawOutput;
+	stMapInput	: ST_AteqMapInput;
+	stMapOutput	: ST_AteqMapOutput;
 END_VAR
 VAR
 (*
@@ -36,7 +31,7 @@ For future: FB_init may be required
 *)
 	stRawInputBuffer 		: ST_AteqRawInput;
 	stRawOutputBuffer 		: ST_AteqRawOutput;
-    stMapInputBuffer		: ST_AteqMapInput;
+    stMapInputBuffer	: ST_AteqMapInput;
 	stMapOutputBuffer		: ST_AteqMapOutput; 
 	fbCmdHandler			: FB_AteqCmdHandler;
 	bProgramSeqRunRequest 	: BOOL;
@@ -44,6 +39,13 @@ For future: FB_init may be required
 	bCmdHandlerResetRequest : BOOL;
 //!!!!!!!!!!!!!! For future integration
    // astFIFO				: ARRAY[0..7] OF ST_AteqResultsDecoded;
+
+
+//    stMappedIo	: ST_AteqRawOutput; 
+(*
+Mapped Io Exchange Zone will be passing the data to ResultRaw Struct 
+then will be decoded in M_ReadLastResult (ResultDecoded Struct) 
+*)
 
 // Internal timers USED IN ProgramAutoSeq method
     tSeqTimeout 	: TON;
@@ -67,8 +69,14 @@ For future: FB_init may be required
    	bProgramSeqResetComp		: BOOL;   	 
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[stRawInput 	:= stRawInputBuffer;
-stMappedIo 	:= stRawOutputBuffer;
+      <ST><![CDATA[// Mapping Real world data IO to internal tags of This FB, Then RawOutput data Drives the Ateq Device
+stRawInputBuffer := stRawInput;
+stRawOutput 	:= stRawOutputBuffer;
+
+// To Monitor Mapped Data outside of This FB 
+stMapInput		:= stMapInputBuffer;
+stMapOutput		:= stMapOutputBuffer;
+
 mMapInput();
 mMapOutput();
 mPrgSeq();
@@ -142,12 +150,12 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[// Direct read from stAteqRawIo
-byEcho0     := stRawInputBuffer.anInput[0][0];  // 00h
-byEcho1     := stRawInputBuffer.anInput[0][1];  // 01h
-byError0    := stRawInputBuffer.anInput[0][2];  // 02h
-byError1    := stRawInputBuffer.anInput[0][3];  // 03h
-byResult0   := stRawInputBuffer.anInput[0][12]; // 0Ch
-byResult1   := stRawInputBuffer.anInput[0][13]; // 0Dh
+byEcho0     := stRawInputBuffer.InByte[0][0];  // 00h
+byEcho1     := stRawInputBuffer.InByte[0][1];  // 01h
+byError0    := stRawInputBuffer.InByte[0][2];  // 02h
+byError1    := stRawInputBuffer.InByte[0][3];  // 03h
+byResult0   := stRawInputBuffer.InByte[0][12]; // 0Ch
+byResult1   := stRawInputBuffer.InByte[0][13]; // 0Dh
 
 // Copy bytes into buffers
 stMapInputBuffer.Read.EchoByte[0] 		:= byEcho0;
@@ -194,60 +202,60 @@ stMapInputBuffer.Read.stErrorCode.bWriteProgramName  := (byError1 AND 16#40) <> 
 stMapInputBuffer.Read.stErrorCode.bReadLastResult    := (byError1 AND 16#80) <> 0;
 
 
-stMapInputBuffer.Read.anReserved[0]	:= stRawInputBuffer.anInput[0][4];
-stMapInputBuffer.Read.anReserved[1]	:= stRawInputBuffer.anInput[0][5];
+stMapInputBuffer.Read.anReserved[0]	:= stRawInputBuffer.InByte[0][4];
+stMapInputBuffer.Read.anReserved[1]	:= stRawInputBuffer.InByte[0][5];
 
 	CASE  GVL_AteqConfig.eDeviceEndianSetTo OF
 		E_AteqEndianType.LittleEndian: // Little Endian
 		// Parse WORDs from bytes
-		stMapInputBuffer.Read.nProgramInUse		:= SHL(BYTE_TO_WORD(stRawInputBuffer.anInput[0][6]), 8) OR BYTE_TO_WORD(stRawInputBuffer.anInput[0][7]);
-		stMapInputBuffer.Read.nResultsInFifo	:= SHL(BYTE_TO_WORD(stRawInputBuffer.anInput[0][8]), 8) OR BYTE_TO_WORD(stRawInputBuffer.anInput[0][9]);
-		stMapInputBuffer.Read.nTestType			:= SHL(BYTE_TO_WORD(stRawInputBuffer.anInput[0][10]), 8) OR BYTE_TO_WORD(stRawInputBuffer.anInput[0][11]);
-		stMapInputBuffer.Read.nProgramStep		:= SHL(BYTE_TO_WORD(stRawInputBuffer.anInput[0][14]), 8) OR BYTE_TO_WORD(stRawInputBuffer.anInput[0][15]);
+		stMapInputBuffer.Read.nProgramInUse		:= SHL(BYTE_TO_WORD(stRawInputBuffer.InByte[0][6]), 8) OR BYTE_TO_WORD(stRawInputBuffer.InByte[0][7]);
+		stMapInputBuffer.Read.nResultsInFifo	:= SHL(BYTE_TO_WORD(stRawInputBuffer.InByte[0][8]), 8) OR BYTE_TO_WORD(stRawInputBuffer.InByte[0][9]);
+		stMapInputBuffer.Read.nTestType			:= SHL(BYTE_TO_WORD(stRawInputBuffer.InByte[0][10]), 8) OR BYTE_TO_WORD(stRawInputBuffer.InByte[0][11]);
+		stMapInputBuffer.Read.nProgramStep		:= SHL(BYTE_TO_WORD(stRawInputBuffer.InByte[0][14]), 8) OR BYTE_TO_WORD(stRawInputBuffer.InByte[0][15]);
 
 		E_AteqEndianType.BigEndian: // Big Endian
-		stMapInputBuffer.Read.nProgramInUse		:= BYTE_TO_WORD(stRawInputBuffer.anInput[0][6]) 	OR SHL(BYTE_TO_WORD(stRawInputBuffer.anInput[0][7]), 8);
-		stMapInputBuffer.Read.nResultsInFifo	:= BYTE_TO_WORD(stRawInputBuffer.anInput[0][8]) 	OR SHL(BYTE_TO_WORD(stRawInputBuffer.anInput[0][9]), 8);
-		stMapInputBuffer.Read.nTestType			:= BYTE_TO_WORD(stRawInputBuffer.anInput[0][10]) OR SHL(BYTE_TO_WORD(stRawInputBuffer.anInput[0][11]), 8);
-		stMapInputBuffer.Read.nProgramStep		:= BYTE_TO_WORD(stRawInputBuffer.anInput[0][14]) OR SHL(BYTE_TO_WORD(stRawInputBuffer.anInput[0][15]), 8);
+		stMapInputBuffer.Read.nProgramInUse		:= BYTE_TO_WORD(stRawInputBuffer.InByte[0][6]) 	OR SHL(BYTE_TO_WORD(stRawInputBuffer.InByte[0][7]), 8);
+		stMapInputBuffer.Read.nResultsInFifo	:= BYTE_TO_WORD(stRawInputBuffer.InByte[0][8]) 	OR SHL(BYTE_TO_WORD(stRawInputBuffer.InByte[0][9]), 8);
+		stMapInputBuffer.Read.nTestType			:= BYTE_TO_WORD(stRawInputBuffer.InByte[0][10]) OR SHL(BYTE_TO_WORD(stRawInputBuffer.InByte[0][11]), 8);
+		stMapInputBuffer.Read.nProgramStep		:= BYTE_TO_WORD(stRawInputBuffer.InByte[0][14]) OR SHL(BYTE_TO_WORD(stRawInputBuffer.InByte[0][15]), 8);
 	END_CASE
 		
 
 // -------- 0Ch - 0Dh: Decode Real-Time Test Results --------
-stMapInputBuffer.Read.stRealtimeTestResults.bPass            := (byResult0 AND 16#01) <> 0;
-stMapInputBuffer.Read.stRealtimeTestResults.bFailPart        := (byResult0 AND 16#02) <> 0;
-stMapInputBuffer.Read.stRealtimeTestResults.bFailRef         := (byResult0 AND 16#04) <> 0;
-stMapInputBuffer.Read.stRealtimeTestResults.bAlarm           := (byResult0 AND 16#08) <> 0;
-stMapInputBuffer.Read.stRealtimeTestResults.bPressureEror     := (byResult0 AND 16#10) <> 0;
-stMapInputBuffer.Read.stRealtimeTestResults.bCycleEnd        := (byResult0 AND 16#20) <> 0;
-stMapInputBuffer.Read.stRealtimeTestResults.bRecoverable     := (byResult0 AND 16#40) <> 0;
-stMapInputBuffer.Read.stRealtimeTestResults.bCalibEror        := (byResult0 AND 16#80) <> 0;
+stMapInputBuffer.Read.RealtimeStateBit.bPass            := (byResult0 AND 16#01) <> 0;
+stMapInputBuffer.Read.RealtimeStateBit.bFailPart        := (byResult0 AND 16#02) <> 0;
+stMapInputBuffer.Read.RealtimeStateBit.bFailRef         := (byResult0 AND 16#04) <> 0;
+stMapInputBuffer.Read.RealtimeStateBit.bAlarm           := (byResult0 AND 16#08) <> 0;
+stMapInputBuffer.Read.RealtimeStateBit.bPressureEror     := (byResult0 AND 16#10) <> 0;
+stMapInputBuffer.Read.RealtimeStateBit.bCycleEnd        := (byResult0 AND 16#20) <> 0;
+stMapInputBuffer.Read.RealtimeStateBit.bRecoverable     := (byResult0 AND 16#40) <> 0;
+stMapInputBuffer.Read.RealtimeStateBit.bCalibEror        := (byResult0 AND 16#80) <> 0;
 
-stMapInputBuffer.Read.stRealtimeTestResults.bCalibCheckEror   := (byResult1 AND 16#01) <> 0;
-stMapInputBuffer.Read.stRealtimeTestResults.bATRFault        := (byResult1 AND 16#02) <> 0;
+stMapInputBuffer.Read.RealtimeStateBit.bCalibCheckEror   := (byResult1 AND 16#01) <> 0;
+stMapInputBuffer.Read.RealtimeStateBit.bATRFault        := (byResult1 AND 16#02) <> 0;
 
 
 
 // Assign the 4 bytes from the raw PressureCurValue input
-anPressureCurValueBuffer [0] := stRawInputBuffer.anInput[0][16];
-anPressureCurValueBuffer [1] :=	stRawInputBuffer.anInput[0][17];
-anPressureCurValueBuffer [2] :=	stRawInputBuffer.anInput[0][18];
-anPressureCurValueBuffer [3] :=	stRawInputBuffer.anInput[0][19];
+anPressureCurValueBuffer [0] := stRawInputBuffer.InByte[0][16];
+anPressureCurValueBuffer [1] :=	stRawInputBuffer.InByte[0][17];
+anPressureCurValueBuffer [2] :=	stRawInputBuffer.InByte[0][18];
+anPressureCurValueBuffer [3] :=	stRawInputBuffer.InByte[0][19];
 
-anPressureUnitCodeBuffer [0] := stRawInputBuffer.anInput[0][20];
-anPressureUnitCodeBuffer [1] :=	stRawInputBuffer.anInput[0][21];
-anPressureUnitCodeBuffer [2] :=	stRawInputBuffer.anInput[0][22];
-anPressureUnitCodeBuffer [3] :=	stRawInputBuffer.anInput[0][23];
+anPressureUnitCodeBuffer [0] := stRawInputBuffer.InByte[0][20];
+anPressureUnitCodeBuffer [1] :=	stRawInputBuffer.InByte[0][21];
+anPressureUnitCodeBuffer [2] :=	stRawInputBuffer.InByte[0][22];
+anPressureUnitCodeBuffer [3] :=	stRawInputBuffer.InByte[0][23];
 
-anLeakCurValueBuffer [0] := stRawInputBuffer.anInput[0][24];
-anLeakCurValueBuffer [1] :=	stRawInputBuffer.anInput[0][25];
-anLeakCurValueBuffer [2] :=	stRawInputBuffer.anInput[0][26];
-anLeakCurValueBuffer [3] :=	stRawInputBuffer.anInput[0][27];
+anLeakCurValueBuffer [0] := stRawInputBuffer.InByte[0][24];
+anLeakCurValueBuffer [1] :=	stRawInputBuffer.InByte[0][25];
+anLeakCurValueBuffer [2] :=	stRawInputBuffer.InByte[0][26];
+anLeakCurValueBuffer [3] :=	stRawInputBuffer.InByte[0][27];
 
-anLeakUnitCodeBuffer [0] := stRawInputBuffer.anInput[0][28];
-anLeakUnitCodeBuffer [1] :=	stRawInputBuffer.anInput[0][29];
-anLeakUnitCodeBuffer [2] :=	stRawInputBuffer.anInput[0][30];
-anLeakUnitCodeBuffer [3] :=	stRawInputBuffer.anInput[0][31];
+anLeakUnitCodeBuffer [0] := stRawInputBuffer.InByte[0][28];
+anLeakUnitCodeBuffer [1] :=	stRawInputBuffer.InByte[0][29];
+anLeakUnitCodeBuffer [2] :=	stRawInputBuffer.InByte[0][30];
+anLeakUnitCodeBuffer [3] :=	stRawInputBuffer.InByte[0][31];
 
 // Copy into REAL and DWORD vars from Buffer adr to Destination Adr of the ST_AteqInRead
 // --- Endianness-aware conversion for 4-byte values (DWORD and REAL) ---
@@ -318,7 +326,7 @@ stMapInputBuffer.Read.nLeakCurValue     := DWORD_TO_REAL(nLeakCurValueBuffer) / 
 
 //################ Need byte module break
 	FOR nIndex1 := 0 TO 127 DO
-		stMapInputBuffer.Read.anExchangeZone[nIndex1] := stRawInputBuffer.anInput[(32 + nIndex1) / 64][(32 + nIndex1) MOD 64];
+		stMapInputBuffer.Read.anExchangeZone[nIndex1] := stRawInputBuffer.InByte[(32 + nIndex1) / 64][(32 + nIndex1) MOD 64];
 	END_FOR;
 ]]></ST>
       </Implementation>
@@ -391,42 +399,42 @@ stMapOutputBuffer.Write.CmdByte[0] := nCommand0;
 stMapOutputBuffer.Write.CmdByte[1] := nCommand1;
 
 // Map mappedIO to raw IO
-stRawOutputBuffer.anOutput[0][0] := nCommand0;
-stRawOutputBuffer.anOutput[0][1] := nCommand1;
+stRawOutputBuffer.OutByte[0][0] := nCommand0;
+stRawOutputBuffer.OutByte[0][1] := nCommand1;
 
 // Reserved output bytes
-stRawOutputBuffer.anOutput[0][2] := stMapOutputBuffer.Write.ReservedOut1Byte[0];
-stRawOutputBuffer.anOutput[0][3] := stMapOutputBuffer.Write.ReservedOut1Byte[1];
-stRawOutputBuffer.anOutput[0][4] := stMapOutputBuffer.Write.ReservedOut1Byte[2];
-stRawOutputBuffer.anOutput[0][5] := stMapOutputBuffer.Write.ReservedOut1Byte[3];
+stRawOutputBuffer.OutByte[0][2] := stMapOutputBuffer.Write.ReservedOut1Byte[0];
+stRawOutputBuffer.OutByte[0][3] := stMapOutputBuffer.Write.ReservedOut1Byte[1];
+stRawOutputBuffer.OutByte[0][4] := stMapOutputBuffer.Write.ReservedOut1Byte[2];
+stRawOutputBuffer.OutByte[0][5] := stMapOutputBuffer.Write.ReservedOut1Byte[3];
 
 CASE  GVL_AteqConfig.eDeviceEndianSetTo OF
 	E_AteqEndianType.BigEndian: //little-endian
 	// Program Select
-	stRawOutputBuffer.anOutput[0][6] := WORD_TO_BYTE(stMapOutputBuffer.Write.nProgramNumber AND 16#00FF);
-	stRawOutputBuffer.anOutput[0][7] := WORD_TO_BYTE(SHR(stMapOutputBuffer.Write.nProgramNumber, 8));
+	stRawOutputBuffer.OutByte[0][6] := WORD_TO_BYTE(stMapOutputBuffer.Write.nProgramNumber AND 16#00FF);
+	stRawOutputBuffer.OutByte[0][7] := WORD_TO_BYTE(SHR(stMapOutputBuffer.Write.nProgramNumber, 8));
 	// Special Cycle
-	stRawOutputBuffer.anOutput[0][8] := WORD_TO_BYTE(stMapOutputBuffer.Write.nSpecialCycleId AND 16#00FF);
-	stRawOutputBuffer.anOutput[0][9] := WORD_TO_BYTE(SHR(stMapOutputBuffer.Write.nSpecialCycleId, 8));
+	stRawOutputBuffer.OutByte[0][8] := WORD_TO_BYTE(stMapOutputBuffer.Write.nSpecialCycleId AND 16#00FF);
+	stRawOutputBuffer.OutByte[0][9] := WORD_TO_BYTE(SHR(stMapOutputBuffer.Write.nSpecialCycleId, 8));
 	
 	E_AteqEndianType.LittleEndian: // big-endian
 	// Program Select 
-	stRawOutputBuffer.anOutput[0][6] := WORD_TO_BYTE(SHR(stMapOutputBuffer.Write.nProgramNumber, 8));
-	stRawOutputBuffer.anOutput[0][7] := WORD_TO_BYTE(stMapOutputBuffer.Write.nProgramNumber AND 16#00FF);
+	stRawOutputBuffer.OutByte[0][6] := WORD_TO_BYTE(SHR(stMapOutputBuffer.Write.nProgramNumber, 8));
+	stRawOutputBuffer.OutByte[0][7] := WORD_TO_BYTE(stMapOutputBuffer.Write.nProgramNumber AND 16#00FF);
 	// Special Cycle
-	stRawOutputBuffer.anOutput[0][8] := WORD_TO_BYTE(SHR(stMapOutputBuffer.Write.nSpecialCycleId, 8) );
-	stRawOutputBuffer.anOutput[0][9] := WORD_TO_BYTE(stMapOutputBuffer.Write.nSpecialCycleId AND 16#00FF);
+	stRawOutputBuffer.OutByte[0][8] := WORD_TO_BYTE(SHR(stMapOutputBuffer.Write.nSpecialCycleId, 8) );
+	stRawOutputBuffer.OutByte[0][9] := WORD_TO_BYTE(stMapOutputBuffer.Write.nSpecialCycleId AND 16#00FF);
 END_CASE
 
 
 // Copy ReservedOut2
 FOR nIndex1 := 0 TO 21 DO
-    stRawOutputBuffer.anOutput[0][10 + nIndex1] := stMapOutputBuffer.Write.ReservedOut2Byte[nIndex1];
+    stRawOutputBuffer.OutByte[0][10 + nIndex1] := stMapOutputBuffer.Write.ReservedOut2Byte[nIndex1];
 END_FOR;
 
 // Exchange Zone (byte-matrix to 2D array)
 FOR nIndex1 := 0 TO 127 DO
-    stRawOutputBuffer.anOutput[(32 + nIndex1) / 64][(32 + nIndex1) MOD 64] := stMapOutputBuffer.Write.ExchangeZoneByte[nIndex1];
+    stRawOutputBuffer.OutByte[(32 + nIndex1) / 64][(32 + nIndex1) MOD 64] := stMapOutputBuffer.Write.ExchangeZoneByte[nIndex1];
 END_FOR;
 ]]></ST>
       </Implementation>
@@ -510,22 +518,22 @@ END_VAR]]></Declaration>
       </Implementation>
     </Method>
     <Method Name="mPrgInternalSteps" Id="{3018ab2e-77fc-46ae-91da-718a64d69d9e}">
-      <Declaration><![CDATA[METHOD mPrgInternalSteps : E_AteqStepsTable
+      <Declaration><![CDATA[METHOD mPrgInternalSteps : E_AteqTestSteps
 VAR_INPUT
 	nProgramStep : WORD;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[CASE nProgramStep OF
-    0:        mPrgInternalSteps := E_AteqStepsTable.PreFill;
-    1:        mPrgInternalSteps := E_AteqStepsTable.PreDump;
-    4:        mPrgInternalSteps := E_AteqStepsTable.Fill;
-    5:        mPrgInternalSteps := E_AteqStepsTable.Stabilization;
-    6:        mPrgInternalSteps := E_AteqStepsTable.Test;
-    7:        mPrgInternalSteps := E_AteqStepsTable.Dump;
-    65535:    mPrgInternalSteps := E_AteqStepsTable.NoStepInProgress;
+    0:        mPrgInternalSteps := E_AteqTestSteps.PreFill;
+    1:        mPrgInternalSteps := E_AteqTestSteps.PreDump;
+    4:        mPrgInternalSteps := E_AteqTestSteps.Fill;
+    5:        mPrgInternalSteps := E_AteqTestSteps.Stabilization;
+    6:        mPrgInternalSteps := E_AteqTestSteps.Test;
+    7:        mPrgInternalSteps := E_AteqTestSteps.Dump;
+    65535:    mPrgInternalSteps := E_AteqTestSteps.NoStepInProgress;
 ELSE
-    mPrgInternalSteps := E_AteqStepsTable.NoStepInProgress;
+    mPrgInternalSteps := E_AteqTestSteps.NoStepInProgress;
 END_CASE]]></ST>
       </Implementation>
     </Method>
@@ -573,7 +581,7 @@ END_VAR]]></Declaration>
         <ST><![CDATA[//	SEQUENCE TMEOUT
 //############################################################################################
 // SEQ start requested but didnot start check 
-bDeviceReady := stMapInputBuffer.Read.stRealtimeTestResults.bCycleEnd;
+bDeviceReady := stMapInputBuffer.Read.RealtimeStateBit.bCycleEnd;
 
 IF fbR_TRIG_RunSequence.Q AND
 	eProgramSeqSteps <> SEQ_TEST_DONE AND 

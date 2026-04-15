@@ -4,7 +4,7 @@
     <Declaration><![CDATA[TYPE ST_AteqRawOutput :
 STRUCT
 	// Each device has 64 bytes of input/output memory
-	anOutput AT %Q* : ARRAY[0..3] OF ARRAY[0..63] OF BYTE;
+	OutByte AT %Q* : ARRAY[0..3] OF ARRAY[0..63] OF BYTE;
 END_STRUCT
 END_TYPE
 ]]></Declaration>
