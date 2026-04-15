@@ -6,7 +6,7 @@ VAR_INPUT
 	bValveBankHasAnyError	: BOOL;
 	bLastResultsStored		: BOOL;
     anProgramNumberRecipe	: ARRAY[0..GVL_AteqConfig.nMaxProgramsToRun - 1] OF WORD;
-    anValveMask				: ARRAY[0..GVL_AteqConfig.nMaxProgramsToRun - 1] OF DWORD;
+    anValveMaskRecipe		: ARRAY[0..GVL_AteqConfig.nMaxProgramsToRun - 1] OF DWORD;
 	eAteqProgramSeqStates 	: E_AteqProgramSeqSteps;
 	eProgramInternalSteps	: E_AteqStepsTable;
     
@@ -20,7 +20,7 @@ END_VAR
 VAR_OUTPUT
 	eStatesAteqRecipeHandler : E_AteqRecipeHandlerSteps;
     nProgramNumber	: WORD;
-    nValveMask		: DWORD;
+    nValveMaskToOut	: DWORD;
 
 END_VAR
 
@@ -53,7 +53,7 @@ END_VAR
             IF NOT bValveBankHasAnyError THEN
 				tRecipeHandlerTimeout(IN := FALSE);
 				bProgramSeqResetCmdToAteq := FALSE;
-				nValveMask := anValveMask[nIndexToCurrentProgram];
+				nValveMaskToOut := anValveMaskRecipe[nIndexToCurrentProgram];
             	eStatesAteqRecipeHandler := 2;
 			ELSIF tRecipeHandlerTimeout.Q THEN
 					eStatesAteqRecipeHandler := 4;
@@ -84,7 +84,7 @@ END_VAR
 
 			         	
 		E_AteqRecipeHandlerSteps.RECIPE_RESULT_STORED: //Recipe Handler Error
-		nValveMask := 0; // Reset Valves
+		nValveMaskToOut := 0; // Reset Valves
 			IF bLastResultsStored THEN
 				bProgramSeqResetCmdToAteq := TRUE; // Reset ATEQ
 				 IF nIndexToCurrentProgram >= GVL_AteqConfig.nMaxProgramsToRun - 1 THEN

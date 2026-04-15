@@ -33,7 +33,7 @@ Therefore, CASE stucks on IDLE, does not progress to the next steps.
 For future: FB_init may be required
 *)	
 	stRawIoBuf 		: ST_AteqRawIo;
-    stMappedIoBuf		: ST_AteqIo; 
+    stMappedIoBuf	: ST_AteqIo; 
 
 	bProgramSeqRunRequest 		: BOOL;
 	bProgramSeqResetRequest		: BOOL;
