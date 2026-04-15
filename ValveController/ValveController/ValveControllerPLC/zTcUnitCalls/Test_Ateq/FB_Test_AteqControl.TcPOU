@@ -9,12 +9,12 @@ END_VAR
 VAR	
 // Test Map Io	
 	nDeviceIndex 		: UINT	:= 0;	
-	stTestAteqRawIo		: ST_AteqRawIo;
-	stTestAteqMappedIo	: ST_AteqIo;
+	stTestAteqRawIo		: ST_AteqRawInput;
+	stTestAteqMappedIo	: ST_AteqMapInput;
 	  
 // Test Control Methods	
     fbTestInstance : FB_AteqControl;
-    stTestIo       : ST_AteqIo;
+    stTestIo       : ST_AteqMapInput;
 
     bTestStarted   : BOOL := FALSE;
     nTestStep      : INT := 0;
@@ -35,7 +35,7 @@ END_VAR
 CASE nTestStep OF
 
     0: // Initialize inputs and call FB
-        stTestIo.stRead.stRealtimeTestResults.bCycleEnd := TRUE; // Simulate ATEQ ready
+        stTestIo.Read.stRealtimeTestResults.bCycleEnd := TRUE; // Simulate ATEQ ready
         
         fbTestInstance(
 						nProgramNumberToRun 			:= 0,
@@ -52,7 +52,7 @@ CASE nTestStep OF
         END_IF
 
     2: // Simulate FIFO reset done
-        stTestIo.stRead.nResultsInFifo := 0;
+        stTestIo.Read.nResultsInFifo := 0;
 
         fbTestInstance(
 						nProgramNumberToRun 			:= 0,
@@ -82,7 +82,7 @@ CASE nTestStep OF
         END_IF
 
     4: // Simulate ProgramSelect complete
-        stTestIo.stRead.stEcho.bProgramSelect := TRUE;
+        stTestIo.Read.EchoBit.bProgramSelect := TRUE;
 
         fbTestInstance(
 						nProgramNumberToRun 			:= 0,
@@ -176,32 +176,32 @@ END_FOR
 //fbTestAteqComm(nDeviceIndex := nDeviceIndex, stRawIo := stTestAteqRawIo, stMappedIo := stTestAteqMappedIo);
 
 // Validate WORDs - Big Endian means high byte first, so expected values reversed from Little Endian
-AssertEquals_WORD(16#0807, stTestAteqMappedIo.stRead.nProgramInUse, 'ProgramInUse mismatch');
-AssertEquals_WORD(16#0A09, stTestAteqMappedIo.stRead.nResultsInFifo, 'ResultsInFifo mismatch');
-AssertEquals_WORD(16#0C0B, stTestAteqMappedIo.stRead.nTestType, 'TestType mismatch');
-AssertEquals_WORD(16#100F, stTestAteqMappedIo.stRead.nProgramStep, 'ProgramStep mismatch');
+AssertEquals_WORD(16#0807, stTestAteqMappedIo.Read.nProgramInUse, 'ProgramInUse mismatch');
+AssertEquals_WORD(16#0A09, stTestAteqMappedIo.Read.nResultsInFifo, 'ResultsInFifo mismatch');
+AssertEquals_WORD(16#0C0B, stTestAteqMappedIo.Read.nTestType, 'TestType mismatch');
+AssertEquals_WORD(16#100F, stTestAteqMappedIo.Read.nProgramStep, 'ProgramStep mismatch');
 
 // Validate REAL PressureCurValue 16#14131211
 AssertEquals_REAL(
     336794.129,
-    stTestAteqMappedIo.stRead.nPressureCurValue,
+    stTestAteqMappedIo.Read.nPressureCurValue,
     0.1,
     'PressureCurValue mismatch'
 );
 
 // Validate DWORD PressureUnitCode
-AssertEquals_DWORD(16#18171615, stTestAteqMappedIo.stRead.nPressureUnitCode, 'PressureUnitCode mismatch');
+AssertEquals_DWORD(16#18171615, stTestAteqMappedIo.Read.nPressureUnitCode, 'PressureUnitCode mismatch');
 
 // Validate REAL LeakCurValue 16#1C1B1A19
 AssertEquals_REAL(
     47153.8201,
-    stTestAteqMappedIo.stRead.nLeakCurValue,
+    stTestAteqMappedIo.Read.nLeakCurValue,
     0.1,
     'LeakCurValue mismatch'
 );
 
 // Validate DWORD LeakUnitCode
-AssertEquals_DWORD(16#201F1E1D, stTestAteqMappedIo.stRead.nLeakUnitCode, 'LeakUnitCode mismatch');
+AssertEquals_DWORD(16#201F1E1D, stTestAteqMappedIo.Read.nLeakUnitCode, 'LeakUnitCode mismatch');
 
 TEST_FINISHED();
 ]]></ST>
@@ -273,32 +273,32 @@ END_FOR
 //fbTestAteqComm(nDeviceIndex := nDeviceIndex, stRawIo := stTestAteqRawIo, stMappedIo := stTestAteqMappedIo);
 
 // Validate WORDs - Little Endian means low byte first, so 0x0807 for nProgramInUse is 0x0708 logically
-AssertEquals_WORD(16#0708, stTestAteqMappedIo.stRead.nProgramInUse, 'ProgramInUse mismatch');
-AssertEquals_WORD(16#090A, stTestAteqMappedIo.stRead.nResultsInFifo, 'ResultsInFifo mismatch');
-AssertEquals_WORD(16#0B0C, stTestAteqMappedIo.stRead.nTestType, 'TestType mismatch');
-AssertEquals_WORD(16#0F10, stTestAteqMappedIo.stRead.nProgramStep, 'ProgramStep mismatch');
+AssertEquals_WORD(16#0708, stTestAteqMappedIo.Read.nProgramInUse, 'ProgramInUse mismatch');
+AssertEquals_WORD(16#090A, stTestAteqMappedIo.Read.nResultsInFifo, 'ResultsInFifo mismatch');
+AssertEquals_WORD(16#0B0C, stTestAteqMappedIo.Read.nTestType, 'TestType mismatch');
+AssertEquals_WORD(16#0F10, stTestAteqMappedIo.Read.nProgramStep, 'ProgramStep mismatch');
 
 // Validate REAL PressureCurValue 16#11121314
 AssertEquals_REAL(
     286397.204,  // your expected real value after conversion/dividing by 1000 etc
-    stTestAteqMappedIo.stRead.nPressureCurValue, 
+    stTestAteqMappedIo.Read.nPressureCurValue, 
     0.1,
     'PressureCurValue mismatch'
 );
 
 // Validate DWORD PressureUnitCode 
-AssertEquals_DWORD(16#15161718, stTestAteqMappedIo.stRead.nPressureUnitCode, 'PressureUnitCode mismatch');
+AssertEquals_DWORD(16#15161718, stTestAteqMappedIo.Read.nPressureUnitCode, 'PressureUnitCode mismatch');
 
 // Validate REAL LeakCurValue 16#191A1B1C
 AssertEquals_REAL(
     42114.1276,
-    stTestAteqMappedIo.stRead.nLeakCurValue,
+    stTestAteqMappedIo.Read.nLeakCurValue,
     0.1,
     'LeakCurValue mismatch'
 );
 
 // Validate DWORD LeakUnitCode
-AssertEquals_DWORD(16#1D1E1F20, stTestAteqMappedIo.stRead.nLeakUnitCode, 'LeakUnitCode mismatch');
+AssertEquals_DWORD(16#1D1E1F20, stTestAteqMappedIo.Read.nLeakUnitCode, 'LeakUnitCode mismatch');
 
 // ExchangeZone validation...
 
@@ -342,22 +342,22 @@ END_VAR]]></Declaration>
 GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.LittleEndian;
 
 // Set known values
-stTestAteqMappedIo.stWrite.stCommands.bReset               := TRUE;
-stTestAteqMappedIo.stWrite.stCommands.bStart               := TRUE;
-stTestAteqMappedIo.stWrite.stCommands.bSpecialCycle        := TRUE;
-stTestAteqMappedIo.stWrite.stCommands.bProgramSelect       := TRUE;
-stTestAteqMappedIo.stWrite.stCommands.bReadFIFO     := TRUE;
-stTestAteqMappedIo.stWrite.stCommands.bReadParams      := TRUE;
-stTestAteqMappedIo.stWrite.stCommands.bWriteParams     := TRUE;
-stTestAteqMappedIo.stWrite.stCommands.bResetFIFO           := TRUE;
-stTestAteqMappedIo.stWrite.stCommands.bReadInstrumentConfig := TRUE;
-stTestAteqMappedIo.stWrite.stCommands.bReadConfigMenuBits          := TRUE;
-stTestAteqMappedIo.stWrite.stCommands.bReadFunctionBits    := TRUE;
-stTestAteqMappedIo.stWrite.stCommands.bWriteExtMenu        := TRUE;
-stTestAteqMappedIo.stWrite.stCommands.bWriteFunctionBits   := TRUE;
-stTestAteqMappedIo.stWrite.stCommands.bReadProgramName     := TRUE;
-stTestAteqMappedIo.stWrite.stCommands.bWriteProgramName    := TRUE;
-stTestAteqMappedIo.stWrite.stCommands.bReadLastResult      := TRUE;
+stTestAteqMappedIo.stWrite.CmdBit.bReset               := TRUE;
+stTestAteqMappedIo.stWrite.CmdBit.bStart               := TRUE;
+stTestAteqMappedIo.stWrite.CmdBit.bSpecialCycle        := TRUE;
+stTestAteqMappedIo.stWrite.CmdBit.bProgramSelect       := TRUE;
+stTestAteqMappedIo.stWrite.CmdBit.bReadFIFO     := TRUE;
+stTestAteqMappedIo.stWrite.CmdBit.bReadParams      := TRUE;
+stTestAteqMappedIo.stWrite.CmdBit.bWriteParams     := TRUE;
+stTestAteqMappedIo.stWrite.CmdBit.bResetFIFO           := TRUE;
+stTestAteqMappedIo.stWrite.CmdBit.bReadInstrumentConfig := TRUE;
+stTestAteqMappedIo.stWrite.CmdBit.bReadConfigMenuBits          := TRUE;
+stTestAteqMappedIo.stWrite.CmdBit.bReadFunctionBits    := TRUE;
+stTestAteqMappedIo.stWrite.CmdBit.bWriteExtMenu        := TRUE;
+stTestAteqMappedIo.stWrite.CmdBit.bWriteFunctionBits   := TRUE;
+stTestAteqMappedIo.stWrite.CmdBit.bReadProgramName     := TRUE;
+stTestAteqMappedIo.stWrite.CmdBit.bWriteProgramName    := TRUE;
+stTestAteqMappedIo.stWrite.CmdBit.bReadLastResult      := TRUE;
 
 stTestAteqMappedIo.stWrite.anReservedOut1[0] := 161;
 stTestAteqMappedIo.stWrite.anReservedOut1[1] := 162;

@@ -4,16 +4,14 @@
     <Declaration><![CDATA[TYPE ST_AteqWrite :
 STRUCT
 //Writing table structure (From PLC To ATEQ)
-	anCommands			: ARRAY[0..1] OF BYTE;      // 00h–01h Commands buffer
-	stCommands			: ST_AteqCommands;				// 00h–01h Commands bitmap
-    anReservedOut1		: ARRAY[0..3] OF BYTE;      // 02h–05h Not Used
-    nProgramNumber 		: WORD;                     // 06h–07h Address 06h: Number of the program to be selected. Address 07h = 0
-	nSpecialCycle		: WORD;						// 08h–09h Address 08h: Special cycle. Address 09h=0
-	anReservedOut2		: ARRAY[0..21] OF BYTE;     // 0Ah–1Fh Reserved    
-
-// Exchange zone: (@: 20h – 9Fh)	
-	anExchangeZone 		: ARRAY[0..127] OF BYTE;   // 20h–9Fh Cycle results exchange zone. Parameters reading and writing exchange zone.
-
+	CmdByte			: ARRAY[0..1] OF BYTE; 	// 00h–01h Commands buffer
+	CmdBit			: ST_AteqCommands;		// 00h–01h Commands bitmap
+    nProgramNumber 	: WORD;	// 06h–07h Address 06h: Number of the program to be selected. Address 07h = 0
+	nSpecialCycleId	: WORD;	// 08h–09h Address 08h: Special cycle. Address 09h=0
+	ReservedOut1Byte	: ARRAY[0..3] OF BYTE;      // 02h–05h Not Used
+	ReservedOut2Byte	: ARRAY[0..21] OF BYTE;     // 0Ah–1Fh Reserved
+// Exchange zone: (@: 20h – 9Fh)
+	ExchangeZoneByte	: ARRAY[0..127] OF BYTE;   // 20h–9Fh Cycle results exchange zone. Parameters reading and writing exchange zone
 END_STRUCT
 END_TYPE
 ]]></Declaration>

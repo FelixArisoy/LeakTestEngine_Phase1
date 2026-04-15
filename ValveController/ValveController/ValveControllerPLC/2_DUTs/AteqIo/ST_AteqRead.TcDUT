@@ -5,8 +5,8 @@
 STRUCT	
 //Reading table structure (From ATEQ To PLC)
 //Status: (@: 00h – 0Fh)
-	anEcho					: ARRAY[0..1] OF BYTE;			// 00h–01h Echo buffer
-	stEcho         			: ST_AteqEcho;					// 00h–01h Echo bitmap
+	EchoByte				: ARRAY[0..1] OF BYTE;			// 00h–01h Echo buffer
+	EchoBit         		: ST_AteqEcho;					// 00h–01h Echo bitmap
 	anErrorCode				: ARRAY[0..1] OF BYTE;			// 02h–03h ErrorCode buffer
     stErrorCode      		: ST_AteqErrorCode;				// 02h–03h ErrorCode bitmap
     anReserved 				: ARRAY[0..1] OF BYTE;     		// 04h–05h Not Used; Current module in use. ATEQ "Head" in use only if multiple heads are connected together via RS485 with an ATEQ C540 central controller

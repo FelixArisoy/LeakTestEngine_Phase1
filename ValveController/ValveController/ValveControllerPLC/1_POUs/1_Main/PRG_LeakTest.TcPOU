@@ -3,10 +3,11 @@
   <POU Name="PRG_LeakTest" Id="{a3d4985a-23a4-4261-9530-cafe9c795619}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_LeakTest
 VAR
-
 //####### Map Io #######
-    astAteqIo 			: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqIo;
-	astAteqRawIo   		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqRawIo;
+	astAteqRawInput   	: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqRawInput;
+	astAteqRawOutput   	: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqRawOutput;
+    astAteqMapInput 	: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqMapInput;
+	astAteqMapOutput 	: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqMapOutput;
 //####### Control Ateq #######  
 	nAteqIndex			: UINT;
 	afbAteqControl		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF FB_AteqControl;
@@ -88,11 +89,11 @@ END_VAR
 VAR
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-/// ATEQ DEVICE CONTROL CALLS
+        <ST><![CDATA[/// ATEQ DEVICE CONTROL CALLS
 	afbAteqControl[nAteqIndex](	nProgramNumberToRun 	:= afbAteqRecipeHandler[nAteqIndex].nProgramNumber,
-									stRawIo 				:= astAteqRawIo[nAteqIndex], 
-									stMappedIo 				:= astAteqIo[nAteqIndex]);
+								stRawInput 			:= astAteqRawInput[nAteqIndex],
+								stRawOutput 		=> astAteqRawOutput[nAteqIndex], 
+								stMappedIo 			:= astAteqMapInput[nAteqIndex]);
 
 ]]></ST>
       </Implementation>
@@ -125,7 +126,7 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[///	ATEQ TEST RESULT STORE CALLS
 	afbAteqResult[nAteqIndex](	bAutoSeqDone 	:= afbAteqControl[nAteqIndex].pPrgSeqDone,
-								anExchangeZone	:= astAteqIo[nAteqIndex].stRead.anExchangeZone);]]></ST>
+								anExchangeZone	:= astAteqMapInput[nAteqIndex].Read.anExchangeZone);]]></ST>
       </Implementation>
     </Method>
     <Method Name="mMapAteqCmd" Id="{2a3e4b19-ec84-08df-2084-a8db230706b0}">
@@ -244,7 +245,7 @@ GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.BigEndian;
 								stMappedIo 				:= astAteqIo[nDeviceIndex]);
 	*)	
 	afbAteqResult[nDeviceIndex](	bAutoSeqDone 	:= afbAteqControl[nDeviceIndex].pPrgSeqDone,
-									anExchangeZone	:= astAteqIo[nDeviceIndex].stRead.anExchangeZone);
+									anExchangeZone	:= astAteqMapInput[nDeviceIndex].Read.anExchangeZone);
 
 		END_FOR
 	END_IF
@@ -271,7 +272,7 @@ IF bTestActive THEN
     // Only send the command if not already sent and the delay for the next trigger has finished
     IF NOT bCommandSent AND bDelayFinished THEN
        
-		astAteqIo[0].stWrite.stCommands.bStart := TRUE; // Set command
+		astAteqMapOutput[0].Write.CmdBit.bStart := TRUE; // Set command
 		
         tStartTime 		:= T#0S + TIME();                          // Record current time
         bCommandSent 	:= TRUE;
@@ -281,7 +282,7 @@ IF bTestActive THEN
     END_IF
 
     // --- State 2: Check for Echo response ---
-    IF bCommandSent AND NOT bEchoReceived AND astAteqIo[0].stRead.stEcho.bStart THEN
+    IF bCommandSent AND NOT bEchoReceived AND astAteqMapInput[0].Read.EchoBit.bStart THEN
         
 		tResponseTime := TIME() - tStartTime;
         bEchoReceived := TRUE;
@@ -298,7 +299,7 @@ IF bTestActive THEN
         END_IF
 
         // Reset command and prepare for next cycle
-        astAteqIo[0].stWrite.stCommands.bStart := FALSE;
+        astAteqMapOutput[0].Write.CmdBit.bStart := FALSE;
         bCommandSent := FALSE;
         // Now, start the delay before the next trigger
         bTriggerReady := FALSE; // Ensure delay timer starts

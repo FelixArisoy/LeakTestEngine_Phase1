@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_AteqRawOutput" Id="{8c5480bb-3076-0f0d-33d3-ec5500c4e876}">
+    <Declaration><![CDATA[TYPE ST_AteqRawOutput :
+STRUCT
+	// Each device has 64 bytes of input/output memory
+	anOutput AT %Q* : ARRAY[0..3] OF ARRAY[0..63] OF BYTE;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

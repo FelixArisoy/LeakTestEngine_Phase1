@@ -11,10 +11,11 @@ Results passed to the recipe handler FB.
 *)
 VAR_INPUT
 	nProgramNumberToRun 		: WORD; // program number to be executed
+	stRawInput 	: ST_AteqRawInput;
 END_VAR
 VAR_IN_OUT
-	stRawIo 	: ST_AteqRawIo;
-    stMappedIo	: ST_AteqIo; 
+
+    stMappedIo	: ST_AteqMapInput; 
 (*
 Mapped Io Exchange Zone will be passing the data to ResultRaw Struct 
 then will be decoded in M_ReadLastResult (ResultDecoded Struct) 
@@ -24,6 +25,7 @@ VAR_OUTPUT
 	eProgramSeqSteps 		: E_AteqProgramSeqSteps;  // Monitor ProgramSeq StepStates -> HMI
 	eProgramInternalSteps	: E_AteqStepsTable;
 	eErrorFlags				: E_AteqControlErrorFlags;	// Monitor Ateq Device and ProgramSeq Errors -> HMI
+	stRawOutput				: ST_AteqRawOutput;
 END_VAR
 VAR
 (*
@@ -31,17 +33,16 @@ fbCmdHandler works in body of the FB, do not ever declare in the Methods.
 That causes the instance FB calls overwrite the internal vars. 
 Therefore, CASE stucks on IDLE, does not progress to the next steps. 
 For future: FB_init may be required
-*)	
-	stRawIoBuf 		: ST_AteqRawIo;
-    stMappedIoBuf	: ST_AteqIo; 
-
-	bProgramSeqRunRequest 		: BOOL;
-	bProgramSeqResetRequest		: BOOL;
-	fbCmdHandler				: FB_AteqCmdHandler;									
-	bCmdHandlerResetRequest 	: BOOL;
-	
-
-//!!!!!!!!!!!!!! For future integration								
+*)
+	stRawInputBuffer 		: ST_AteqRawInput;
+	stRawOutputBuffer 		: ST_AteqRawOutput;
+    stMapInputBuffer		: ST_AteqMapInput;
+	stMapOutputBuffer		: ST_AteqMapOutput; 
+	fbCmdHandler			: FB_AteqCmdHandler;
+	bProgramSeqRunRequest 	: BOOL;
+	bProgramSeqResetRequest	: BOOL;
+	bCmdHandlerResetRequest : BOOL;
+//!!!!!!!!!!!!!! For future integration
    // astFIFO				: ARRAY[0..7] OF ST_AteqResultsDecoded;
 
 // Internal timers USED IN ProgramAutoSeq method
@@ -66,13 +67,13 @@ For future: FB_init may be required
    	bProgramSeqResetComp		: BOOL;   	 
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[stRawIo 	:= stRawIoBuf;
-stMappedIo 	:= stMappedIoBuf;
+      <ST><![CDATA[stRawInput 	:= stRawInputBuffer;
+stMappedIo 	:= stRawOutputBuffer;
 mMapInput();
 mMapOutput();
 mPrgSeq();
 
-eProgramInternalSteps := mPrgInternalSteps(stMappedIoBuf.stRead.nProgramStep);
+eProgramInternalSteps := mPrgInternalSteps(stMapInputBuffer.Read.nProgramStep);
 // Add other monitoring or manual command calls here...
 // mPrgSeq to be the primary driver for running Ateq programs in production.]]></ST>
     </Implementation>
@@ -140,114 +141,113 @@ END_VAR
 
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-// Direct read from stAteqRawIo
-byEcho0     := stRawIoBuf.anInput[0][0];  // 00h
-byEcho1     := stRawIoBuf.anInput[0][1];  // 01h
-byError0    := stRawIoBuf.anInput[0][2];  // 02h
-byError1    := stRawIoBuf.anInput[0][3];  // 03h
-byResult0   := stRawIoBuf.anInput[0][12]; // 0Ch
-byResult1   := stRawIoBuf.anInput[0][13]; // 0Dh
+        <ST><![CDATA[// Direct read from stAteqRawIo
+byEcho0     := stRawInputBuffer.anInput[0][0];  // 00h
+byEcho1     := stRawInputBuffer.anInput[0][1];  // 01h
+byError0    := stRawInputBuffer.anInput[0][2];  // 02h
+byError1    := stRawInputBuffer.anInput[0][3];  // 03h
+byResult0   := stRawInputBuffer.anInput[0][12]; // 0Ch
+byResult1   := stRawInputBuffer.anInput[0][13]; // 0Dh
 
 // Copy bytes into buffers
-stMappedIoBuf.stRead.anEcho[0] 		:= byEcho0;
-stMappedIoBuf.stRead.anEcho[1] 		:= byEcho1;
-stMappedIoBuf.stRead.anErrorCode[0] 	:= byError0;
-stMappedIoBuf.stRead.anErrorCode[1] 	:= byError1;
+stMapInputBuffer.Read.EchoByte[0] 		:= byEcho0;
+stMapInputBuffer.Read.EchoByte[1] 		:= byEcho1;
+stMapInputBuffer.Read.anErrorCode[0] := byError0;
+stMapInputBuffer.Read.anErrorCode[1] := byError1;
 
 // -------- 00h - 01h: Decode Echo Status --------
-stMappedIoBuf.stRead.stEcho.bReset             := (byEcho0 AND 16#01) <> 0;
-stMappedIoBuf.stRead.stEcho.bStart             := (byEcho0 AND 16#02) <> 0;
-stMappedIoBuf.stRead.stEcho.bSpecialCycle      := (byEcho0 AND 16#04) <> 0;
-stMappedIoBuf.stRead.stEcho.bProgramSelect     := (byEcho0 AND 16#08) <> 0;
-stMappedIoBuf.stRead.stEcho.bReadFIFO          := (byEcho0 AND 16#10) <> 0;
-stMappedIoBuf.stRead.stEcho.bReadParams        := (byEcho0 AND 16#20) <> 0;
-stMappedIoBuf.stRead.stEcho.bWriteParams       := (byEcho0 AND 16#40) <> 0;
-stMappedIoBuf.stRead.stEcho.bResetFIFO         := (byEcho0 AND 16#80) <> 0;
+stMapInputBuffer.Read.EchoBit.bReset             := (byEcho0 AND 16#01) <> 0;
+stMapInputBuffer.Read.EchoBit.bStart             := (byEcho0 AND 16#02) <> 0;
+stMapInputBuffer.Read.EchoBit.bSpecialCycle      := (byEcho0 AND 16#04) <> 0;
+stMapInputBuffer.Read.EchoBit.bProgramSelect     := (byEcho0 AND 16#08) <> 0;
+stMapInputBuffer.Read.EchoBit.bReadFIFO          := (byEcho0 AND 16#10) <> 0;
+stMapInputBuffer.Read.EchoBit.bReadParams        := (byEcho0 AND 16#20) <> 0;
+stMapInputBuffer.Read.EchoBit.bWriteParams       := (byEcho0 AND 16#40) <> 0;
+stMapInputBuffer.Read.EchoBit.bResetFIFO         := (byEcho0 AND 16#80) <> 0;
 
-stMappedIoBuf.stRead.stEcho.bReadInstrumentConfig        := (byEcho1 AND 16#01) <> 0;
-stMappedIoBuf.stRead.stEcho.bReadConfigMenuBits       := (byEcho1 AND 16#02) <> 0;
-stMappedIoBuf.stRead.stEcho.bReadFunctionBits  := (byEcho1 AND 16#04) <> 0;
-stMappedIoBuf.stRead.stEcho.bWriteExtMenu      := (byEcho1 AND 16#08) <> 0;
-stMappedIoBuf.stRead.stEcho.bWriteFunctionBits := (byEcho1 AND 16#10) <> 0;
-stMappedIoBuf.stRead.stEcho.bReadProgramName   := (byEcho1 AND 16#20) <> 0;
-stMappedIoBuf.stRead.stEcho.bWriteProgramName  := (byEcho1 AND 16#40) <> 0;
-stMappedIoBuf.stRead.stEcho.bReadLastResult    := (byEcho1 AND 16#80) <> 0;
+stMapInputBuffer.Read.EchoBit.bReadInstrumentConfig := (byEcho1 AND 16#01) <> 0;
+stMapInputBuffer.Read.EchoBit.bReadConfigMenuBits   := (byEcho1 AND 16#02) <> 0;
+stMapInputBuffer.Read.EchoBit.bReadFunctionBits  := (byEcho1 AND 16#04) <> 0;
+stMapInputBuffer.Read.EchoBit.bWriteExtMenu      := (byEcho1 AND 16#08) <> 0;
+stMapInputBuffer.Read.EchoBit.bWriteFunctionBits := (byEcho1 AND 16#10) <> 0;
+stMapInputBuffer.Read.EchoBit.bReadProgramName   := (byEcho1 AND 16#20) <> 0;
+stMapInputBuffer.Read.EchoBit.bWriteProgramName  := (byEcho1 AND 16#40) <> 0;
+stMapInputBuffer.Read.EchoBit.bReadLastResult    := (byEcho1 AND 16#80) <> 0;
 
 // -------- 02h - 03h: Decode Error Codes --------
-stMappedIoBuf.stRead.stErrorCode.bReset             := (byError0 AND 16#01) <> 0;
-stMappedIoBuf.stRead.stErrorCode.bStart             := (byError0 AND 16#02) <> 0;
-stMappedIoBuf.stRead.stErrorCode.bSpecialCycle      := (byError0 AND 16#04) <> 0;
-stMappedIoBuf.stRead.stErrorCode.bProgramSelect     := (byError0 AND 16#08) <> 0;
-stMappedIoBuf.stRead.stErrorCode.bReadFIFO          := (byError0 AND 16#10) <> 0;
-stMappedIoBuf.stRead.stErrorCode.bReadParams        := (byError0 AND 16#20) <> 0;
-stMappedIoBuf.stRead.stErrorCode.bWriteParams       := (byError0 AND 16#40) <> 0;
-stMappedIoBuf.stRead.stErrorCode.bResetFIFO         := (byError0 AND 16#80) <> 0;
+stMapInputBuffer.Read.stErrorCode.bReset             := (byError0 AND 16#01) <> 0;
+stMapInputBuffer.Read.stErrorCode.bStart             := (byError0 AND 16#02) <> 0;
+stMapInputBuffer.Read.stErrorCode.bSpecialCycle      := (byError0 AND 16#04) <> 0;
+stMapInputBuffer.Read.stErrorCode.bProgramSelect     := (byError0 AND 16#08) <> 0;
+stMapInputBuffer.Read.stErrorCode.bReadFIFO          := (byError0 AND 16#10) <> 0;
+stMapInputBuffer.Read.stErrorCode.bReadParams        := (byError0 AND 16#20) <> 0;
+stMapInputBuffer.Read.stErrorCode.bWriteParams       := (byError0 AND 16#40) <> 0;
+stMapInputBuffer.Read.stErrorCode.bResetFIFO         := (byError0 AND 16#80) <> 0;
 
-stMappedIoBuf.stRead.stErrorCode.bReadInstrumentConfig        := (byError1 AND 16#01) <> 0;
-stMappedIoBuf.stRead.stErrorCode.bReadConfigMenuBits       := (byError1 AND 16#02) <> 0;
-stMappedIoBuf.stRead.stErrorCode.bReadFunctionBits  := (byError1 AND 16#04) <> 0;
-stMappedIoBuf.stRead.stErrorCode.bWriteExtMenu      := (byError1 AND 16#08) <> 0;
-stMappedIoBuf.stRead.stErrorCode.bWriteFunctionBits := (byError1 AND 16#10) <> 0;
-stMappedIoBuf.stRead.stErrorCode.bReadProgramName   := (byError1 AND 16#20) <> 0;
-stMappedIoBuf.stRead.stErrorCode.bWriteProgramName  := (byError1 AND 16#40) <> 0;
-stMappedIoBuf.stRead.stErrorCode.bReadLastResult    := (byError1 AND 16#80) <> 0;
+stMapInputBuffer.Read.stErrorCode.bReadInstrumentConfig        := (byError1 AND 16#01) <> 0;
+stMapInputBuffer.Read.stErrorCode.bReadConfigMenuBits       := (byError1 AND 16#02) <> 0;
+stMapInputBuffer.Read.stErrorCode.bReadFunctionBits  := (byError1 AND 16#04) <> 0;
+stMapInputBuffer.Read.stErrorCode.bWriteExtMenu      := (byError1 AND 16#08) <> 0;
+stMapInputBuffer.Read.stErrorCode.bWriteFunctionBits := (byError1 AND 16#10) <> 0;
+stMapInputBuffer.Read.stErrorCode.bReadProgramName   := (byError1 AND 16#20) <> 0;
+stMapInputBuffer.Read.stErrorCode.bWriteProgramName  := (byError1 AND 16#40) <> 0;
+stMapInputBuffer.Read.stErrorCode.bReadLastResult    := (byError1 AND 16#80) <> 0;
 
 
-stMappedIoBuf.stRead.anReserved[0]	:= stRawIoBuf.anInput[0][4];
-stMappedIoBuf.stRead.anReserved[1]	:= stRawIoBuf.anInput[0][5];
+stMapInputBuffer.Read.anReserved[0]	:= stRawInputBuffer.anInput[0][4];
+stMapInputBuffer.Read.anReserved[1]	:= stRawInputBuffer.anInput[0][5];
 
 	CASE  GVL_AteqConfig.eDeviceEndianSetTo OF
 		E_AteqEndianType.LittleEndian: // Little Endian
 		// Parse WORDs from bytes
-		stMappedIoBuf.stRead.nProgramInUse		:= SHL(BYTE_TO_WORD(stRawIoBuf.anInput[0][6]), 8) OR BYTE_TO_WORD(stRawIoBuf.anInput[0][7]);
-		stMappedIoBuf.stRead.nResultsInFifo	:= SHL(BYTE_TO_WORD(stRawIoBuf.anInput[0][8]), 8) OR BYTE_TO_WORD(stRawIoBuf.anInput[0][9]);
-		stMappedIoBuf.stRead.nTestType			:= SHL(BYTE_TO_WORD(stRawIoBuf.anInput[0][10]), 8) OR BYTE_TO_WORD(stRawIoBuf.anInput[0][11]);
-		stMappedIoBuf.stRead.nProgramStep		:= SHL(BYTE_TO_WORD(stRawIoBuf.anInput[0][14]), 8) OR BYTE_TO_WORD(stRawIoBuf.anInput[0][15]);
+		stMapInputBuffer.Read.nProgramInUse		:= SHL(BYTE_TO_WORD(stRawInputBuffer.anInput[0][6]), 8) OR BYTE_TO_WORD(stRawInputBuffer.anInput[0][7]);
+		stMapInputBuffer.Read.nResultsInFifo	:= SHL(BYTE_TO_WORD(stRawInputBuffer.anInput[0][8]), 8) OR BYTE_TO_WORD(stRawInputBuffer.anInput[0][9]);
+		stMapInputBuffer.Read.nTestType			:= SHL(BYTE_TO_WORD(stRawInputBuffer.anInput[0][10]), 8) OR BYTE_TO_WORD(stRawInputBuffer.anInput[0][11]);
+		stMapInputBuffer.Read.nProgramStep		:= SHL(BYTE_TO_WORD(stRawInputBuffer.anInput[0][14]), 8) OR BYTE_TO_WORD(stRawInputBuffer.anInput[0][15]);
 
 		E_AteqEndianType.BigEndian: // Big Endian
-		stMappedIoBuf.stRead.nProgramInUse		:= BYTE_TO_WORD(stRawIoBuf.anInput[0][6]) 	OR SHL(BYTE_TO_WORD(stRawIoBuf.anInput[0][7]), 8);
-		stMappedIoBuf.stRead.nResultsInFifo	:= BYTE_TO_WORD(stRawIoBuf.anInput[0][8]) 	OR SHL(BYTE_TO_WORD(stRawIoBuf.anInput[0][9]), 8);
-		stMappedIoBuf.stRead.nTestType			:= BYTE_TO_WORD(stRawIoBuf.anInput[0][10]) OR SHL(BYTE_TO_WORD(stRawIoBuf.anInput[0][11]), 8);
-		stMappedIoBuf.stRead.nProgramStep		:= BYTE_TO_WORD(stRawIoBuf.anInput[0][14]) OR SHL(BYTE_TO_WORD(stRawIoBuf.anInput[0][15]), 8);
+		stMapInputBuffer.Read.nProgramInUse		:= BYTE_TO_WORD(stRawInputBuffer.anInput[0][6]) 	OR SHL(BYTE_TO_WORD(stRawInputBuffer.anInput[0][7]), 8);
+		stMapInputBuffer.Read.nResultsInFifo	:= BYTE_TO_WORD(stRawInputBuffer.anInput[0][8]) 	OR SHL(BYTE_TO_WORD(stRawInputBuffer.anInput[0][9]), 8);
+		stMapInputBuffer.Read.nTestType			:= BYTE_TO_WORD(stRawInputBuffer.anInput[0][10]) OR SHL(BYTE_TO_WORD(stRawInputBuffer.anInput[0][11]), 8);
+		stMapInputBuffer.Read.nProgramStep		:= BYTE_TO_WORD(stRawInputBuffer.anInput[0][14]) OR SHL(BYTE_TO_WORD(stRawInputBuffer.anInput[0][15]), 8);
 	END_CASE
 		
 
 // -------- 0Ch - 0Dh: Decode Real-Time Test Results --------
-stMappedIoBuf.stRead.stRealtimeTestResults.bPass            := (byResult0 AND 16#01) <> 0;
-stMappedIoBuf.stRead.stRealtimeTestResults.bFailPart        := (byResult0 AND 16#02) <> 0;
-stMappedIoBuf.stRead.stRealtimeTestResults.bFailRef         := (byResult0 AND 16#04) <> 0;
-stMappedIoBuf.stRead.stRealtimeTestResults.bAlarm           := (byResult0 AND 16#08) <> 0;
-stMappedIoBuf.stRead.stRealtimeTestResults.bPressureEror     := (byResult0 AND 16#10) <> 0;
-stMappedIoBuf.stRead.stRealtimeTestResults.bCycleEnd        := (byResult0 AND 16#20) <> 0;
-stMappedIoBuf.stRead.stRealtimeTestResults.bRecoverable     := (byResult0 AND 16#40) <> 0;
-stMappedIoBuf.stRead.stRealtimeTestResults.bCalibEror        := (byResult0 AND 16#80) <> 0;
+stMapInputBuffer.Read.stRealtimeTestResults.bPass            := (byResult0 AND 16#01) <> 0;
+stMapInputBuffer.Read.stRealtimeTestResults.bFailPart        := (byResult0 AND 16#02) <> 0;
+stMapInputBuffer.Read.stRealtimeTestResults.bFailRef         := (byResult0 AND 16#04) <> 0;
+stMapInputBuffer.Read.stRealtimeTestResults.bAlarm           := (byResult0 AND 16#08) <> 0;
+stMapInputBuffer.Read.stRealtimeTestResults.bPressureEror     := (byResult0 AND 16#10) <> 0;
+stMapInputBuffer.Read.stRealtimeTestResults.bCycleEnd        := (byResult0 AND 16#20) <> 0;
+stMapInputBuffer.Read.stRealtimeTestResults.bRecoverable     := (byResult0 AND 16#40) <> 0;
+stMapInputBuffer.Read.stRealtimeTestResults.bCalibEror        := (byResult0 AND 16#80) <> 0;
 
-stMappedIoBuf.stRead.stRealtimeTestResults.bCalibCheckEror   := (byResult1 AND 16#01) <> 0;
-stMappedIoBuf.stRead.stRealtimeTestResults.bATRFault        := (byResult1 AND 16#02) <> 0;
+stMapInputBuffer.Read.stRealtimeTestResults.bCalibCheckEror   := (byResult1 AND 16#01) <> 0;
+stMapInputBuffer.Read.stRealtimeTestResults.bATRFault        := (byResult1 AND 16#02) <> 0;
 
 
 
 // Assign the 4 bytes from the raw PressureCurValue input
-anPressureCurValueBuffer [0] := stRawIoBuf.anInput[0][16];
-anPressureCurValueBuffer [1] :=	stRawIoBuf.anInput[0][17];
-anPressureCurValueBuffer [2] :=	stRawIoBuf.anInput[0][18];
-anPressureCurValueBuffer [3] :=	stRawIoBuf.anInput[0][19];
+anPressureCurValueBuffer [0] := stRawInputBuffer.anInput[0][16];
+anPressureCurValueBuffer [1] :=	stRawInputBuffer.anInput[0][17];
+anPressureCurValueBuffer [2] :=	stRawInputBuffer.anInput[0][18];
+anPressureCurValueBuffer [3] :=	stRawInputBuffer.anInput[0][19];
 
-anPressureUnitCodeBuffer [0] := stRawIoBuf.anInput[0][20];
-anPressureUnitCodeBuffer [1] :=	stRawIoBuf.anInput[0][21];
-anPressureUnitCodeBuffer [2] :=	stRawIoBuf.anInput[0][22];
-anPressureUnitCodeBuffer [3] :=	stRawIoBuf.anInput[0][23];
+anPressureUnitCodeBuffer [0] := stRawInputBuffer.anInput[0][20];
+anPressureUnitCodeBuffer [1] :=	stRawInputBuffer.anInput[0][21];
+anPressureUnitCodeBuffer [2] :=	stRawInputBuffer.anInput[0][22];
+anPressureUnitCodeBuffer [3] :=	stRawInputBuffer.anInput[0][23];
 
-anLeakCurValueBuffer [0] := stRawIoBuf.anInput[0][24];
-anLeakCurValueBuffer [1] :=	stRawIoBuf.anInput[0][25];
-anLeakCurValueBuffer [2] :=	stRawIoBuf.anInput[0][26];
-anLeakCurValueBuffer [3] :=	stRawIoBuf.anInput[0][27];
+anLeakCurValueBuffer [0] := stRawInputBuffer.anInput[0][24];
+anLeakCurValueBuffer [1] :=	stRawInputBuffer.anInput[0][25];
+anLeakCurValueBuffer [2] :=	stRawInputBuffer.anInput[0][26];
+anLeakCurValueBuffer [3] :=	stRawInputBuffer.anInput[0][27];
 
-anLeakUnitCodeBuffer [0] := stRawIoBuf.anInput[0][28];
-anLeakUnitCodeBuffer [1] :=	stRawIoBuf.anInput[0][29];
-anLeakUnitCodeBuffer [2] :=	stRawIoBuf.anInput[0][30];
-anLeakUnitCodeBuffer [3] :=	stRawIoBuf.anInput[0][31];
+anLeakUnitCodeBuffer [0] := stRawInputBuffer.anInput[0][28];
+anLeakUnitCodeBuffer [1] :=	stRawInputBuffer.anInput[0][29];
+anLeakUnitCodeBuffer [2] :=	stRawInputBuffer.anInput[0][30];
+anLeakUnitCodeBuffer [3] :=	stRawInputBuffer.anInput[0][31];
 
 // Copy into REAL and DWORD vars from Buffer adr to Destination Adr of the ST_AteqInRead
 // --- Endianness-aware conversion for 4-byte values (DWORD and REAL) ---
@@ -306,19 +306,19 @@ CASE GVL_AteqConfig.eDeviceEndianSetTo OF
 END_CASE
 
 // Assign unit codes directly without scaling
-stMappedIoBuf.stRead.nPressureUnitCode := nPressureUnitCodeBuffer;  
-stMappedIoBuf.stRead.nLeakUnitCode     := nLeakUnitCodeBuffer;      
+stMapInputBuffer.Read.nPressureUnitCode := nPressureUnitCodeBuffer;  
+stMapInputBuffer.Read.nLeakUnitCode     := nLeakUnitCodeBuffer;      
 
 // Convert raw DWORD measurement values to REAL and scale
-stMappedIoBuf.stRead.nPressureCurValue := DWORD_TO_REAL(nPressureCurValueBuffer) / 1000;
-stMappedIoBuf.stRead.nLeakCurValue     := DWORD_TO_REAL(nLeakCurValueBuffer) / 10000;
+stMapInputBuffer.Read.nPressureCurValue := DWORD_TO_REAL(nPressureCurValueBuffer) / 1000;
+stMapInputBuffer.Read.nLeakCurValue     := DWORD_TO_REAL(nLeakCurValueBuffer) / 10000;
 ;
 
 // Exchange Zone: 128 bytes (20h – 9Fh = byte 33 to 160)
 
 //################ Need byte module break
 	FOR nIndex1 := 0 TO 127 DO
-		stMappedIoBuf.stRead.anExchangeZone[nIndex1] := stRawIoBuf.anInput[(32 + nIndex1) / 64][(32 + nIndex1) MOD 64];
+		stMapInputBuffer.Read.anExchangeZone[nIndex1] := stRawInputBuffer.anInput[(32 + nIndex1) / 64][(32 + nIndex1) MOD 64];
 	END_FOR;
 ]]></ST>
       </Implementation>
@@ -335,98 +335,98 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[// ----- Build byte 0 (00h - Command Byte 0) -----
 
-IF stMappedIoBuf.stWrite.stCommands.bReset THEN
+IF stMapOutputBuffer.Write.CmdBit.bReset THEN
     nCommand0 := nCommand0 OR 16#01;
 END_IF;
-IF stMappedIoBuf.stWrite.stCommands.bStart THEN
+IF stMapOutputBuffer.Write.CmdBit.bStart THEN
     nCommand0 := nCommand0 OR 16#02;
 END_IF;
-IF stMappedIoBuf.stWrite.stCommands.bSpecialCycle THEN
+IF stMapOutputBuffer.Write.CmdBit.bSpecialCycle THEN
     nCommand0 := nCommand0 OR 16#04;
 END_IF;
-IF stMappedIoBuf.stWrite.stCommands.bProgramSelect THEN
+IF stMapOutputBuffer.Write.CmdBit.bProgramSelect THEN
     nCommand0 := nCommand0 OR 16#08;
 END_IF;
-IF stMappedIoBuf.stWrite.stCommands.bReadFIFO THEN
+IF stMapOutputBuffer.Write.CmdBit.bReadFIFO THEN
     nCommand0 := nCommand0 OR 16#10;
 END_IF;
-IF stMappedIoBuf.stWrite.stCommands.bReadParams THEN
+IF stMapOutputBuffer.Write.CmdBit.bReadParams THEN
     nCommand0 := nCommand0 OR 16#20;
 END_IF;
-IF stMappedIoBuf.stWrite.stCommands.bWriteParams THEN
+IF stMapOutputBuffer.Write.CmdBit.bWriteParams THEN
     nCommand0 := nCommand0 OR 16#40;
 END_IF;
-IF stMappedIoBuf.stWrite.stCommands.bResetFIFO THEN
+IF stMapOutputBuffer.Write.CmdBit.bResetFIFO THEN
     nCommand0 := nCommand0 OR 16#80;
 END_IF;
 
 // ----- Build byte 1 (01h - Command Byte 1) -----
-IF stMappedIoBuf.stWrite.stCommands.bReadInstrumentConfig THEN
+IF stMapOutputBuffer.Write.CmdBit.bReadInstrumentConfig THEN
     nCommand1 := nCommand1 OR 16#01;
 END_IF;
-IF stMappedIoBuf.stWrite.stCommands.bReadConfigMenuBits THEN
+IF stMapOutputBuffer.Write.CmdBit.bReadConfigMenuBits THEN
     nCommand1 := nCommand1 OR 16#02;
 END_IF;
-IF stMappedIoBuf.stWrite.stCommands.bReadFunctionBits THEN
+IF stMapOutputBuffer.Write.CmdBit.bReadFunctionBits THEN
     nCommand1 := nCommand1 OR 16#04;
 END_IF;
-IF stMappedIoBuf.stWrite.stCommands.bWriteExtMenu THEN
+IF stMapOutputBuffer.Write.CmdBit.bWriteExtMenu THEN
     nCommand1 := nCommand1 OR 16#08;
 END_IF;
-IF stMappedIoBuf.stWrite.stCommands.bWriteFunctionBits THEN
+IF stMapOutputBuffer.Write.CmdBit.bWriteFunctionBits THEN
     nCommand1 := nCommand1 OR 16#10;
 END_IF;
-IF stMappedIoBuf.stWrite.stCommands.bReadProgramName THEN
+IF stMapOutputBuffer.Write.CmdBit.bReadProgramName THEN
     nCommand1 := nCommand1 OR 16#20;
 END_IF;
-IF stMappedIoBuf.stWrite.stCommands.bWriteProgramName THEN
+IF stMapOutputBuffer.Write.CmdBit.bWriteProgramName THEN
     nCommand1 := nCommand1 OR 16#40;
 END_IF;
-IF stMappedIoBuf.stWrite.stCommands.bReadLastResult THEN
+IF stMapOutputBuffer.Write.CmdBit.bReadLastResult THEN
     nCommand1 := nCommand1 OR 16#80;
 END_IF;
 
 // Assign to MappedIO
-stMappedIoBuf.stWrite.anCommands[0] := nCommand0;
-stMappedIoBuf.stWrite.anCommands[1] := nCommand1;
+stMapOutputBuffer.Write.CmdByte[0] := nCommand0;
+stMapOutputBuffer.Write.CmdByte[1] := nCommand1;
 
 // Map mappedIO to raw IO
-stRawIoBuf.anOutput[0][0] := nCommand0;
-stRawIoBuf.anOutput[0][1] := nCommand1;
+stRawOutputBuffer.anOutput[0][0] := nCommand0;
+stRawOutputBuffer.anOutput[0][1] := nCommand1;
 
 // Reserved output bytes
-stRawIoBuf.anOutput[0][2] := stMappedIoBuf.stWrite.anReservedOut1[0];
-stRawIoBuf.anOutput[0][3] := stMappedIoBuf.stWrite.anReservedOut1[1];
-stRawIoBuf.anOutput[0][4] := stMappedIoBuf.stWrite.anReservedOut1[2];
-stRawIoBuf.anOutput[0][5] := stMappedIoBuf.stWrite.anReservedOut1[3];
+stRawOutputBuffer.anOutput[0][2] := stMapOutputBuffer.Write.ReservedOut1Byte[0];
+stRawOutputBuffer.anOutput[0][3] := stMapOutputBuffer.Write.ReservedOut1Byte[1];
+stRawOutputBuffer.anOutput[0][4] := stMapOutputBuffer.Write.ReservedOut1Byte[2];
+stRawOutputBuffer.anOutput[0][5] := stMapOutputBuffer.Write.ReservedOut1Byte[3];
 
 CASE  GVL_AteqConfig.eDeviceEndianSetTo OF
 	E_AteqEndianType.BigEndian: //little-endian
 	// Program Select
-	stRawIoBuf.anOutput[0][6] := WORD_TO_BYTE(stMappedIoBuf.stWrite.nProgramNumber AND 16#00FF);
-	stRawIoBuf.anOutput[0][7] := WORD_TO_BYTE(SHR(stMappedIoBuf.stWrite.nProgramNumber, 8));
+	stRawOutputBuffer.anOutput[0][6] := WORD_TO_BYTE(stMapOutputBuffer.Write.nProgramNumber AND 16#00FF);
+	stRawOutputBuffer.anOutput[0][7] := WORD_TO_BYTE(SHR(stMapOutputBuffer.Write.nProgramNumber, 8));
 	// Special Cycle
-	stRawIoBuf.anOutput[0][8] := WORD_TO_BYTE(stMappedIoBuf.stWrite.nSpecialCycle AND 16#00FF);
-	stRawIoBuf.anOutput[0][9] := WORD_TO_BYTE(SHR(stMappedIoBuf.stWrite.nSpecialCycle, 8));
+	stRawOutputBuffer.anOutput[0][8] := WORD_TO_BYTE(stMapOutputBuffer.Write.nSpecialCycleId AND 16#00FF);
+	stRawOutputBuffer.anOutput[0][9] := WORD_TO_BYTE(SHR(stMapOutputBuffer.Write.nSpecialCycleId, 8));
 	
 	E_AteqEndianType.LittleEndian: // big-endian
 	// Program Select 
-	stRawIoBuf.anOutput[0][6] := WORD_TO_BYTE(SHR(stMappedIoBuf.stWrite.nProgramNumber, 8));
-	stRawIoBuf.anOutput[0][7] := WORD_TO_BYTE(stMappedIoBuf.stWrite.nProgramNumber AND 16#00FF);
+	stRawOutputBuffer.anOutput[0][6] := WORD_TO_BYTE(SHR(stMapOutputBuffer.Write.nProgramNumber, 8));
+	stRawOutputBuffer.anOutput[0][7] := WORD_TO_BYTE(stMapOutputBuffer.Write.nProgramNumber AND 16#00FF);
 	// Special Cycle
-	stRawIoBuf.anOutput[0][8] := WORD_TO_BYTE(SHR(stMappedIoBuf.stWrite.nSpecialCycle, 8) );
-	stRawIoBuf.anOutput[0][9] := WORD_TO_BYTE(stMappedIoBuf.stWrite.nSpecialCycle AND 16#00FF);
+	stRawOutputBuffer.anOutput[0][8] := WORD_TO_BYTE(SHR(stMapOutputBuffer.Write.nSpecialCycleId, 8) );
+	stRawOutputBuffer.anOutput[0][9] := WORD_TO_BYTE(stMapOutputBuffer.Write.nSpecialCycleId AND 16#00FF);
 END_CASE
 
 
 // Copy ReservedOut2
 FOR nIndex1 := 0 TO 21 DO
-    stRawIoBuf.anOutput[0][10 + nIndex1] := stMappedIoBuf.stWrite.anReservedOut2[nIndex1];
+    stRawOutputBuffer.anOutput[0][10 + nIndex1] := stMapOutputBuffer.Write.ReservedOut2Byte[nIndex1];
 END_FOR;
 
 // Exchange Zone (byte-matrix to 2D array)
 FOR nIndex1 := 0 TO 127 DO
-    stRawIoBuf.anOutput[(32 + nIndex1) / 64][(32 + nIndex1) MOD 64] := stMappedIoBuf.stWrite.anExchangeZone[nIndex1];
+    stRawOutputBuffer.anOutput[(32 + nIndex1) / 64][(32 + nIndex1) MOD 64] := stMapOutputBuffer.Write.ExchangeZoneByte[nIndex1];
 END_FOR;
 ]]></ST>
       </Implementation>
@@ -535,21 +535,20 @@ VAR
 
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-stMappedIoBuf.stWrite.nProgramNumber := nProgramNumberToRun; // Sets the program number register
-fbCmdHandler.pCmdTrigger := stMappedIoBuf.stWrite.stCommands.bProgramSelect;
+        <ST><![CDATA[stMapOutputBuffer.Write.nProgramNumber := nProgramNumberToRun; // Sets the program number register
+fbCmdHandler.pCmdTrigger := stMapOutputBuffer.Write.CmdBit.bProgramSelect;
 
 	fbCmdHandler(
-   					bCmdEcho    			:= stMappedIoBuf.stRead.stEcho.bProgramSelect,
-    				bCmdError   			:= stMappedIoBuf.stRead.stErrorCode.bProgramSelect,
-					stIo_Ref				:= stMappedIoBuf,
+   					bCmdEcho    			:= stMapInputBuffer.Read.EchoBit.bProgramSelect,
+    				bCmdError   			:= stMapInputBuffer.Read.stErrorCode.bProgramSelect,
+					stIo_Ref				:= stMapInputBuffer,
 					eStatesAteqHandshake	=> mPrgSelect
 );
 	
 	CASE mPrgSelect OF
 		CMD_IDLE:
 			IF NOT bProgramSelectComplete THEN
-			stMappedIoBuf.stWrite.stCommands.bProgramSelect := TRUE;
+			stMapOutputBuffer.Write.CmdBit.bProgramSelect := TRUE;
 			END_IF
 				
 		CMD_DONE:
@@ -574,7 +573,7 @@ END_VAR]]></Declaration>
         <ST><![CDATA[//	SEQUENCE TMEOUT
 //############################################################################################
 // SEQ start requested but didnot start check 
-bDeviceReady := stMappedIoBuf.stRead.stRealtimeTestResults.bCycleEnd;
+bDeviceReady := stMapInputBuffer.Read.stRealtimeTestResults.bCycleEnd;
 
 IF fbR_TRIG_RunSequence.Q AND
 	eProgramSeqSteps <> SEQ_TEST_DONE AND 
@@ -749,13 +748,12 @@ VAR
    
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-fbCmdHandler.pCmdTrigger := stMappedIoBuf.stWrite.stCommands.bStart;
+        <ST><![CDATA[fbCmdHandler.pCmdTrigger := stMapOutputBuffer.Write.CmdBit.bStart;
 
 	fbCmdHandler(
-					bCmdEcho    			:= stMappedIoBuf.stRead.stEcho.bStart,
-    				bCmdError   			:= stMappedIoBuf.stRead.stErrorCode.bStart,
-					stIo_Ref				:= stMappedIoBuf,
+					bCmdEcho    			:= stMapInputBuffer.Read.EchoBit.bStart,
+    				bCmdError   			:= stMapInputBuffer.Read.stErrorCode.bStart,
+					stIo_Ref				:= stMapInputBuffer,
 					eStatesAteqHandshake	=> mPrgStart
 );
 
@@ -763,7 +761,7 @@ fbCmdHandler.pCmdTrigger := stMappedIoBuf.stWrite.stCommands.bStart;
 	CASE mPrgStart OF
 		CMD_IDLE:
 			IF NOT bProgramRunComplete THEN
-			stMappedIoBuf.stWrite.stCommands.bStart := TRUE; 	
+			stMapOutputBuffer.Write.CmdBit.bStart := TRUE; 	
 			END_IF
 		
 		CMD_DONE:
@@ -825,12 +823,11 @@ VAR
 	
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-fbCmdHandler.pCmdTrigger := stMappedIoBuf.stWrite.stCommands.bReadLastResult;
+        <ST><![CDATA[fbCmdHandler.pCmdTrigger := stMapOutputBuffer.Write.CmdBit.bReadLastResult;
 	fbCmdHandler(
-					bCmdEcho    			:= stMappedIoBuf.stRead.stEcho.bReadLastResult,
-    				bCmdError   			:= stMappedIoBuf.stRead.stErrorCode.bReadLastResult,
-					stIo_Ref				:= stMappedIoBuf,
+					bCmdEcho    			:= stMapInputBuffer.Read.EchoBit.bReadLastResult,
+    				bCmdError   			:= stMapInputBuffer.Read.stErrorCode.bReadLastResult,
+					stIo_Ref				:= stMapInputBuffer,
 					eStatesAteqHandshake	=> mReadLastResult
 );
 
@@ -838,7 +835,7 @@ fbCmdHandler.pCmdTrigger := stMappedIoBuf.stWrite.stCommands.bReadLastResult;
 	CASE mReadLastResult OF
 		CMD_IDLE:
 			IF NOT bReadLastResultComplete THEN
-			stMappedIoBuf.stWrite.stCommands.bReadLastResult := TRUE; 
+			stMapOutputBuffer.Write.CmdBit.bReadLastResult := TRUE; 
 			END_IF
 		
 		CMD_DONE:
@@ -860,11 +857,11 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[fbCmdHandler.pResetRequest := TRUE; //Debug throw alarms to HMI
 
-fbCmdHandler.pCmdTrigger := stMappedIoBuf.stWrite.stCommands.bReset;
+fbCmdHandler.pCmdTrigger := stMapOutputBuffer.Write.CmdBit.bReset;
 	fbCmdHandler(
-					bCmdEcho        		:= stMappedIoBuf.stRead.stEcho.bReset,
-    				bCmdError       		:= stMappedIoBuf.stRead.stErrorCode.bReset, // This is the IN_OUT - FB_CommandHandler will manage it
-    				stIo_Ref        		:= stMappedIoBuf,
+					bCmdEcho        		:= stMapInputBuffer.Read.EchoBit.bReset,
+    				bCmdError       		:= stMapInputBuffer.Read.stErrorCode.bReset, // This is the IN_OUT - FB_CommandHandler will manage it
+    				stIo_Ref        		:= stMapInputBuffer,
 					eStatesAteqHandshake	=> mReset 
 );
 
@@ -884,7 +881,7 @@ fbCmdHandler.pCmdTrigger := stMappedIoBuf.stWrite.stCommands.bReset;
 			
 		CMD_IDLE:
 			IF fbCmdHandler.pReady AND NOT bResetDeviceDone THEN
-			stMappedIoBuf.stWrite.stCommands.bReset := TRUE;
+			stMapOutputBuffer.Write.CmdBit.bReset := TRUE;
 			END_IF
 				
 		CMD_DONE:	
@@ -906,11 +903,11 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[
-fbCmdHandler.pCmdTrigger := stMappedIoBuf.stWrite.stCommands.bResetFIFO;
+fbCmdHandler.pCmdTrigger := stMapOutputBuffer.Write.CmdBit.bResetFIFO;
 	fbCmdHandler(
-					bCmdEcho        		:= stMappedIoBuf.stRead.stEcho.bResetFIFO,
-    				bCmdError       		:= stMappedIoBuf.stRead.stErrorCode.bResetFIFO,
-					stIo_Ref        		:= stMappedIoBuf,
+					bCmdEcho        		:= stMapInputBuffer.Read.EchoBit.bResetFIFO,
+    				bCmdError       		:= stMapInputBuffer.Read.stErrorCode.bResetFIFO,
+					stIo_Ref        		:= stMapInputBuffer,
 					eStatesAteqHandshake	=> mResetFIFO 
 );
 
@@ -919,11 +916,11 @@ fbCmdHandler.pCmdTrigger := stMappedIoBuf.stWrite.stCommands.bResetFIFO;
 	CASE mResetFIFO OF
 		CMD_IDLE:
 			IF NOT bFifoResetComplete THEN	
-			stMappedIoBuf.stWrite.stCommands.bResetFIFO  := TRUE;
+			stMapOutputBuffer.Write.CmdBit.bResetFIFO  := TRUE;
 			END_IF
 		
 		CMD_DONE:
-		IF stMappedIoBuf.stRead.nResultsInFifo = 0 THEN
+		IF stMapInputBuffer.Read.nResultsInFifo = 0 THEN
 			bFifoResetComplete	:= TRUE;
 		END_IF
 				
@@ -941,13 +938,12 @@ VAR_INPUT
     nSpecialCycleId	: WORD; // Input for the special cycle ID (GVL_AteqSpecialCycle.PiezoAutoZeroReg2 for AutoZero 16#08)
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-stMappedIoBuf.stWrite.nSpecialCycle := nSpecialCycleId; // Sets the special cycle ID register
-fbCmdHandler.pCmdTrigger := stMappedIoBuf.stWrite.stCommands.bSpecialCycle;
+        <ST><![CDATA[stMapOutputBuffer.Write.nSpecialCycleId := nSpecialCycleId; // Sets the special cycle ID register
+fbCmdHandler.pCmdTrigger := stMapOutputBuffer.Write.CmdBit.bSpecialCycle;
 	fbCmdHandler(
-   					bCmdEcho    			:= stMappedIoBuf.stRead.stEcho.bSpecialCycle,
-    				bCmdError   			:= stMappedIoBuf.stRead.stErrorCode.bSpecialCycle,
-					stIo_Ref				:= stMappedIoBuf,
+   					bCmdEcho    			:= stMapInputBuffer.Read.EchoBit.bSpecialCycle,
+    				bCmdError   			:= stMapInputBuffer.Read.stErrorCode.bSpecialCycle,
+					stIo_Ref				:= stMapInputBuffer,
 					eStatesAteqHandshake	=> mSpecialCycle
 );
 
@@ -955,18 +951,18 @@ fbCmdHandler.pCmdTrigger := stMappedIoBuf.stWrite.stCommands.bSpecialCycle;
 	CASE mSpecialCycle OF
 		CMD_IDLE:
 			IF NOT bAutoZeroComplete THEN
-			stMappedIoBuf.stWrite.stCommands.bSpecialCycle 	:= TRUE;
-			stMappedIoBuf.stWrite.stCommands.bStart 			:= TRUE; 
+			stMapOutputBuffer.Write.CmdBit.bSpecialCycle 	:= TRUE;
+			stMapOutputBuffer.Write.CmdBit.bStart 			:= TRUE; 
 			// Only Special Cycle cmd needs Start bit TRUE to run
 			END_IF
 				
 		CMD_DONE:
-			stMappedIoBuf.stWrite.nSpecialCycle := 0; // Clear; prevent re-triggering
-			stMappedIoBuf.stWrite.stCommands.bStart 	:= FALSE;
+			stMapOutputBuffer.Write.nSpecialCycleId := 0; // Clear; prevent re-triggering
+			stMapOutputBuffer.Write.CmdBit.bStart 	:= FALSE;
 			bAutoZeroComplete	:= TRUE;
 
 		CMD_FAIL:
-			stMappedIoBuf.stWrite.nSpecialCycle := 0; // Clear; prevent re-triggering
+			stMapOutputBuffer.Write.nSpecialCycleId := 0; // Clear; prevent re-triggering
 			eErrorFlags := E_AteqControlErrorFlags.SpecialCycleFail;
 	END_CASE;
 	
