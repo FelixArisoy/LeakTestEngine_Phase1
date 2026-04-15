@@ -7,14 +7,12 @@
       <Declaration><![CDATA[METHOD mMapInput
 VAR
 END_VAR
-
 ]]></Declaration>
     </Method>
     <Method Name="mMapOutput" Id="{3e07a3ca-cbdf-0cc8-0ef1-00cf08c9f7c5}">
       <Declaration><![CDATA[METHOD mMapOutput
 VAR
 END_VAR
-
 ]]></Declaration>
     </Method>
     <Method Name="mParamRead" Id="{0904a83c-4469-029d-31a5-f6d9bf2faea0}">

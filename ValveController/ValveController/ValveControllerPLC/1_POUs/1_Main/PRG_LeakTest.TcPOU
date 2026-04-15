@@ -8,7 +8,7 @@ VAR
     astAteqIo 			: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqIo;
 	astAteqRawIo   		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqRawIo;
 //####### Control Ateq #######  
-	nDeviceIndex		: UINT;
+
 	afbAteqControl		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF FB_AteqControl;
 	//nProgramNumberToRun		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF WORD;
 	bAutoSeqRun			: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF BOOL;
@@ -57,9 +57,9 @@ END_VAR]]></Declaration>
 
 	IF GVL_AteqConfig.nMaxDeviceCount > 0 THEN
 		
-		FOR nDeviceIndex := 0 TO GVL_AteqConfig.nMaxDeviceCount - 1 DO
+		
 				mValveBankEnable();
-		IF afbValveBank[nDeviceIndex].pDeviceEnabled THEN
+		//IF afbValveBank[nDeviceIndex].pDeviceEnabled THEN
 			/// FB CAllS
 				mValveBankManual();
 				mAteqRecipe();
@@ -67,10 +67,10 @@ END_VAR]]></Declaration>
 				mMapValveMask();
 				mAteqControl();
 				mAteqResult();
-		ELSE
-				afbValveBank[nDeviceIndex].pDeviceFaulted := TRUE;  /// add fault conditions later
-		END_IF
-		END_FOR
+	//	ELSE
+	//			afbValveBank[nDeviceIndex].pDeviceFaulted := TRUE;  /// add fault conditions later
+	//	END_IF
+
 	END_IF
 	
 	
@@ -84,51 +84,68 @@ END_VAR]]></Declaration>
       <Declaration><![CDATA[METHOD mAteqControl
 VAR_INPUT
 END_VAR
-]]></Declaration>
+VAR
+	nDeviceIndex	: UINT;
+END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[/// ATEQ DEVICE CONTROL CALLS
+        <ST><![CDATA[	FOR nDeviceIndex := 0 TO GVL_AteqConfig.nMaxDeviceCount DO
+/// ATEQ DEVICE CONTROL CALLS
 	afbAteqControl[nDeviceIndex](	nProgramNumberToRun 	:= afbAteqRecipeHandler[nDeviceIndex].nProgramNumber,
 									stRawIo 				:= astAteqRawIo[nDeviceIndex], 
 									stMappedIo 				:= astAteqIo[nDeviceIndex]);
+	END_FOR
 ]]></ST>
       </Implementation>
     </Method>
     <Method Name="mAteqRecipe" Id="{65d9a87b-07c0-0f7a-2bfe-34d504be05ca}">
-      <Declaration><![CDATA[METHOD mAteqRecipe : BOOL
+      <Declaration><![CDATA[METHOD mAteqRecipe
 VAR_INPUT
+END_VAR
+VAR
+	nDeviceIndex	: UINT;
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[/// ATEQ RECIPE CALLS
+        <ST><![CDATA[	FOR nDeviceIndex := 0 TO GVL_AteqConfig.nMaxDeviceCount DO
+/// ATEQ RECIPE CALLS
 afbAteqRecipeHandler[nDeviceIndex](		bValveBankHasAnyError	:= bValveBankHasAnyError, // may remove this check from the recipe handler
 										bLastResultsStored		:= afbAteqResult[nDeviceIndex].bLastResultsStored,
 										anProgramNumberRecipe	:= anProgramNumberRecipe[nDeviceIndex],
 										eAteqProgramSeqStates	:= afbAteqControl[nDeviceIndex].eProgramSeqSteps,
 										eProgramInternalSteps	:= afbAteqControl[nDeviceIndex].eProgramInternalSteps,
 										bAutoTestRecipeStart	:= abAutoTestRecipeStart,
-										nValveMask				=> GVL_MapIo.nValveMaskRaw );]]></ST>
+										nValveMask				=> GVL_MapIo.nValveMaskRaw );
+	END_FOR]]></ST>
       </Implementation>
     </Method>
     <Method Name="mAteqResult" Id="{fdce1aa4-7a44-02ae-1405-d01c3e92fb86}">
       <Declaration><![CDATA[METHOD mAteqResult
 VAR_INPUT
 END_VAR
-]]></Declaration>
+VAR
+	nDeviceIndex		: UINT;
+END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[///	ATEQ TEST RESULT STORE CALLS
+        <ST><![CDATA[	FOR nDeviceIndex := 0 TO GVL_AteqConfig.nMaxDeviceCount DO
+///	ATEQ TEST RESULT STORE CALLS
 	afbAteqResult[nDeviceIndex](	bAutoSeqDone 	:= afbAteqControl[nDeviceIndex].pPrgSeqDone,
-									anExchangeZone	:= astAteqIo[nDeviceIndex].stRead.anExchangeZone);]]></ST>
+									anExchangeZone	:= astAteqIo[nDeviceIndex].stRead.anExchangeZone);
+	END_FOR]]></ST>
       </Implementation>
     </Method>
     <Method Name="mMapAteqCmd" Id="{2a3e4b19-ec84-08df-2084-a8db230706b0}">
-      <Declaration><![CDATA[METHOD mMapAteqCmd : BOOL
+      <Declaration><![CDATA[METHOD mMapAteqCmd
 VAR_INPUT
 END_VAR
-]]></Declaration>
+VAR
+	nDeviceIndex	: UINT;
+END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[/// ATEQ HIGH LEVEL CMD BINDING
+        <ST><![CDATA[	FOR nDeviceIndex := 0 TO GVL_AteqConfig.nMaxDeviceCount DO
+/// ATEQ HIGH LEVEL CMD BINDING
 	afbAteqControl[nDeviceIndex].pPrgSeqRunRequest 		:= afbAteqRecipeHandler[nDeviceIndex].pProgramSeqRunCmdToAteq;
-	afbAteqControl[nDeviceIndex].pPrgSeqResetRequest	:= afbAteqRecipeHandler[nDeviceIndex].pProgramSeqResetCmdToAteq;]]></ST>
+	afbAteqControl[nDeviceIndex].pPrgSeqResetRequest	:= afbAteqRecipeHandler[nDeviceIndex].pProgramSeqResetCmdToAteq;
+	END_FOR]]></ST>
       </Implementation>
     </Method>
     <Method Name="mMapValveMask" Id="{4ec8be0a-b015-0384-14e3-32fe31222ca2}">
@@ -136,18 +153,19 @@ END_VAR
 VAR_INPUT
 END_VAR
 VAR
-	nDeviceIndex: INT;
+	nDeviceIndex	: UINT;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[// gives error;    afbValveBank[nDeviceIndex].pValveMaskPerVB := afbAteqRecipeHandler; 
 // Mask Recipe will be feeded here - Sort Valve bank global IO from hardware
 // EXIT;  Throw fault on HMI then goto reset
-
-GVL_MapIo.aIoEx260[nDeviceIndex].Out0 := DWORD_TO_SINT(GVL_MapIo.nValveMaskRaw); // Byte 0
-GVL_MapIo.aIoEx260[nDeviceIndex].Out1 := DWORD_TO_SINT(SHR(GVL_MapIo.nValveMaskRaw, 8));  // Byte 1
-GVL_MapIo.aIoEx260[nDeviceIndex].Out2 := DWORD_TO_SINT(SHR(GVL_MapIo.nValveMaskRaw, 16)); // Byte 2
-GVL_MapIo.aIoEx260[nDeviceIndex].Out3 := DWORD_TO_SINT(SHR(GVL_MapIo.nValveMaskRaw, 24)); // Byte 3
+	FOR nDeviceIndex := 0 TO GVL_ValveBankConfig.nMaxDeviceCount DO
+		GVL_MapIo.aIoEx260[nDeviceIndex].Out0 := DWORD_TO_SINT(GVL_MapIo.nValveMaskRaw);
+		GVL_MapIo.aIoEx260[nDeviceIndex].Out1 := DWORD_TO_SINT(SHR(GVL_MapIo.nValveMaskRaw, 8));
+		GVL_MapIo.aIoEx260[nDeviceIndex].Out2 := DWORD_TO_SINT(SHR(GVL_MapIo.nValveMaskRaw, 16));
+		GVL_MapIo.aIoEx260[nDeviceIndex].Out3 := DWORD_TO_SINT(SHR(GVL_MapIo.nValveMaskRaw, 24));
+	END_FOR
 (* 
 // FUTURE PROOFING VALVE MASKS UPTO 128BIT (2LWORDS OR MORE) PER VB
 FOR bankIndex := 0 TO NUM_BANKS - 1 DO
@@ -157,13 +175,13 @@ END_FOR;
       </Implementation>
     </Method>
     <Method Name="mValveBankEnable" Id="{b3ffe984-55bd-41d3-8f04-8d658c77f2b0}">
-      <Declaration><![CDATA[METHOD mValveBankEnable : BOOL
+      <Declaration><![CDATA[METHOD mValveBankEnable
 VAR
-	nDeviceIndex: INT;
+	nDeviceIndex	: UINT;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[// CALLS per ValveBank 
-FOR nDeviceIndex := 0 TO GVL_ValveBankConfig.nMaxDeviceCount - 1 DO
+FOR nDeviceIndex := 0 TO GVL_ValveBankConfig.nMaxDeviceCount DO
 	
 // Top Level Fault check per Valvebank and per Valves									
 	IF afbValveBank[nDeviceIndex].pDeviceFaulted THEN
@@ -177,8 +195,7 @@ FOR nDeviceIndex := 0 TO GVL_ValveBankConfig.nMaxDeviceCount - 1 DO
 	IF NOT afbValveBank[nDeviceIndex].pDeviceFaulted THEN
 		afbValveBank[nDeviceIndex].pDeviceCommOK 	:= TRUE; // Direct Device Comm OK feedback binding, replace this if exist.
 		afbValveBank[nDeviceIndex].pDeviceEnableCmd	:= TRUE; // Enable logic, expand if needed
-	END_IF	
-
+	END_IF
 END_FOR]]></ST>
       </Implementation>
     </Method>
@@ -186,12 +203,15 @@ END_FOR]]></ST>
       <Declaration><![CDATA[METHOD mValveBankManual
 VAR_INPUT
 END_VAR
-]]></Declaration>
+VAR
+	nDeviceIndex	: UINT;
+END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[// Manual Valve Control - Call FB_ValveBank
+        <ST><![CDATA[	FOR nDeviceIndex := 0 TO GVL_ValveBankConfig.nMaxDeviceCount DO
+// Manual Valve Control - Call FB_ValveBank
 		afbValveBank[nDeviceIndex](	abReqOpenManual 	:= anReqOpenManual[nDeviceIndex],
 									abReqCloseManual	:= anReqCloseManual[nDeviceIndex]);
-]]></ST>
+	END_FOR]]></ST>
       </Implementation>
     </Method>
     <Method Name="zForRefScanAteqDevicesWithInit" Id="{33b24952-4571-466d-8bc0-6cb01ccb5101}">

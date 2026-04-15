@@ -13,6 +13,7 @@ VAR_OUTPUT
     eStatesAteqHandshake         : E_AteqHandshakeSteps := E_AteqHandshakeSteps.CMD_IDLE; // Current status of this command handler instance	
 END_VAR
 VAR
+	stIo_RefBuf	: ST_AteqIo;
 	//bDeviceReady		: BOOL;
 	bReady				: BOOL;
 	bCmdTrigger     	: BOOL; // The actual command bit from stIo.stWrite.stCommands (will be set FALSE by this FB)
@@ -28,7 +29,9 @@ VAR
 	bResetRequest		: BOOL;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[tCmdTimeout.PT 			:= GVL_AteqConfig.tCmdTimeout;
+      <ST><![CDATA[stIo_Ref := stIo_RefBuf;
+
+tCmdTimeout.PT 			:= GVL_AteqConfig.tCmdTimeout;
 tCmdInProgressDWELL.PT 	:= GVL_AteqConfig.tCmdInProgressDWELL;
 tCmdDoneDWELL.PT		:= GVL_AteqConfig.tCmdDoneDWELL;
 
@@ -44,9 +47,9 @@ CASE eStatesAteqHandshake OF
 			tCmdTimeout			(IN := TRUE);
 		END_IF	
 					
-		IF bCmdTrigger AND stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd AND
-			stIo_Ref.stRead.anErrorCode[0] = 0 AND 
-			stIo_Ref.stRead.anErrorCode[1] = 0 THEN //Error not exist
+		IF bCmdTrigger AND stIo_RefBuf.stRead.stRealtimeTestResults.bCycleEnd AND
+			stIo_RefBuf.stRead.anErrorCode[0] = 0 AND 
+			stIo_RefBuf.stRead.anErrorCode[1] = 0 THEN //Error not exist
 
 			bReady := FALSE;					
             eStatesAteqHandshake 	:= CMD_IN_PROGRESS;
@@ -65,7 +68,7 @@ CASE eStatesAteqHandshake OF
         IF bCmdEcho THEN
 			eStatesAteqHandshake 	:= CMD_WAIT_CYCLE_END;
 			tCmdTimeout			(IN := FALSE);			
-		ELSIF bCmdError AND (stIo_Ref.stRead.anErrorCode[0] <> 16#FF AND stIo_Ref.stRead.anErrorCode[1] <> 16#FF) THEN
+		ELSIF bCmdError AND (stIo_RefBuf.stRead.anErrorCode[0] <> 16#FF AND stIo_RefBuf.stRead.anErrorCode[1] <> 16#FF) THEN
 			eStatesAteqHandshake 	:= CMD_ERROR;			
 		ELSIF tCmdTimeout.Q THEN
 			eStatesAteqHandshake 	:= CMD_TIMEOUT;
@@ -76,7 +79,7 @@ CASE eStatesAteqHandshake OF
 //############################################################################################		
     CMD_WAIT_CYCLE_END:
         // Debug: Cmd cycle monitor need to be added
-		IF stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd THEN
+		IF stIo_RefBuf.stRead.stRealtimeTestResults.bCycleEnd THEN
 			eStatesAteqHandshake 	:= CMD_EOC;
         END_IF
 
@@ -84,10 +87,10 @@ CASE eStatesAteqHandshake OF
 //############################################################################################
 	CMD_EOC:
 	
-		IF (stIo_Ref.stRead.anErrorCode[0] = 0 AND stIo_Ref.stRead.anErrorCode[1] = 0) THEN
+		IF (stIo_RefBuf.stRead.anErrorCode[0] = 0 AND stIo_RefBuf.stRead.anErrorCode[1] = 0) THEN
 			eStatesAteqHandshake 	:= CMD_DONE;
 		ELSIF bCmdError 
-		OR (stIo_Ref.stRead.anErrorCode[0] <> 0 AND stIo_Ref.stRead.anErrorCode[1] <> 0) THEN
+		OR (stIo_RefBuf.stRead.anErrorCode[0] <> 0 AND stIo_RefBuf.stRead.anErrorCode[1] <> 0) THEN
 			eStatesAteqHandshake 	:= CMD_ERROR;            
 		END_IF
 	
@@ -105,7 +108,7 @@ CASE eStatesAteqHandshake OF
 //############################################################################################        	
     CMD_ERROR:
         bCmdTrigger 				:= FALSE;
-		stIo_Ref.stWrite.stCommands := stClearCmdOut; // Clear Output
+		stIo_RefBuf.stWrite.stCommands := stClearCmdOut; // Clear Output
 		tCmdTimeout				(IN := FALSE);
 		
     	IF nRetryAttempts < nMaxRetries THEN
@@ -121,7 +124,7 @@ CASE eStatesAteqHandshake OF
 //############################################################################################		
     CMD_TIMEOUT:
 		bCmdTrigger 				:= FALSE;
-		stIo_Ref.stWrite.stCommands := stClearCmdOut; // Clear Output
+		stIo_RefBuf.stWrite.stCommands := stClearCmdOut; // Clear Output
 		tCmdTimeout				(IN := FALSE);
 		
     	IF nRetryAttempts < nMaxRetries THEN
@@ -160,7 +163,7 @@ IF NOT M_Reset THEN
 	bResetRequest				:= FALSE;
 	nRetryAttempts 				:= 0; // Clear on full reset done
 	bCmdTrigger 				:= FALSE;
-	stIo_Ref.stWrite.stCommands := stClearCmdOut; // Clear Output
+	stIo_RefBuf.stWrite.stCommands := stClearCmdOut; // Clear Output
 	tCmdTimeout			(IN 	:= FALSE);
 	tCmdInProgressDWELL	(IN 	:= FALSE);
 	tCmdDoneDWELL		(IN 	:= FALSE);
