@@ -257,7 +257,7 @@ END_IF
     <Method Name="M_ValveBankEnable" Id="{b3ffe984-55bd-41d3-8f04-8d658c77f2b0}">
       <Declaration><![CDATA[METHOD M_ValveBankEnable : BOOL
 VAR
-	nValveBankIdx: INT;
+	nValveBankIdx: UINT;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[// Calls per ValveBank 
