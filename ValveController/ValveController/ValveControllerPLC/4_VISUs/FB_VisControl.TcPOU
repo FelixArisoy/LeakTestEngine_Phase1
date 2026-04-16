@@ -7,19 +7,19 @@ END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
-	Idx : INT;
+	Idx : UINT;
 	nPrevIdx : INT;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[Idx := GVL_VisVariable.visValveMaskIdx;
 
+	IF GVL_VisVariable.nValveMask <> 0 THEN
 
-IF GVL_VisVariable.nValveMask <> 0 THEN
-	GVL_VisVariable.anValveMask[Idx] := GVL_VisVariable.nValveMask;
-	GVL_VisVariable.nValveMask := 0; // To Clear the Text Box
-END_IF
-]]></ST>
+		GVL_VisVariable.anValveMask[Idx] := GVL_VisVariable.nValveMask;
+		GVL_VisVariable.nValveMask := 0; // To Clear the Text Box
+
+	END_IF]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

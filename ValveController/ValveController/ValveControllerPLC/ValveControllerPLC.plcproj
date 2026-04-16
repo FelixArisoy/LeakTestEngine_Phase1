@@ -173,6 +173,10 @@
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
+    <Compile Include="4_VISUs\visuMain.TcVIS">
+      <SubType>Code</SubType>
+      <DependentUpon>Visualization Manager.TcVMO</DependentUpon>
+    </Compile>
     <Compile Include="GlobalTextList.TcGTLO">
       <SubType>Code</SubType>
     </Compile>
@@ -181,10 +185,6 @@
     </Compile>
     <Compile Include="4_VISUs\FB_VisControl.TcPOU">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="4_VISUs\visMain.TcVIS">
-      <SubType>Code</SubType>
-      <DependentUpon>Visualization Manager.TcVMO</DependentUpon>
     </Compile>
     <Compile Include="zDisposables\E_AteqProgramSeqStateFlags.TcDUT">
       <SubType>Code</SubType>

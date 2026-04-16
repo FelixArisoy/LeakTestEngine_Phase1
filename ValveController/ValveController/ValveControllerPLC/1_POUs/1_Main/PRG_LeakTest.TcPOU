@@ -16,7 +16,7 @@ nValveBankIdx : UINT;
 	bAutoSeqResetRequest: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF BOOL;
 //####### Ateq Result Handler #######
 	afbAteqResult		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF FB_AteqResultHandler;
-  	abAutoTestRecipeStart : BOOL; /// Flag will be binded to Main PLC Run Cmd... Debug
+
 //####### ValveBanks #######
 	afbValveBank		: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF FB_ValveBankControl;
 	anValveMask			: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF DWORD; // per valve bank
@@ -43,7 +43,7 @@ nValveBankIdx : UINT;
     tDelayTimeBetweenTriggers : TIME := T#1S; // Adjust this as needed (e.g., 1 second)
 
     aResponseTimes     : ARRAY[0..99] OF TIME; // Array to store response times (e.g., 100 entries)
-    nResponseIndex     : INT := 0;             // Index for the array
+    nResponseIndex     : UINT := 0;             // Index for the array
     bTestActive        : BOOL := FALSE;        // Master switch to start/stop the test sequence
     bDelayFinished     : BOOL := FALSE;        // Flag to indicate delay completion
     bTriggerReady      : BOOL := TRUE;         // Flag to indicate next trigger is ready
@@ -81,9 +81,9 @@ FOR nValveBankIdx := 0 TO GVL_ValveBankConfig.nMaxDeviceCount - 1 DO
 END_FOR
 END_IF
 
-	IF GVL_AteqConfig.nMaxDeviceCount > 0 THEN
+	IF GVL_AteqConfig.nNumOfActiveDevices > 0 THEN
 		
-		FOR nDeviceIndex := 0 TO GVL_AteqConfig.nMaxDeviceCount - 1 DO
+		FOR nDeviceIndex := 0 TO GVL_AteqConfig.nNumOfActiveDevices - 1 DO
 /// ATEQ PROGRAM RECIPE CALLS		
 	afbAteqRecipeHandler[nDeviceIndex](
 										bValveBankHasAnyError	:= bValveBankHasAnyError, // may remove this check from the recipe handler
@@ -91,8 +91,9 @@ END_IF
 										anProgramNumberRecipe	:= anProgramNumberRecipe[nDeviceIndex],
 										eAteqProgramSeqStates	:= afbAteqControl[nDeviceIndex].eProgramSeqSteps,
 										eProgramInternalSteps	:= afbAteqControl[nDeviceIndex].eProgramInternalSteps,
-										bAutoTestRecipeStart	:= abAutoTestRecipeStart,
+										bAutoTestRecipeStart	:= GVL_AteqConfig.abAutoTestRecipeStart,
 										anValveMask				:= GVL_VisVariable.anValveMask,
+										nNumOfACtiveProgramsToRun	:= GVL_AteqConfig.nNumOfActiveProgramsToRun,
 										nValveMask				=> GVL_MapIo.nValveMaskRaw );
 
 /// ATEQ HIGH LEVEL CMD BINDING
@@ -257,7 +258,7 @@ END_IF
     <Method Name="M_ValveBankEnable" Id="{b3ffe984-55bd-41d3-8f04-8d658c77f2b0}">
       <Declaration><![CDATA[METHOD M_ValveBankEnable : BOOL
 VAR
-	nValveBankIdx: INT;
+	nValveBankIdx: UINT;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[// Calls per ValveBank 

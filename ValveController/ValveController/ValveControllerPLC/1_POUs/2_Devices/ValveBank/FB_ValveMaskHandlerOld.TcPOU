@@ -29,7 +29,7 @@ END_VAR
     <Implementation>
       <ST><![CDATA[// Step readiness check 
 bStepReady := TRUE;
-FOR i := 0 TO GVL_AteqConfig.nMaxDeviceCount - 1 DO
+FOR i := 0 TO GVL_AteqConfig.nNumOfActiveDevices - 1 DO
     IF (aValveMaskSteps[nCurrentSeqStepIndex].nExpectedDoneMask AND SHL(1, i)) <> 0 THEN
         IF NOT abValveMaskSetRequest[i] THEN
             bStepReady := FALSE;
@@ -95,7 +95,7 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[
-FOR idx := 0 TO GVL_AteqConfig.nMaxDeviceCount - 1 DO
+FOR idx := 0 TO GVL_AteqConfig.nNumOfActiveDevices - 1 DO
     FOR wordIndex := 0 TO 3 DO
         bitOffset := aValveMaps[idx].nValveStartIndex;
         IF bitOffset < 32 THEN

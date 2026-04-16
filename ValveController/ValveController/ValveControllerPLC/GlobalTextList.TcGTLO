@@ -26,6 +26,21 @@
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"601"</v>
+              <v n="TextDefault">"MAX NUM OF STEPS (constant)"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"834"</v>
+              <v n="TextDefault">"NUM OF ACTIVE DEVICES"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"3"</v>
+              <v n="TextDefault">"NUM OF ACTIVE PROGRAMS"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"950"</v>
               <v n="TextDefault">"Num of ATEQ F6"</v>
               <l n="LanguageTexts" t="ArrayList" />
@@ -68,6 +83,11 @@
             <o>
               <v n="TextID">"349"</v>
               <v n="TextDefault">"NUM OF VALVE SLOTS"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"613"</v>
+              <v n="TextDefault">"START TEST"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>

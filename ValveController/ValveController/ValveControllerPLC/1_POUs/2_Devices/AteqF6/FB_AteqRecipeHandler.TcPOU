@@ -9,7 +9,7 @@ VAR_INPUT
     anValveMask				: ARRAY[0..GVL_AteqConfig.nMaxProgramsToRun - 1] OF DWORD;
 	eAteqProgramSeqStates 	: E_AteqProgramSeqSteps;
 	eProgramInternalSteps	: E_AteqStepsTable;
-    
+    nNumOfActiveProgramsToRun	: UINT;
 END_VAR
 VAR_IN_OUT
 	bAutoTestRecipeStart	: BOOL; // Flag will be binded to Main PLC Run Cmd
@@ -28,7 +28,7 @@ VAR
 	bProgramSeqRunCmdToAteq		: BOOL;	
 	bProgramSeqResetCmdToAteq	: BOOL;
 	tRecipeHandlerTimeout 		: TON;
-	nIndexToCurrentProgram		: INT;
+	nIndexToCurrentProgram		: UINT;
     tValveStable : TON;
 
 
@@ -87,7 +87,7 @@ END_VAR
 		nValveMask := 0; // Reset Valves
 			IF bLastResultsStored THEN
 				bProgramSeqResetCmdToAteq := TRUE; // Reset ATEQ
-				 IF nIndexToCurrentProgram >= GVL_AteqConfig.nMaxProgramsToRun - 1 THEN
+				 IF nIndexToCurrentProgram >= nNumOfActiveProgramsToRun - 1 THEN
                 	eStatesAteqRecipeHandler := E_AteqRecipeHandlerSteps.RECIPE_IDLE;
             	ELSE
                 	nIndexToCurrentProgram := nIndexToCurrentProgram + 1;
