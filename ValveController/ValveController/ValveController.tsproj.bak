@@ -80,11 +80,16 @@
 		</System>
 		<Plc>
 			<Project GUID="{FF505B91-FACF-4A2B-B73E-9C5E3B10185D}" Name="ValveControllerPLC" PrjFilePath="ValveControllerPLC\ValveControllerPLC.plcproj" TmcFilePath="ValveControllerPLC\ValveControllerPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{D823408F-9E03-C111-BF32-9B3FFF96F90A}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{9F38B03E-68E7-0D59-1C23-2CDA2C5F003A}">
 					<Name>ValveControllerPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
 						<Name>LeakTestTask Inputs</Name>
+						<Var>
+							<Name>PRG_LeakTest.astInFromFieldAteq[0].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+						</Var>
 						<Var>
 							<Name>PRG_LeakTest.afbAteqControl[0].stRawInput.InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
@@ -95,14 +100,14 @@
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
-						<Var>
-							<Name>PRG_LeakTest.astInFromFieldAteq[0].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
 					</Vars>
 					<Vars VarGrpType="2" AreaNo="1">
 						<Name>LeakTestTask Outputs</Name>
+						<Var>
+							<Name>PRG_LeakTest.astOutToFieldAteq[0].OutByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+						</Var>
 						<Var>
 							<Name>PRG_LeakTest.afbAteqControl[0].stRawOutput.OutByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
@@ -144,11 +149,6 @@
 						<Var>
 							<Name>GVL_MapIo.aIoEx260[1].Out3</Name>
 							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>PRG_LeakTest.astOutToFieldAteq[0].OutByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 					</Vars>
 					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
