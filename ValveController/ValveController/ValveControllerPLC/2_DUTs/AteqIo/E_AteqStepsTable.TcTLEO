@@ -2,17 +2,14 @@
 <TcPlcObject Version="1.1.0.1">
   <EnumerationTextList Name="E_AteqStepsTable" Id="{c143b9f7-60b6-47d3-989b-f620400b7b9d}">
     <Declaration><![CDATA[TYPE E_AteqStepsTable :
-(
-	PreFill 		:= 0,
+(	PreFill 		:= 0,
 	PreDump			:= 1,
 	Fill			:= 4,
 	Stabilization	:= 5,
 	Test			:= 6,
 	Dump			:= 7,
-	NoStepInProgress	:= 65535
-);
-END_TYPE
-]]></Declaration>
+	NoStepInProgress	:= 65535);
+END_TYPE]]></Declaration>
     <XmlArchive>
       <Data>
         <o xml:space="preserve" t="TextListEnumerationTextListObject">

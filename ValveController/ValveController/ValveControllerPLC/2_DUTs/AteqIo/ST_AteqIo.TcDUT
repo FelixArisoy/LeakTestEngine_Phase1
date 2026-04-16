@@ -3,10 +3,9 @@
   <DUT Name="ST_AteqIo" Id="{7ce7ac0c-1c92-4cec-a3bd-bf1f5c9de48e}">
     <Declaration><![CDATA[TYPE ST_AteqIo :
 STRUCT
-	stRead  : ST_AteqRead;
-    stWrite : ST_AteqWrite;
+	Read  : ST_AteqRead;
+    Write : ST_AteqWrite;
 END_STRUCT
-END_TYPE
-]]></Declaration>
+END_TYPE]]></Declaration>
   </DUT>
 </TcPlcObject>

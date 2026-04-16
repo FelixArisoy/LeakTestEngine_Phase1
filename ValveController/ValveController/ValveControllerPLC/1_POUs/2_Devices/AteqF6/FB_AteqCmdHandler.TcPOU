@@ -44,9 +44,9 @@ CASE eStatesAteqHandshake OF
 			tCmdTimeout			(IN := TRUE);
 		END_IF	
 					
-		IF bCmdTrigger AND stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd AND
-			stIo_Ref.stRead.anErrorCode[0] = 0 AND 
-			stIo_Ref.stRead.anErrorCode[1] = 0 THEN //Error not exist
+		IF bCmdTrigger AND stIo_Ref.Read.RealtimeStateBit.bCycleEnd AND
+			stIo_Ref.Read.ErrorCodeByte[0] = 0 AND 
+			stIo_Ref.Read.ErrorCodeByte[1] = 0 THEN //Error not exist
 
 			bReady := FALSE;					
             eStatesAteqHandshake 	:= CMD_IN_PROGRESS;
@@ -65,7 +65,7 @@ CASE eStatesAteqHandshake OF
         IF bCmdEcho THEN
 			eStatesAteqHandshake 	:= CMD_WAIT_CYCLE_END;
 			tCmdTimeout			(IN := FALSE);			
-		ELSIF bCmdError AND (stIo_Ref.stRead.anErrorCode[0] <> 16#FF AND stIo_Ref.stRead.anErrorCode[1] <> 16#FF) THEN
+		ELSIF bCmdError AND (stIo_Ref.Read.ErrorCodeByte[0] <> 16#FF AND stIo_Ref.Read.ErrorCodeByte[1] <> 16#FF) THEN
 			eStatesAteqHandshake 	:= CMD_ERROR;			
 		ELSIF tCmdTimeout.Q THEN
 			eStatesAteqHandshake 	:= CMD_TIMEOUT;
@@ -76,7 +76,7 @@ CASE eStatesAteqHandshake OF
 //############################################################################################		
     CMD_WAIT_CYCLE_END:
         // Debug: Cmd cycle monitor need to be added
-		IF stIo_Ref.stRead.stRealtimeTestResults.bCycleEnd THEN
+		IF stIo_Ref.Read.RealtimeStateBit.bCycleEnd THEN
 			eStatesAteqHandshake 	:= CMD_EOC;
         END_IF
 
@@ -84,10 +84,10 @@ CASE eStatesAteqHandshake OF
 //############################################################################################
 	CMD_EOC:
 	
-		IF (stIo_Ref.stRead.anErrorCode[0] = 0 AND stIo_Ref.stRead.anErrorCode[1] = 0) THEN
+		IF (stIo_Ref.Read.ErrorCodeByte[0] = 0 AND stIo_Ref.Read.ErrorCodeByte[1] = 0) THEN
 			eStatesAteqHandshake 	:= CMD_DONE;
 		ELSIF bCmdError 
-		OR (stIo_Ref.stRead.anErrorCode[0] <> 0 AND stIo_Ref.stRead.anErrorCode[1] <> 0) THEN
+		OR (stIo_Ref.Read.ErrorCodeByte[0] <> 0 AND stIo_Ref.Read.ErrorCodeByte[1] <> 0) THEN
 			eStatesAteqHandshake 	:= CMD_ERROR;            
 		END_IF
 	
@@ -105,7 +105,7 @@ CASE eStatesAteqHandshake OF
 //############################################################################################        	
     CMD_ERROR:
         bCmdTrigger 				:= FALSE;
-		stIo_Ref.stWrite.stCommands := stClearCmdOut; // Clear Output
+		stIo_Ref.Write.CmdBit := stClearCmdOut; // Clear Output
 		tCmdTimeout				(IN := FALSE);
 		
     	IF nRetryAttempts < nMaxRetries THEN
@@ -121,7 +121,7 @@ CASE eStatesAteqHandshake OF
 //############################################################################################		
     CMD_TIMEOUT:
 		bCmdTrigger 				:= FALSE;
-		stIo_Ref.stWrite.stCommands := stClearCmdOut; // Clear Output
+		stIo_Ref.Write.CmdBit := stClearCmdOut; // Clear Output
 		tCmdTimeout				(IN := FALSE);
 		
     	IF nRetryAttempts < nMaxRetries THEN
@@ -136,7 +136,7 @@ CASE eStatesAteqHandshake OF
 
 //############################################################################################
 	CMD_RESET:
-		bResetCallComp := M_Reset();
+		bResetCallComp := mReset();
 		IF bResetCallComp THEN
 			eStatesAteqHandshake 	:= CMD_IDLE;
 		END_IF
@@ -148,24 +148,24 @@ CASE eStatesAteqHandshake OF
 END_CASE
 ]]></ST>
     </Implementation>
-    <Method Name="M_Reset" Id="{fdad7fb2-10b9-4753-be55-6426b3d99521}">
-      <Declaration><![CDATA[METHOD PRIVATE M_Reset : BOOL
+    <Method Name="mReset" Id="{fdad7fb2-10b9-4753-be55-6426b3d99521}">
+      <Declaration><![CDATA[METHOD PRIVATE mReset : BOOL
 VAR
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[M_Reset := FALSE;
+        <ST><![CDATA[mReset := FALSE;
 
-IF NOT M_Reset THEN
+IF NOT mReset THEN
 	bResetRequest				:= FALSE;
 	nRetryAttempts 				:= 0; // Clear on full reset done
 	bCmdTrigger 				:= FALSE;
-	stIo_Ref.stWrite.stCommands := stClearCmdOut; // Clear Output
+	stIo_Ref.Write.CmdBit := stClearCmdOut; // Clear Output
 	tCmdTimeout			(IN 	:= FALSE);
 	tCmdInProgressDWELL	(IN 	:= FALSE);
 	tCmdDoneDWELL		(IN 	:= FALSE);
 				
-M_Reset := TRUE;
+mReset := TRUE;
 END_IF		
 ]]></ST>
       </Implementation>

@@ -24,7 +24,6 @@ STRUCT
     bReadLastResult        	: BOOL; // Bit 7 Writing Last Result Error
 	
 END_STRUCT
-END_TYPE
-]]></Declaration>
+END_TYPE]]></Declaration>
   </DUT>
 </TcPlcObject>

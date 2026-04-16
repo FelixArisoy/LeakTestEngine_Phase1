@@ -108,7 +108,7 @@ END_IF
 ///	ATEQ TEST RESULT STORE CALLS	
 	afbAteqResult[nDeviceIndex](
 								bAutoSeqDone 	:= afbAteqControl[nDeviceIndex].pPrgSeqDone,
-								anExchangeZone	:= astAteqIo[nDeviceIndex].stRead.anExchangeZone);		
+								anExchangeZone	:= astAteqIo[nDeviceIndex].Read.ExchangeZoneByte);		
 				
 
 		END_FOR
@@ -199,7 +199,7 @@ IF bTestActive THEN
     // Only send the command if not already sent and the delay for the next trigger has finished
     IF NOT bCommandSent AND bDelayFinished THEN
        
-		astAteqIo[0].stWrite.stCommands.bStart := TRUE; // Set command
+		astAteqIo[0].Write.CmdBit.bStart := TRUE; // Set command
 		
         tStartTime 		:= T#0S + TIME();                          // Record current time
         bCommandSent 	:= TRUE;
@@ -209,7 +209,7 @@ IF bTestActive THEN
     END_IF
 
     // --- State 2: Check for Echo response ---
-    IF bCommandSent AND NOT bEchoReceived AND astAteqIo[0].stRead.stEcho.bStart THEN
+    IF bCommandSent AND NOT bEchoReceived AND astAteqIo[0].Read.EchoBit.bStart THEN
         
 		tResponseTime := TIME() - tStartTime;
         bEchoReceived := TRUE;
@@ -226,7 +226,7 @@ IF bTestActive THEN
         END_IF
 
         // Reset command and prepare for next cycle
-        astAteqIo[0].stWrite.stCommands.bStart := FALSE;
+        astAteqIo[0].Write.CmdBit.bStart := FALSE;
         bCommandSent := FALSE;
         // Now, start the delay before the next trigger
         bTriggerReady := FALSE; // Ensure delay timer starts

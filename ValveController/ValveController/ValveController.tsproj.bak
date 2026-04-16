@@ -80,13 +80,13 @@
 		</System>
 		<Plc>
 			<Project GUID="{FF505B91-FACF-4A2B-B73E-9C5E3B10185D}" Name="ValveControllerPLC" PrjFilePath="ValveControllerPLC\ValveControllerPLC.plcproj" TmcFilePath="ValveControllerPLC\ValveControllerPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{F1D5DB50-B0C5-2B9A-0E85-345C26626BFF}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{BB8F16D1-100C-91C9-D240-54DFDE46E3BC}">
 					<Name>ValveControllerPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
 						<Name>LeakTestTask Inputs</Name>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[0].anInput</Name>
+							<Name>PRG_LeakTest.astAteqRawIo[0].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
@@ -94,7 +94,7 @@
 					<Vars VarGrpType="2" AreaNo="1">
 						<Name>LeakTestTask Outputs</Name>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[0].anOutput</Name>
+							<Name>PRG_LeakTest.astAteqRawIo[0].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
@@ -133,7 +133,7 @@
 					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
 						<Name>IpcTask Inputs</Name>
 						<Var>
-							<Name>GVL_MapIoDevice2.Frm0State</Name>
+							<Name>GVL_MapIoEL6070.Frm0State</Name>
 							<Type>UINT</Type>
 						</Var>
 						<Var>
@@ -165,7 +165,7 @@
 							<Type>SINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIoDevice2.Frm0WcState</Name>
+							<Name>GVL_MapIoEL6070.Frm0WcState</Name>
 							<Comment><![CDATA[			
 0x0001 = 1. EtherCAT command NOT sent (NOP requested)							
 0x0002 = 2. EtherCAT command not sent (NOP requested)																				
@@ -177,7 +177,7 @@
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIoDevice2.Frm0InputToggle</Name>
+							<Name>GVL_MapIoEL6070.Frm0InputToggle</Name>
 							<Comment><![CDATA[			
 0x0001 = wrong working counter of 1. EtherCAT command received								
 0x0002 = wrong working counter of 2. EtherCAT command received																	
@@ -189,29 +189,29 @@
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIoDevice2.SlaveCount</Name>
+							<Name>GVL_MapIoEL6070.SlaveCount</Name>
 							<Comment><![CDATA[ Actual count OF EtherCAT slaves received	]]></Comment>
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIoDevice2.DevState</Name>
+							<Name>GVL_MapIoEL6070.DevState</Name>
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIoDevice2.ChangeCount</Name>
+							<Name>GVL_MapIoEL6070.ChangeCount</Name>
 							<Comment><![CDATA[InfoData]]></Comment>
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIoDevice2.DevId</Name>
+							<Name>GVL_MapIoEL6070.DevId</Name>
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIoDevice2.AmsNetId</Name>
+							<Name>GVL_MapIoEL6070.AmsNetId</Name>
 							<Type GUID="{18071995-0000-0000-0000-000000000041}">AMSNETID</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIoDevice2.CfgSlaveCount</Name>
+							<Name>GVL_MapIoEL6070.CfgSlaveCount</Name>
 							<Type>UINT</Type>
 						</Var>
 					</Vars>
@@ -230,7 +230,7 @@
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIoDevice2.Frm0Ctrl</Name>
+							<Name>GVL_MapIoEL6070.Frm0Ctrl</Name>
 							<Comment><![CDATA[
 0x0001 = Link error		
 								
@@ -261,7 +261,7 @@
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIoDevice2.Frm0WcCtrl</Name>
+							<Name>GVL_MapIoEL6070.Frm0WcCtrl</Name>
 							<Comment><![CDATA[
 0x0001 = prevent 1. EtherCAT command FROM sending (request NOP)										
 0x0002 = prevent 2. EtherCAT command from sending (request NOP)																				
@@ -274,7 +274,7 @@
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIoDevice2.DevCtrl</Name>
+							<Name>GVL_MapIoEL6070.DevCtrl</Name>
 							<Comment><![CDATA[		
 0x0001 = copy data with wrong working counter OF 1. EtherCAT command								
 0x0002 = copy data with wrong working counter of 2. EtherCAT command																			
@@ -1352,28 +1352,28 @@ C:\TwinCAT\3.1\Config\Io\EtherNetIP\ex260_sen1_x194_24_v12.eds
 		<MappingInfo Identifier="{00000000-2002-0850-0020-500850000403}" Id="#x02030020"/>
 		<OwnerA Name="TIPC^ValveControllerPLC^ValveControllerPLC Instance">
 			<OwnerB Name="TIID^Device 1 (Profinet Controller)^ateqf620">
-				<Link VarA="LeakTestTask Inputs^PRG_LeakTest.astAteqRawIo[0].anInput[0]" VarB="API^Term 2 (64 Bytes Input)^Subterm 5 (64 Bytes Input)^Inputs^Inputs"/>
-				<Link VarA="LeakTestTask Inputs^PRG_LeakTest.astAteqRawIo[0].anInput[1]" VarB="API^Term 3 (64 Bytes Input)^Subterm 6 (64 Bytes Input)^Inputs^Inputs"/>
-				<Link VarA="LeakTestTask Inputs^PRG_LeakTest.astAteqRawIo[0].anInput[2]" VarB="API^Term 4 (64 Bytes Input)^Subterm 7 (64 Bytes Input)^Inputs^Inputs"/>
-				<Link VarA="LeakTestTask Inputs^PRG_LeakTest.astAteqRawIo[0].anInput[3]" VarB="API^Term 5 (64 Bytes Input)^Subterm 8 (64 Bytes Input)^Inputs^Inputs"/>
-				<Link VarA="LeakTestTask Outputs^PRG_LeakTest.astAteqRawIo[0].anOutput[0]" VarB="API^Term 6 (64 Bytes Output)^Subterm 9 (64 Bytes Output)^Outputs^Outputs"/>
-				<Link VarA="LeakTestTask Outputs^PRG_LeakTest.astAteqRawIo[0].anOutput[1]" VarB="API^Term 7 (64 Bytes Output)^Subterm 10 (64 Bytes Output)^Outputs^Outputs"/>
-				<Link VarA="LeakTestTask Outputs^PRG_LeakTest.astAteqRawIo[0].anOutput[2]" VarB="API^Term 8 (64 Bytes Output)^Subterm 11 (64 Bytes Output)^Outputs^Outputs"/>
-				<Link VarA="LeakTestTask Outputs^PRG_LeakTest.astAteqRawIo[0].anOutput[3]" VarB="API^Term 9 (64 Bytes Output)^Subterm 12 (64 Bytes Output)^Outputs^Outputs"/>
+				<Link VarA="LeakTestTask Inputs^PRG_LeakTest.astAteqRawIo[0].InByte[0]" VarB="API^Term 2 (64 Bytes Input)^Subterm 5 (64 Bytes Input)^Inputs^Inputs"/>
+				<Link VarA="LeakTestTask Inputs^PRG_LeakTest.astAteqRawIo[0].InByte[1]" VarB="API^Term 3 (64 Bytes Input)^Subterm 6 (64 Bytes Input)^Inputs^Inputs"/>
+				<Link VarA="LeakTestTask Inputs^PRG_LeakTest.astAteqRawIo[0].InByte[2]" VarB="API^Term 4 (64 Bytes Input)^Subterm 7 (64 Bytes Input)^Inputs^Inputs"/>
+				<Link VarA="LeakTestTask Inputs^PRG_LeakTest.astAteqRawIo[0].InByte[3]" VarB="API^Term 5 (64 Bytes Input)^Subterm 8 (64 Bytes Input)^Inputs^Inputs"/>
+				<Link VarA="LeakTestTask Outputs^PRG_LeakTest.astAteqRawIo[0].OutByte[0]" VarB="API^Term 6 (64 Bytes Output)^Subterm 9 (64 Bytes Output)^Outputs^Outputs"/>
+				<Link VarA="LeakTestTask Outputs^PRG_LeakTest.astAteqRawIo[0].OutByte[1]" VarB="API^Term 7 (64 Bytes Output)^Subterm 10 (64 Bytes Output)^Outputs^Outputs"/>
+				<Link VarA="LeakTestTask Outputs^PRG_LeakTest.astAteqRawIo[0].OutByte[2]" VarB="API^Term 8 (64 Bytes Output)^Subterm 11 (64 Bytes Output)^Outputs^Outputs"/>
+				<Link VarA="LeakTestTask Outputs^PRG_LeakTest.astAteqRawIo[0].OutByte[3]" VarB="API^Term 9 (64 Bytes Output)^Subterm 12 (64 Bytes Output)^Outputs^Outputs"/>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 2 (EtherCAT)">
-				<Link VarA="IpcTask Inputs^GVL_MapIoDevice2.AmsNetId" VarB="InfoData^AmsNetId"/>
-				<Link VarA="IpcTask Inputs^GVL_MapIoDevice2.CfgSlaveCount" VarB="InfoData^CfgSlaveCount"/>
-				<Link VarA="IpcTask Inputs^GVL_MapIoDevice2.ChangeCount" VarB="InfoData^ChangeCount"/>
-				<Link VarA="IpcTask Inputs^GVL_MapIoDevice2.DevId" VarB="InfoData^DevId"/>
-				<Link VarA="IpcTask Inputs^GVL_MapIoDevice2.DevState" VarB="Inputs^DevState"/>
-				<Link VarA="IpcTask Inputs^GVL_MapIoDevice2.Frm0InputToggle" VarB="Inputs^Frm0InputToggle"/>
-				<Link VarA="IpcTask Inputs^GVL_MapIoDevice2.Frm0State" VarB="Inputs^Frm0State"/>
-				<Link VarA="IpcTask Inputs^GVL_MapIoDevice2.Frm0WcState" VarB="Inputs^Frm0WcState"/>
-				<Link VarA="IpcTask Inputs^GVL_MapIoDevice2.SlaveCount" VarB="Inputs^SlaveCount"/>
-				<Link VarA="IpcTask Outputs^GVL_MapIoDevice2.DevCtrl" VarB="Outputs^DevCtrl"/>
-				<Link VarA="IpcTask Outputs^GVL_MapIoDevice2.Frm0Ctrl" VarB="Outputs^Frm0Ctrl"/>
-				<Link VarA="IpcTask Outputs^GVL_MapIoDevice2.Frm0WcCtrl" VarB="Outputs^Frm0WcCtrl"/>
+				<Link VarA="IpcTask Inputs^GVL_MapIoEL6070.AmsNetId" VarB="InfoData^AmsNetId"/>
+				<Link VarA="IpcTask Inputs^GVL_MapIoEL6070.CfgSlaveCount" VarB="InfoData^CfgSlaveCount"/>
+				<Link VarA="IpcTask Inputs^GVL_MapIoEL6070.ChangeCount" VarB="InfoData^ChangeCount"/>
+				<Link VarA="IpcTask Inputs^GVL_MapIoEL6070.DevId" VarB="InfoData^DevId"/>
+				<Link VarA="IpcTask Inputs^GVL_MapIoEL6070.DevState" VarB="Inputs^DevState"/>
+				<Link VarA="IpcTask Inputs^GVL_MapIoEL6070.Frm0InputToggle" VarB="Inputs^Frm0InputToggle"/>
+				<Link VarA="IpcTask Inputs^GVL_MapIoEL6070.Frm0State" VarB="Inputs^Frm0State"/>
+				<Link VarA="IpcTask Inputs^GVL_MapIoEL6070.Frm0WcState" VarB="Inputs^Frm0WcState"/>
+				<Link VarA="IpcTask Inputs^GVL_MapIoEL6070.SlaveCount" VarB="Inputs^SlaveCount"/>
+				<Link VarA="IpcTask Outputs^GVL_MapIoEL6070.DevCtrl" VarB="Outputs^DevCtrl"/>
+				<Link VarA="IpcTask Outputs^GVL_MapIoEL6070.Frm0Ctrl" VarB="Outputs^Frm0Ctrl"/>
+				<Link VarA="IpcTask Outputs^GVL_MapIoEL6070.Frm0WcCtrl" VarB="Outputs^Frm0WcCtrl"/>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 4 X000 (EtherCAT)^ValveBank1 (EX260-SEC1)">
 				<Link VarA="LeakTestTask Outputs^GVL_MapIo.aIoEx260[0].Out0" VarB="Byte 0^Output"/>

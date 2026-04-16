@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <DUT Name="ST_AteqRealtimeTestResults" Id="{f471bc97-779c-49f0-b883-ddd2ac5652bc}">
-    <Declaration><![CDATA[TYPE ST_AteqRealtimeTestResults :
+  <DUT Name="ST_AteqRealtimeStateBits" Id="{f471bc97-779c-49f0-b883-ddd2ac5652bc}">
+    <Declaration><![CDATA[TYPE ST_AteqRealtimeStateBits :
 STRUCT
 	// Byte 0 - 0Ch
     bPass                : BOOL; // Bit 0

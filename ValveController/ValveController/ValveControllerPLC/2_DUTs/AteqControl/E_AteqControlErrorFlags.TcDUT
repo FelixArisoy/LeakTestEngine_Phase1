@@ -4,8 +4,7 @@
     <Declaration><![CDATA[{attribute 'qualified_only'}
 {attribute 'strict'}
 TYPE E_AteqControlErrorFlags :
-(
-	ParamReadFail,
+(	ParamReadFail,
 	ParamWriteFail,
 	ResetFIFOFail,  			// FIFO Reset failed (echo or timeout)
     AutoZeroFail,  				// Special Cycle command failed
@@ -16,8 +15,8 @@ TYPE E_AteqControlErrorFlags :
 	SpecialCycleFail,
     DeviceNotReady,  			// CycleEnd = 0 on startup
     DeviceCmdTimeout, 			// Echo bit never set within timeout
-    DeviceCmdError  			// ErrorCode received from ATEQ
-);
+    DeviceCmdError); 			// ErrorCode received from ATEQ
+
 END_TYPE
 ]]></Declaration>
   </DUT>

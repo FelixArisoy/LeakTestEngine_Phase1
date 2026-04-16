@@ -3,7 +3,7 @@
   <DUT Name="ST_AteqResultsDecoded" Id="{76dbbe4c-3efb-4e8f-98ea-bd8ac81cd241}">
     <Declaration><![CDATA[TYPE ST_AteqResultsDecoded :
 STRUCT
-	
+
     nProgramNumber      : WORD;
     nTestType           : WORD;
     nRelayImage         : WORD;  // Original raw word
@@ -43,7 +43,7 @@ STRUCT
     fTempCelcius     	: REAL;
 
    	dtTestTimeStamp		: DT;
-	
+
 END_STRUCT
 END_TYPE
 
