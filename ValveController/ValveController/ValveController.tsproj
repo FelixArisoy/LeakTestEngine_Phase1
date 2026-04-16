@@ -80,7 +80,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{FF505B91-FACF-4A2B-B73E-9C5E3B10185D}" Name="ValveControllerPLC" PrjFilePath="ValveControllerPLC\ValveControllerPLC.plcproj" TmcFilePath="ValveControllerPLC\ValveControllerPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{7837F50B-F4E5-B969-FAE9-188441249437}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{0AD9B996-973A-C483-72EB-CECA940CA517}">
 					<Name>ValveControllerPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
@@ -101,13 +101,13 @@
 							<Name>GVL_MapIo.aIoEx260[0].Out0</Name>
 							<Type>SINT</Type>
 						</Var>
+						<Var>
+							<Name>GVL_MapIo.aIoEx260[1].Out0</Name>
+							<Type>SINT</Type>
+						</Var>
 					</Vars>
 					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
 						<Name>IpcTask Inputs</Name>
-						<Var>
-							<Name>GVL_MapIoDevice2.Frm0State</Name>
-							<Type>UINT</Type>
-						</Var>
 						<Var>
 							<Name>GVL_MapIo.devState</Name>
 							<Type GUID="{391652FB-7F01-987E-1D53-3B165841CFCE}">ARRAY [1..8] OF UINT</Type>
@@ -123,6 +123,22 @@
 						<Var>
 							<Name>GVL_MapIo.aIoEx260[0].In1</Name>
 							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapIo.aIoEx260[1].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapIo.aIoEx260[1].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapIo.aIoEx260[1].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapIoDevice2.Frm0State</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
 							<Name>GVL_MapIoDevice2.Frm0WcState</Name>
@@ -195,6 +211,22 @@
 						</Var>
 						<Var>
 							<Name>GVL_MapIo.aIoEx260[0].Out3</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapIo.aIoEx260[1].Ctrl</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapIo.aIoEx260[1].Out1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapIo.aIoEx260[1].Out2</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapIo.aIoEx260[1].Out3</Name>
 							<Type>SINT</Type>
 						</Var>
 						<Var>

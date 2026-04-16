@@ -74,8 +74,8 @@ IF GVL_ValveBankConfig.nMaxDeviceCount > 0 THEN
 				M_ValveBankManual();
 				M_ValveBankRunMask();
 				
-		ELSE
-				afbValveBank[nDeviceIndex].pDeviceFaulted := TRUE;  /// add fault conditions later
+		//ELSE
+		//		afbValveBank[nDeviceIndex].pDeviceFaulted := TRUE;  /// add fault conditions later
 		END_IF
 END_IF
 
@@ -87,6 +87,7 @@ END_IF
 										eAteqProgramSeqStates	:= afbAteqControl[nDeviceIndex].eProgramSeqSteps,
 										eProgramInternalSteps	:= afbAteqControl[nDeviceIndex].eProgramInternalSteps,
 										bAutoTestRecipeStart	:= abAutoTestRecipeStart,
+										anValveMask				:= GVL_VisVariable.anValveMask,
 										nValveMask				=> GVL_MapIo.nValveMaskRaw );
 										
 	GVL_MapIo.aIoEx260[0].Out0 := DWORD_TO_SINT(GVL_MapIo.nValveMaskRaw);  /// Temp VB Testing Triggers the outputs
