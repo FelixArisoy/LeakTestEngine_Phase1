@@ -284,15 +284,15 @@ IF bTestActive THEN
         bEchoReceived := TRUE;
 
         // Store the response time in the array
-        IF nResponseIndex < SIZEOF(aResponseTimes)/SIZEOF(aResponseTimes[0]) THEN // Check array bounds
-            aResponseTimes[nResponseIndex] := tResponseTime;
-            nResponseIndex := nResponseIndex + 1;
-        ELSE
+       // IF nResponseIndex < SIZEOF(aResponseTimes)/SIZEOF(aResponseTimes[0]) THEN // Check array bounds
+        //    aResponseTimes[nResponseIndex] := tResponseTime;
+       //     nResponseIndex := nResponseIndex + 1;
+       // ELSE
             // Handle array full condition (e.g., reset index, log error, stop test)
             // For now, let's stop the test if array is full
             bTestActive := FALSE;
             // You might want to add a log message here or trigger an alarm
-        END_IF
+        //END_IF
 
         // Reset command and prepare for next cycle
         // astAteqMapOutput[0].Write.CmdBit.bStart := FALSE; This line will no longer work as mapped IO modifed, no longer InOut Variable 

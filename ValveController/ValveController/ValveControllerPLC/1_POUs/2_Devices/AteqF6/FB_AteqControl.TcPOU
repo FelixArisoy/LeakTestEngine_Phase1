@@ -31,7 +31,7 @@ For future: FB_init may be required
 *)
 	stRawInputBuffer 		: ST_AteqRawInput;
 	stRawOutputBuffer 		: ST_AteqRawOutput;
-    stMapInputBuffer	: ST_AteqMapInput;
+    stMapInputBuffer		: ST_AteqMapInput;
 	stMapOutputBuffer		: ST_AteqMapOutput; 
 	fbCmdHandler			: FB_AteqCmdHandler;
 	bProgramSeqRunRequest 	: BOOL;
@@ -74,6 +74,7 @@ stRawInputBuffer := stRawInput;
 stRawOutput 	:= stRawOutputBuffer;
 
 // To Monitor Mapped Data outside of This FB 
+// Also MapIO Buffers go to the internally called FB_AteqCmdHandler
 stMapInput		:= stMapInputBuffer;
 stMapOutput		:= stMapOutputBuffer;
 
@@ -538,20 +539,16 @@ END_CASE]]></ST>
       </Implementation>
     </Method>
     <Method Name="mPrgSelect" Id="{3f180883-986e-4f1d-b18a-91a389fa3ca6}">
-      <Declaration><![CDATA[METHOD mPrgSelect : E_AteqHandshakeSteps
-VAR
-
-END_VAR]]></Declaration>
+      <Declaration><![CDATA[METHOD mPrgSelect : E_AteqHandshakeSteps]]></Declaration>
       <Implementation>
         <ST><![CDATA[stMapOutputBuffer.Write.nProgramNumber := nProgramNumberToRun; // Sets the program number register
 fbCmdHandler.pCmdTrigger := stMapOutputBuffer.Write.CmdBit.bProgramSelect;
 
-	fbCmdHandler(
-   					bCmdEcho    			:= stMapInputBuffer.Read.EchoBit.bProgramSelect,
-    				bCmdError   			:= stMapInputBuffer.Read.stErrorCode.bProgramSelect,
-					stIo_Ref				:= stMapInputBuffer,
-					eStatesAteqHandshake	=> mPrgSelect
-);
+	fbCmdHandler(	bCmdEcho    	:= stMapInputBuffer.Read.EchoBit.bProgramSelect,
+    				bCmdError   	:= stMapInputBuffer.Read.stErrorCode.bProgramSelect,
+					stMapInput		:= stMapInputBuffer,
+					stMapOutput		=> stMapOutputBuffer,
+					eStatesAteqHandshake	=> mPrgSelect);
 	
 	CASE mPrgSelect OF
 		CMD_IDLE:
@@ -574,7 +571,6 @@ fbCmdHandler.pCmdTrigger := stMapOutputBuffer.Write.CmdBit.bProgramSelect;
 VAR   
 	fbR_TRIG_RunSequence 			: R_TRIG;
 	fbR_TRIG_AutoSeqResetRequest 	: R_TRIG;
-	
 	eStatesAteqHandshake         	: E_AteqHandshakeSteps;
 END_VAR]]></Declaration>
       <Implementation>
@@ -751,19 +747,15 @@ END_CASE]]></ST>
       </Implementation>
     </Method>
     <Method Name="mPrgStart" Id="{df77a28a-31ae-4bb7-aada-fdddd0be9668}">
-      <Declaration><![CDATA[METHOD mPrgStart : E_AteqHandshakeSteps
-VAR
-   
-END_VAR]]></Declaration>
+      <Declaration><![CDATA[METHOD mPrgStart : E_AteqHandshakeSteps]]></Declaration>
       <Implementation>
         <ST><![CDATA[fbCmdHandler.pCmdTrigger := stMapOutputBuffer.Write.CmdBit.bStart;
 
-	fbCmdHandler(
-					bCmdEcho    			:= stMapInputBuffer.Read.EchoBit.bStart,
-    				bCmdError   			:= stMapInputBuffer.Read.stErrorCode.bStart,
-					stIo_Ref				:= stMapInputBuffer,
-					eStatesAteqHandshake	=> mPrgStart
-);
+	fbCmdHandler(	bCmdEcho    	:= stMapInputBuffer.Read.EchoBit.bStart,
+    				bCmdError   	:= stMapInputBuffer.Read.stErrorCode.bStart,
+					stMapInput		:= stMapInputBuffer,
+					stMapOutput		=> stMapOutputBuffer,
+					eStatesAteqHandshake	=> mPrgStart);
 
 
 	CASE mPrgStart OF
@@ -784,10 +776,7 @@ END_VAR]]></Declaration>
       </Implementation>
     </Method>
     <Method Name="mReadFIFO" Id="{2bd2f2bf-d1e5-497c-8c97-5c4c719656ec}">
-      <Declaration><![CDATA[METHOD mReadFIFO : E_AteqHandshakeSteps
-VAR
-     
-END_VAR]]></Declaration>
+      <Declaration><![CDATA[METHOD mReadFIFO : E_AteqHandshakeSteps]]></Declaration>
       <Implementation>
         <ST><![CDATA[(*
 // This command also might simply trigger a data update from FIFO.
@@ -826,18 +815,15 @@ END_IF
       </Implementation>
     </Method>
     <Method Name="mReadLastResult" Id="{bca66d8f-b4be-4355-b92b-b0dac3f24c0c}">
-      <Declaration><![CDATA[METHOD mReadLastResult : E_AteqHandshakeSteps
-VAR
-	
-END_VAR]]></Declaration>
+      <Declaration><![CDATA[METHOD mReadLastResult : E_AteqHandshakeSteps]]></Declaration>
       <Implementation>
         <ST><![CDATA[fbCmdHandler.pCmdTrigger := stMapOutputBuffer.Write.CmdBit.bReadLastResult;
-	fbCmdHandler(
-					bCmdEcho    			:= stMapInputBuffer.Read.EchoBit.bReadLastResult,
-    				bCmdError   			:= stMapInputBuffer.Read.stErrorCode.bReadLastResult,
-					stIo_Ref				:= stMapInputBuffer,
-					eStatesAteqHandshake	=> mReadLastResult
-);
+	
+	fbCmdHandler(	bCmdEcho    	:= stMapInputBuffer.Read.EchoBit.bReadLastResult,
+    				bCmdError   	:= stMapInputBuffer.Read.stErrorCode.bReadLastResult,
+					stMapInput		:= stMapInputBuffer,
+					stMapOutput		=> stMapOutputBuffer,
+					eStatesAteqHandshake	=> mReadLastResult);
 
 
 	CASE mReadLastResult OF
@@ -858,20 +844,17 @@ END_VAR]]></Declaration>
       </Implementation>
     </Method>
     <Method Name="mReset" Id="{d83d834a-bdff-4813-91dd-64475ca219aa}">
-      <Declaration><![CDATA[METHOD mReset : E_AteqHandshakeSteps
-VAR
-	
-END_VAR]]></Declaration>
+      <Declaration><![CDATA[METHOD mReset : E_AteqHandshakeSteps]]></Declaration>
       <Implementation>
         <ST><![CDATA[fbCmdHandler.pResetRequest := TRUE; //Debug throw alarms to HMI
 
 fbCmdHandler.pCmdTrigger := stMapOutputBuffer.Write.CmdBit.bReset;
-	fbCmdHandler(
-					bCmdEcho        		:= stMapInputBuffer.Read.EchoBit.bReset,
-    				bCmdError       		:= stMapInputBuffer.Read.stErrorCode.bReset, // This is the IN_OUT - FB_CommandHandler will manage it
-    				stIo_Ref        		:= stMapInputBuffer,
-					eStatesAteqHandshake	=> mReset 
-);
+
+	fbCmdHandler(	bCmdEcho        := stMapInputBuffer.Read.EchoBit.bReset,
+    				bCmdError       := stMapInputBuffer.Read.stErrorCode.bReset, // This is the IN_OUT - FB_CommandHandler will manage it
+    				stMapInput		:= stMapInputBuffer,
+					stMapOutput		=> stMapOutputBuffer,
+					eStatesAteqHandshake	=> mReset );
 
 
 		//Verify Reset Conditions when requested
@@ -904,20 +887,16 @@ fbCmdHandler.pCmdTrigger := stMapOutputBuffer.Write.CmdBit.bReset;
       </Implementation>
     </Method>
     <Method Name="mResetFIFO" Id="{d2dd068a-bc41-4e1b-8fe3-37e11fad9b4b}">
-      <Declaration><![CDATA[METHOD mResetFIFO : E_AteqHandshakeSteps
-VAR
-  		
-END_VAR
-]]></Declaration>
+      <Declaration><![CDATA[METHOD mResetFIFO : E_AteqHandshakeSteps]]></Declaration>
       <Implementation>
         <ST><![CDATA[
 fbCmdHandler.pCmdTrigger := stMapOutputBuffer.Write.CmdBit.bResetFIFO;
-	fbCmdHandler(
-					bCmdEcho        		:= stMapInputBuffer.Read.EchoBit.bResetFIFO,
-    				bCmdError       		:= stMapInputBuffer.Read.stErrorCode.bResetFIFO,
-					stIo_Ref        		:= stMapInputBuffer,
-					eStatesAteqHandshake	=> mResetFIFO 
-);
+	
+	fbCmdHandler(	bCmdEcho        := stMapInputBuffer.Read.EchoBit.bResetFIFO,
+    				bCmdError       := stMapInputBuffer.Read.stErrorCode.bResetFIFO,
+					stMapInput		:= stMapInputBuffer,
+					stMapOutput		=> stMapOutputBuffer,
+					eStatesAteqHandshake	=> mResetFIFO );
 
 	
 	
@@ -948,12 +927,12 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[stMapOutputBuffer.Write.nSpecialCycleId := nSpecialCycleId; // Sets the special cycle ID register
 fbCmdHandler.pCmdTrigger := stMapOutputBuffer.Write.CmdBit.bSpecialCycle;
-	fbCmdHandler(
-   					bCmdEcho    			:= stMapInputBuffer.Read.EchoBit.bSpecialCycle,
-    				bCmdError   			:= stMapInputBuffer.Read.stErrorCode.bSpecialCycle,
-					stIo_Ref				:= stMapInputBuffer,
-					eStatesAteqHandshake	=> mSpecialCycle
-);
+
+	fbCmdHandler(	bCmdEcho    	:= stMapInputBuffer.Read.EchoBit.bSpecialCycle,
+    				bCmdError   	:= stMapInputBuffer.Read.stErrorCode.bSpecialCycle,
+					stMapInput		:= stMapInputBuffer,
+					stMapOutput		=> stMapOutputBuffer,
+					eStatesAteqHandshake	=> mSpecialCycle);
 
 	
 	CASE mSpecialCycle OF
