@@ -3,7 +3,7 @@
   <POU Name="PRG_LeakTest" Id="{a3d4985a-23a4-4261-9530-cafe9c795619}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_LeakTest
 VAR
-
+nValveBankIdx : UINT;
 //####### Map Io #######
     astAteqIo 			: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqIo;
 	astAteqRawIo   		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqRawIo;
@@ -63,22 +63,27 @@ END_FOR;
 GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.BigEndian; // Profinet
 
 
+/// VALVE BANK CALLS
+IF GVL_ValveBankConfig.nMaxDeviceCount > 0 THEN	
+FOR nValveBankIdx := 0 TO GVL_ValveBankConfig.nMaxDeviceCount - 1 DO
+
+	M_ValveBankEnable();
+	//	IF afbValveBank[nValveBankIdx].pDeviceEnabled THEN
+				M_ValveBankManual();
+				M_ValveBankRunMask();
+		GVL_MapIo.aIoEx260[nValveBankIdx].Out0 := DWORD_TO_SINT(GVL_MapIo.nValveMaskRaw);
+		GVL_MapIo.aIoEx260[nValveBankIdx].Out1 := DWORD_TO_SINT(SHR(GVL_MapIo.nValveMaskRaw, 8));
+		GVL_MapIo.aIoEx260[nValveBankIdx].Out2 := DWORD_TO_SINT(SHR(GVL_MapIo.nValveMaskRaw, 16));
+		GVL_MapIo.aIoEx260[nValveBankIdx].Out3 := DWORD_TO_SINT(SHR(GVL_MapIo.nValveMaskRaw, 24));
+		//ELSE
+		//		afbValveBank[nValveBankIdx].pDeviceFaulted := TRUE;  /// add fault conditions later
+		//END_IF
+END_FOR
+END_IF
+
 	IF GVL_AteqConfig.nMaxDeviceCount > 0 THEN
 		
 		FOR nDeviceIndex := 0 TO GVL_AteqConfig.nMaxDeviceCount - 1 DO
-
-/// VALVE BANK CALLS
-IF GVL_ValveBankConfig.nMaxDeviceCount > 0 THEN	
-	M_ValveBankEnable();
-		IF afbValveBank[nDeviceIndex].pDeviceEnabled THEN
-				M_ValveBankManual();
-				M_ValveBankRunMask();
-				
-		//ELSE
-		//		afbValveBank[nDeviceIndex].pDeviceFaulted := TRUE;  /// add fault conditions later
-		END_IF
-END_IF
-
 /// ATEQ PROGRAM RECIPE CALLS		
 	afbAteqRecipeHandler[nDeviceIndex](
 										bValveBankHasAnyError	:= bValveBankHasAnyError, // may remove this check from the recipe handler
@@ -89,9 +94,7 @@ END_IF
 										bAutoTestRecipeStart	:= abAutoTestRecipeStart,
 										anValveMask				:= GVL_VisVariable.anValveMask,
 										nValveMask				=> GVL_MapIo.nValveMaskRaw );
-										
-	GVL_MapIo.aIoEx260[0].Out0 := DWORD_TO_SINT(GVL_MapIo.nValveMaskRaw);  /// Temp VB Testing Triggers the outputs
-	
+
 /// ATEQ HIGH LEVEL CMD BINDING
 	afbAteqControl[nDeviceIndex].pPrgSeqRunRequest 		:= afbAteqRecipeHandler[nDeviceIndex].pProgramSeqRunCmdToAteq;
 	afbAteqControl[nDeviceIndex].pPrgSeqResetRequest	:= afbAteqRecipeHandler[nDeviceIndex].pProgramSeqResetCmdToAteq;		
@@ -254,15 +257,15 @@ END_IF
     <Method Name="M_ValveBankEnable" Id="{b3ffe984-55bd-41d3-8f04-8d658c77f2b0}">
       <Declaration><![CDATA[METHOD M_ValveBankEnable : BOOL
 VAR
-	nDeviceIndex: INT;
+	nValveBankIdx: INT;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[// Calls per ValveBank 
 
-FOR nDeviceIndex := 0 TO GVL_ValveBankConfig.nMaxDeviceCount - 1 DO
+FOR nValveBankIdx := 0 TO GVL_ValveBankConfig.nMaxDeviceCount - 1 DO
 	
 // Top Level Fault check per Valvebank and per Valves									
-	IF afbValveBank[nDeviceIndex].pDeviceFaulted THEN
+	IF afbValveBank[nValveBankIdx].pDeviceFaulted THEN
 		bValveBankHasAnyError := TRUE;
 		EXIT;
 	ELSE
@@ -270,9 +273,9 @@ FOR nDeviceIndex := 0 TO GVL_ValveBankConfig.nMaxDeviceCount - 1 DO
 	END_IF
 
 // Enable Device
-	IF NOT afbValveBank[nDeviceIndex].pDeviceFaulted THEN
-		afbValveBank[nDeviceIndex].pDeviceCommOK 	:= TRUE; // Direct Device Comm OK feedback binding, replace this if exist.
-		afbValveBank[nDeviceIndex].pDeviceEnableCmd	:= TRUE; // Enable logic, expand if needed
+	IF NOT afbValveBank[nValveBankIdx].pDeviceFaulted THEN
+		afbValveBank[nValveBankIdx].pDeviceCommOK 	:= TRUE; // Direct Device Comm OK feedback binding, replace this if exist.
+		afbValveBank[nValveBankIdx].pDeviceEnableCmd	:= TRUE; // Enable logic, expand if needed
 	END_IF	
 
 END_FOR]]></ST>
