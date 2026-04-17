@@ -10,11 +10,11 @@ VAR
 // Test Map Io	
 	nDeviceIndex 		: UINT	:= 0;	
 	stTestAteqRawIo		: ST_AteqRawIo;
-	stTestAteqMappedIo	: ST_AteqIo;
+	stTestAteqMappedIo	: ST_AteqMapIo;
 	  
 // Test Control Methods	
     fbTestInstance : FB_AteqControl;
-    stTestIo       : ST_AteqIo;
+    stTestIo       : ST_AteqMapIo;
 
     bTestStarted   : BOOL := FALSE;
     nTestStep      : INT := 0;
@@ -41,7 +41,7 @@ CASE nTestStep OF
 						nProgramNumberToRun 			:= 0,
 						bProgramSeqRunRequest 		:= TRUE,
 						bProgramSeqResetRequest 	:= FALSE,
-						stMappedIo 					:= stTestIo
+						stMapIo 					:= stTestIo
 );
 		nTestStep := 1;
     1: // Call FB, check transition to RESET_FIFO
@@ -58,7 +58,7 @@ CASE nTestStep OF
 						nProgramNumberToRun 			:= 0,
 						bProgramSeqRunRequest 		:= TRUE,
 						bProgramSeqResetRequest 	:= FALSE,
-						stMappedIo 					:= stTestIo
+						stMapIo 					:= stTestIo
 );
 
         IF fbTestInstance.eProgramSeqSteps = SEQ_AUTO_ZERO THEN
@@ -73,7 +73,7 @@ CASE nTestStep OF
 						nProgramNumberToRun 			:= 0,
 						bProgramSeqRunRequest 		:= TRUE,
 						bProgramSeqResetRequest 	:= FALSE,
-						stMappedIo 					:= stTestIo
+						stMapIo 					:= stTestIo
 );
 
         IF fbTestInstance.eProgramSeqSteps = SEQ_PROGRAM_SELECT THEN
@@ -88,7 +88,7 @@ CASE nTestStep OF
 						nProgramNumberToRun 			:= 0,
 						bProgramSeqRunRequest 		:= TRUE,
 						bProgramSeqResetRequest 	:= FALSE,
-						stMappedIo 					:= stTestIo
+						stMapIo 					:= stTestIo
 );
 
         fbTestInstance.bProgramSelectComplete := TRUE;
@@ -97,7 +97,7 @@ CASE nTestStep OF
 						nProgramNumberToRun 			:= 0,
 						bProgramSeqRunRequest 		:= TRUE,
 						bProgramSeqResetRequest 	:= FALSE,
-						stMappedIo 					:= stTestIo
+						stMapIo 					:= stTestIo
 );
 
         IF fbTestInstance.eProgramSeqSteps = SEQ_START_PROGRAM THEN

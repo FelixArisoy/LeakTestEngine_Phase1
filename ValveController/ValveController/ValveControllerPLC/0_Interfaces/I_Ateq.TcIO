@@ -7,73 +7,107 @@
       <Declaration><![CDATA[METHOD mMapInput
 VAR
 END_VAR
-
+VAR_IN_OUT
+	stRawIo 	: ST_AteqRawIo;
+    stMapIo	: ST_AteqMapIo;
+END_VAR
 ]]></Declaration>
     </Method>
     <Method Name="mMapOutput" Id="{3e07a3ca-cbdf-0cc8-0ef1-00cf08c9f7c5}">
       <Declaration><![CDATA[METHOD mMapOutput
 VAR
 END_VAR
-
+VAR_IN_OUT
+	stRawIo 	: ST_AteqRawIo;
+    stMapIo	: ST_AteqMapIo;
+END_VAR
 ]]></Declaration>
     </Method>
     <Method Name="mParamRead" Id="{0904a83c-4469-029d-31a5-f6d9bf2faea0}">
       <Declaration><![CDATA[METHOD mParamRead : E_AteqHandshakeSteps
 VAR 
+END_VAR
+VAR_IN_OUT
+    stMapIo	: ST_AteqMapIo;
 END_VAR]]></Declaration>
     </Method>
     <Method Name="mParamWrite" Id="{1110f7eb-35f6-0689-3091-dd71473ec71c}">
       <Declaration><![CDATA[METHOD mParamWrite : E_AteqHandshakeSteps
 VAR 
+END_VAR
+VAR_IN_OUT
+    stMapIo	: ST_AteqMapIo;
 END_VAR]]></Declaration>
     </Method>
     <Method Name="mPrgInternalSteps" Id="{ae67fef3-e079-0d9d-05c4-e32b26bdc57c}">
       <Declaration><![CDATA[METHOD mPrgInternalSteps : E_AteqStepsTable
-VAR_INPUT
-	nProgramStep : WORD;
+VAR_IN_OUT
+    stMapIo	: ST_AteqMapIo;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="mPrgProcessSeq" Id="{cb096298-2c45-0451-3e39-1abf035f28b0}">
+      <Declaration><![CDATA[METHOD mPrgProcessSeq
+VAR   
 END_VAR
-]]></Declaration>
+VAR_IN_OUT
+    stMapIo	: ST_AteqMapIo;
+END_VAR]]></Declaration>
     </Method>
     <Method Name="mPrgSelect" Id="{427503f9-388e-0113-0ef5-97dc99b843ee}">
       <Declaration><![CDATA[METHOD mPrgSelect : E_AteqHandshakeSteps
 VAR
-END_VAR]]></Declaration>
-    </Method>
-    <Method Name="mPrgSeq" Id="{cb096298-2c45-0451-3e39-1abf035f28b0}">
-      <Declaration><![CDATA[METHOD mPrgSeq
-VAR   
+END_VAR
+VAR_IN_OUT
+    stMapIo	: ST_AteqMapIo;
 END_VAR]]></Declaration>
     </Method>
     <Method Name="mPrgStart" Id="{f2da6acf-be01-0bd7-302c-e2e44b6622cd}">
       <Declaration><![CDATA[METHOD mPrgStart : E_AteqHandshakeSteps
 VAR
+END_VAR
+VAR_IN_OUT
+    stMapIo	: ST_AteqMapIo;
 END_VAR]]></Declaration>
     </Method>
     <Method Name="mReadFIFO" Id="{ac5a1ef7-9cd2-0560-064b-e96303d9ec57}">
       <Declaration><![CDATA[METHOD mReadFIFO : E_AteqHandshakeSteps
 VAR
+END_VAR
+VAR_IN_OUT
+    stMapIo	: ST_AteqMapIo;
 END_VAR]]></Declaration>
     </Method>
     <Method Name="mReadLastResult" Id="{b4a1ba2a-c1c2-0e4a-094e-508abcfbbe4e}">
       <Declaration><![CDATA[METHOD mReadLastResult : E_AteqHandshakeSteps
 VAR
+END_VAR
+VAR_IN_OUT
+    stMapIo	: ST_AteqMapIo;
 END_VAR]]></Declaration>
     </Method>
     <Method Name="mReset" Id="{7d14ca72-38ad-07c8-12da-7bff3f7b16e2}">
       <Declaration><![CDATA[METHOD mReset : E_AteqHandshakeSteps
 VAR
+END_VAR
+VAR_IN_OUT
+    stMapIo	: ST_AteqMapIo;
 END_VAR]]></Declaration>
     </Method>
     <Method Name="mResetFIFO" Id="{35d93d3c-f110-0857-29c2-c57b0cfaafa9}">
       <Declaration><![CDATA[METHOD mResetFIFO : E_AteqHandshakeSteps
 VAR
 END_VAR
-]]></Declaration>
+VAR_IN_OUT
+    stMapIo	: ST_AteqMapIo;
+END_VAR]]></Declaration>
     </Method>
     <Method Name="mSpecialCycle" Id="{af1d00e6-23e9-0473-2b55-c61a05f90f66}">
       <Declaration><![CDATA[METHOD mSpecialCycle : E_AteqHandshakeSteps
 VAR_INPUT
-    nSpecialCycleId	: WORD; // Input for the special cycle ID (GVL_AteqSpecialCycle.PiezoAutoZeroReg2 for AutoZero 16#08)
+    nSpecialCycleId	: WORD; // Input for the special cycle ID from Global (GVL_AteqSpecialCycle.PiezoAutoZeroReg2 for AutoZero 16#08)
+END_VAR
+VAR_IN_OUT
+    stMapIo	: ST_AteqMapIo;
 END_VAR]]></Declaration>
     </Method>
     <Property Name="pHandshakeToDeviceFailed" Id="{efa349e5-9293-0723-0ec2-c636a839572a}">

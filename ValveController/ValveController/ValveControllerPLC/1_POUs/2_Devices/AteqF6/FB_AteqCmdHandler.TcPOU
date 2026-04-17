@@ -7,7 +7,7 @@ VAR_INPUT
     bCmdError       : BOOL; // Error code bit from ATEQ
 END_VAR
 VAR_IN_OUT
-    stIo_Ref        : ST_AteqIo; // Reference to the entire mapped I/O structure for ATEQ status checks
+    stIo_Ref        : ST_AteqMapIo; // Reference to the entire mapped I/O structure for ATEQ status checks
 END_VAR
 VAR_OUTPUT
     eStatesAteqHandshake         : E_AteqHandshakeSteps := E_AteqHandshakeSteps.CMD_IDLE; // Current status of this command handler instance	
@@ -136,7 +136,7 @@ CASE eStatesAteqHandshake OF
 
 //############################################################################################
 	CMD_RESET:
-		bResetCallComp := mReset();
+		bResetCallComp := mReset(stIo_Ref := stIo_Ref);
 		IF bResetCallComp THEN
 			eStatesAteqHandshake 	:= CMD_IDLE;
 		END_IF
@@ -152,7 +152,9 @@ END_CASE
       <Declaration><![CDATA[METHOD PRIVATE mReset : BOOL
 VAR
 END_VAR
-]]></Declaration>
+VAR_IN_OUT
+	stIo_Ref : ST_AteqMapIo; // Referenced to the Parent FB data
+END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[mReset := FALSE;
 
@@ -166,8 +168,7 @@ IF NOT mReset THEN
 	tCmdDoneDWELL		(IN 	:= FALSE);
 				
 mReset := TRUE;
-END_IF		
-]]></ST>
+END_IF]]></ST>
       </Implementation>
     </Method>
     <Property Name="pCmdErrorReceived" Id="{19a390f9-1c7a-485a-abab-19b0cc333a8c}">

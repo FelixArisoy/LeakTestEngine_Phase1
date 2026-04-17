@@ -5,7 +5,7 @@
 VAR
 nValveBankIdx : UINT;
 //####### Map Io #######
-    astAteqIo 			: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqIo;
+    astAteqIo 			: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqMapIo;
 	astAteqRawIo   		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqRawIo;
 //####### Control Ateq #######  
 	nDeviceIndex		: UINT;
@@ -64,11 +64,11 @@ GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.BigEndian; // Profinet
 
 
 /// VALVE BANK CALLS
-IF GVL_ValveBankConfig.nMaxDeviceCount > 0 THEN	
-FOR nValveBankIdx := 0 TO GVL_ValveBankConfig.nMaxDeviceCount - 1 DO
+	IF GVL_ValveBankConfig.nMaxDeviceCount > 0 THEN	
+		FOR nValveBankIdx := 0 TO GVL_ValveBankConfig.nMaxDeviceCount - 1 DO
 
-	M_ValveBankEnable();
-	//	IF afbValveBank[nValveBankIdx].pDeviceEnabled THEN
+		M_ValveBankEnable();
+		//	IF afbValveBank[nValveBankIdx].pDeviceEnabled THEN
 				M_ValveBankManual();
 				M_ValveBankRunMask();
 		GVL_MapIo.aIoEx260[nValveBankIdx].Out0 := DWORD_TO_SINT(GVL_MapIo.nValveMaskRaw);
@@ -78,8 +78,8 @@ FOR nValveBankIdx := 0 TO GVL_ValveBankConfig.nMaxDeviceCount - 1 DO
 		//ELSE
 		//		afbValveBank[nValveBankIdx].pDeviceFaulted := TRUE;  /// add fault conditions later
 		//END_IF
-END_FOR
-END_IF
+		END_FOR
+	END_IF
 
 	IF GVL_AteqConfig.nNumOfActiveDevices > 0 THEN
 		
@@ -104,7 +104,7 @@ END_IF
 	afbAteqControl[nDeviceIndex](
 								nProgramNumberToRun 	:= afbAteqRecipeHandler[nDeviceIndex].nProgramNumber,		
 								stRawIo 				:= astAteqRawIo[nDeviceIndex], 
-								stMappedIo 				:= astAteqIo[nDeviceIndex]);
+								stMapIo 				:= astAteqIo[nDeviceIndex]);
 
 ///	ATEQ TEST RESULT STORE CALLS	
 	afbAteqResult[nDeviceIndex](

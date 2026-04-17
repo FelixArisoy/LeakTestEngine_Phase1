@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <DUT Name="ST_AteqIo" Id="{7ce7ac0c-1c92-4cec-a3bd-bf1f5c9de48e}">
-    <Declaration><![CDATA[TYPE ST_AteqIo :
+  <DUT Name="ST_AteqMapIo" Id="{7ce7ac0c-1c92-4cec-a3bd-bf1f5c9de48e}">
+    <Declaration><![CDATA[TYPE ST_AteqMapIo :
 STRUCT
 	Read  : ST_AteqRead;
     Write : ST_AteqWrite;

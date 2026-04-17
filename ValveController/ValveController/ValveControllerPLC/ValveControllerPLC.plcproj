@@ -77,7 +77,7 @@
     <Compile Include="2_DUTs\AteqIo\ST_AteqErrorCode.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="2_DUTs\AteqIo\ST_AteqIo.TcDUT">
+    <Compile Include="2_DUTs\AteqIo\ST_AteqMapIo.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="2_DUTs\AteqIo\ST_AteqRawIo.TcDUT">
