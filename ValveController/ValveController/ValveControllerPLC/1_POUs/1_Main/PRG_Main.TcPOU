@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <POU Name="PRG_LeakTest" Id="{a3d4985a-23a4-4261-9530-cafe9c795619}" SpecialFunc="None">
-    <Declaration><![CDATA[PROGRAM PRG_LeakTest
+  <POU Name="PRG_Main" Id="{a3d4985a-23a4-4261-9530-cafe9c795619}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_Main
 VAR
 nValveBankIdx : UINT;
 //####### Map Io #######
@@ -28,11 +28,8 @@ nValveBankIdx : UINT;
 	afbAteqRecipeHandler 	: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF FB_AteqRecipeHandler;
 	anProgramNumberRecipe	: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF ARRAY[0..GVL_AteqConfig.nMaxProgramsToRun - 1] OF WORD;
 
-
-
-
-
-
+// ####### Visualization HMI
+	fbVisuControlHmi	: FB_VisuControlHmi;
 
 // #######M_TestingAteqHandshakeSpeed DEBUG variables for delay and array storage:
 	bCommandSent       : BOOL := FALSE;
@@ -51,13 +48,25 @@ nValveBankIdx : UINT;
 	
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[(* 
+      <ST><![CDATA[// System Method Calls
+mSystemTime();
+fbVisuControlHmi(); // Do not place in a Method for Sysmbol Access in Visu
+
+// Process Calls
+mLeakTestProcess();]]></ST>
+    </Implementation>
+    <Method Name="mLeakTestProcess" Id="{68824a9f-061b-0c0b-322f-72077c8196c2}">
+      <Declaration><![CDATA[METHOD mLeakTestProcess
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[(* 
 // FUTURE PROOFING VALVE MASKS UPTO 128BIT (2LWORDS OR MORE) PER VB
 FOR bankIndex := 0 TO NUM_BANKS - 1 DO
     fbValveBanks[bankIndex].nValveMask := WORD_TO_DWORD(MASK_LWORDS[bankIndex]);
 END_FOR;
 *)
-
 //M_TestingAteqHandshakeSpeed();
 
 GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.BigEndian; // Profinet
@@ -67,14 +76,14 @@ GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.BigEndian; // Profinet
 	IF GVL_ValveBankConfig.nMaxDeviceCount > 0 THEN	
 		FOR nValveBankIdx := 0 TO GVL_ValveBankConfig.nMaxDeviceCount - 1 DO
 
-		M_ValveBankEnable();
+		mValveBankEnable();
 		//	IF afbValveBank[nValveBankIdx].pDeviceEnabled THEN
-				M_ValveBankManual();
-				M_ValveBankRunMask();
-		GVL_MapIo.aIoEx260[nValveBankIdx].Out0 := DWORD_TO_SINT(GVL_MapIo.nValveMaskRaw);
-		GVL_MapIo.aIoEx260[nValveBankIdx].Out1 := DWORD_TO_SINT(SHR(GVL_MapIo.nValveMaskRaw, 8));
-		GVL_MapIo.aIoEx260[nValveBankIdx].Out2 := DWORD_TO_SINT(SHR(GVL_MapIo.nValveMaskRaw, 16));
-		GVL_MapIo.aIoEx260[nValveBankIdx].Out3 := DWORD_TO_SINT(SHR(GVL_MapIo.nValveMaskRaw, 24));
+				mValveBankManual();
+				mValveBankRunMask();
+		GVL_MapValveBank.aIoEx260[nValveBankIdx].Out0 := DWORD_TO_SINT(GVL_MapValveBank.nValveMaskRaw);
+		GVL_MapValveBank.aIoEx260[nValveBankIdx].Out1 := DWORD_TO_SINT(SHR(GVL_MapValveBank.nValveMaskRaw, 8));
+		GVL_MapValveBank.aIoEx260[nValveBankIdx].Out2 := DWORD_TO_SINT(SHR(GVL_MapValveBank.nValveMaskRaw, 16));
+		GVL_MapValveBank.aIoEx260[nValveBankIdx].Out3 := DWORD_TO_SINT(SHR(GVL_MapValveBank.nValveMaskRaw, 24));
 		//ELSE
 		//		afbValveBank[nValveBankIdx].pDeviceFaulted := TRUE;  /// add fault conditions later
 		//END_IF
@@ -82,7 +91,7 @@ GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.BigEndian; // Profinet
 	END_IF
 
 	IF GVL_AteqConfig.nNumOfActiveDevices > 0 THEN
-		
+
 		FOR nDeviceIndex := 0 TO GVL_AteqConfig.nNumOfActiveDevices - 1 DO
 /// ATEQ PROGRAM RECIPE CALLS		
 	afbAteqRecipeHandler[nDeviceIndex](
@@ -92,38 +101,31 @@ GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.BigEndian; // Profinet
 										eAteqProgramSeqStates	:= afbAteqControl[nDeviceIndex].eProgramSeqSteps,
 										eProgramInternalSteps	:= afbAteqControl[nDeviceIndex].eProgramInternalSteps,
 										bAutoTestRecipeStart	:= GVL_AteqConfig.abAutoTestRecipeStart,
-										anValveMask				:= GVL_VisVariable.anValveMask,
+										anValveMask				:= GVL_VisuControlHMI.anValveMaskListToRecipe,
 										nNumOfACtiveProgramsToRun	:= GVL_AteqConfig.nNumOfActiveProgramsToRun,
-										nValveMask				=> GVL_MapIo.nValveMaskRaw );
+										nValveMask				=> GVL_MapValveBank.nValveMaskRaw );
 
 /// ATEQ HIGH LEVEL CMD BINDING
 	afbAteqControl[nDeviceIndex].pPrgSeqRunRequest 		:= afbAteqRecipeHandler[nDeviceIndex].pProgramSeqRunCmdToAteq;
-	afbAteqControl[nDeviceIndex].pPrgSeqResetRequest	:= afbAteqRecipeHandler[nDeviceIndex].pProgramSeqResetCmdToAteq;		
+	afbAteqControl[nDeviceIndex].pPrgSeqResetRequest	:= afbAteqRecipeHandler[nDeviceIndex].pProgramSeqResetCmdToAteq;
 	
 /// ATEQ DEVICE CONTROL CALLS
 	afbAteqControl[nDeviceIndex](
-								nProgramNumberToRun 	:= afbAteqRecipeHandler[nDeviceIndex].nProgramNumber,		
+								nProgramNumberToRun 	:= afbAteqRecipeHandler[nDeviceIndex].nProgramNumber,
 								stRawIo 				:= astAteqRawIo[nDeviceIndex], 
 								stMapIo 				:= astAteqIo[nDeviceIndex]);
 
-///	ATEQ TEST RESULT STORE CALLS	
+///	ATEQ TEST RESULT STORE CALLS
 	afbAteqResult[nDeviceIndex](
 								bAutoSeqDone 	:= afbAteqControl[nDeviceIndex].pPrgSeqDone,
-								anExchangeZone	:= astAteqIo[nDeviceIndex].Read.ExchangeZoneByte);		
-				
+								anExchangeZone	:= astAteqIo[nDeviceIndex].Read.ExchangeZoneByte);
 
 		END_FOR
-	END_IF
-	
-	
-
-
-
-
-]]></ST>
-    </Implementation>
-    <Method Name="M_ScanAteqDevicesWithInit" Id="{33b24952-4571-466d-8bc0-6cb01ccb5101}">
-      <Declaration><![CDATA[METHOD M_ScanAteqDevicesWithInit : BOOL
+	END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mScanAteqDevicesWithInit" Id="{33b24952-4571-466d-8bc0-6cb01ccb5101}">
+      <Declaration><![CDATA[METHOD mScanAteqDevicesWithInit : BOOL
 VAR_INPUT
 END_VAR
 VAR		
@@ -182,8 +184,34 @@ GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.BigEndian;
 *)]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_TestingAteqHandshakeSpeed" Id="{78566c88-4388-4ff1-bfc5-3eb9f8e7b63d}">
-      <Declaration><![CDATA[METHOD M_TestingAteqHandshakeSpeed : BOOL
+    <Method Name="mSystemTime" Id="{419f2058-5aaf-0546-20be-2fa669eaf1a5}">
+      <Declaration><![CDATA[METHOD mSystemTime : DT
+VAR_INPUT
+END_VAR
+VAR
+	fbLocalTime     : FB_LocalSystemTime;  // Synchronizes with Windows clock
+    dtCurrentTime   : DT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// GET LOCAL TIME - First call start
+fbLocalTime( 
+    bEnable := TRUE,        // trigger initial sync
+    dwCycle := 60           // resync every 60 s
+);
+
+// After first sync, FB bValid becomes TRUE
+IF fbLocalTime.bValid THEN
+// Update dtCurrentTime each cycle
+    dtCurrentTime := SYSTEMTIME_TO_DT(fbLocalTime.systemTime);
+END_IF
+
+GVL_BeckhoffIpc.dtSystemTime := dtCurrentTime;
+mSystemTime	:= dtCurrentTime;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mTestingAteqHandshakeSpeed" Id="{78566c88-4388-4ff1-bfc5-3eb9f8e7b63d}">
+      <Declaration><![CDATA[METHOD mTestingAteqHandshakeSpeed : BOOL
 VAR_INPUT
 END_VAR
 ]]></Declaration>
@@ -255,8 +283,8 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_ValveBankEnable" Id="{b3ffe984-55bd-41d3-8f04-8d658c77f2b0}">
-      <Declaration><![CDATA[METHOD M_ValveBankEnable : BOOL
+    <Method Name="mValveBankEnable" Id="{b3ffe984-55bd-41d3-8f04-8d658c77f2b0}">
+      <Declaration><![CDATA[METHOD mValveBankEnable : BOOL
 VAR
 	nValveBankIdx: UINT;
 END_VAR]]></Declaration>
@@ -282,8 +310,8 @@ FOR nValveBankIdx := 0 TO GVL_ValveBankConfig.nMaxDeviceCount - 1 DO
 END_FOR]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_ValveBankManual" Id="{09b7be0d-639d-086e-26ab-9f2b63058e2b}">
-      <Declaration><![CDATA[METHOD M_ValveBankManual
+    <Method Name="mValveBankManual" Id="{09b7be0d-639d-086e-26ab-9f2b63058e2b}">
+      <Declaration><![CDATA[METHOD mValveBankManual
 VAR_INPUT
 END_VAR
 ]]></Declaration>
@@ -296,8 +324,8 @@ END_VAR
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="M_ValveBankRunMask" Id="{4ec8be0a-b015-0384-14e3-32fe31222ca2}">
-      <Declaration><![CDATA[METHOD M_ValveBankRunMask
+    <Method Name="mValveBankRunMask" Id="{4ec8be0a-b015-0384-14e3-32fe31222ca2}">
+      <Declaration><![CDATA[METHOD mValveBankRunMask
 VAR_INPUT
 END_VAR
 VAR

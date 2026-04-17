@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_ComboboxEntry" Id="{968dd5ae-cdf8-0074-204b-10e4a9ee5b91}">
+    <Declaration><![CDATA[// it is necessary that the members' names are identical to attribute names
+TYPE ST_ComboboxEntry :
+STRUCT
+	id 	: INT;
+	text 	: STRING;
+	value 	: INT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

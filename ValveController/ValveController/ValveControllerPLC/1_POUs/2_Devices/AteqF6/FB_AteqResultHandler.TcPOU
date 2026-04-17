@@ -98,7 +98,7 @@ stLastResults.fAtmPressure  := GetReal(72) / 1000.0;
 stLastResults.fTempCelcius  := GetReal(76) / 1000.0;
 
 // === Timestamp (DT) ===
-stLastResults.dtTestTimeStamp := GVL_Controller.dtSystemTime;
+stLastResults.dtTestTimeStamp := GVL_BeckhoffIpc.dtSystemTime;
 
 
 

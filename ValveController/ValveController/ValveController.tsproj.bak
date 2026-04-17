@@ -68,7 +68,7 @@
 			</Licenses>
 			<Tasks>
 				<Task Id="3" Priority="20" CycleTime="200000" AmsPort="350" AdtTasks="true">
-					<Name>Ipc</Name>
+					<Name>UnitTest</Name>
 				</Task>
 				<Task Id="4" Priority="10" CycleTime="80000" AmsPort="351" AdtTasks="true">
 					<Name>LeakTest</Name>
@@ -80,508 +80,508 @@
 		</System>
 		<Plc>
 			<Project GUID="{FF505B91-FACF-4A2B-B73E-9C5E3B10185D}" Name="ValveControllerPLC" PrjFilePath="ValveControllerPLC\ValveControllerPLC.plcproj" TmcFilePath="ValveControllerPLC\ValveControllerPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{437295B6-F8C2-5ED5-C513-E3FC344ACACD}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{01BFBD0D-A055-1036-9779-9D9D692AB110}">
 					<Name>ValveControllerPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
 						<Name>LeakTestTask Inputs</Name>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[0].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[0].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[1].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[1].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[2].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[2].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[3].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[3].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[4].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[4].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[5].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[5].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[6].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[6].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[7].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[7].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[8].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[8].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[9].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[9].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[10].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[10].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[11].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[11].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[12].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[12].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[13].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[13].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[14].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[14].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[15].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[15].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[16].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[16].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[17].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[17].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[18].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[18].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[19].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[19].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[20].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[20].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[21].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[21].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[22].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[22].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[23].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[23].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[24].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[24].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[25].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[25].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[26].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[26].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[27].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[27].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[28].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[28].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[29].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[29].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[30].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[30].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[31].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[31].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[32].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[32].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[33].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[33].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[34].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[34].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[35].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[35].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[36].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[36].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[37].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[37].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[38].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[38].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[39].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[39].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[40].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[40].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[41].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[41].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[42].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[42].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[43].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[43].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[44].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[44].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[45].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[45].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[46].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[46].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[47].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[47].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[48].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[48].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[49].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[49].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[50].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[50].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[51].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[51].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[52].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[52].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[53].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[53].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[54].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[54].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[55].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[55].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[56].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[56].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[57].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[57].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[58].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[58].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[59].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[59].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[60].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[60].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[61].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[61].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[62].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[62].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[63].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[63].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[64].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[64].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[65].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[65].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[66].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[66].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[67].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[67].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[68].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[68].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[69].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[69].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[70].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[70].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[71].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[71].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[72].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[72].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[73].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[73].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[74].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[74].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[75].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[75].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[76].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[76].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[77].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[77].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[78].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[78].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[79].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[79].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[80].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[80].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[81].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[81].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[82].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[82].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[83].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[83].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[84].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[84].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[85].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[85].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[86].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[86].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[87].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[87].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[88].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[88].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[89].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[89].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[90].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[90].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[91].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[91].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[92].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[92].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[93].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[93].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[94].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[94].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[95].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[95].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[96].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[96].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[97].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[97].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[98].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[98].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[99].InByte</Name>
+							<Name>PRG_Main.astAteqRawIo[99].InByte</Name>
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
@@ -589,474 +589,474 @@
 					<Vars VarGrpType="2" AreaNo="1">
 						<Name>LeakTestTask Outputs</Name>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[0].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[0].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[1].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[1].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[2].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[2].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[3].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[3].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[4].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[4].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[5].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[5].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[6].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[6].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[7].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[7].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[8].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[8].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[9].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[9].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[10].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[10].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[11].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[11].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[12].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[12].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[13].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[13].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[14].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[14].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[15].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[15].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[16].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[16].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[17].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[17].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[18].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[18].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[19].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[19].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[20].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[20].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[21].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[21].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[22].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[22].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[23].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[23].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[24].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[24].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[25].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[25].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[26].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[26].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[27].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[27].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[28].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[28].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[29].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[29].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[30].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[30].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[31].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[31].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[32].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[32].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[33].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[33].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[34].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[34].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[35].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[35].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[36].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[36].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[37].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[37].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[38].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[38].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[39].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[39].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[40].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[40].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[41].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[41].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[42].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[42].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[43].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[43].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[44].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[44].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[45].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[45].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[46].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[46].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[47].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[47].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[48].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[48].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[49].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[49].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[50].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[50].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[51].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[51].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[52].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[52].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[53].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[53].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[54].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[54].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[55].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[55].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[56].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[56].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[57].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[57].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[58].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[58].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[59].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[59].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[60].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[60].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[61].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[61].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[62].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[62].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[63].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[63].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[64].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[64].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[65].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[65].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[66].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[66].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[67].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[67].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[68].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[68].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[69].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[69].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[70].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[70].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[71].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[71].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[72].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[72].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[73].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[73].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[74].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[74].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[75].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[75].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[76].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[76].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[77].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[77].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[78].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[78].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[79].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[79].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[80].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[80].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[81].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[81].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[82].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[82].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[83].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[83].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[84].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[84].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[85].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[85].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[86].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[86].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[87].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[87].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[88].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[88].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[89].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[89].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[90].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[90].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[91].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[91].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[92].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[92].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[93].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[93].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[94].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[94].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[95].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[95].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[96].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[96].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[97].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[97].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[98].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[98].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_LeakTest.astAteqRawIo[99].OutByte</Name>
+							<Name>PRG_Main.astAteqRawIo[99].OutByte</Name>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIo.aIoEx260[0].Out0</Name>
+							<Name>GVL_MapValveBank.aIoEx260[0].Out0</Name>
 							<Type>SINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIo.aIoEx260[0].Out1</Name>
+							<Name>GVL_MapValveBank.aIoEx260[0].Out1</Name>
 							<Type>SINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIo.aIoEx260[0].Out2</Name>
+							<Name>GVL_MapValveBank.aIoEx260[0].Out2</Name>
 							<Type>SINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIo.aIoEx260[0].Out3</Name>
+							<Name>GVL_MapValveBank.aIoEx260[0].Out3</Name>
 							<Type>SINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIo.aIoEx260[1].Out0</Name>
+							<Name>GVL_MapValveBank.aIoEx260[1].Out0</Name>
 							<Type>SINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIo.aIoEx260[1].Out1</Name>
+							<Name>GVL_MapValveBank.aIoEx260[1].Out1</Name>
 							<Type>SINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIo.aIoEx260[1].Out2</Name>
+							<Name>GVL_MapValveBank.aIoEx260[1].Out2</Name>
 							<Type>SINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIo.aIoEx260[1].Out3</Name>
+							<Name>GVL_MapValveBank.aIoEx260[1].Out3</Name>
 							<Type>SINT</Type>
 						</Var>
 					</Vars>
 					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
-						<Name>IpcTask Inputs</Name>
+						<Name>UnitTestTask Inputs</Name>
 						<Var>
-							<Name>GVL_MapIoEL6070.Frm0State</Name>
+							<Name>GVL_MapEL6070.Frm0State</Name>
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIo.devState</Name>
+							<Name>GVL_MapValveBank.devState</Name>
 							<Type GUID="{391652FB-7F01-987E-1D53-3B165841CFCE}">ARRAY [1..8] OF UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIo.aIoEx260[0].State</Name>
+							<Name>GVL_MapValveBank.aIoEx260[0].State</Name>
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIo.aIoEx260[0].In0</Name>
+							<Name>GVL_MapValveBank.aIoEx260[0].In0</Name>
 							<Type>SINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIo.aIoEx260[0].In1</Name>
+							<Name>GVL_MapValveBank.aIoEx260[0].In1</Name>
 							<Type>SINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIo.aIoEx260[1].State</Name>
+							<Name>GVL_MapValveBank.aIoEx260[1].State</Name>
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIo.aIoEx260[1].In0</Name>
+							<Name>GVL_MapValveBank.aIoEx260[1].In0</Name>
 							<Type>SINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIo.aIoEx260[1].In1</Name>
+							<Name>GVL_MapValveBank.aIoEx260[1].In1</Name>
 							<Type>SINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIoEL6070.Frm0WcState</Name>
+							<Name>GVL_MapEL6070.Frm0WcState</Name>
 							<Comment><![CDATA[			
 0x0001 = 1. EtherCAT command NOT sent (NOP requested)							
 0x0002 = 2. EtherCAT command not sent (NOP requested)																				
@@ -1068,7 +1068,7 @@
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIoEL6070.Frm0InputToggle</Name>
+							<Name>GVL_MapEL6070.Frm0InputToggle</Name>
 							<Comment><![CDATA[			
 0x0001 = wrong working counter of 1. EtherCAT command received								
 0x0002 = wrong working counter of 2. EtherCAT command received																	
@@ -1080,48 +1080,48 @@
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIoEL6070.SlaveCount</Name>
+							<Name>GVL_MapEL6070.SlaveCount</Name>
 							<Comment><![CDATA[ Actual count OF EtherCAT slaves received	]]></Comment>
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIoEL6070.DevState</Name>
+							<Name>GVL_MapEL6070.DevState</Name>
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIoEL6070.ChangeCount</Name>
+							<Name>GVL_MapEL6070.ChangeCount</Name>
 							<Comment><![CDATA[InfoData]]></Comment>
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIoEL6070.DevId</Name>
+							<Name>GVL_MapEL6070.DevId</Name>
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIoEL6070.AmsNetId</Name>
+							<Name>GVL_MapEL6070.AmsNetId</Name>
 							<Type GUID="{18071995-0000-0000-0000-000000000041}">AMSNETID</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIoEL6070.CfgSlaveCount</Name>
+							<Name>GVL_MapEL6070.CfgSlaveCount</Name>
 							<Type>UINT</Type>
 						</Var>
 					</Vars>
 					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
-						<Name>IpcTask Outputs</Name>
+						<Name>UnitTestTask Outputs</Name>
 						<Var>
-							<Name>GVL_MapIo.devCtrl</Name>
+							<Name>GVL_MapValveBank.devCtrl</Name>
 							<Type GUID="{391652FB-7F01-987E-1D53-3B165841CFCE}">ARRAY [1..8] OF UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIo.aIoEx260[0].Ctrl</Name>
+							<Name>GVL_MapValveBank.aIoEx260[0].Ctrl</Name>
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIo.aIoEx260[1].Ctrl</Name>
+							<Name>GVL_MapValveBank.aIoEx260[1].Ctrl</Name>
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIoEL6070.Frm0Ctrl</Name>
+							<Name>GVL_MapEL6070.Frm0Ctrl</Name>
 							<Comment><![CDATA[
 0x0001 = Link error		
 								
@@ -1152,7 +1152,7 @@
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIoEL6070.Frm0WcCtrl</Name>
+							<Name>GVL_MapEL6070.Frm0WcCtrl</Name>
 							<Comment><![CDATA[
 0x0001 = prevent 1. EtherCAT command FROM sending (request NOP)										
 0x0002 = prevent 2. EtherCAT command from sending (request NOP)																				
@@ -1165,7 +1165,7 @@
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapIoEL6070.DevCtrl</Name>
+							<Name>GVL_MapEL6070.DevCtrl</Name>
 							<Comment><![CDATA[		
 0x0001 = copy data with wrong working counter OF 1. EtherCAT command								
 0x0002 = copy data with wrong working counter of 2. EtherCAT command																			
@@ -1211,7 +1211,7 @@
 						</Context>
 						<Context>
 							<Id>1</Id>
-							<Name>IpcTask</Name>
+							<Name>UnitTestTask</Name>
 							<ManualConfig>
 								<OTCID>#x02010030</OTCID>
 							</ManualConfig>
@@ -1293,7 +1293,7 @@ SW Release Version: 3.4.19]]></Comment>
 							<Type>UINT</Type>
 						</Var>
 					</Vars>
-					<Profinet DeviceId="257" VendorId="286" FrameOffset="49152" Flags="16" IPAdd="c0a8020f" ProtocolType="3" BoxOnDeviceTyp="113" MaxPhysSlotNr="255" AvailableSlots="0..255" InstanceServerPort="61000" InstanceClientPort="60000" InstanceId="1" InstanceNumberOfARs="1" InstanceNumberOfAPIs="1" MinDeviceInterval="32" SavePnIoBoxValues="0100" MultipleWriteSupported="true" Phase="1" WatchdogFaktor="3" ReductionRatio="8" SendClockFaktor="32" MaxInputLen="1024" MaxOutputLen="1024" SendClockFactorData="200040008000" SendClockFactorRTC3="200040008000" RedRatio="0100020004000800100020004000800000010002" RedRatioRTC3="01000200040008001000" BoxTypeInfo="Firmware version V3.4.19 - V3.4.x. Supports FastStartup, Identification &amp; Maintenance 1-4, RT and IRT Communication." GSDMLPath="C:\Users\rt59t\Source\Repos\ValiantTMSControls\ValveController\ateqGSDML\GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml" ImagePath="C:\Users\rt59t\Source\Repos\ValiantTMSControls\ValveController\ateqGSDML\GSDML-011E-0101-COMXREPNS.bmp" MainFamily="I/O" ProductFamily="PNS" OrderNr="153x.10x" DefaultDNSName="comxrepns" VendorName="Hilscher Gesellschaft für Systemautomation mbH" FamDescription="ProfiNet IO-Device communication module." GraphicFile="GSDML-011E-0101-COMXREPNS" SWVersion="3.4.19" HWVersion="2" AltLanguage="7">
+					<Profinet DeviceId="257" VendorId="286" FrameOffset="49152" Flags="16" IPAdd="c0a8020f" ProtocolType="3" BoxOnDeviceTyp="113" MaxPhysSlotNr="255" AvailableSlots="0..255" InstanceServerPort="61000" InstanceClientPort="60000" InstanceId="1" InstanceNumberOfARs="1" InstanceNumberOfAPIs="1" MinDeviceInterval="32" SavePnIoBoxValues="0100" MultipleWriteSupported="true" Phase="1" WatchdogFaktor="3" ReductionRatio="4" SendClockFaktor="32" MaxInputLen="1024" MaxOutputLen="1024" SendClockFactorData="200040008000" SendClockFactorRTC3="200040008000" RedRatio="0100020004000800100020004000800000010002" RedRatioRTC3="01000200040008001000" BoxTypeInfo="Firmware version V3.4.19 - V3.4.x. Supports FastStartup, Identification &amp; Maintenance 1-4, RT and IRT Communication." GSDMLPath="C:\Users\rt59t\Source\Repos\ValiantTMSControls\ValveController\ateqGSDML\GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml" ImagePath="C:\Users\rt59t\Source\Repos\ValiantTMSControls\ValveController\ateqGSDML\GSDML-011E-0101-COMXREPNS.bmp" MainFamily="I/O" ProductFamily="PNS" OrderNr="153x.10x" DefaultDNSName="comxrepns" VendorName="Hilscher Gesellschaft für Systemautomation mbH" FamDescription="ProfiNet IO-Device communication module." GraphicFile="GSDML-011E-0101-COMXREPNS" SWVersion="3.4.19" HWVersion="2" AltLanguage="7">
 						<UsedGsdmlModule ModuleIdentNumber="4353" ModuleName="DAP Module" InfoText="Firmware version V3.4.19 - V3.4.x. Supports FastStartup, Identification &amp; Maintenance 1-4, RT and IRT Communication." OrderNumber="153x.10x">
 							<Slot>0</Slot>
 						</UsedGsdmlModule>
@@ -2243,40 +2243,40 @@ C:\TwinCAT\3.1\Config\Io\EtherNetIP\ex260_sen1_x194_24_v12.eds
 		<MappingInfo Identifier="{00000000-2002-0850-0020-500850000403}" Id="#x02030020"/>
 		<OwnerA Name="TIPC^ValveControllerPLC^ValveControllerPLC Instance">
 			<OwnerB Name="TIID^Device 1 (Profinet Controller)^ateqf620">
-				<Link VarA="LeakTestTask Inputs^PRG_LeakTest.astAteqRawIo[0].InByte[0]" VarB="API^Term 2 (64 Bytes Input)^Subterm 5 (64 Bytes Input)^Inputs^Inputs"/>
-				<Link VarA="LeakTestTask Inputs^PRG_LeakTest.astAteqRawIo[0].InByte[1]" VarB="API^Term 3 (64 Bytes Input)^Subterm 6 (64 Bytes Input)^Inputs^Inputs"/>
-				<Link VarA="LeakTestTask Inputs^PRG_LeakTest.astAteqRawIo[0].InByte[2]" VarB="API^Term 4 (64 Bytes Input)^Subterm 7 (64 Bytes Input)^Inputs^Inputs"/>
-				<Link VarA="LeakTestTask Inputs^PRG_LeakTest.astAteqRawIo[0].InByte[3]" VarB="API^Term 5 (64 Bytes Input)^Subterm 8 (64 Bytes Input)^Inputs^Inputs"/>
-				<Link VarA="LeakTestTask Outputs^PRG_LeakTest.astAteqRawIo[0].OutByte[0]" VarB="API^Term 6 (64 Bytes Output)^Subterm 9 (64 Bytes Output)^Outputs^Outputs"/>
-				<Link VarA="LeakTestTask Outputs^PRG_LeakTest.astAteqRawIo[0].OutByte[1]" VarB="API^Term 7 (64 Bytes Output)^Subterm 10 (64 Bytes Output)^Outputs^Outputs"/>
-				<Link VarA="LeakTestTask Outputs^PRG_LeakTest.astAteqRawIo[0].OutByte[2]" VarB="API^Term 8 (64 Bytes Output)^Subterm 11 (64 Bytes Output)^Outputs^Outputs"/>
-				<Link VarA="LeakTestTask Outputs^PRG_LeakTest.astAteqRawIo[0].OutByte[3]" VarB="API^Term 9 (64 Bytes Output)^Subterm 12 (64 Bytes Output)^Outputs^Outputs"/>
+				<Link VarA="LeakTestTask Inputs^PRG_Main.astAteqRawIo[0].InByte[0]" VarB="API^Term 2 (64 Bytes Input)^Subterm 5 (64 Bytes Input)^Inputs^Inputs"/>
+				<Link VarA="LeakTestTask Inputs^PRG_Main.astAteqRawIo[0].InByte[1]" VarB="API^Term 3 (64 Bytes Input)^Subterm 6 (64 Bytes Input)^Inputs^Inputs"/>
+				<Link VarA="LeakTestTask Inputs^PRG_Main.astAteqRawIo[0].InByte[2]" VarB="API^Term 4 (64 Bytes Input)^Subterm 7 (64 Bytes Input)^Inputs^Inputs"/>
+				<Link VarA="LeakTestTask Inputs^PRG_Main.astAteqRawIo[0].InByte[3]" VarB="API^Term 5 (64 Bytes Input)^Subterm 8 (64 Bytes Input)^Inputs^Inputs"/>
+				<Link VarA="LeakTestTask Outputs^PRG_Main.astAteqRawIo[0].OutByte[0]" VarB="API^Term 6 (64 Bytes Output)^Subterm 9 (64 Bytes Output)^Outputs^Outputs"/>
+				<Link VarA="LeakTestTask Outputs^PRG_Main.astAteqRawIo[0].OutByte[1]" VarB="API^Term 7 (64 Bytes Output)^Subterm 10 (64 Bytes Output)^Outputs^Outputs"/>
+				<Link VarA="LeakTestTask Outputs^PRG_Main.astAteqRawIo[0].OutByte[2]" VarB="API^Term 8 (64 Bytes Output)^Subterm 11 (64 Bytes Output)^Outputs^Outputs"/>
+				<Link VarA="LeakTestTask Outputs^PRG_Main.astAteqRawIo[0].OutByte[3]" VarB="API^Term 9 (64 Bytes Output)^Subterm 12 (64 Bytes Output)^Outputs^Outputs"/>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 2 (EtherCAT)">
-				<Link VarA="IpcTask Inputs^GVL_MapIoEL6070.AmsNetId" VarB="InfoData^AmsNetId"/>
-				<Link VarA="IpcTask Inputs^GVL_MapIoEL6070.CfgSlaveCount" VarB="InfoData^CfgSlaveCount"/>
-				<Link VarA="IpcTask Inputs^GVL_MapIoEL6070.ChangeCount" VarB="InfoData^ChangeCount"/>
-				<Link VarA="IpcTask Inputs^GVL_MapIoEL6070.DevId" VarB="InfoData^DevId"/>
-				<Link VarA="IpcTask Inputs^GVL_MapIoEL6070.DevState" VarB="Inputs^DevState"/>
-				<Link VarA="IpcTask Inputs^GVL_MapIoEL6070.Frm0InputToggle" VarB="Inputs^Frm0InputToggle"/>
-				<Link VarA="IpcTask Inputs^GVL_MapIoEL6070.Frm0State" VarB="Inputs^Frm0State"/>
-				<Link VarA="IpcTask Inputs^GVL_MapIoEL6070.Frm0WcState" VarB="Inputs^Frm0WcState"/>
-				<Link VarA="IpcTask Inputs^GVL_MapIoEL6070.SlaveCount" VarB="Inputs^SlaveCount"/>
-				<Link VarA="IpcTask Outputs^GVL_MapIoEL6070.DevCtrl" VarB="Outputs^DevCtrl"/>
-				<Link VarA="IpcTask Outputs^GVL_MapIoEL6070.Frm0Ctrl" VarB="Outputs^Frm0Ctrl"/>
-				<Link VarA="IpcTask Outputs^GVL_MapIoEL6070.Frm0WcCtrl" VarB="Outputs^Frm0WcCtrl"/>
+				<Link VarA="UnitTestTask Inputs^GVL_MapEL6070.AmsNetId" VarB="InfoData^AmsNetId"/>
+				<Link VarA="UnitTestTask Inputs^GVL_MapEL6070.CfgSlaveCount" VarB="InfoData^CfgSlaveCount"/>
+				<Link VarA="UnitTestTask Inputs^GVL_MapEL6070.ChangeCount" VarB="InfoData^ChangeCount"/>
+				<Link VarA="UnitTestTask Inputs^GVL_MapEL6070.DevId" VarB="InfoData^DevId"/>
+				<Link VarA="UnitTestTask Inputs^GVL_MapEL6070.DevState" VarB="Inputs^DevState"/>
+				<Link VarA="UnitTestTask Inputs^GVL_MapEL6070.Frm0InputToggle" VarB="Inputs^Frm0InputToggle"/>
+				<Link VarA="UnitTestTask Inputs^GVL_MapEL6070.Frm0State" VarB="Inputs^Frm0State"/>
+				<Link VarA="UnitTestTask Inputs^GVL_MapEL6070.Frm0WcState" VarB="Inputs^Frm0WcState"/>
+				<Link VarA="UnitTestTask Inputs^GVL_MapEL6070.SlaveCount" VarB="Inputs^SlaveCount"/>
+				<Link VarA="UnitTestTask Outputs^GVL_MapEL6070.DevCtrl" VarB="Outputs^DevCtrl"/>
+				<Link VarA="UnitTestTask Outputs^GVL_MapEL6070.Frm0Ctrl" VarB="Outputs^Frm0Ctrl"/>
+				<Link VarA="UnitTestTask Outputs^GVL_MapEL6070.Frm0WcCtrl" VarB="Outputs^Frm0WcCtrl"/>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 4 X000 (EtherCAT)^ValveBank1 (EX260-SEC1)">
-				<Link VarA="LeakTestTask Outputs^GVL_MapIo.aIoEx260[0].Out0" VarB="Byte 0^Output"/>
-				<Link VarA="LeakTestTask Outputs^GVL_MapIo.aIoEx260[0].Out1" VarB="Byte 1^Output"/>
-				<Link VarA="LeakTestTask Outputs^GVL_MapIo.aIoEx260[0].Out2" VarB="Byte 2^Output"/>
-				<Link VarA="LeakTestTask Outputs^GVL_MapIo.aIoEx260[0].Out3" VarB="Byte 3^Output"/>
+				<Link VarA="LeakTestTask Outputs^GVL_MapValveBank.aIoEx260[0].Out0" VarB="Byte 0^Output"/>
+				<Link VarA="LeakTestTask Outputs^GVL_MapValveBank.aIoEx260[0].Out1" VarB="Byte 1^Output"/>
+				<Link VarA="LeakTestTask Outputs^GVL_MapValveBank.aIoEx260[0].Out2" VarB="Byte 2^Output"/>
+				<Link VarA="LeakTestTask Outputs^GVL_MapValveBank.aIoEx260[0].Out3" VarB="Byte 3^Output"/>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 4 X000 (EtherCAT)^ValveBank2 (EX260-SEC1)">
-				<Link VarA="LeakTestTask Outputs^GVL_MapIo.aIoEx260[1].Out0" VarB="Byte 0^Output"/>
-				<Link VarA="LeakTestTask Outputs^GVL_MapIo.aIoEx260[1].Out1" VarB="Byte 1^Output"/>
-				<Link VarA="LeakTestTask Outputs^GVL_MapIo.aIoEx260[1].Out2" VarB="Byte 2^Output"/>
-				<Link VarA="LeakTestTask Outputs^GVL_MapIo.aIoEx260[1].Out3" VarB="Byte 3^Output"/>
+				<Link VarA="LeakTestTask Outputs^GVL_MapValveBank.aIoEx260[1].Out0" VarB="Byte 0^Output"/>
+				<Link VarA="LeakTestTask Outputs^GVL_MapValveBank.aIoEx260[1].Out1" VarB="Byte 1^Output"/>
+				<Link VarA="LeakTestTask Outputs^GVL_MapValveBank.aIoEx260[1].Out2" VarB="Byte 2^Output"/>
+				<Link VarA="LeakTestTask Outputs^GVL_MapValveBank.aIoEx260[1].Out3" VarB="Byte 3^Output"/>
 			</OwnerB>
 		</OwnerA>
 	</Mappings>

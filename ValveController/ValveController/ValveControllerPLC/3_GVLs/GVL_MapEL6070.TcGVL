@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <GVL Name="GVL_MapIoEL6070" Id="{fd1f383a-7896-4e83-a2b2-f0ead0b58a9e}">
+  <GVL Name="GVL_MapEL6070" Id="{fd1f383a-7896-4e83-a2b2-f0ead0b58a9e}">
     <Declaration><![CDATA[//Device 2 EtherCAT Terminal EL6070
 VAR_GLOBAL
 	Frm0State AT %I*	: UINT;	

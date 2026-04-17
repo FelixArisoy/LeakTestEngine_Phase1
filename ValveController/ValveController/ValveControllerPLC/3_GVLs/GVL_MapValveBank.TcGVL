@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <GVL Name="GVL_MapIo" Id="{adb7f683-6d23-4d57-bfb6-8fa505603cea}">
+  <GVL Name="GVL_MapValveBank" Id="{adb7f683-6d23-4d57-bfb6-8fa505603cea}">
     <Declaration><![CDATA[VAR_GLOBAL
 	devState 	AT %I* 	: ARRAY[1..8] OF UINT;
 	devCtrl 	AT %Q* 	: ARRAY[1..8] OF UINT;

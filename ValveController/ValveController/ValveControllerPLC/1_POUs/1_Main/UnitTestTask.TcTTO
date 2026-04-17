@@ -1,12 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <Task Name="IpcTask" Id="{15e3c139-8b4c-4b68-adc8-d3eb69a02923}">
+  <Task Name="UnitTestTask" Id="{15e3c139-8b4c-4b68-adc8-d3eb69a02923}">
     <!--CycleTime in micro seconds.-->
     <CycleTime>20000</CycleTime>
     <Priority>20</Priority>
-    <PouCall>
-      <Name>PRG_IpcController</Name>
-    </PouCall>
     <PouCall>
       <Name>PRG_TcUnit</Name>
     </PouCall>

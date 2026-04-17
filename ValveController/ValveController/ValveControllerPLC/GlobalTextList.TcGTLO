@@ -101,6 +101,22 @@
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"397"</v>
+              <v n="TextDefault">"Toggle Display"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"777"</v>
+              <v n="TextDefault">"Toggle Display 
+Format"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"980"</v>
+              <v n="TextDefault">"Toggle Display Format"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"650"</v>
               <v n="TextDefault">"TOTAL NUM OF VALVE BANK"</v>
               <l n="LanguageTexts" t="ArrayList" />

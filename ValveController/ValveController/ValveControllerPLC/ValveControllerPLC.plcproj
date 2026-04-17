@@ -35,9 +35,6 @@
     <Compile Include="0_Interfaces\I_ValveBank.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="1_POUs\1_Main\PRG_StationPLC.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="1_POUs\1_Main\PRG_TcUnit.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -116,24 +113,27 @@
     <Compile Include="2_DUTs\ValveBank\ST_ValveRawIo_EX260.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_GVLs\GVL_MapIo.TcGVL">
+    <Compile Include="2_DUTs\VisuHMI\E_DisplayFormat.TcTLEO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="2_DUTs\VisuHMI\ST_ComboboxEntry.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="3_GVLs\GVL_MapValveBank.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
-    <Compile Include="3_GVLs\GVL_MapIoEL6070.TcGVL">
+    <Compile Include="3_GVLs\GVL_MapEL6070.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
     <Compile Include="1_POUs\1_Main\LeakTestTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="1_POUs\1_Main\IpcTask.TcTTO">
+    <Compile Include="1_POUs\1_Main\UnitTestTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="1_POUs\1_Main\PRG_LeakTest.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="1_POUs\1_Main\PRG_IpcController.TcPOU">
+    <Compile Include="1_POUs\1_Main\PRG_Main.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="1_POUs\2_Devices\AteqF6\FB_AteqCmdHandler.TcPOU">
@@ -169,7 +169,7 @@
     <Compile Include="1_POUs\3_Generic\FB_TextFile.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_GVLs\GVL_VisVariable.TcGVL">
+    <Compile Include="3_GVLs\GVL_VisuControlHMI.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
@@ -183,7 +183,7 @@
     <Compile Include="Visualization Manager.TcVMO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="4_VISUs\FB_VisControl.TcPOU">
+    <Compile Include="4_VISUs\FB_VisuControlHmi.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="zDisposables\E_AteqProgramSeqStateFlags.TcDUT">
@@ -201,7 +201,7 @@
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
-    <Compile Include="3_GVLs\GVL_Controller.TcGVL">
+    <Compile Include="3_GVLs\GVL_BeckhoffIpc.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
@@ -228,6 +228,7 @@
     <Folder Include="2_DUTs\GenericFieldDevice" />
     <Folder Include="2_DUTs\AteqControl" />
     <Folder Include="2_DUTs\AteqIo" />
+    <Folder Include="2_DUTs\VisuHMI" />
     <Folder Include="2_DUTs\ValveBank" />
     <Folder Include="3_GVLs" />
     <Folder Include="0_Interfaces" />
