@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <GVL Name="GVL_LeakTestConfig" Id="{c83396cb-5407-08f9-090a-117fcfa39c5e}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	nStep	: UINT;
+	nSubStep: UINT;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

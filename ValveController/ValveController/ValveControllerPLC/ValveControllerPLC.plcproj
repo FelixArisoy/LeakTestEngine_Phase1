@@ -119,6 +119,10 @@
     <Compile Include="2_DUTs\VisuHMI\ST_ComboboxEntry.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="3_GVLs\GVL_LeakTestConfig.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
     <Compile Include="3_GVLs\GVL_MapValveBank.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>

@@ -3,13 +3,16 @@
   <GVL Name="GVL_ValveBankConfig" Id="{242c17b9-0e51-488a-a15c-f803a84e61a3}">
     <Declaration><![CDATA[VAR_GLOBAL CONSTANT
 	nMaxDeviceCount			: UINT 	:= 2;
-	nMaxNumOfValveSlots		: UINT	:= 5;
+	nMaxNumOfValveSlots		: UINT	:= 32;
 	tDeviceEnableTimeout	: TIME	:= T#2S;
 	bValveActTimeout		: TIME 	:= T#2S;
 	tValveStabilizationTime : TIME 	:= T#200MS;
 END_VAR
 VAR_GLOBAL
 	bValvePosSensorUsed 	: BOOL;
+	nValveBankIndex			: UINT;
+	nNumOfActiveValveBanks	: UINT;
+	nNumOfActiveValves		: UINT;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>
