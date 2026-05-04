@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_StationRecipe" Id="{49b4b027-695c-089e-2607-0ddfb5c67e2e}">
+    <Declaration><![CDATA[TYPE ST_StationRecipe :
+STRUCT
+	bEnabled	: BOOL;
+	nNumOfActiveTestSteps	: UINT;
+	nNumOfActiveAteqDevices	: UINT;
+	nNumOfActiveValveBank	: UINT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

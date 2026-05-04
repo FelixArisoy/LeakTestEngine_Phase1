@@ -56,6 +56,12 @@
   "content": [],
   "views": [
     {
+      "url": "View1.view",
+      "preload": false,
+      "keepAlive": false,
+      "preloadBindings": false
+    },
+    {
       "url": "Desktop.view",
       "preload": false,
       "keepAlive": false,

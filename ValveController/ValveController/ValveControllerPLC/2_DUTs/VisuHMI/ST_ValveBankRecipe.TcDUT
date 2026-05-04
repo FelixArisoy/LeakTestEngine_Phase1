@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_ValveBankRecipe" Id="{9721dac8-4781-05d5-3c37-91aa62880b2e}">
+    <Declaration><![CDATA[TYPE ST_ValveBankRecipe :
+STRUCT
+	bEnabled	: BOOL;
+	nNumOfActiveValves	: UINT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

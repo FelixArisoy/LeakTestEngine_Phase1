@@ -29,7 +29,94 @@
     "DEFAULTTIMEFORMATLOCALE": "client",
     "DEFAULTTIMEZONE": "client",
     "DEFAULTUSERGROUP": "__SystemUsers",
-    "DEFINITIONS": {},
+    "DEFINITIONS": {
+        "PLC1.ARRAY_0..49_OF-ST_AteqRecipe": {
+            "items": {
+                "$ref": "#/definitions/PLC1.ST_AteqRecipe"
+            },
+            "maxItems": 50,
+            "minItems": 50,
+            "type": "array"
+        },
+        "PLC1.ARRAY_0..98_OF-ST_StationRecipe": {
+            "items": {
+                "$ref": "#/definitions/PLC1.ST_StationRecipe"
+            },
+            "maxItems": 99,
+            "minItems": 99,
+            "type": "array"
+        },
+        "PLC1.ST_AteqRecipe": {
+            "properties": {
+                "bEnabled": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/BOOL"
+                        },
+                        {
+                            "propertyOrder": 1
+                        }
+                    ]
+                },
+                "nNumOfActivePrograms": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/UINT"
+                        },
+                        {
+                            "propertyOrder": 2
+                        }
+                    ]
+                }
+            },
+            "type": "object"
+        },
+        "PLC1.ST_StationRecipe": {
+            "properties": {
+                "nNumOfActiveAteqDevices": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/UINT"
+                        },
+                        {
+                            "propertyOrder": 3
+                        }
+                    ]
+                },
+                "nNumOfActiveTestSteps": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/UINT"
+                        },
+                        {
+                            "propertyOrder": 2
+                        }
+                    ]
+                },
+                "nNumOfActiveValveBank": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/UINT"
+                        },
+                        {
+                            "propertyOrder": 4
+                        }
+                    ]
+                },
+                "sStationName": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/STRING%2880%29"
+                        },
+                        {
+                            "propertyOrder": 1
+                        }
+                    ]
+                }
+            },
+            "type": "object"
+        }
+    },
     "DEFLATECOMPRESSIONLEVEL": 5,
     "DIAGNOSTICS_DOMAINS": [],
     "DISABLED_CONFIGURATION_HINTS": [],
@@ -2594,6 +2681,26 @@
             },
             "USEMAPPING": true
         },
+        "PLC1.GVL_VisuControlHMI.aDataGridAteqRecipe": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_VisuControlHMI::aDataGridAteqRecipe",
+            "SCHEMA": {
+                "$ref": "tchmi:server#/definitions/PLC1.ARRAY_0..49_OF-ST_AteqRecipe"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_VisuControlHMI.aDataGridStationRecipe": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_VisuControlHMI::aDataGridStationRecipe",
+            "SCHEMA": {
+                "$ref": "tchmi:server#/definitions/PLC1.ARRAY_0..98_OF-ST_StationRecipe"
+            },
+            "USEMAPPING": true
+        },
         "PLC1.GVL_VisuControlHMI.nNumOfAteqDevices": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -3530,6 +3637,8 @@
                 "PLC1.GVL_ValveBankConfig.nNumOfActiveValveBanks": 3,
                 "PLC1.GVL_ValveBankConfig.nNumOfActiveValves": 3,
                 "PLC1.GVL_VisuControlHMI.aComboboxEntries.0.id": 3,
+                "PLC1.GVL_VisuControlHMI.aDataGridAteqRecipe": 3,
+                "PLC1.GVL_VisuControlHMI.aDataGridStationRecipe": 3,
                 "PLC1.GVL_VisuControlHMI.nNumOfAteqDevices": 3,
                 "SetLocale": 3,
                 "SubscribeEvents": 3,

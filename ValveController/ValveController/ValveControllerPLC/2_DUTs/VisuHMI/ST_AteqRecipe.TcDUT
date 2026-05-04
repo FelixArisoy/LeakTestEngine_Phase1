@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_AteqRecipe" Id="{ee45e8df-e534-0732-329b-2d34692732d3}">
+    <Declaration><![CDATA[TYPE ST_AteqRecipe :
+STRUCT
+	bEnabled : BOOL;
+	nNumOfActivePrograms	: UINT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

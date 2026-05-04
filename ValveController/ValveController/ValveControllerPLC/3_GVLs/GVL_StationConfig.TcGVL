@@ -1,13 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <GVL Name="GVL_LeakTestConfig" Id="{c83396cb-5407-08f9-090a-117fcfa39c5e}">
+  <GVL Name="GVL_StationConfig" Id="{930e6634-626d-086e-230b-c05760d6e7f1}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 VAR_GLOBAL CONSTANT
-	nMaxStepCount	: UINT := 50;
+	nMaxStationCount : UINT := 10;
 END_VAR
 VAR_GLOBAL
-	nStep	: UINT;
-	nSubStep: UINT;
+	nNumOfActiveStations : UINT;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

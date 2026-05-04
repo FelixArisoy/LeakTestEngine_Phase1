@@ -8,7 +8,7 @@ VAR_OUTPUT
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
+      <ST><![CDATA[mTcHmiDebug();
 mComboBox();
 mValveMaskEntry();
 ]]></ST>
@@ -61,6 +61,15 @@ CASE eFormat OF
 END_CASE
 
 mDisplayFormat := sOut;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mTcHmiDebug" Id="{b41e4dad-3992-0a34-2486-613cd7bbc33c}">
+      <Declaration><![CDATA[METHOD mTcHmiDebug
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
     <Method Name="mValveMaskEntry" Id="{0ec0a1ee-16c0-0ede-223e-2794791150b7}">

@@ -80,7 +80,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{FF505B91-FACF-4A2B-B73E-9C5E3B10185D}" Name="ValveControllerPLC" PrjFilePath="ValveControllerPLC\ValveControllerPLC.plcproj" TmcFilePath="ValveControllerPLC\ValveControllerPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{73365568-70EC-838F-7B91-D371B4999B44}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{D0321160-E880-803F-493E-148CC21EA3C6}">
 					<Name>ValveControllerPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
@@ -1024,10 +1024,6 @@
 					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
 						<Name>UnitTestTask Inputs</Name>
 						<Var>
-							<Name>GVL_MapEL6070.Frm0State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
 							<Name>GVL_MapValveBank.devState</Name>
 							<Type GUID="{391652FB-7F01-987E-1D53-3B165841CFCE}">ARRAY [1..8] OF UINT</Type>
 						</Var>
@@ -1054,6 +1050,10 @@
 						<Var>
 							<Name>GVL_MapValveBank.aIoEx260[1].In1</Name>
 							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.Frm0State</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
 							<Name>GVL_MapEL6070.Frm0WcState</Name>
@@ -2237,10 +2237,10 @@ C:\TwinCAT\3.1\Config\Io\EtherNetIP\ex260_sen1_x194_24_v12.eds
 		</Io>
 	</Project>
 	<Mappings>
-		<MappingInfo Identifier="{00000000-2001-0850-0120-500820000403}" Id="#x02030030"/>
-		<MappingInfo Identifier="{00000000-2001-0850-0120-500831000403}" Id="#x02030040"/>
-		<MappingInfo Identifier="{00000000-2002-0850-0020-500810000403}" Id="#x02030010"/>
-		<MappingInfo Identifier="{00000000-2002-0850-0020-500850000403}" Id="#x02030020"/>
+		<MappingInfo Identifier="{00000000-2001-0850-0120-500820000403}" Id="#x02030010"/>
+		<MappingInfo Identifier="{00000000-2001-0850-0120-500831000403}" Id="#x02030020"/>
+		<MappingInfo Identifier="{00000000-2002-0850-0020-500810000403}" Id="#x02030030"/>
+		<MappingInfo Identifier="{00000000-2002-0850-0020-500850000403}" Id="#x02030040"/>
 		<OwnerA Name="TIPC^ValveControllerPLC^ValveControllerPLC Instance">
 			<OwnerB Name="TIID^Device 1 (Profinet Controller)^ateqf620">
 				<Link VarA="LeakTestTask Inputs^PRG_Main.astAteqRawIo[0].InByte[0]" VarB="API^Term 2 (64 Bytes Input)^Subterm 5 (64 Bytes Input)^Inputs^Inputs"/>

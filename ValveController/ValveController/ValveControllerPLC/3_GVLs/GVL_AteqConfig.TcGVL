@@ -2,9 +2,9 @@
 <TcPlcObject Version="1.1.0.1">
   <GVL Name="GVL_AteqConfig" Id="{8341f924-21b8-4660-ac80-fb81e367c10a}">
     <Declaration><![CDATA[VAR_GLOBAL CONSTANT
-	nMaxProgramsToRun	: UINT := 100;
-	nMaxDeviceCount 	: UINT := 100; // Set; based on Total Num of F6 ATEQ devices
-	nMaxTestSteps		: INT := 10;
+	nMaxProgramsToRun	: UINT := 50;
+	nMaxDeviceCount 	: UINT := 50; // Set; based on Total Num of F6 ATEQ devices
+	nMaxTestSteps		: INT := 50;
 	tCommandTimeout	: TIME 	:= T#30S; //Sets AteqControl CmdHandlerMethod Timeout
 	tTestTimeOut	: TIME 	:= T#120S;
 	tAutoSeqTimeout	: TIME 	:= T#300S;

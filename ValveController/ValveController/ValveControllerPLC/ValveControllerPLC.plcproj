@@ -116,7 +116,19 @@
     <Compile Include="2_DUTs\VisuHMI\E_DisplayFormat.TcTLEO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="2_DUTs\VisuHMI\ST_AteqRecipe.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="2_DUTs\VisuHMI\ST_ComboboxEntry.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="2_DUTs\VisuHMI\ST_LeakTestRecipe.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="2_DUTs\VisuHMI\ST_StationRecipe.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="2_DUTs\VisuHMI\ST_ValveBankRecipe.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="3_GVLs\GVL_LeakTestConfig.TcGVL">
@@ -172,6 +184,10 @@
     </Compile>
     <Compile Include="1_POUs\3_Generic\FB_TextFile.TcPOU">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="3_GVLs\GVL_StationConfig.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
     </Compile>
     <Compile Include="3_GVLs\GVL_VisuControlHMI.TcGVL">
       <SubType>Code</SubType>

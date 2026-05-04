@@ -61,7 +61,7 @@
     <ServerParameters />
     <HmiCommunicationServerPort>3000</HmiCommunicationServerPort>
     <HmiCommunicationServerAuthPort>13000</HmiCommunicationServerAuthPort>
-    <HmiCommunicationRouterPort>10100</HmiCommunicationRouterPort>
+    <HmiCommunicationRouterPort>10101</HmiCommunicationRouterPort>
     <HmiUseX64>True</HmiUseX64>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|TwinCAT HMI' ">
@@ -115,6 +115,9 @@
   <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)" />
   <Target Name="ReBuild" DependsOnTargets="Clean; Build" />
   <ItemGroup>
+    <Content Include="View1.view">
+      <SubType>Content</SubType>
+    </Content>
     <Folder Include="Fonts\" />
     <Folder Include="Images" />
     <Folder Include="Images\Manifest" />
