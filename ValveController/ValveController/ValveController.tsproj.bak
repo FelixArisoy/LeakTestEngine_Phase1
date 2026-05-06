@@ -80,7 +80,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{FF505B91-FACF-4A2B-B73E-9C5E3B10185D}" Name="ValveControllerPLC" PrjFilePath="ValveControllerPLC\ValveControllerPLC.plcproj" TmcFilePath="ValveControllerPLC\ValveControllerPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{D0321160-E880-803F-493E-148CC21EA3C6}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{2AB3698C-49A8-3C67-9C87-1F5DAE679F62}">
 					<Name>ValveControllerPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
@@ -335,256 +335,6 @@
 							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[50].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[51].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[52].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[53].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[54].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[55].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[56].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[57].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[58].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[59].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[60].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[61].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[62].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[63].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[64].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[65].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[66].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[67].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[68].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[69].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[70].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[71].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[72].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[73].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[74].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[75].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[76].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[77].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[78].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[79].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[80].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[81].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[82].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[83].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[84].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[85].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[86].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[87].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[88].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[89].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[90].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[91].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[92].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[93].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[94].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[95].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[96].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[97].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[98].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[99].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
 					</Vars>
 					<Vars VarGrpType="2" AreaNo="1">
 						<Name>LeakTestTask Outputs</Name>
@@ -789,236 +539,164 @@
 							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[50].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[51].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[52].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[53].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[54].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[55].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[56].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[57].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[58].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[59].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[60].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[61].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[62].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[63].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[64].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[65].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[66].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[67].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[68].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[69].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[70].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[71].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[72].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[73].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[74].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[75].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[76].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[77].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[78].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[79].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[80].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[81].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[82].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[83].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[84].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[85].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[86].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[87].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[88].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[89].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[90].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[91].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[92].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[93].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[94].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[95].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[96].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[97].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[98].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
-							<Name>PRG_Main.astAteqRawIo[99].OutByte</Name>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
-						</Var>
-						<Var>
 							<Name>GVL_MapValveBank.aIoEx260[0].Out0</Name>
-							<Type>SINT</Type>
+							<Type>USINT</Type>
 						</Var>
 						<Var>
 							<Name>GVL_MapValveBank.aIoEx260[0].Out1</Name>
-							<Type>SINT</Type>
+							<Type>USINT</Type>
 						</Var>
 						<Var>
 							<Name>GVL_MapValveBank.aIoEx260[0].Out2</Name>
-							<Type>SINT</Type>
+							<Type>USINT</Type>
 						</Var>
 						<Var>
 							<Name>GVL_MapValveBank.aIoEx260[0].Out3</Name>
-							<Type>SINT</Type>
+							<Type>USINT</Type>
 						</Var>
 						<Var>
 							<Name>GVL_MapValveBank.aIoEx260[1].Out0</Name>
-							<Type>SINT</Type>
+							<Type>USINT</Type>
 						</Var>
 						<Var>
 							<Name>GVL_MapValveBank.aIoEx260[1].Out1</Name>
-							<Type>SINT</Type>
+							<Type>USINT</Type>
 						</Var>
 						<Var>
 							<Name>GVL_MapValveBank.aIoEx260[1].Out2</Name>
-							<Type>SINT</Type>
+							<Type>USINT</Type>
 						</Var>
 						<Var>
 							<Name>GVL_MapValveBank.aIoEx260[1].Out3</Name>
-							<Type>SINT</Type>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[2].Out0</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[2].Out1</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[2].Out2</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[2].Out3</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[3].Out0</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[3].Out1</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[3].Out2</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[3].Out3</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[4].Out0</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[4].Out1</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[4].Out2</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[4].Out3</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[5].Out0</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[5].Out1</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[5].Out2</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[5].Out3</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[6].Out0</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[6].Out1</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[6].Out2</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[6].Out3</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[7].Out0</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[7].Out1</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[7].Out2</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[7].Out3</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[8].Out0</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[8].Out1</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[8].Out2</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[8].Out3</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[9].Out0</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[9].Out1</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[9].Out2</Name>
+							<Type>USINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[9].Out3</Name>
+							<Type>USINT</Type>
 						</Var>
 					</Vars>
 					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
@@ -1026,6 +704,10 @@
 						<Var>
 							<Name>GVL_MapValveBank.devState</Name>
 							<Type GUID="{391652FB-7F01-987E-1D53-3B165841CFCE}">ARRAY [1..8] OF UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.Frm0State</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
 							<Name>GVL_MapValveBank.aIoEx260[0].State</Name>
@@ -1052,8 +734,100 @@
 							<Type>SINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapEL6070.Frm0State</Name>
+							<Name>GVL_MapValveBank.aIoEx260[2].State</Name>
 							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[2].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[2].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[3].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[3].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[3].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[4].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[4].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[4].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[5].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[5].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[5].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[6].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[6].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[6].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[7].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[7].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[7].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[8].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[8].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[8].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[9].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[9].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[9].In1</Name>
+							<Type>SINT</Type>
 						</Var>
 						<Var>
 							<Name>GVL_MapEL6070.Frm0WcState</Name>
@@ -1118,6 +892,38 @@
 						</Var>
 						<Var>
 							<Name>GVL_MapValveBank.aIoEx260[1].Ctrl</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[2].Ctrl</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[3].Ctrl</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[4].Ctrl</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[5].Ctrl</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[6].Ctrl</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[7].Ctrl</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[8].Ctrl</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[9].Ctrl</Name>
 							<Type>UINT</Type>
 						</Var>
 						<Var>

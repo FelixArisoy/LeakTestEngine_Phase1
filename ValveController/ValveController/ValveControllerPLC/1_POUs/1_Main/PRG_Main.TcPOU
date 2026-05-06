@@ -71,19 +71,17 @@ END_FOR;
 
 GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.BigEndian; // Profinet
 
-
+mValveBankEnable();
 /// VALVE BANK CALLS
 	IF GVL_ValveBankConfig.nMaxDeviceCount > 0 THEN	
 		FOR nValveBankIdx := 0 TO GVL_ValveBankConfig.nMaxDeviceCount - 1 DO
-
-		mValveBankEnable();
-		//	IF afbValveBank[nValveBankIdx].pDeviceEnabled THEN
+	//	IF afbValveBank[nValveBankIdx].pDeviceEnabled THEN
 				mValveBankManual();
 				mValveBankRunMask();
-		GVL_MapValveBank.aIoEx260[nValveBankIdx].Out0 := DWORD_TO_SINT(GVL_MapValveBank.nValveMaskRaw);
-		GVL_MapValveBank.aIoEx260[nValveBankIdx].Out1 := DWORD_TO_SINT(SHR(GVL_MapValveBank.nValveMaskRaw, 8));
-		GVL_MapValveBank.aIoEx260[nValveBankIdx].Out2 := DWORD_TO_SINT(SHR(GVL_MapValveBank.nValveMaskRaw, 16));
-		GVL_MapValveBank.aIoEx260[nValveBankIdx].Out3 := DWORD_TO_SINT(SHR(GVL_MapValveBank.nValveMaskRaw, 24));
+GVL_MapValveBank.aIoEx260[nValveBankIdx].Out0 := DWORD_TO_USINT(GVL_MapValveBank.nValveMaskRaw AND 16#FF);
+GVL_MapValveBank.aIoEx260[nValveBankIdx].Out1 := DWORD_TO_USINT(SHR(GVL_MapValveBank.nValveMaskRaw,  8) AND 16#FF);
+GVL_MapValveBank.aIoEx260[nValveBankIdx].Out2 := DWORD_TO_USINT(SHR(GVL_MapValveBank.nValveMaskRaw, 16) AND 16#FF);
+GVL_MapValveBank.aIoEx260[nValveBankIdx].Out3 := DWORD_TO_USINT(SHR(GVL_MapValveBank.nValveMaskRaw, 24) AND 16#FF);
 		//ELSE
 		//		afbValveBank[nValveBankIdx].pDeviceFaulted := TRUE;  /// add fault conditions later
 		//END_IF
@@ -319,8 +317,8 @@ END_VAR
         <ST><![CDATA[
 // Manual Valve Control - Call FB_ValveBank
 
-		afbValveBank[nDeviceIndex](	abReqOpenManual 	:= anReqOpenManual[nDeviceIndex],
-									abReqCloseManual	:= anReqCloseManual[nDeviceIndex]);
+afbValveBank[nValveBankIdx]( abReqOpenManual  := anReqOpenManual[nValveBankIdx],
+                             abReqCloseManual := anReqCloseManual[nValveBankIdx]);
 ]]></ST>
       </Implementation>
     </Method>

@@ -7,10 +7,10 @@ STRUCT
 	Ctrl 	AT %Q* : UINT;
 	In0 	AT %I* : SINT;
 	In1 	AT %I* : SINT;
-	Out0 	AT %Q* : SINT;
-	Out1 	AT %Q* : SINT;
-	Out2 	AT %Q* : SINT;
-	Out3 	AT %Q* : SINT;
+	Out0 	AT %Q* : USINT;
+	Out1 	AT %Q* : USINT;
+	Out2 	AT %Q* : USINT;
+	Out3 	AT %Q* : USINT;
 END_STRUCT
 END_TYPE
 ]]></Declaration>

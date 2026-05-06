@@ -50,6 +50,11 @@
       "name": "Fonts/Fonts.css",
       "description": "",
       "type": "Stylesheet"
+    },
+    {
+      "name": "Scripts/DynamicDataGrid_StationRecipe.js",
+      "description": "",
+      "type": "JavaScript"
     }
   ],
   "userControls": [],

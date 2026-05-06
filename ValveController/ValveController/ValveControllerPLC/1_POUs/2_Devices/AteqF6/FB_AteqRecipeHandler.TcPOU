@@ -39,7 +39,7 @@ END_VAR
 	CASE eStatesAteqRecipeHandler OF
 
         E_AteqRecipeHandlerSteps.RECIPE_IDLE: // Idle 
-			
+
 			IF bAutoTestRecipeStart AND eAteqProgramSeqStates = SEQ_IDLE THEN
 				tValveStable.PT := GVL_ValveBankConfig.tValveStabilizationTime;
 				nIndexToCurrentProgram := 0;
@@ -47,8 +47,8 @@ END_VAR
 				bAutoTestRecipeStart := FALSE;
 				eStatesAteqRecipeHandler := E_AteqRecipeHandlerSteps.RECIPE_TRIGGER_VALVES;
 			END_IF
-			
-			
+
+
         E_AteqRecipeHandlerSteps.RECIPE_TRIGGER_VALVES: // Valve Cmd On From Mask
             IF NOT bValveBankHasAnyError THEN
 				tRecipeHandlerTimeout(IN := FALSE);
@@ -58,7 +58,7 @@ END_VAR
 			ELSIF tRecipeHandlerTimeout.Q THEN
 					eStatesAteqRecipeHandler := 4;
 			END_IF
-			
+
 
         E_AteqRecipeHandlerSteps.RECIPE_WAIT_VALVES: //  Wait for valve stabilization
             tValveStable(IN := TRUE);
@@ -69,8 +69,8 @@ END_VAR
 			ELSIF tRecipeHandlerTimeout.Q THEN
 					eStatesAteqRecipeHandler := E_AteqRecipeHandlerSteps.RECIPE_TIMEOUT;
             END_IF
-		
-			
+
+
 		E_AteqRecipeHandlerSteps.RECIPE_RUN_ATEQ:
     		nProgramNumber := anProgramNumberRecipe[nIndexToCurrentProgram];
     		bProgramSeqRunCmdToAteq := TRUE;
@@ -82,19 +82,24 @@ END_VAR
         		eStatesAteqRecipeHandler := E_AteqRecipeHandlerSteps.RECIPE_TIMEOUT;
     		END_IF
 
-			         	
-		E_AteqRecipeHandlerSteps.RECIPE_RESULT_STORED: //Recipe Handler Error
-		nValveMask := 0; // Reset Valves
-			IF bLastResultsStored THEN
-				bProgramSeqResetCmdToAteq := TRUE; // Reset ATEQ
-				 IF nIndexToCurrentProgram >= nNumOfActiveProgramsToRun - 1 THEN
-                	eStatesAteqRecipeHandler := E_AteqRecipeHandlerSteps.RECIPE_IDLE;
-            	ELSE
-                	nIndexToCurrentProgram := nIndexToCurrentProgram + 1;
-                	eStatesAteqRecipeHandler := E_AteqRecipeHandlerSteps.RECIPE_TRIGGER_VALVES;
-            	END_IF
-			END_IF
-		
+
+		E_AteqRecipeHandlerSteps.RECIPE_RESULT_STORED:
+    		nValveMask := 0; // Reset Valves
+    		IF bLastResultsStored THEN
+        		bProgramSeqResetCmdToAteq := TRUE; // Request reset of ATEQ
+        // Wait until ATEQ has actually returned to IDLE before moving on
+        		IF eAteqProgramSeqStates = E_AteqProgramSeqSteps.SEQ_IDLE THEN
+            		bProgramSeqResetCmdToAteq := FALSE;
+            		IF nIndexToCurrentProgram >= nNumOfActiveProgramsToRun - 1 THEN
+                		eStatesAteqRecipeHandler := E_AteqRecipeHandlerSteps.RECIPE_IDLE;
+           			ELSE
+               			nIndexToCurrentProgram := nIndexToCurrentProgram + 1;
+                		eStatesAteqRecipeHandler := E_AteqRecipeHandlerSteps.RECIPE_TRIGGER_VALVES;
+            		END_IF
+        		END_IF
+    		END_IF
+			
+
 			E_AteqRecipeHandlerSteps.RECIPE_ERROR:
 			;
 			E_AteqRecipeHandlerSteps.RECIPE_TIMEOUT:

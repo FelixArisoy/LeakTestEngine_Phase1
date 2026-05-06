@@ -61,7 +61,7 @@
     <ServerParameters />
     <HmiCommunicationServerPort>3000</HmiCommunicationServerPort>
     <HmiCommunicationServerAuthPort>13000</HmiCommunicationServerAuthPort>
-    <HmiCommunicationRouterPort>10101</HmiCommunicationRouterPort>
+    <HmiCommunicationRouterPort>10102</HmiCommunicationRouterPort>
     <HmiUseX64>True</HmiUseX64>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|TwinCAT HMI' ">
@@ -115,6 +115,12 @@
   <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)" />
   <Target Name="ReBuild" DependsOnTargets="Clean; Build" />
   <ItemGroup>
+    <Content Include="Scripts\DynamicDataGrid_StationRecipe.ts">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Scripts\DynamicDataGrid_StationRecipe.js">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="View1.view">
       <SubType>Content</SubType>
     </Content>
@@ -126,6 +132,7 @@
     <Folder Include="Imports\Videos" />
     <Folder Include="KeyboardLayouts\" />
     <Folder Include="Localization" />
+    <Folder Include="Scripts" />
     <Folder Include="Themes" />
     <Folder Include="Themes\Base-Dark\Images\" />
     <Folder Include="Themes\Base\" />

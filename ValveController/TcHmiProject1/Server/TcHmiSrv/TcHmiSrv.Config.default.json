@@ -2644,6 +2644,16 @@
             },
             "USEMAPPING": true
         },
+        "PLC1.GVL_StationConfig.nNumOfActiveStations": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_StationConfig::nNumOfActiveStations",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/UINT"
+            },
+            "USEMAPPING": true
+        },
         "PLC1.GVL_ValveBankConfig.nNumOfActiveValveBanks": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -3634,6 +3644,7 @@
                 "PLC1.GVL_AteqConfig.nNumOfActiveDevices": 3,
                 "PLC1.GVL_AteqConfig.nNumOfActiveProgramsToRun": 3,
                 "PLC1.GVL_LeakTestConfig.nStep": 3,
+                "PLC1.GVL_StationConfig.nNumOfActiveStations": 3,
                 "PLC1.GVL_ValveBankConfig.nNumOfActiveValveBanks": 3,
                 "PLC1.GVL_ValveBankConfig.nNumOfActiveValves": 3,
                 "PLC1.GVL_VisuControlHMI.aComboboxEntries.0.id": 3,
