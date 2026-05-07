@@ -12,7 +12,7 @@ VAR_GLOBAL
 	aComboboxEntries : ARRAY [1..3] OF ST_ComboboxEntry;
 	nSelectedValue : INT;
 	
-	aDataGridStationRecipe	: ARRAY [0..GVL_StationConfig.nMaxStationCount - 1] OF ST_StationRecipe;
+	aDataGridStationConfig	: ARRAY [0..GVL_StationConfig.nMaxStationCount - 1] OF ST_StationRecipe;
 	aDataGridAteqRecipe		: ARRAY [0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqRecipe;
 	aDataGridValveBankRecipe: ARRAY [0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF ST_ValveBankRecipe;
 	aDataGridLeakTestRecipe : ARRAY [0..GVL_LeakTestConfig.nMaxStepCount - 1] OF ST_LeakTestRecipe;

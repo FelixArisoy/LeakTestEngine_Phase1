@@ -2,158 +2,16 @@
   <div id="ViewDesktopBeckhoffLogo" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-src="Images/Beckhoff_Logo.svg" data-tchmi-left="20" data-tchmi-top="20" data-tchmi-width="194" data-tchmi-height="57">
 
   </div>
-<div id="TcHmiCombobox" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiCombobox" data-tchmi-auto-focus-out="true" data-tchmi-combobox-text="Select" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="439" data-tchmi-left-unit="px" data-tchmi-top="77" data-tchmi-top-unit="px" data-tchmi-width="180" data-tchmi-width-unit="px" data-tchmi-selected-id="">
-<script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
-{
-  "top": 3,
-  "right": 3,
-  "bottom": 3,
-  "left": 3
-}
-</script>
-
+<div id="TcHmiTextblock_7" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-text="Num Of Active Leak Test Stations" data-tchmi-top="87" data-tchmi-top-unit="px" data-tchmi-width="168" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
 </div>
-<div id="TcHmiNumericInput" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="179" data-tchmi-left-unit="px" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top="123" data-tchmi-top-unit="px" data-tchmi-value="%s%PLC1.GVL_AteqConfig.nNumOfActiveDevices%/s%" data-tchmi-width="35" data-tchmi-width-unit="px">
-<script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
-{
-  "top": 3,
-  "right": 3,
-  "bottom": 3,
-  "left": 3
-}
-</script>
-
-
-
-
-
-
-
-</div>
-<div id="TcHmiTextblock" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-text="Num Of Active ATEQ Devices" data-tchmi-top="123" data-tchmi-top-unit="px" data-tchmi-width="159" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
-</div>
-<div id="TcHmiNumericInput_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="584" data-tchmi-left-unit="px" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top="137" data-tchmi-top-unit="px" data-tchmi-value="%s%PLC1.GVL_AteqConfig.nNumOfActiveProgramsToRun%/s%" data-tchmi-width="35" data-tchmi-width-unit="px">
-<script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
-{
-  "top": 3,
-  "right": 3,
-  "bottom": 3,
-  "left": 3
-}
-</script>
-
-
-
-
-
-
-
-</div>
-<div id="TcHmiTextblock_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="432" data-tchmi-left-unit="px" data-tchmi-text="To Set Num Of Active Programs" data-tchmi-top="137" data-tchmi-top-unit="px" data-tchmi-width="152" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
-</div>
-<div id="TcHmiTextblock_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="270" data-tchmi-left-unit="px" data-tchmi-text="Indexed ATEQ Device No" data-tchmi-top="138" data-tchmi-top-unit="px" data-tchmi-width="124" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
-</div>
-<div id="TcHmiNumericInput_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="394" data-tchmi-left-unit="px" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top="138" data-tchmi-top-unit="px" data-tchmi-value="%s%PLC1.GVL_AteqConfig.nAteqDeviceIndex%/s%" data-tchmi-width="35" data-tchmi-width-unit="px">
-<script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
-{
-  "top": 3,
-  "right": 3,
-  "bottom": 3,
-  "left": 3
-}
-</script>
-
-
-
-
-
-
-
-</div>
-<div id="TcHmiTextblock_6" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="235" data-tchmi-left-unit="px" data-tchmi-text="Num Of Active ValveBanks" data-tchmi-top="77" data-tchmi-top-unit="px" data-tchmi-width="159" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
-</div>
-<div id="TcHmiNumericInput_6" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="394" data-tchmi-left-unit="px" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top="77" data-tchmi-top-unit="px" data-tchmi-value="%s%PLC1.GVL_ValveBankConfig.nNumOfActiveValveBanks%/s%" data-tchmi-width="35" data-tchmi-width-unit="px">
-<script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
-{
-  "top": 3,
-  "right": 3,
-  "bottom": 3,
-  "left": 3
-}
-</script>
-
-
-
-
-
-
-
-</div>
-<div id="TcHmiTextblock_7" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-text="Num Of Active Leak Test Steps" data-tchmi-top="87" data-tchmi-top-unit="px" data-tchmi-width="159" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
-</div>
-<div id="TcHmiNumericInput_7" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="179" data-tchmi-left-unit="px" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top="87" data-tchmi-top-unit="px" data-tchmi-value="%s%PLC1.GVL_LeakTestConfig.nStep%/s%" data-tchmi-width="35" data-tchmi-width-unit="px">
-<script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
-{
-  "top": 3,
-  "right": 3,
-  "bottom": 3,
-  "left": 3
-}
-</script>
-
-
-
-
-
-
-
-</div>
-<div id="TcHmiNumericInput_8" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="584" data-tchmi-left-unit="px" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top="112" data-tchmi-top-unit="px" data-tchmi-value="%s%PLC1.GVL_ValveBankConfig.nNumOfActiveValves%/s%" data-tchmi-width="35" data-tchmi-width-unit="px">
-<script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
-{
-  "top": 3,
-  "right": 3,
-  "bottom": 3,
-  "left": 3
-}
-</script>
-
-
-
-
-
-
-
-</div>
-<div id="TcHmiTextblock_8" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="432" data-tchmi-left-unit="px" data-tchmi-text="To Set Num Of Active Valves" data-tchmi-top="112" data-tchmi-top-unit="px" data-tchmi-width="152" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
-</div>
-<div id="TcHmiTextblock_9" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="270" data-tchmi-left-unit="px" data-tchmi-text="Indexed ValveBank No" data-tchmi-top="113" data-tchmi-top-unit="px" data-tchmi-width="124" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
-</div>
-<div id="TcHmiNumericInput_9" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="394" data-tchmi-left-unit="px" data-tchmi-max-value="100" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top="113" data-tchmi-top-unit="px" data-tchmi-value="%s%PLC1.GVL_AteqConfig.nNumOfActiveProgramsToRun%/s%" data-tchmi-width="35" data-tchmi-width-unit="px">
-<script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
-{
-  "top": 3,
-  "right": 3,
-  "bottom": 3,
-  "left": 3
-}
-</script>
-
-
-
-
-
-
-
-</div>
-<div id="TcHmiDatagrid" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiDatagrid" data-tchmi-height="267" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="194" data-tchmi-top-unit="px" data-tchmi-width="471" data-tchmi-width-unit="px" data-tchmi-src-data="%s%PLC1.GVL_VisuControlHMI.aDataGridStationRecipe%/s%" data-tchmi-zindex="1">
+<div id="TcHmiDatagridStationConfig" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiDatagrid" data-tchmi-height="267" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="123" data-tchmi-top-unit="px" data-tchmi-width="471" data-tchmi-width-unit="px" data-tchmi-zindex="1">
 <script data-tchmi-target-attribute="data-tchmi-src-column" type="application/json">
 [
   {
     "name": "bEnabled",
     "label": "EnableStation",
     "control": "ToggleSwitch",
-    "width": 120,
+    "width": 100,
     "widthUnit": "px",
     "resize": true,
     "sortable": false,
@@ -227,22 +85,7 @@
   }
 ]
 </script>
-<script data-tchmi-target-attribute="data-tchmi-src-data" type="application/json">
-[
-  {
-    "Test1": "Example Data",
-    "Test2": 42,
-    "Test3": true,
-    "Test4": "Editable Data"
-  },
-  {
-    "Test1": "Example Data",
-    "Test2": 3.1415,
-    "Test3": false,
-    "Test4": "Editable Data"
-  }
-]
-</script>
+
 <script data-tchmi-target-attribute="data-tchmi-cell-content-padding" type="application/json">
 {
   "left": 3,
@@ -265,11 +108,11 @@
       {
         "objectType": "WriteToSymbol",
         "active": true,
-        "symbolExpression": "%s%PLC1.GVL_VisuControlHMI.aDataGridStationRecipe%/s%",
+        "symbolExpression": "%s%PLC1.GVL_VisuControlHMI.aDataGridStationConfig%/s%",
         "value": {
           "objectType": "Symbol",
           "valueType": "tchmi:general#/definitions/String",
-          "symbolExpression": "%ctrl%TcHmiDatagrid::SrcData%/ctrl%"
+          "symbolExpression": "%ctrl%TcHmiDatagridStationConfig::SrcData%/ctrl%"
         },
         "asyncWait": true
       }
@@ -278,9 +121,7 @@
 ]
 </script>
 </div>
-<div id="TcHmiButton" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="391" data-tchmi-left-unit="px" data-tchmi-text="Write" data-tchmi-top="471" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-word-wrap="true">
-</div>
-<div id="TcHmiDatagrid_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiDatagrid" data-tchmi-height="267" data-tchmi-height-unit="px" data-tchmi-left="501" data-tchmi-left-unit="px" data-tchmi-top="194" data-tchmi-top-unit="px" data-tchmi-width="267" data-tchmi-width-unit="px" data-tchmi-zindex="1" data-tchmi-src-data="%s%PLC1.GVL_VisuControlHMI.aDataGridAteqRecipe%/s%">
+<div id="TcHmiDatagrid_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiDatagrid" data-tchmi-height="267" data-tchmi-height-unit="px" data-tchmi-left="501" data-tchmi-left-unit="px" data-tchmi-top="123" data-tchmi-top-unit="px" data-tchmi-width="267" data-tchmi-width-unit="px" data-tchmi-zindex="1" data-tchmi-src-data="%s%PLC1.GVL_VisuControlHMI.aDataGridAteqRecipe%/s%">
 <script data-tchmi-target-attribute="data-tchmi-src-column" type="application/json">
 [
   {
@@ -358,7 +199,5 @@
   }
 ]
 </script>
-</div>
-<div id="TcHmiButton_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="668" data-tchmi-left-unit="px" data-tchmi-text="Config Screen" data-tchmi-top="471" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-word-wrap="true">
 </div>
 </div>

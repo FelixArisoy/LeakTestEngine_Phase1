@@ -79,8 +79,8 @@
 			</AdditionalProjectFiles>
 		</System>
 		<Plc>
-			<Project GUID="{FF505B91-FACF-4A2B-B73E-9C5E3B10185D}" Name="ValveControllerPLC" PrjFilePath="ValveControllerPLC\ValveControllerPLC.plcproj" TmcFilePath="ValveControllerPLC\ValveControllerPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{90F1612C-3ADF-AE93-2502-BCF902AB948C}">
+			<Project Disabled="true" GUID="{FF505B91-FACF-4A2B-B73E-9C5E3B10185D}" Name="ValveControllerPLC" PrjFilePath="ValveControllerPLC\ValveControllerPLC.plcproj" TmcFilePath="ValveControllerPLC\ValveControllerPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{79D4553B-BEF0-1951-1757-B18191FEEAC5}">
 					<Name>ValveControllerPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
@@ -710,56 +710,6 @@
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapEL6070.Frm0WcState</Name>
-							<Comment><![CDATA[			
-0x0001 = 1. EtherCAT command NOT sent (NOP requested)							
-0x0002 = 2. EtherCAT command not sent (NOP requested)																				
-0x0004 = 3. EtherCAT command not sent (NOP requested)																				
-...																				
-0x4000 = 15. EtherCAT command not sent (NOP requested)																				
-0x8000 = complete frame not sent										
-]]></Comment>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.Frm0InputToggle</Name>
-							<Comment><![CDATA[			
-0x0001 = wrong working counter of 1. EtherCAT command received								
-0x0002 = wrong working counter of 2. EtherCAT command received																	
-0x0004 = wrong working counter of 3. EtherCAT command received																				
-...																				
-0x4000 = wrong working counter of 15. EtherCAT command received																				
-0x8000 = complete frame missing										
-]]></Comment>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.SlaveCount</Name>
-							<Comment><![CDATA[ Actual count OF EtherCAT slaves received	]]></Comment>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.DevState</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.ChangeCount</Name>
-							<Comment><![CDATA[InfoData]]></Comment>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.DevId</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.AmsNetId</Name>
-							<Type GUID="{18071995-0000-0000-0000-000000000041}">AMSNETID</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.CfgSlaveCount</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
 							<Name>GVL_MapValveBank.aIoEx260[0].State</Name>
 							<Type>UINT</Type>
 						</Var>
@@ -879,12 +829,102 @@
 							<Name>GVL_MapValveBank.aIoEx260[9].In1</Name>
 							<Type>SINT</Type>
 						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.Frm0WcState</Name>
+							<Comment><![CDATA[			
+0x0001 = 1. EtherCAT command NOT sent (NOP requested)							
+0x0002 = 2. EtherCAT command not sent (NOP requested)																				
+0x0004 = 3. EtherCAT command not sent (NOP requested)																				
+...																				
+0x4000 = 15. EtherCAT command not sent (NOP requested)																				
+0x8000 = complete frame not sent										
+]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.Frm0InputToggle</Name>
+							<Comment><![CDATA[			
+0x0001 = wrong working counter of 1. EtherCAT command received								
+0x0002 = wrong working counter of 2. EtherCAT command received																	
+0x0004 = wrong working counter of 3. EtherCAT command received																				
+...																				
+0x4000 = wrong working counter of 15. EtherCAT command received																				
+0x8000 = complete frame missing										
+]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.SlaveCount</Name>
+							<Comment><![CDATA[ Actual count OF EtherCAT slaves received	]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.DevState</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.ChangeCount</Name>
+							<Comment><![CDATA[InfoData]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.DevId</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.AmsNetId</Name>
+							<Type GUID="{18071995-0000-0000-0000-000000000041}">AMSNETID</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.CfgSlaveCount</Name>
+							<Type>UINT</Type>
+						</Var>
 					</Vars>
 					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
 						<Name>UnitTestTask Outputs</Name>
 						<Var>
 							<Name>GVL_MapValveBank.devCtrl</Name>
 							<Type GUID="{391652FB-7F01-987E-1D53-3B165841CFCE}">ARRAY [1..8] OF UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[0].Ctrl</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[1].Ctrl</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[2].Ctrl</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[3].Ctrl</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[4].Ctrl</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[5].Ctrl</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[6].Ctrl</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[7].Ctrl</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[8].Ctrl</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[9].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
 							<Name>GVL_MapEL6070.Frm0Ctrl</Name>
@@ -939,46 +979,6 @@
 ...																				
 0x4000 = copy data with wrong working counter of 15. EtherCAT command										
 ]]></Comment>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[0].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[1].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[2].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[3].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[4].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[5].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[6].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[7].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[8].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[9].Ctrl</Name>
 							<Type>UINT</Type>
 						</Var>
 					</Vars>

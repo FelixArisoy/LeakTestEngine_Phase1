@@ -6,7 +6,7 @@ VAR_GLOBAL CONSTANT
 	nMaxStationCount : UINT := 10;
 END_VAR
 VAR_GLOBAL
-	nNumOfActiveStations : UINT;
+	nNumOfActiveStations : UINT := 1;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>
