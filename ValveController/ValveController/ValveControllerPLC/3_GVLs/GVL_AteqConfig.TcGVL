@@ -20,8 +20,8 @@ END_VAR
 VAR_GLOBAL
 	nAteqDeviceIndex	:UINT;
 	nNumOfActiveProgramsToRun	: UINT;
-	nNumOfActiveDevices 	: UINT; // Set; based on Total Num of F6 ATEQ devices
-	abAutoTestRecipeStart : BOOL; // will be binded to Main PLC Run Cmd... Debug
+	nNumOfActiveDevices 		: UINT; // Set; based on Total Num of F6 ATEQ devices
+	abAutoTestRecipeStart 		: BOOL; // will be binded to Main PLC Run Cmd... Debug
 	eDeviceEndianSetTo 	: E_AteqEndianType; // Set top level PRG	
 END_VAR
 ]]></Declaration>

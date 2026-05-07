@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.74" ClassName="CDevEtherCATDef" SubType="111">
 	<Device Id="4" AmlId="{542F2303-6C5F-4C83-BAF9-64903B6426F3}" DevType="111" DevFlags="#x0003" AmsPort="28676" AmsNetId="10.1.176.222.5.1" RemoteName="Device 4 X000 (EtherCAT)" InfoImageId="10">
-		<Name>Device 4 X000 (EtherCAT)</Name>
+		<Name>__FILENAME__</Name>
 		<AddressInfo>
 			<Pnp>
 				<DeviceDesc>Ethernet X000 (TwinCAT-Intel PCI Ethernet Adapter (</DeviceDesc>

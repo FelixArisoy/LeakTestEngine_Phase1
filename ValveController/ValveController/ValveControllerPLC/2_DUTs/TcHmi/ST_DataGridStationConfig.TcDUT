@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_DataGridStationConfig" Id="{bad48431-a915-0160-1460-5a36995f5fa3}">
+    <Declaration><![CDATA[TYPE ST_DataGridStationConfig :
+STRUCT
+	bEnabled : BOOL := FALSE; // To Enable Stations
+	nActiveTestSteps	: UINT := 1;
+	nActiveAteqDevices	: UINT := 1;
+	nActiveValveBanks	: UINT := 1;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

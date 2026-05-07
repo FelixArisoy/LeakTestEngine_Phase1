@@ -392,7 +392,7 @@
                     </o>
                     <o>
                       <v n="Id">72808681L</v>
-                      <v n="Value">"GVL_VisuControlHMI.anValveMaskListToDisplay"</v>
+                      <v n="Value">"GVL_TcHmi.anValveMaskListToDisplay"</v>
                     </o>
                     <o>
                       <v n="Id">1636615684L</v>
@@ -436,7 +436,7 @@
                     </o>
                     <o>
                       <v n="Id">3854506369L</v>
-                      <v n="Value">"GVL_VisuControlHMI.anValveMaskListToDisplay[INDEX]"</v>
+                      <v n="Value">"GVL_TcHmi.anValveMaskListToDisplay[INDEX]"</v>
                     </o>
                     <o>
                       <v n="Id">2232123230L</v>
@@ -444,7 +444,7 @@
                     </o>
                     <o>
                       <v n="Id">2685023577L</v>
-                      <v n="Value">"GVL_VisuControlHMI.anValveMaskListToDisplay[INDEX]"</v>
+                      <v n="Value">"GVL_TcHmi.anValveMaskListToDisplay[INDEX]"</v>
                     </o>
                     <o>
                       <v n="Id">4036189354L</v>
@@ -628,7 +628,7 @@
                     </o>
                     <o>
                       <v n="Id">2477733581L</v>
-                      <v n="Value">"GVL_VisuControlHMI.visValveMaskIdx"</v>
+                      <v n="Value">"GVL_TcHmi.visValveMaskIdx"</v>
                     </o>
                     <o>
                       <v n="Id">823443203L</v>
@@ -646,7 +646,7 @@
                   <v>OnMouseClick</v>
                   <a cet="InputBoxInputAction">
                     <o>
-                      <v n="InputBoxVariable">"GVL_VisuControlHMI.visValveMaskIdx"</v>
+                      <v n="InputBoxVariable">"GVL_TcHmi.visValveMaskIdx"</v>
                       <v n="InputType">"VisuDialogs.Numpad"</v>
                       <v n="InputBoxMin">""</v>
                       <v n="InputBoxMax">""</v>
@@ -937,7 +937,7 @@
                     </o>
                     <o>
                       <v n="Id">2477733581L</v>
-                      <v n="Value">"GVL_VisuControlHMI.visValveMaskIdx"</v>
+                      <v n="Value">"GVL_TcHmi.visValveMaskIdx"</v>
                     </o>
                     <o>
                       <v n="Id">823443203L</v>
@@ -955,7 +955,7 @@
                   <v>OnMouseClick</v>
                   <a cet="InputBoxInputAction">
                     <o>
-                      <v n="InputBoxVariable">"GVL_VisuControlHMI.visValveMaskIdx"</v>
+                      <v n="InputBoxVariable">"GVL_TcHmi.visValveMaskIdx"</v>
                       <v n="InputType">"VisuDialogs.Numpad"</v>
                       <v n="InputBoxMin">""</v>
                       <v n="InputBoxMax">""</v>
@@ -1117,7 +1117,7 @@
                     </o>
                     <o>
                       <v n="Id">2477733581L</v>
-                      <v n="Value">"GVL_VisuControlHMI.visValveMaskIdx"</v>
+                      <v n="Value">"GVL_TcHmi.visValveMaskIdx"</v>
                     </o>
                     <o>
                       <v n="Id">823443203L</v>
@@ -1135,7 +1135,7 @@
                   <v>OnMouseClick</v>
                   <a cet="InputBoxInputAction">
                     <o>
-                      <v n="InputBoxVariable">"GVL_VisuControlHMI.visValveMaskIdx"</v>
+                      <v n="InputBoxVariable">"GVL_TcHmi.visValveMaskIdx"</v>
                       <v n="InputType">"VisuDialogs.Numpad"</v>
                       <v n="InputBoxMin">""</v>
                       <v n="InputBoxMax">""</v>
@@ -1297,7 +1297,7 @@
                     </o>
                     <o>
                       <v n="Id">2477733581L</v>
-                      <v n="Value">"GVL_VisuControlHMI.visValveMaskIdx"</v>
+                      <v n="Value">"GVL_TcHmi.visValveMaskIdx"</v>
                     </o>
                     <o>
                       <v n="Id">823443203L</v>
@@ -1315,7 +1315,7 @@
                   <v>OnMouseClick</v>
                   <a cet="InputBoxInputAction">
                     <o>
-                      <v n="InputBoxVariable">"GVL_VisuControlHMI.visValveMaskIdx"</v>
+                      <v n="InputBoxVariable">"GVL_TcHmi.visValveMaskIdx"</v>
                       <v n="InputType">"Default"</v>
                       <v n="InputBoxMin">"0"</v>
                       <v n="InputBoxMax">"nNumOfActiveProgramsToRun"</v>
@@ -1477,7 +1477,7 @@
                     </o>
                     <o>
                       <v n="Id">2477733581L</v>
-                      <v n="Value">"GVL_VisuControlHMI.nValveMask"</v>
+                      <v n="Value">"GVL_TcHmi.nValveMask"</v>
                     </o>
                     <o>
                       <v n="Id">823443203L</v>
@@ -1495,7 +1495,7 @@
                   <v>OnMouseClick</v>
                   <a cet="InputBoxInputAction">
                     <o>
-                      <v n="InputBoxVariable">"GVL_VisuControlHMI.nValveMask"</v>
+                      <v n="InputBoxVariable">"GVL_TcHmi.nValveMask"</v>
                       <v n="InputType">"VisuDialogs.Numpad"</v>
                       <v n="InputBoxMin">""</v>
                       <v n="InputBoxMax">""</v>
@@ -1786,7 +1786,7 @@
                     </o>
                     <o>
                       <v n="Id">2477733581L</v>
-                      <v n="Value">"GVL_VisuControlHMI.nValveMask"</v>
+                      <v n="Value">"GVL_TcHmi.nValveMask"</v>
                     </o>
                     <o>
                       <v n="Id">823443203L</v>
@@ -1804,7 +1804,7 @@
                   <v>OnMouseClick</v>
                   <a cet="InputBoxInputAction">
                     <o>
-                      <v n="InputBoxVariable">"GVL_VisuControlHMI.nValveMask"</v>
+                      <v n="InputBoxVariable">"GVL_TcHmi.nValveMask"</v>
                       <v n="InputType">"VisuDialogs.Numpad"</v>
                       <v n="InputBoxMin">""</v>
                       <v n="InputBoxMax">""</v>
@@ -1966,7 +1966,7 @@
                     </o>
                     <o>
                       <v n="Id">2477733581L</v>
-                      <v n="Value">"GVL_VisuControlHMI.nValveMask"</v>
+                      <v n="Value">"GVL_TcHmi.nValveMask"</v>
                     </o>
                     <o>
                       <v n="Id">823443203L</v>
@@ -1984,7 +1984,7 @@
                   <v>OnMouseClick</v>
                   <a cet="InputBoxInputAction">
                     <o>
-                      <v n="InputBoxVariable">"GVL_VisuControlHMI.nValveMask"</v>
+                      <v n="InputBoxVariable">"GVL_TcHmi.nValveMask"</v>
                       <v n="InputType">"VisuDialogs.Numpad"</v>
                       <v n="InputBoxMin">""</v>
                       <v n="InputBoxMax">""</v>
@@ -2146,7 +2146,7 @@
                     </o>
                     <o>
                       <v n="Id">2477733581L</v>
-                      <v n="Value">"GVL_VisuControlHMI.nValveMask"</v>
+                      <v n="Value">"GVL_TcHmi.nValveMask"</v>
                     </o>
                     <o>
                       <v n="Id">823443203L</v>
@@ -2164,7 +2164,7 @@
                   <v>OnMouseClick</v>
                   <a cet="InputBoxInputAction">
                     <o>
-                      <v n="InputBoxVariable">"GVL_VisuControlHMI.nValveMask"</v>
+                      <v n="InputBoxVariable">"GVL_TcHmi.nValveMask"</v>
                       <v n="InputType">"Default"</v>
                       <v n="InputBoxMin">""</v>
                       <v n="InputBoxMax">""</v>
@@ -4045,7 +4045,7 @@
                     </o>
                     <o>
                       <v n="Id">2477733581L</v>
-                      <v n="Value">"GVL_ValveBankConfig.nMaxDeviceCount"</v>
+                      <v n="Value">"nActiveValveBanks"</v>
                     </o>
                     <o>
                       <v n="Id">2597686782L</v>
@@ -4067,7 +4067,7 @@
                   <v>OnMouseClick</v>
                   <a cet="InputBoxInputAction">
                     <o>
-                      <v n="InputBoxVariable">"GVL_ValveBankConfig.nMaxDeviceCount"</v>
+                      <v n="InputBoxVariable">"nActiveValveBanks"</v>
                       <v n="InputType">"Default"</v>
                       <v n="InputBoxMin">""</v>
                       <v n="InputBoxMax">""</v>

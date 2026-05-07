@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <POU Name="FB_VisuControlHmi" Id="{44e419da-d1ca-0ad4-1138-0ce61d4d2251}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_VisuControlHmi
+  <POU Name="FB_TcHmi" Id="{44e419da-d1ca-0ad4-1138-0ce61d4d2251}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_TcHmi
 VAR_INPUT
 END_VAR
 VAR_OUTPUT
@@ -25,9 +25,9 @@ END_VAR
         <ST><![CDATA[// set the Combobox entries in the first cycle
 IF bIni THEN
 	FOR nCounter := 1 TO 3 DO
-		GVL_VisuControlHMI.aComboboxEntries[nCounter].id := nCounter;
-		GVL_VisuControlHMI.aComboboxEntries[nCounter].text := CONCAT('Display', aTexts[nCounter]);
-		GVL_VisuControlHMI.aComboboxEntries[nCounter].value := nCounter * 10;
+		GVL_TcHmi.aComboboxEntries[nCounter].id := nCounter;
+		GVL_TcHmi.aComboboxEntries[nCounter].text := CONCAT('Display', aTexts[nCounter]);
+		GVL_TcHmi.aComboboxEntries[nCounter].value := nCounter * 10;
 	END_FOR
 
 	bIni := FALSE;
@@ -46,7 +46,7 @@ VAR
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[eFormat := GVL_VisuControlHMI.nSelectedValue;
+        <ST><![CDATA[eFormat := GVL_TcHmi.nSelectedValue;
 CASE eFormat OF
 
     E_DisplayFormat.Decimal:
@@ -63,6 +63,15 @@ END_CASE
 mDisplayFormat := sOut;]]></ST>
       </Implementation>
     </Method>
+    <Method Name="mMapHmiData" Id="{e9901c75-e0f8-06ea-3beb-726cbc9fac19}">
+      <Declaration><![CDATA[METHOD mMapHmiData : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="mValveMaskEntry" Id="{0ec0a1ee-16c0-0ede-223e-2794791150b7}">
       <Declaration><![CDATA[METHOD mValveMaskEntry
 VAR_INPUT
@@ -72,12 +81,12 @@ VAR
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[Idx := GVL_VisuControlHMI.visValveMaskIdx;
+        <ST><![CDATA[Idx := GVL_TcHmi.visValveMaskIdx;
 
-	IF GVL_VisuControlHMI.nValveMask <> 0 THEN
-		GVL_VisuControlHMI.anValveMaskListToRecipe[Idx] := GVL_VisuControlHMI.nValveMask;
-		GVL_VisuControlHMI.nValveMask := 0; // To Clear the Text Box
-		GVL_VisuControlHMI.anValveMaskListToDisplay[Idx] := mDisplayFormat(nValue := GVL_VisuControlHMI.nValveMask) ;
+	IF GVL_TcHmi.nValveMask <> 0 THEN
+		GVL_TcHmi.anValveMaskListToRecipe[Idx] := GVL_TcHmi.nValveMask;
+		GVL_TcHmi.nValveMask := 0; // To Clear the Text Box
+		GVL_TcHmi.anValveMaskListToDisplay[Idx] := mDisplayFormat(nValue := GVL_TcHmi.nValveMask) ;
 	END_IF
 ]]></ST>
       </Implementation>

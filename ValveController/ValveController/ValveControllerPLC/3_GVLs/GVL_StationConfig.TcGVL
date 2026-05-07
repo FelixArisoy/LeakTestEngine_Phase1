@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <GVL Name="GVL_StationConfig" Id="{dca36831-11de-0605-3b71-366dc1955369}">
+    <Declaration><![CDATA[VAR_GLOBAL CONSTANT
+	nMaxStationCount : UINT := 10; // Used To Size StationConfig Arrays
+END_VAR
+VAR_GLOBAL
+	nNumOfActiveStation	: UINT := 1; // Default min one station exist
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

@@ -2,7 +2,7 @@
 <TcPlcObject Version="1.1.0.1">
   <GVL Name="GVL_ValveBankConfig" Id="{242c17b9-0e51-488a-a15c-f803a84e61a3}">
     <Declaration><![CDATA[VAR_GLOBAL CONSTANT
-	nMaxDeviceCount			: UINT 	:= 2;
+	nMaxDeviceCount			: UINT 	:= 100;
 	nMaxNumOfValveSlots		: UINT	:= 32;
 	tDeviceEnableTimeout	: TIME	:= T#2S;
 	bValveActTimeout		: TIME 	:= T#2S;

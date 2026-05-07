@@ -3,7 +3,11 @@
   <POU Name="PRG_Main" Id="{a3d4985a-23a4-4261-9530-cafe9c795619}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_Main
 VAR
-nValveBankIdx : UINT;
+nValveBankIdx 	: UINT;
+nStationIdx		: UINT;
+nActiveTestSteps	: UINT;
+nActiveAteqDevices	: UINT;
+nActiveValveBanks	: UINT;
 //####### Map Io #######
     astAteqIo 			: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqMapIo;
 	astAteqRawIo   		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqRawIo;
@@ -26,10 +30,7 @@ nValveBankIdx : UINT;
 //####### Recipe Handler per Ateq Device #######
 
 	afbAteqRecipeHandler 	: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF FB_AteqRecipeHandler;
-	anProgramNumberRecipe	: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF ARRAY[0..GVL_AteqConfig.nMaxProgramsToRun - 1] OF WORD;
-
-// ####### Visualization HMI
-	fbVisuControlHmi	: FB_VisuControlHmi;
+	anProgramNumberRecipe	: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ARRAY[0..GVL_AteqConfig.nMaxProgramsToRun - 1] OF WORD;
 
 // #######M_TestingAteqHandshakeSpeed DEBUG variables for delay and array storage:
 	bCommandSent       : BOOL := FALSE;
@@ -50,10 +51,15 @@ END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[// System Method Calls
 mSystemTime();
-fbVisuControlHmi(); // Do not place in a Method for Sysmbol Access in Visu
 
 // Process Calls
-mLeakTestProcess();]]></ST>
+FOR nStationIdx := 0 TO GVL_StationConfig.nNumOfActiveStation - 1 DO
+	nActiveTestSteps	:= GVL_TcHmi.aDataGridStationConfig[nStationIdx].nActiveTestSteps;
+	nActiveAteqDevices	:= GVL_TcHmi.aDataGridStationConfig[nStationIdx].nActiveAteqDevices;
+	nActiveValveBanks	:= GVL_TcHmi.aDataGridStationConfig[nStationIdx].nActiveValveBanks;
+	mLeakTestProcess();
+END_FOR
+]]></ST>
     </Implementation>
     <Method Name="mLeakTestProcess" Id="{68824a9f-061b-0c0b-322f-72077c8196c2}">
       <Declaration><![CDATA[METHOD mLeakTestProcess
@@ -73,17 +79,17 @@ GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.BigEndian; // Profinet
 
 
 /// VALVE BANK CALLS
-	IF GVL_ValveBankConfig.nMaxDeviceCount > 0 THEN	
-		FOR nValveBankIdx := 0 TO GVL_ValveBankConfig.nMaxDeviceCount - 1 DO
+	IF nActiveValveBanks > 0 THEN	
+		FOR nValveBankIdx := 0 TO nActiveValveBanks - 1 DO
 
 		mValveBankEnable();
 		//	IF afbValveBank[nValveBankIdx].pDeviceEnabled THEN
 				mValveBankManual();
 				mValveBankRunMask();
-		GVL_MapValveBank.aIoEx260[nValveBankIdx].Out0 := DWORD_TO_SINT(GVL_MapValveBank.nValveMaskRaw);
-		GVL_MapValveBank.aIoEx260[nValveBankIdx].Out1 := DWORD_TO_SINT(SHR(GVL_MapValveBank.nValveMaskRaw, 8));
-		GVL_MapValveBank.aIoEx260[nValveBankIdx].Out2 := DWORD_TO_SINT(SHR(GVL_MapValveBank.nValveMaskRaw, 16));
-		GVL_MapValveBank.aIoEx260[nValveBankIdx].Out3 := DWORD_TO_SINT(SHR(GVL_MapValveBank.nValveMaskRaw, 24));
+		GVL_MapValveBank.aIoEx260[nValveBankIdx].Out0 := DWORD_TO_BYTE(GVL_MapValveBank.nValveMaskRaw);
+		GVL_MapValveBank.aIoEx260[nValveBankIdx].Out1 := DWORD_TO_BYTE(SHR(GVL_MapValveBank.nValveMaskRaw, 8));
+		GVL_MapValveBank.aIoEx260[nValveBankIdx].Out2 := DWORD_TO_BYTE(SHR(GVL_MapValveBank.nValveMaskRaw, 16));
+		GVL_MapValveBank.aIoEx260[nValveBankIdx].Out3 := DWORD_TO_BYTE(SHR(GVL_MapValveBank.nValveMaskRaw, 24));
 		//ELSE
 		//		afbValveBank[nValveBankIdx].pDeviceFaulted := TRUE;  /// add fault conditions later
 		//END_IF
@@ -101,7 +107,7 @@ GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.BigEndian; // Profinet
 										eAteqProgramSeqStates	:= afbAteqControl[nDeviceIndex].eProgramSeqSteps,
 										eProgramInternalSteps	:= afbAteqControl[nDeviceIndex].eProgramInternalSteps,
 										bAutoTestRecipeStart	:= GVL_AteqConfig.abAutoTestRecipeStart,
-										anValveMask				:= GVL_VisuControlHMI.anValveMaskListToRecipe,
+										anValveMask				:= GVL_TcHmi.anValveMaskListToRecipe,
 										nNumOfACtiveProgramsToRun	:= GVL_AteqConfig.nNumOfActiveProgramsToRun,
 										nValveMask				=> GVL_MapValveBank.nValveMaskRaw );
 
@@ -291,7 +297,7 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[// Calls per ValveBank 
 
-FOR nValveBankIdx := 0 TO GVL_ValveBankConfig.nMaxDeviceCount - 1 DO
+FOR nValveBankIdx := 0 TO nActiveValveBanks - 1 DO
 	
 // Top Level Fault check per Valvebank and per Valves									
 	IF afbValveBank[nValveBankIdx].pDeviceFaulted THEN

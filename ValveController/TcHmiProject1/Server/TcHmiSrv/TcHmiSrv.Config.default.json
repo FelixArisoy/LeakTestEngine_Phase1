@@ -29,7 +29,62 @@
     "DEFAULTTIMEFORMATLOCALE": "client",
     "DEFAULTTIMEZONE": "client",
     "DEFAULTUSERGROUP": "__SystemUsers",
-    "DEFINITIONS": {},
+    "DEFINITIONS": {
+        "PLC1.ARRAY_0..9_OF-ST_DataGridStationConfig": {
+            "items": {
+                "$ref": "#/definitions/PLC1.ST_DataGridStationConfig"
+            },
+            "maxItems": 10,
+            "minItems": 10,
+            "type": "array"
+        },
+        "PLC1.ST_DataGridStationConfig": {
+            "properties": {
+                "bEnabled": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/BOOL"
+                        },
+                        {
+                            "comment": "To Enable Stations",
+                            "propertyOrder": 1
+                        }
+                    ]
+                },
+                "nActiveAteqDevices": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/UINT"
+                        },
+                        {
+                            "propertyOrder": 3
+                        }
+                    ]
+                },
+                "nActiveTestSteps": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/UINT"
+                        },
+                        {
+                            "propertyOrder": 2
+                        }
+                    ]
+                },
+                "nActiveValveBank": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:general#/definitions/UINT"
+                        },
+                        {
+                            "propertyOrder": 4
+                        }
+                    ]
+                }
+            },
+            "type": "object"
+        }
+    },
     "DEFLATECOMPRESSIONLEVEL": 5,
     "DIAGNOSTICS_DOMAINS": [],
     "DISABLED_CONFIGURATION_HINTS": [],
@@ -2510,6 +2565,23 @@
             },
             "USEMAPPING": true
         },
+        "PLC1.GVL_AteqConfig.abAutoTestRecipeStart": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_AteqConfig::abAutoTestRecipeStart",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "comment": "will be binded to Main PLC Run Cmd... Debug"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "PLC1.GVL_AteqConfig.nAteqDeviceIndex": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -2554,6 +2626,23 @@
             "MAPPING": "PLC1::GVL_LeakTestConfig::nStep",
             "SCHEMA": {
                 "$ref": "tchmi:general#/definitions/UINT"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_TcHmi.aDataGridStationConfig": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::aDataGridStationConfig",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "comment": "TcHmi"
+                    },
+                    {
+                        "$ref": "tchmi:server#/definitions/PLC1.ARRAY_0..9_OF-ST_DataGridStationConfig"
+                    }
+                ]
             },
             "USEMAPPING": true
         },
@@ -3523,10 +3612,12 @@
                 "LocalizeText": 3,
                 "Login": 3,
                 "Logout": 3,
+                "PLC1.GVL_AteqConfig.abAutoTestRecipeStart": 3,
                 "PLC1.GVL_AteqConfig.nAteqDeviceIndex": 3,
                 "PLC1.GVL_AteqConfig.nNumOfActiveDevices": 3,
                 "PLC1.GVL_AteqConfig.nNumOfActiveProgramsToRun": 3,
                 "PLC1.GVL_LeakTestConfig.nStep": 3,
+                "PLC1.GVL_TcHmi.aDataGridStationConfig": 3,
                 "PLC1.GVL_ValveBankConfig.nNumOfActiveValveBanks": 3,
                 "PLC1.GVL_ValveBankConfig.nNumOfActiveValves": 3,
                 "PLC1.GVL_VisuControlHMI.aComboboxEntries.0.id": 3,

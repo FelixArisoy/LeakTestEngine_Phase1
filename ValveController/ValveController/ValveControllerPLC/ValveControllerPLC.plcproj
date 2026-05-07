@@ -98,6 +98,9 @@
     <Compile Include="2_DUTs\GenericFieldDevice\ST_DeviceState.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="2_DUTs\TcHmi\ST_DataGridStationConfig.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="2_DUTs\ValveBank\E_ValveTransitionMode.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -113,10 +116,10 @@
     <Compile Include="2_DUTs\ValveBank\ST_ValveRawIo_EX260.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="2_DUTs\VisuHMI\E_DisplayFormat.TcTLEO">
+    <Compile Include="2_DUTs\TcHmi\E_DisplayFormat.TcTLEO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="2_DUTs\VisuHMI\ST_ComboboxEntry.TcDUT">
+    <Compile Include="2_DUTs\TcHmi\ST_ComboboxEntry.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="3_GVLs\GVL_LeakTestConfig.TcGVL">
@@ -173,7 +176,11 @@
     <Compile Include="1_POUs\3_Generic\FB_TextFile.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_GVLs\GVL_VisuControlHMI.TcGVL">
+    <Compile Include="3_GVLs\GVL_StationConfig.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="3_GVLs\GVL_TcHmi.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
@@ -187,7 +194,7 @@
     <Compile Include="Visualization Manager.TcVMO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="4_VISUs\FB_VisuControlHmi.TcPOU">
+    <Compile Include="4_VISUs\FB_TcHmi.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="zDisposables\E_AteqProgramSeqStateFlags.TcDUT">
@@ -232,7 +239,7 @@
     <Folder Include="2_DUTs\GenericFieldDevice" />
     <Folder Include="2_DUTs\AteqControl" />
     <Folder Include="2_DUTs\AteqIo" />
-    <Folder Include="2_DUTs\VisuHMI" />
+    <Folder Include="2_DUTs\TcHmi" />
     <Folder Include="2_DUTs\ValveBank" />
     <Folder Include="3_GVLs" />
     <Folder Include="0_Interfaces" />
