@@ -12,7 +12,7 @@ nActiveValveBanks	: UINT;
     astAteqIo 			: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqMapIo;
 	astAteqRawIo   		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqRawIo;
 //####### Control Ateq #######  
-	nDeviceIndex		: UINT;
+	nAteqDeviceIdx		: UINT;
 	afbAteqControl		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF FB_AteqControl;
 	//nProgramNumberToRun		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF WORD;
 	bAutoSeqRun			: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF BOOL;
@@ -51,15 +51,14 @@ END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[// System Method Calls
 mSystemTime();
-
+GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.BigEndian; // Profinet, Move To the HMI in the Future
 // Process Calls
-FOR nStationIdx := 0 TO GVL_StationConfig.nNumOfActiveStation - 1 DO
-	nActiveTestSteps	:= GVL_TcHmi.aDataGridStationConfig[nStationIdx].nActiveTestSteps;
-	nActiveAteqDevices	:= GVL_TcHmi.aDataGridStationConfig[nStationIdx].nActiveAteqDevices;
-	nActiveValveBanks	:= GVL_TcHmi.aDataGridStationConfig[nStationIdx].nActiveValveBanks;
-	mLeakTestProcess();
-END_FOR
-]]></ST>
+	FOR nStationIdx := 0 TO GVL_StationConfig.nNumOfActiveStation - 1 DO
+		nActiveTestSteps	:= GVL_TcHmi.aDataGridStationConfig[nStationIdx].nActiveTestSteps;
+		nActiveAteqDevices	:= GVL_TcHmi.aDataGridStationConfig[nStationIdx].nActiveAteqDevices;
+		nActiveValveBanks	:= GVL_TcHmi.aDataGridStationConfig[nStationIdx].nActiveValveBanks;
+		mLeakTestProcess();
+	END_FOR]]></ST>
     </Implementation>
     <Method Name="mLeakTestProcess" Id="{68824a9f-061b-0c0b-322f-72077c8196c2}">
       <Declaration><![CDATA[METHOD mLeakTestProcess
@@ -67,21 +66,9 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[(* 
-// FUTURE PROOFING VALVE MASKS UPTO 128BIT (2LWORDS OR MORE) PER VB
-FOR bankIndex := 0 TO NUM_BANKS - 1 DO
-    fbValveBanks[bankIndex].nValveMask := WORD_TO_DWORD(MASK_LWORDS[bankIndex]);
-END_FOR;
-*)
-//M_TestingAteqHandshakeSpeed();
-
-GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.BigEndian; // Profinet
-
-
-/// VALVE BANK CALLS
+        <ST><![CDATA[/// VALVE BANK CALLS
 	IF nActiveValveBanks > 0 THEN	
 		FOR nValveBankIdx := 0 TO nActiveValveBanks - 1 DO
-
 		mValveBankEnable();
 		//	IF afbValveBank[nValveBankIdx].pDeviceEnabled THEN
 				mValveBankManual();
@@ -96,36 +83,35 @@ GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.BigEndian; // Profinet
 		END_FOR
 	END_IF
 
-	IF GVL_AteqConfig.nNumOfActiveDevices > 0 THEN
-
-		FOR nDeviceIndex := 0 TO GVL_AteqConfig.nNumOfActiveDevices - 1 DO
-/// ATEQ PROGRAM RECIPE CALLS		
-	afbAteqRecipeHandler[nDeviceIndex](
+/// ATEQ DEVICE CALLS
+	IF nActiveAteqDevices > 0 THEN
+		FOR nAteqDeviceIdx := 0 TO nActiveAteqDevices - 1 DO
+/// ATEQ PROGRAM RECIPE CALLS
+	afbAteqRecipeHandler[nAteqDeviceIdx](
 										bValveBankHasAnyError	:= bValveBankHasAnyError, // may remove this check from the recipe handler
-										bLastResultsStored		:= afbAteqResult[nDeviceIndex].bLastResultsStored,
-										anProgramNumberRecipe	:= anProgramNumberRecipe[nDeviceIndex],
-										eAteqProgramSeqStates	:= afbAteqControl[nDeviceIndex].eProgramSeqSteps,
-										eProgramInternalSteps	:= afbAteqControl[nDeviceIndex].eProgramInternalSteps,
+										bLastResultsStored		:= afbAteqResult[nAteqDeviceIdx].bLastResultsStored,
+										anProgramNumberRecipe	:= anProgramNumberRecipe[nAteqDeviceIdx],
+										eAteqProgramSeqStates	:= afbAteqControl[nAteqDeviceIdx].eProgramSeqSteps,
+										eProgramInternalSteps	:= afbAteqControl[nAteqDeviceIdx].eProgramInternalSteps,
 										bAutoTestRecipeStart	:= GVL_AteqConfig.abAutoTestRecipeStart,
 										anValveMask				:= GVL_TcHmi.anValveMaskListToRecipe,
 										nNumOfACtiveProgramsToRun	:= GVL_AteqConfig.nNumOfActiveProgramsToRun,
 										nValveMask				=> GVL_MapValveBank.nValveMaskRaw );
 
 /// ATEQ HIGH LEVEL CMD BINDING
-	afbAteqControl[nDeviceIndex].pPrgSeqRunRequest 		:= afbAteqRecipeHandler[nDeviceIndex].pProgramSeqRunCmdToAteq;
-	afbAteqControl[nDeviceIndex].pPrgSeqResetRequest	:= afbAteqRecipeHandler[nDeviceIndex].pProgramSeqResetCmdToAteq;
-	
+	afbAteqControl[nAteqDeviceIdx].pPrgSeqRunRequest 	:= afbAteqRecipeHandler[nAteqDeviceIdx].pProgramSeqRunCmdToAteq;
+	afbAteqControl[nAteqDeviceIdx].pPrgSeqResetRequest	:= afbAteqRecipeHandler[nAteqDeviceIdx].pProgramSeqResetCmdToAteq;
+
 /// ATEQ DEVICE CONTROL CALLS
-	afbAteqControl[nDeviceIndex](
-								nProgramNumberToRun 	:= afbAteqRecipeHandler[nDeviceIndex].nProgramNumber,
-								stRawIo 				:= astAteqRawIo[nDeviceIndex], 
-								stMapIo 				:= astAteqIo[nDeviceIndex]);
+	afbAteqControl[nAteqDeviceIdx](
+								nProgramNumberToRun 	:= afbAteqRecipeHandler[nAteqDeviceIdx].nProgramNumber,
+								stRawIo 				:= astAteqRawIo[nAteqDeviceIdx],
+								stMapIo 				:= astAteqIo[nAteqDeviceIdx]);
 
 ///	ATEQ TEST RESULT STORE CALLS
-	afbAteqResult[nDeviceIndex](
-								bAutoSeqDone 	:= afbAteqControl[nDeviceIndex].pPrgSeqDone,
-								anExchangeZone	:= astAteqIo[nDeviceIndex].Read.ExchangeZoneByte);
-
+	afbAteqResult[nAteqDeviceIdx](
+								bAutoSeqDone 	:= afbAteqControl[nAteqDeviceIdx].pPrgSeqDone,
+								anExchangeZone	:= astAteqIo[nAteqDeviceIdx].Read.ExchangeZoneByte);
 		END_FOR
 	END_IF]]></ST>
       </Implementation>
@@ -322,11 +308,10 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-// Manual Valve Control - Call FB_ValveBank
+        <ST><![CDATA[// Manual Valve Control - Call FB_ValveBank
 
-		afbValveBank[nDeviceIndex](	abReqOpenManual 	:= anReqOpenManual[nDeviceIndex],
-									abReqCloseManual	:= anReqCloseManual[nDeviceIndex]);
+		afbValveBank[nValveBankIdx](	abReqOpenManual 	:= anReqOpenManual[nValveBankIdx],
+										abReqCloseManual	:= anReqCloseManual[nValveBankIdx]);
 ]]></ST>
       </Implementation>
     </Method>
