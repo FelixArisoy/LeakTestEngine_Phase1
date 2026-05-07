@@ -131,6 +131,15 @@
     <Compile Include="2_DUTs\VisuHMI\ST_ValveBankRecipe.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="2_DUTs\VisuHMI\T_AteqRecipeList.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="2_DUTs\VisuHMI\T_LeakTestRecipeList.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="2_DUTs\VisuHMI\T_ValveBankRecipeList.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="3_GVLs\GVL_LeakTestConfig.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>

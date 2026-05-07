@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="T_ValveBankRecipeList" Id="{5f8f81e8-98e1-4b24-94c8-b61aaf3f1c53}">
+    <Declaration><![CDATA[TYPE T_ValveBankRecipeList :
+ARRAY [0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF ST_ValveBankRecipe;
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -16,6 +16,10 @@ VAR_GLOBAL
 	aDataGridAteqRecipe		: ARRAY [0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqRecipe;
 	aDataGridValveBankRecipe: ARRAY [0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF ST_ValveBankRecipe;
 	aDataGridLeakTestRecipe : ARRAY [0..GVL_LeakTestConfig.nMaxStepCount - 1] OF ST_LeakTestRecipe;
+
+	aStationAteqRecipe		: ARRAY [0..GVL_StationConfig.nMaxStationCount - 1] OF T_AteqRecipeList;
+	aStationValveBankRecipe	: ARRAY [0..GVL_StationConfig.nMaxStationCount - 1] OF T_ValveBankRecipeList;
+	aStationLeakTestRecipe	: ARRAY [0..GVL_StationConfig.nMaxStationCount - 1] OF T_LeakTestRecipeList;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>
