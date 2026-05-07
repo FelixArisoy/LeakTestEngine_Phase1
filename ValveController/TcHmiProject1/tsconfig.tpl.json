@@ -28,8 +28,5 @@
   ],
   "include": [
     "$(Beckhoff.TwinCAT.HMI.Framework).InstallPath/TcHmi.d.ts"
-  ],
-  "files": [
-    "Scripts/DynamicDataGrid_StationRecipe.ts"
   ]
 }

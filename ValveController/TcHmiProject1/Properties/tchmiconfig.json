@@ -50,22 +50,11 @@
       "name": "Fonts/Fonts.css",
       "description": "",
       "type": "Stylesheet"
-    },
-    {
-      "name": "Scripts/DynamicDataGrid_StationRecipe.js",
-      "description": "",
-      "type": "JavaScript"
     }
   ],
   "userControls": [],
   "content": [],
   "views": [
-    {
-      "url": "View1.view",
-      "preload": false,
-      "keepAlive": false,
-      "preloadBindings": false
-    },
     {
       "url": "Desktop.view",
       "preload": false,

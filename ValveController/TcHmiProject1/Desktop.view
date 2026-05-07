@@ -33,13 +33,13 @@
   <div id="TcHmiButtonStationTab8" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="28" data-tchmi-height-unit="px" data-tchmi-left="654" data-tchmi-left-unit="px" data-tchmi-text="S9" data-tchmi-top="155" data-tchmi-top-unit="px" data-tchmi-width="46" data-tchmi-width-unit="px"></div>
   <div id="TcHmiButtonStationTab9" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="28" data-tchmi-height-unit="px" data-tchmi-left="705" data-tchmi-left-unit="px" data-tchmi-text="S10" data-tchmi-top="155" data-tchmi-top-unit="px" data-tchmi-width="46" data-tchmi-width-unit="px"></div>
 
-  <div id="TcHmiDatagridStationRecipe" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiDatagrid" data-tchmi-data-symbol="%s%PLC1.GVL_VisuControlHMI.aDataGridStationRecipe%/s%" data-tchmi-height="179" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="123" data-tchmi-top-unit="px" data-tchmi-width="471" data-tchmi-width-unit="px" data-tchmi-zindex="1">
+  <div id="TcHmiDatagridStationRecipe" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiDatagrid" data-tchmi-height="179" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="123" data-tchmi-top-unit="px" data-tchmi-width="471" data-tchmi-width-unit="px" data-tchmi-zindex="1" data-tchmi-src-data="%s%PLC1.GVL_VisuControlHMI.aDataGridStationRecipe%/s%">
     <script data-tchmi-target-attribute="data-tchmi-src-column" type="application/json">
 [
   {
     "name": "bEnabled",
     "label": "EnableStation",
-    "control": "CheckBox",
+    "control": "ToggleSwitch",
     "width": 120,
     "widthUnit": "px",
     "resize": true,
@@ -126,7 +126,28 @@
   "bottomUnit": "px"
 }
     </script>
-  </div>
+  
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "TcHmiDatagridStationRecipe.onDataChanged",
+    "actions": [
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%s%PLC1.GVL_VisuControlHMI.aDataGridStationRecipe%/s%",
+        "value": {
+          "objectType": "Symbol",
+          "valueType": "tchmi:general#/definitions/String",
+          "symbolExpression": "%ctrl%TcHmiDatagridStationRecipe::SrcData%/ctrl%"
+        },
+        "asyncWait": true
+      }
+    ]
+  }
+]
+</script>
+</div>
 
   <div id="TcHmiTextblockAteqRecipe" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="24" data-tchmi-height-unit="px" data-tchmi-left="501" data-tchmi-left-unit="px" data-tchmi-text="ATEQ Devices" data-tchmi-top="194" data-tchmi-top-unit="px" data-tchmi-width="267" data-tchmi-width-unit="px" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
   </div>
