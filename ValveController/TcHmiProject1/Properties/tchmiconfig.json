@@ -53,7 +53,15 @@
     }
   ],
   "userControls": [],
-  "content": [],
+  "content": [
+    {
+      "url": "TestContent.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    }
+  ],
   "views": [
     {
       "url": "Desktop.view",

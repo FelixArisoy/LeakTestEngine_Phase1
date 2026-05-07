@@ -5,11 +5,11 @@
 VAR_INPUT    
 	bValveBankHasAnyError	: BOOL;
 	bLastResultsStored		: BOOL;
-    anProgramNumberRecipe	: ARRAY[0..GVL_AteqConfig.nMaxProgramsToRun - 1] OF WORD;
-    anValveMask				: ARRAY[0..GVL_AteqConfig.nMaxProgramsToRun - 1] OF DWORD;
+    anProgramNumberRecipe	: ARRAY	[0..GVL_AteqConfig.nMaxProgramsToRun - 1] OF WORD;
+    anValveMaskList			: ARRAY [0..GVL_leakTestConfig.nMaxTestSteps - 1] OF DWORD;
 	eAteqProgramSeqStates 	: E_AteqProgramSeqSteps;
 	eProgramInternalSteps	: E_AteqStepsTable;
-    nNumOfActiveProgramsToRun	: UINT;
+    nActiveTestStepCount	: UINT;
 END_VAR
 VAR_IN_OUT
 	bAutoTestRecipeStart	: BOOL; // Flag will be binded to Main PLC Run Cmd
@@ -28,7 +28,7 @@ VAR
 	bProgramSeqRunCmdToAteq		: BOOL;	
 	bProgramSeqResetCmdToAteq	: BOOL;
 	tRecipeHandlerTimeout 		: TON;
-	nIndexToCurrentProgram		: UINT;
+	nTestStepIdx		: UINT;
     tValveStable : TON;
 
 
@@ -42,7 +42,7 @@ END_VAR
 			
 			IF bAutoTestRecipeStart AND eAteqProgramSeqStates = SEQ_IDLE THEN
 				tValveStable.PT := GVL_ValveBankConfig.tValveStabilizationTime;
-				nIndexToCurrentProgram := 0;
+				nTestStepIdx := 0;
 				bProgramSeqResetCmdToAteq := TRUE;
 				bAutoTestRecipeStart := FALSE;
 				eStatesAteqRecipeHandler := E_AteqRecipeHandlerSteps.RECIPE_TRIGGER_VALVES;
@@ -53,7 +53,7 @@ END_VAR
             IF NOT bValveBankHasAnyError THEN
 				tRecipeHandlerTimeout(IN := FALSE);
 				bProgramSeqResetCmdToAteq := FALSE;
-				nValveMask := anValveMask[nIndexToCurrentProgram];
+				nValveMask := anValveMaskList[nTestStepIdx];
             	eStatesAteqRecipeHandler := 2;
 			ELSIF tRecipeHandlerTimeout.Q THEN
 					eStatesAteqRecipeHandler := 4;
@@ -72,7 +72,7 @@ END_VAR
 		
 			
 		E_AteqRecipeHandlerSteps.RECIPE_RUN_ATEQ:
-    		nProgramNumber := anProgramNumberRecipe[nIndexToCurrentProgram];
+    		nProgramNumber := anProgramNumberRecipe[nTestStepIdx];
     		bProgramSeqRunCmdToAteq := TRUE;
 
    			 // Dump Step Detected
@@ -87,10 +87,10 @@ END_VAR
 		nValveMask := 0; // Reset Valves
 			IF bLastResultsStored THEN
 				bProgramSeqResetCmdToAteq := TRUE; // Reset ATEQ
-				 IF nIndexToCurrentProgram >= nNumOfActiveProgramsToRun - 1 THEN
+				 IF nTestStepIdx >= nActiveTestStepCount - 1 THEN
                 	eStatesAteqRecipeHandler := E_AteqRecipeHandlerSteps.RECIPE_IDLE;
             	ELSE
-                	nIndexToCurrentProgram := nIndexToCurrentProgram + 1;
+                	nTestStepIdx := nTestStepIdx + 1;
                 	eStatesAteqRecipeHandler := E_AteqRecipeHandlerSteps.RECIPE_TRIGGER_VALVES;
             	END_IF
 			END_IF

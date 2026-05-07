@@ -4,24 +4,21 @@
     <Declaration><![CDATA[VAR_GLOBAL CONSTANT
 	nMaxProgramsToRun	: UINT := 100;
 	nMaxDeviceCount 	: UINT := 100; // Set; based on Total Num of F6 ATEQ devices
-	nMaxTestSteps		: INT := 10;
 	tCommandTimeout	: TIME 	:= T#30S; //Sets AteqControl CmdHandlerMethod Timeout
 	tTestTimeOut	: TIME 	:= T#120S;
 	tAutoSeqTimeout	: TIME 	:= T#300S;
 	nMaxResultStore	: INT	:= 99;	//FB_ResultHandler Result buffer array limit
-
-	// CmdHandler Timers
+// CmdHandler Timers
 	tCmdTimeout 		: TIME := T#5000MS; // Debug Future; can be limitted by the TestRunTime tru ParamRead
 	tCmdInProgressDWELL : TIME := T#300MS;	// Must be atleast 300ms. DEBUG; Monitor network lags with multiple ATEQ runs
 	tCmdDoneDWELL 		: TIME := T#50MS;
-
 END_VAR
 
 VAR_GLOBAL
 	nAteqDeviceIndex	:UINT;
-	nNumOfActiveProgramsToRun	: UINT;
-	nNumOfActiveDevices 		: UINT; // Set; based on Total Num of F6 ATEQ devices
-	abAutoTestRecipeStart 		: BOOL; // will be binded to Main PLC Run Cmd... Debug
+	nNumOfActiveProgramsToRun	: UINT := 1;
+	nNumOfActiveDevices 		: UINT := 1; // Set; based on Total Num of F6 ATEQ devices
+	abAutoTestRecipeStart 		: BOOL := FALSE; // will be binded to Main PLC Run Cmd... Debug
 	eDeviceEndianSetTo 	: E_AteqEndianType; // Set top level PRG	
 END_VAR
 ]]></Declaration>

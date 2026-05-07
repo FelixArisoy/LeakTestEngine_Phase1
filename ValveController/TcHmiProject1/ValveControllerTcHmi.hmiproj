@@ -61,7 +61,7 @@
     <ServerParameters />
     <HmiCommunicationServerPort>3000</HmiCommunicationServerPort>
     <HmiCommunicationServerAuthPort>13000</HmiCommunicationServerAuthPort>
-    <HmiCommunicationRouterPort>10100</HmiCommunicationRouterPort>
+    <HmiCommunicationRouterPort>10101</HmiCommunicationRouterPort>
     <HmiUseX64>True</HmiUseX64>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|TwinCAT HMI' ">
@@ -134,32 +134,44 @@
     <Content Include=".eslintrc.json">
       <Visible>false</Visible>
     </Content>
+    <Content Include="TestContent.content">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Server\TcHmiLua\TcHmiLua.Config.default.json">
       <SubType>Content</SubType>
+      <Visible>True</Visible>
     </Content>
     <Content Include="Server\TcHmiLua\TcHmiLua.Config.remote.json">
       <SubType>Content</SubType>
+      <Visible>True</Visible>
     </Content>
     <Content Include="Server\TcHmiLua\TcHmiLua.Storage.json">
       <SubType>Content</SubType>
+      <Visible>True</Visible>
     </Content>
     <Content Include="Server\TcHmiSqliteLogger\TcHmiSqliteLogger.Config.default.json">
       <SubType>Content</SubType>
+      <Visible>True</Visible>
     </Content>
     <Content Include="Server\TcHmiSqliteLogger\TcHmiSqliteLogger.Config.remote.json">
       <SubType>Content</SubType>
+      <Visible>True</Visible>
     </Content>
     <Content Include="Server\TcHmiSqliteLogger\TcHmiSqliteLogger.Storage.json">
       <SubType>Content</SubType>
+      <Visible>True</Visible>
     </Content>
     <Content Include="Server\TcHmiUserManagement\TcHmiUserManagement.Config.default.json">
       <SubType>Content</SubType>
+      <Visible>True</Visible>
     </Content>
     <Content Include="Server\TcHmiUserManagement\TcHmiUserManagement.Config.remote.json">
       <SubType>Content</SubType>
+      <Visible>True</Visible>
     </Content>
     <Content Include="Server\TcHmiUserManagement\TcHmiUserManagement.Storage.json">
       <SubType>Content</SubType>
+      <Visible>True</Visible>
     </Content>
     <Content Include="tsconfig.tpl.json">
       <SubType>Content</SubType>

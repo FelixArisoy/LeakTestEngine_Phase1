@@ -2,17 +2,9 @@
 <TcPlcObject Version="1.1.0.1">
   <GVL Name="GVL_TcHmi" Id="{e66e5bb2-e186-0a7a-1eb9-6daef8b222c0}">
     <Declaration><![CDATA[VAR_GLOBAL
-	visValveMaskIdx 	: UINT;
-	nValveMask 			: DWORD;
-	anValveMaskListToRecipe : ARRAY [0..GVL_AteqConfig.nMaxProgramsToRun - 1] OF DWORD;
-	anValveMaskListToDisplay: ARRAY [0..GVL_AteqConfig.nMaxProgramsToRun - 1] OF STRING;
-
-// ComboBox  old VISU remove when TcHmi is ready, here for ref
-	aComboboxEntries : ARRAY [1..3] OF ST_ComboboxEntry;
-	nSelectedValue : INT;
-	
 // TcHmi
 	aDataGridStationConfig	: ARRAY [0..GVL_StationConfig.nMaxStationCount - 1] OF ST_DataGridStationConfig;
+	anValveMaskListToRecipe	: ARRAY [0..GVL_StationConfig.nMaxStationCount - 1] OF ARRAY [0..GVL_leakTestConfig.nMaxTestSteps - 1] OF DWORD;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

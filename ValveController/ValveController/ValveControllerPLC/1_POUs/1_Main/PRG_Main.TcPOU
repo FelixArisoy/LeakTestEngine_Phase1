@@ -3,11 +3,14 @@
   <POU Name="PRG_Main" Id="{a3d4985a-23a4-4261-9530-cafe9c795619}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_Main
 VAR
-nValveBankIdx 	: UINT;
-nStationIdx		: UINT;
-nActiveTestSteps	: UINT;
-nActiveAteqDevices	: UINT;
-nActiveValveBanks	: UINT;
+nValveBankIdx 			: UINT;
+nStationIdx				: UINT;
+nActiveTestSteps		: UINT;
+nActiveAteqDevices		: UINT;
+nActiveValveBanks		: UINT;
+nActiveTestStepCount	: UINT;
+anValveMaskList			: ARRAY [0..GVL_leakTestConfig.nMaxTestSteps - 1] OF DWORD;
+anValveMaskListToRecipe	: ARRAY [0..GVL_LeakTestConfig.nMaxTestSteps] OF DWORD;
 //####### Map Io #######
     astAteqIo 			: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqMapIo;
 	astAteqRawIo   		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqRawIo;
@@ -23,7 +26,6 @@ nActiveValveBanks	: UINT;
 
 //####### ValveBanks #######
 	afbValveBank		: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF FB_ValveBankControl;
-	anValveMask			: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF DWORD; // per valve bank
 	anReqOpenManual		: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF BOOL; 
 	anReqCloseManual	: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF BOOL;
 	bValveBankHasAnyError		: BOOL;
@@ -57,6 +59,10 @@ GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.BigEndian; // Profinet, Mo
 		nActiveTestSteps	:= GVL_TcHmi.aDataGridStationConfig[nStationIdx].nActiveTestSteps;
 		nActiveAteqDevices	:= GVL_TcHmi.aDataGridStationConfig[nStationIdx].nActiveAteqDevices;
 		nActiveValveBanks	:= GVL_TcHmi.aDataGridStationConfig[nStationIdx].nActiveValveBanks;
+		nActiveTestStepCount:= GVL_TcHmi.aDataGridStationConfig[nStationIdx].nActiveTestSteps;
+		
+		anValveMaskList		:= GVL_TcHmi.anValveMaskListToRecipe[nStationIdx];
+//		anValveMaskListToRecipe	:= GVL_TcHmi.anValveMaskListToRecipe; // rework needed debug
 		mLeakTestProcess();
 	END_FOR]]></ST>
     </Implementation>
@@ -94,8 +100,8 @@ END_VAR
 										eAteqProgramSeqStates	:= afbAteqControl[nAteqDeviceIdx].eProgramSeqSteps,
 										eProgramInternalSteps	:= afbAteqControl[nAteqDeviceIdx].eProgramInternalSteps,
 										bAutoTestRecipeStart	:= GVL_AteqConfig.abAutoTestRecipeStart,
-										anValveMask				:= GVL_TcHmi.anValveMaskListToRecipe,
-										nNumOfACtiveProgramsToRun	:= GVL_AteqConfig.nNumOfActiveProgramsToRun,
+										anValveMaskList			:= anValveMaskList,
+										nActiveTestStepCount	:= nActiveTestStepCount,
 										nValveMask				=> GVL_MapValveBank.nValveMaskRaw );
 
 /// ATEQ HIGH LEVEL CMD BINDING
