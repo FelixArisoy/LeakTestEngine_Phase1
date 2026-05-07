@@ -61,7 +61,7 @@
     <ServerParameters />
     <HmiCommunicationServerPort>3000</HmiCommunicationServerPort>
     <HmiCommunicationServerAuthPort>13000</HmiCommunicationServerAuthPort>
-    <HmiCommunicationRouterPort>10103</HmiCommunicationRouterPort>
+    <HmiCommunicationRouterPort>10105</HmiCommunicationRouterPort>
     <HmiUseX64>True</HmiUseX64>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|TwinCAT HMI' ">
