@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <DUT Name="E_AteqRecipeHandlerSteps" Id="{1c794de3-b3b4-42f6-98c2-670725542067}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_AteqRecipeHandlerSteps :
+(
+	RECIPE_IDLE,
+	RECIPE_TRIGGER_VALVES, 	// From Mask
+	RECIPE_WAIT_VALVES,		// Stabilization
+	RECIPE_RUN_ATEQ,
+	RECIPE_RESULT_STORED,
+	RECIPE_ERROR,
+	RECIPE_TIMEOUT
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

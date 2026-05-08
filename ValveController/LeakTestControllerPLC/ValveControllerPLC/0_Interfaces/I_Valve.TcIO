@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <Itf Name="I_Valve" Id="{cd6cbc84-1b9a-4ede-a0b4-cd5fdf8e8f07}">
+    <Declaration><![CDATA[INTERFACE I_Valve EXTENDS I_FieldDevice
+]]></Declaration>
+    <Method Name="M_ActClose" Id="{4469619f-9a60-48eb-9d7b-9b6f4b12335a}">
+      <Declaration><![CDATA[METHOD M_ActClose : BOOL //Closes the Valve
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="M_ActOpen" Id="{3ae76840-d30b-4747-b434-db2757dd96aa}">
+      <Declaration><![CDATA[METHOD M_ActOpen : BOOL //Opens the Valve
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="pActCloseComp" Id="{988ab31b-5659-458e-8fba-a420f73288ed}">
+      <Declaration><![CDATA[PROPERTY pActCloseComp : BOOL]]></Declaration>
+      <Get Name="Get" Id="{b96782d1-efad-4dee-80a6-e119e716247c}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{f4d02c3f-a29e-4d6b-b7e4-bea51f1f8e43}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="pActClosedPosSensor" Id="{90606a15-cfd6-4054-b661-88a5203bbceb}">
+      <Declaration><![CDATA[PROPERTY pActClosedPosSensor : BOOL]]></Declaration>
+      <Set Name="Set" Id="{56ede290-6a04-4f9e-9ce7-2a71ce8fc40e}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="pActCloseOut" Id="{b19c30a4-97e8-494c-95ee-90ac2b6bda2a}">
+      <Declaration><![CDATA[PROPERTY pActCloseOut : BOOL]]></Declaration>
+      <Get Name="Get" Id="{202b34c3-3f20-4211-be56-82a7bdcc8d59}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{4b1f7d96-beba-4865-920a-1c1cbbbd58fd}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="pActOpenComp" Id="{d70b2986-c53b-43ae-98ce-0103d1086521}">
+      <Declaration><![CDATA[PROPERTY pActOpenComp : BOOL]]></Declaration>
+      <Get Name="Get" Id="{c0814736-c2c0-4699-ae39-8d456a11f941}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{e9e5cee8-7e1c-411c-8aa5-b391d48e7eed}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="pActOpenedPosSensor" Id="{905fa424-4325-4581-88f0-e14a1941b9e6}">
+      <Declaration><![CDATA[PROPERTY pActOpenedPosSensor : BOOL]]></Declaration>
+      <Set Name="Set" Id="{ac90c666-f09d-405b-a4c9-adb50f77792c}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="pActOpenOut" Id="{5dbd438f-639c-40f4-9894-1d0f2764da63}">
+      <Declaration><![CDATA[PROPERTY pActOpenOut : BOOL]]></Declaration>
+      <Get Name="Get" Id="{424007b3-2482-47c4-9867-119ade7ba021}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{94dfa16f-f27b-4896-8b02-62e4201b4569}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>

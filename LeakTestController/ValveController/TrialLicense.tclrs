@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<TcLicenseInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2011/11/TcLicenseInfo">
+	<LicenseInfo>
+		<SystemId>{53D62CDD-E9A3-0EF9-9441-A3D836E609DF}</SystemId>
+		<IssueTime>2025-07-29T20:28:00</IssueTime>
+		<ExpireTime>2025-08-06T00:00:00</ExpireTime>
+		<LicenseKey>eea4f0ce205863e621f99f86fa16f1d843a1f49a15be975a6a72255371a75226e3f8a57aa2cf20efb92bee8687e328b7015e6d1fe00d05ae5cfbc9803a5ad096ee3ca43c5738242fb78500e3f68b4d270fc8c8fd6c3a3966800603d39ac8755e48adbc2e749ea5352b5173343ba7b6fab9054c604f4d815cf5294eb5313cb9730d62b837cce79cc2f9024d9dd20361d0bf51c247465e4c86081cdb58a93bb6e665ba7b8810632db512bc3d475a6f65a6de00993adf7d7ef929793532fbd5b4f049db035abe62e9a687491bfc4c571ebb9213c53b0a5a746e309e08dc5a71cdb2e70f300f9c9b00cea01441e71987dd13fbe77654724060eb543f1f0c218fb8cb</LicenseKey>
+		<License>
+			<LicenseId>{AE83F222-BB78-448F-BDED-7494A70CD776}</LicenseId>
+			<Name>TC3 EtherNet/IP Adapter (Slave)</Name>
+			<OrderNo>TF6280</OrderNo>
+			<Instances>1</Instances>
+		</License>
+		<License>
+			<LicenseId>{081AC839-28D0-49CA-9792-72680E1F3249}</LicenseId>
+			<Name>TC3 TCP/UDP RT</Name>
+			<OrderNo>TF6311</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{87DBEEFC-A548-4B37-9797-C9521D3A43A2}</LicenseId>
+			<Name>TC3 EtherNet/IP Scanner (Master)</Name>
+			<OrderNo>TF6281</OrderNo>
+			<Instances>1</Instances>
+		</License>
+		<License>
+			<LicenseId>{4C256767-E6E6-4AF5-BD68-9F7ABAD0C200}</LicenseId>
+			<Name>TC3 ADS</Name>
+			<OrderNo>TC1000</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{3FF18E97-7754-401B-93FB-70544DE28A13}</LicenseId>
+			<Name>TC3 IO</Name>
+			<OrderNo>TC1100</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{66689887-CCBD-452C-AC9A-039D997C6E66}</LicenseId>
+			<Name>TC3 PLC</Name>
+			<OrderNo>TC1200</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{56ADDFFF-32FF-4DC7-A432-0D2D8413616A}</LicenseId>
+			<Name>TC3 Profinet IO-Device</Name>
+			<OrderNo>TF6270</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{EA2D2277-B540-4BF0-A581-CF62D3140F06}</LicenseId>
+			<Name>TC3 Profinet Controller</Name>
+			<OrderNo>TF6271</OrderNo>
+			<Instances>1</Instances>
+		</License>
+	</LicenseInfo>
+</TcLicenseInfo>

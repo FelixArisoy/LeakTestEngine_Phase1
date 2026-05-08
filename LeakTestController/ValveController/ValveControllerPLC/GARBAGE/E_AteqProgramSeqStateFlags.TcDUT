@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <DUT Name="E_AteqProgramSeqStateFlags" Id="{31d3b071-ef6e-44f1-9157-16ac65450b8e}">
+    <Declaration><![CDATA[TYPE E_AteqProgramSeqStateFlags :
+(
+	FifoResetComplete,
+	AutoZeroComplete,   
+	ProgramSelectComplete,
+	ProgramRunComplete,
+	ReadLastResultComplete,
+	ReadFIFOComplete,
+	ResetDeviceDone
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,324 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="PRG_ATEQ" Id="{a3d4985a-23a4-4261-9530-cafe9c795619}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_ATEQ
+VAR
+
+//####### Map Io #######
+    astAteqIo 			: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqIo;
+	astAteqRawIo   		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqRawIo;
+//####### Control Ateq #######  
+	nDeviceIndex		: UINT;
+	afbAteqControl		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF FB_AteqControl;
+	//nProgramNumberToRun		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF WORD;
+	bAutoSeqRun			: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF BOOL;
+	bAutoSeqDone		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF BOOL;
+	bAutoSeqResetRequest: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF BOOL;
+//####### Ateq Result Handler #######
+	afbAteqResult		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF FB_AteqResultHandler;
+  	abAutoTestRecipeStart : BOOL; /// Flag will be binded to Main PLC Run Cmd... Debug
+//####### ValveBanks #######
+	afbValveBank		: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF FB_ValveBank;
+	anValveMask			: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF DWORD; // per valve bank
+	anReqOpenManual		: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF BOOL; 
+	anReqCloseManual	: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF BOOL;
+	bValveBankHasAnyError		: BOOL;
+//####### Recipe Handler per Ateq Device #######
+
+	afbAteqRecipeHandler 	: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF FB_AteqRecipeHandler;
+	anProgramNumberRecipe	: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF ARRAY[0..GVL_AteqConfig.nMaxProgramsToRun - 1] OF WORD;
+
+
+
+
+
+
+
+// #######M_TestingAteqHandshakeSpeed DEBUG variables for delay and array storage:
+	bCommandSent       : BOOL := FALSE;
+    bEchoReceived      : BOOL := FALSE;
+    tStartTime         : TIME;
+    tResponseTime      : TIME;
+    fbDelayBetweenTriggers : TON;
+    tDelayTimeBetweenTriggers : TIME := T#1S; // Adjust this as needed (e.g., 1 second)
+
+    aResponseTimes     : ARRAY[0..99] OF TIME; // Array to store response times (e.g., 100 entries)
+    nResponseIndex     : INT := 0;             // Index for the array
+    bTestActive        : BOOL := FALSE;        // Master switch to start/stop the test sequence
+    bDelayFinished     : BOOL := FALSE;        // Flag to indicate delay completion
+    bTriggerReady      : BOOL := TRUE;         // Flag to indicate next trigger is ready
+
+	
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* 
+// FUTURE PROOFING VALVE MASKS UPTO 128BIT (2LWORDS OR MORE) PER VB
+FOR bankIndex := 0 TO NUM_BANKS - 1 DO
+    fbValveBanks[bankIndex].nValveMask := WORD_TO_DWORD(MASK_LWORDS[bankIndex]);
+END_FOR;
+*)
+
+//M_TestingAteqHandshakeSpeed();
+
+GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.BigEndian;
+M_ScanValveBanks();
+
+	IF GVL_AteqConfig.nMaxDeviceCount > 0 THEN
+		
+		FOR nDeviceIndex := 0 TO GVL_AteqConfig.nMaxDeviceCount - 1 DO
+
+		IF bValveBankHasAnyError THEN
+			EXIT;
+		END_IF
+		
+	afbAteqRecipeHandler[nDeviceIndex](
+										bValveBankHasAnyError	:= bValveBankHasAnyError, // may remove this check from the recipe handler
+										bLastResultsStored		:= afbAteqResult[nDeviceIndex].bLastResultsStored,
+										anProgramNumberRecipe	:= anProgramNumberRecipe[nDeviceIndex],
+										eAteqProgramSeqStates	:= afbAteqControl[nDeviceIndex].eProgramSeqSteps,
+										eProgramInternalSteps	:= afbAteqControl[nDeviceIndex].eProgramInternalSteps,
+										bAutoTestRecipeStart	:= abAutoTestRecipeStart);
+			
+	
+	afbAteqControl[nDeviceIndex].pProgramSeqRunRequest 		:= afbAteqRecipeHandler[nDeviceIndex].pProgramSeqRunCmdToAteq;
+	afbAteqControl[nDeviceIndex].pProgramSeqResetRequest	:= afbAteqRecipeHandler[nDeviceIndex].pProgramSeqResetCmdToAteq;		
+	
+
+	afbAteqControl[nDeviceIndex](
+								nProgramNumberToRun 	:= afbAteqRecipeHandler[nDeviceIndex].nProgramNumber,		
+								stRawIo 				:= astAteqRawIo[nDeviceIndex], 
+								stMappedIo 				:= astAteqIo[nDeviceIndex]);
+		
+	afbAteqResult[nDeviceIndex](
+								bAutoSeqDone 	:= afbAteqControl[nDeviceIndex].pProgramSeqDone,
+								anExchangeZone	:= astAteqIo[nDeviceIndex].stRead.anExchangeZone);		
+				
+
+		END_FOR
+	END_IF
+	
+	
+
+
+
+
+]]></ST>
+    </Implementation>
+    <Method Name="M_ScanAteqDevicesWithInit" Id="{33b24952-4571-466d-8bc0-6cb01ccb5101}">
+      <Declaration><![CDATA[METHOD M_ScanAteqDevicesWithInit : BOOL
+VAR_INPUT
+END_VAR
+VAR		
+	nDeviceIndex    : UINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// Tobe debeugged if used
+// Initialize max device count once
+(*nMaxDeviceCount := GVL_AteqConfig.nMaxDeviceCount;
+
+CASE eAteqCallerState OF
+	
+	E_AteqCallerState.INIT:
+		
+	(*IF nInitIndex <= (nMaxDeviceCount - 1) THEN
+		afbAteqControl[nInitIndex].FB_Init(TRUE, TRUE);
+		
+		IF afbAteqControl[nInitIndex].bInitialized THEN
+			nInitIndex := nInitIndex + 1;
+		END_IF
+		
+	ELSE*)
+		eAteqCallerState := E_AteqCallerState.CONTROL; // Done initializing all FBs
+	//END_IF
+	
+	E_AteqCallerState.CONTROL:
+	
+
+GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.BigEndian;
+
+
+	IF GVL_AteqConfig.nMaxDeviceCount > 0 THEN
+		
+		FOR nDeviceIndex := 0 TO GVL_AteqConfig.nMaxDeviceCount - 1 DO
+
+				
+	afbAteqControl[nDeviceIndex](
+								nProgramNumberToRun 	:= nProgramNumber[nDeviceIndex], 
+								bProgramSeqRunRequest 	:= bAutoSeqRun[nDeviceIndex],
+								bProgramSeqResetRequest	:= bAutoSeqResetRequest[nDeviceIndex],		
+								stRawIo 				:= astAteqRawIo[nDeviceIndex], 
+								stMappedIo 				:= astAteqIo[nDeviceIndex]);
+		
+	afbAteqResult[nDeviceIndex](
+								bAutoSeqDone 	:= afbAteqControl[nDeviceIndex].pProgramSeqDone,
+								anExchangeZone	:= astAteqIo[nDeviceIndex].stRead.anExchangeZone);		
+				
+
+		END_FOR
+	END_IF
+	
+//END_CASE
+
+*)]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_ScanValveBanks" Id="{b3ffe984-55bd-41d3-8f04-8d658c77f2b0}">
+      <Declaration><![CDATA[METHOD M_ScanValveBanks : BOOL
+VAR
+	nDeviceIndex: INT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Calls per ValveBank 
+
+IF GVL_ValveBankConfig.nMaxDeviceCount > 0 THEN
+	
+	FOR nDeviceIndex := 0 TO GVL_ValveBankConfig.nMaxDeviceCount - 1 DO
+		
+		afbValveBank[nDeviceIndex].pValveMask := anValveMask[nDeviceIndex]; // Mask Recipe will be feeded here
+
+		afbValveBank[nDeviceIndex](
+									anReqOpenManual 	:= anReqOpenManual[nDeviceIndex],
+									anReqCloseManual	:= anReqCloseManual[nDeviceIndex],
+);
+
+
+	END_FOR
+END_IF
+
+//######### Top Level Fault check per Valvebank and per Valves ###########
+FOR nDeviceIndex := 0 TO GVL_ValveBankConfig.nMaxDeviceCount - 1 DO
+	IF afbValveBank[nDeviceIndex].pDeviceFaulted 
+	OR NOT afbValveBank[nDeviceIndex].pInitAllValvesComplete THEN
+		bValveBankHasAnyError := TRUE;
+		EXIT;
+	ELSE
+		bValveBankHasAnyError := FALSE;
+	END_IF
+END_FOR]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_TestingAteqHandshakeSpeed" Id="{78566c88-4388-4ff1-bfc5-3eb9f8e7b63d}">
+      <Declaration><![CDATA[METHOD M_TestingAteqHandshakeSpeed : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Response DEBUG
+
+// Master switch to start/stop the response time measurement sequence
+// Set bTestActive to TRUE from HMI, another part of your code, or a button to start the sequence.
+// Set bTestActive to FALSE to stop it.
+
+IF bTestActive THEN
+
+    // --- State 1: Send Command (Trigger) ---
+    // Only send the command if not already sent and the delay for the next trigger has finished
+    IF NOT bCommandSent AND bDelayFinished THEN
+       
+		astAteqIo[0].stWrite.stCommands.bStart := TRUE; // Set command
+		
+        tStartTime 		:= T#0S + TIME();                          // Record current time
+        bCommandSent 	:= TRUE;
+        bEchoReceived 	:= FALSE;                               // Reset echo flag for new measurement
+        bDelayFinished 	:= FALSE;                              // Reset delay finished flag
+        bTriggerReady 	:= FALSE;                               // Indicate that trigger is sent
+    END_IF
+
+    // --- State 2: Check for Echo response ---
+    IF bCommandSent AND NOT bEchoReceived AND astAteqIo[0].stRead.stEcho.bStart THEN
+        
+		tResponseTime := TIME() - tStartTime;
+        bEchoReceived := TRUE;
+
+        // Store the response time in the array
+        IF nResponseIndex < SIZEOF(aResponseTimes)/SIZEOF(aResponseTimes[0]) THEN // Check array bounds
+            aResponseTimes[nResponseIndex] := tResponseTime;
+            nResponseIndex := nResponseIndex + 1;
+        ELSE
+            // Handle array full condition (e.g., reset index, log error, stop test)
+            // For now, let's stop the test if array is full
+            bTestActive := FALSE;
+            // You might want to add a log message here or trigger an alarm
+        END_IF
+
+        // Reset command and prepare for next cycle
+        astAteqIo[0].stWrite.stCommands.bStart := FALSE;
+        bCommandSent := FALSE;
+        // Now, start the delay before the next trigger
+        bTriggerReady := FALSE; // Ensure delay timer starts
+    END_IF
+
+    // --- State 3: Delay Between Triggers ---
+    // Start the delay timer once a command has been sent and we are waiting for the next trigger
+    fbDelayBetweenTriggers(IN := NOT bTriggerReady, PT := tDelayTimeBetweenTriggers);
+
+    // Once the delay timer is done, set bDelayFinished to allow the next trigger
+    IF fbDelayBetweenTriggers.Q THEN
+        bDelayFinished := TRUE;
+        bTriggerReady := TRUE; // Allow next trigger
+        fbDelayBetweenTriggers(IN := FALSE); // Reset the timer
+    END_IF
+
+ELSE // bTestActive is FALSE (test is not running)
+    // Ensure everything is reset when the test is not active
+    bCommandSent := FALSE;
+    bEchoReceived := FALSE;
+    fbDelayBetweenTriggers(IN := FALSE);
+    bDelayFinished := TRUE; // Ready for test to start
+    bTriggerReady := TRUE;  // Ready to send first trigger when bTestActive becomes TRUE
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="PRG_ATEQ">
+      <LineId Id="2806" Count="14" />
+      <LineId Id="2851" Count="0" />
+      <LineId Id="2821" Count="0" />
+      <LineId Id="2852" Count="2" />
+      <LineId Id="2822" Count="8" />
+      <LineId Id="2858" Count="0" />
+      <LineId Id="2855" Count="0" />
+      <LineId Id="2831" Count="0" />
+      <LineId Id="2857" Count="0" />
+      <LineId Id="2856" Count="0" />
+      <LineId Id="2832" Count="0" />
+      <LineId Id="2835" Count="15" />
+      <LineId Id="155" Count="0" />
+    </LineIds>
+    <LineIds Name="PRG_ATEQ.M_ScanAteqDevicesWithInit">
+      <LineId Id="105" Count="1" />
+      <LineId Id="61" Count="43" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="108" Count="0" />
+      <LineId Id="107" Count="0" />
+    </LineIds>
+    <LineIds Name="PRG_ATEQ.M_ScanValveBanks">
+      <LineId Id="6" Count="1" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="16" Count="2" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="20" Count="2" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="37" Count="2" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="33" Count="0" />
+    </LineIds>
+    <LineIds Name="PRG_ATEQ.M_TestingAteqHandshakeSpeed">
+      <LineId Id="7" Count="63" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

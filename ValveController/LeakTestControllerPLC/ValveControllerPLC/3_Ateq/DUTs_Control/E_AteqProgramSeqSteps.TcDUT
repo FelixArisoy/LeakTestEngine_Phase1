@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <DUT Name="E_AteqProgramSeqSteps" Id="{e53874a6-2496-4372-b4ca-6316841d2cde}">
+    <Declaration><![CDATA[TYPE E_AteqProgramSeqSteps :
+(	
+    SEQ_IDLE,             	// Auto sequence is idle, waiting for trigger
+    SEQ_RESET_FIFO,       	// Executing FIFO clear command
+    SEQ_PROGRAM_SELECT,   	// Selecting test program (if applicable)
+    SEQ_AUTO_ZERO,        	// Executing Auto Zero command
+    SEQ_START_PROGRAM,    	// Starting the test program
+    SEQ_READ_LAST_RESULT, 	// Reading the last test result
+	//SEQ_READ_FIFO_RESULTS,	// Reading FIFO results (if multiple)
+    SEQ_TEST_DONE,        	// Auto sequence completed successfully
+    SEQ_ERROR,   			// An error occurred within the auto sequence
+	SEQ_TIMEOUT,
+	SEQ_RESET				// Holds DONE, ERROR, TIMEOUT states
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
