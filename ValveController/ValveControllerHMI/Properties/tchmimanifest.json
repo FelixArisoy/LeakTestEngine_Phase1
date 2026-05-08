@@ -1,7 +1,7 @@
 {
   "$schema": "http://json.schemastore.org/web-manifest",
-  "name": "TcHmiProject1",
-  "short_name": "TcHmiProject1",
+  "name": "ValveControllerHMI",
+  "short_name": "ValveControllerHMI",
   "icons": [
     {
       "src": "../Images/Manifest/launcher-icon-0-75x.png",
