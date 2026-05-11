@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.74">
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.22">
 	<DataTypes>
 		<DataType>
 			<Name GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Name>
@@ -56,7 +56,7 @@
 		<ImageData Id="1001">424dd6020000000000003600000028000000100000000e0000000100180000000000a002000000000000000000000000000000000000ff00ffff00ffff00ffff00ffff00ffff00ff808080808080808080808080808080808080808080808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080808080808080c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080808080808080c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080808080808080c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080808080808080c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080808080808080c0c0c0c0c0c0808080ff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c00000ffc0c0c0c0c0c0c0c0c0808080ff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c00000ffc0c0c0c0c0c0c0c0c0808080ff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c000ff00c0c0c0c0c0c0c0c0c0808080ff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ff</ImageData>
 		<ImageData Id="1002">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000c40e0000c40e00000000000000000000ff00ffff00ffff00ffff00ffff00ffff00ff808080808080808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff</ImageData>
 	</ImageDatas>
-	<Project ProjectGUID="{A76AF4C2-744F-4C27-A416-5035FFBECB46}" AmlIdsEnabled="true" TargetNetId="10.1.176.222.1.1" Target64Bit="true" ShowHideConfigurations="#x6">
+	<Project ProjectGUID="{A76AF4C2-744F-4C27-A416-5035FFBECB46}" AmlIdsEnabled="true" TargetNetId="10.22.2.161.1.1" Target64Bit="true" ShowHideConfigurations="#x6">
 		<System>
 			<Settings MaxCpus="4">
 				<Cpu CpuId="3"/>
@@ -80,510 +80,1730 @@
 		</System>
 		<Plc>
 			<Project GUID="{FF505B91-FACF-4A2B-B73E-9C5E3B10185D}" Name="ValveControllerPLC" PrjFilePath="ValveControllerPLC\ValveControllerPLC.plcproj" TmcFilePath="ValveControllerPLC\ValveControllerPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc" TmcHash="{7C24BD2F-5557-CF98-4073-31EA6BE6BDDA}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{ABCA3BF8-0554-63B5-531F-20491BDFFCD6}" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc">
 					<Name>ValveControllerPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
-					<Vars VarGrpType="1">
-						<Name>LeakTestTask Inputs</Name>
+					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
+						<Name>UnitTestTask Outputs</Name>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[0].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.devCtrl</Name>
+							<Type GUID="{391652FB-7F01-987E-1D53-3B165841CFCE}">ARRAY [1..8] OF UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[1].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[0].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[2].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[1].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[3].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[2].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[4].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[3].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[5].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[4].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[6].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[5].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[7].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[6].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[8].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[7].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[9].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[8].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[10].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[9].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[11].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[10].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[12].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[11].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[13].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[12].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[14].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[13].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[15].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[14].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[16].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[15].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[17].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[16].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[18].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[17].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[19].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[18].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[20].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[19].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[21].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[20].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[22].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[21].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[23].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[22].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[24].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[23].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[25].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[24].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[26].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[25].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[27].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[26].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[28].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[27].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[29].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[28].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[30].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[29].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[31].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[30].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[32].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[31].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[33].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[32].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[34].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[33].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[35].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[34].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[36].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[35].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[37].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[36].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[38].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[37].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[39].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[38].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[40].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[39].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[41].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[40].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[42].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[41].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[43].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[42].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[44].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[43].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[45].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[44].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[46].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[45].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[47].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[46].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[48].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[47].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[49].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[48].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[50].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[49].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[51].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[50].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[52].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[51].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[53].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[52].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[54].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[53].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[55].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[54].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[56].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[55].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[57].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[56].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[58].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[57].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[59].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[58].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[60].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[59].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[61].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[60].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[62].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[61].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[63].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[62].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[64].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[63].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[65].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[64].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[66].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[65].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[67].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[66].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[68].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[67].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[69].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[68].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[70].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[69].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[71].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[70].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[72].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[71].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[73].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[72].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[74].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[73].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[75].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[74].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[76].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[75].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[77].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[76].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[78].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[77].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[79].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[78].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[80].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[79].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[81].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[80].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[82].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[81].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[83].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[82].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[84].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[83].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[85].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[84].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[86].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[85].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[87].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[86].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[88].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[87].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[89].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[88].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[90].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[89].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[91].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[90].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[92].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[91].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[93].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[92].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[94].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[93].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[95].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[94].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[96].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[95].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[97].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[96].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[98].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[97].Ctrl</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>PRG_Main.astAteqRawIo[99].InByte</Name>
-							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
-							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
+							<Name>GVL_MapValveBank.aIoEx260[98].Ctrl</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[99].Ctrl</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.Frm0Ctrl</Name>
+							<Comment><![CDATA[
+0x0001 = Link error		
+								
+0x0002 = I/O locked after link error (I/O reset required)										
+										
+0x0004 = Link error (redundancy adapter)										
+										
+0x0008 = Missing one frame (redundancy mode)										
+										
+0x0010 = Out of send resources (I/O reset required)										
+										
+0x0020 = Watchdog triggered										
+										
+0x0040 = Ethernet driver (miniport) not found										
+										
+0x0080 = I/O reset active										
+										
+0x0100 = At least one device in 'INIT' state										
+										
+0x0200 = At least one device in 'PRE-OP' state										
+										
+0x0400 = At least one device in 'SAFE-OP' state										
+										
+0x0800 = At least one device indicates an error state										
+										
+0x1000 = DC not in sync										
+]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.Frm0WcCtrl</Name>
+							<Comment><![CDATA[
+0x0001 = prevent 1. EtherCAT command FROM sending (request NOP)										
+0x0002 = prevent 2. EtherCAT command from sending (request NOP)																				
+0x0004 = prevent 3. EtherCAT command from sending (request NOP)																				
+...										
+										
+0x4000 = prevent 15. EtherCAT command from sending (request NOP)																				
+0x8000 = prevent complete frame from sending										
+]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.DevCtrl</Name>
+							<Comment><![CDATA[		
+0x0001 = copy data with wrong working counter OF 1. EtherCAT command								
+0x0002 = copy data with wrong working counter of 2. EtherCAT command																			
+0x0004 = copy data with wrong working counter of 3. EtherCAT command																				
+...																				
+0x4000 = copy data with wrong working counter of 15. EtherCAT command										
+]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+					</Vars>
+					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
+						<Name>UnitTestTask Inputs</Name>
+						<Var>
+							<Name>GVL_MapValveBank.devState</Name>
+							<Type GUID="{391652FB-7F01-987E-1D53-3B165841CFCE}">ARRAY [1..8] OF UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[0].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[0].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[0].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[1].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[1].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[1].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[2].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[2].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[2].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[3].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[3].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[3].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[4].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[4].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[4].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[5].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[5].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[5].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[6].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[6].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[6].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[7].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[7].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[7].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[8].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[8].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[8].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[9].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[9].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[9].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[10].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[10].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[10].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[11].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[11].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[11].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[12].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[12].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[12].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[13].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[13].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[13].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[14].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[14].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[14].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[15].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[15].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[15].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[16].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[16].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[16].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[17].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[17].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[17].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[18].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[18].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[18].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[19].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[19].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[19].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[20].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[20].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[20].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[21].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[21].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[21].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[22].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[22].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[22].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[23].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[23].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[23].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[24].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[24].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[24].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[25].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[25].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[25].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[26].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[26].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[26].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[27].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[27].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[27].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[28].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[28].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[28].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[29].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[29].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[29].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[30].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[30].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[30].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[31].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[31].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[31].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[32].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[32].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[32].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[33].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[33].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[33].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[34].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[34].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[34].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[35].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[35].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[35].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[36].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[36].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[36].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[37].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[37].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[37].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[38].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[38].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[38].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[39].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[39].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[39].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[40].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[40].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[40].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[41].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[41].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[41].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[42].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[42].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[42].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[43].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[43].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[43].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[44].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[44].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[44].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[45].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[45].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[45].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[46].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[46].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[46].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[47].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[47].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[47].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[48].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[48].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[48].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[49].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[49].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[49].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[50].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[50].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[50].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[51].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[51].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[51].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[52].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[52].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[52].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[53].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[53].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[53].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[54].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[54].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[54].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[55].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[55].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[55].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[56].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[56].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[56].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[57].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[57].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[57].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[58].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[58].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[58].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[59].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[59].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[59].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[60].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[60].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[60].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[61].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[61].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[61].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[62].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[62].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[62].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[63].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[63].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[63].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[64].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[64].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[64].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[65].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[65].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[65].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[66].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[66].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[66].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[67].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[67].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[67].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[68].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[68].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[68].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[69].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[69].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[69].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[70].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[70].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[70].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[71].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[71].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[71].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[72].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[72].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[72].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[73].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[73].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[73].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[74].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[74].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[74].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[75].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[75].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[75].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[76].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[76].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[76].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[77].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[77].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[77].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[78].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[78].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[78].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[79].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[79].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[79].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[80].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[80].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[80].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[81].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[81].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[81].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[82].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[82].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[82].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[83].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[83].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[83].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[84].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[84].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[84].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[85].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[85].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[85].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[86].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[86].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[86].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[87].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[87].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[87].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[88].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[88].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[88].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[89].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[89].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[89].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[90].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[90].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[90].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[91].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[91].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[91].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[92].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[92].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[92].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[93].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[93].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[93].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[94].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[94].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[94].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[95].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[95].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[95].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[96].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[96].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[96].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[97].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[97].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[97].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[98].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[98].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[98].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[99].State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[99].In0</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapValveBank.aIoEx260[99].In1</Name>
+							<Type>SINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.Frm0State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.Frm0WcState</Name>
+							<Comment><![CDATA[			
+0x0001 = 1. EtherCAT command NOT sent (NOP requested)							
+0x0002 = 2. EtherCAT command not sent (NOP requested)																				
+0x0004 = 3. EtherCAT command not sent (NOP requested)																				
+...																				
+0x4000 = 15. EtherCAT command not sent (NOP requested)																				
+0x8000 = complete frame not sent										
+]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.Frm0InputToggle</Name>
+							<Comment><![CDATA[			
+0x0001 = wrong working counter of 1. EtherCAT command received								
+0x0002 = wrong working counter of 2. EtherCAT command received																	
+0x0004 = wrong working counter of 3. EtherCAT command received																				
+...																				
+0x4000 = wrong working counter of 15. EtherCAT command received																				
+0x8000 = complete frame missing										
+]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.SlaveCount</Name>
+							<Comment><![CDATA[ Actual count OF EtherCAT slaves received	]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.DevState</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.ChangeCount</Name>
+							<Comment><![CDATA[InfoData]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.DevId</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.AmsNetId</Name>
+							<Type GUID="{18071995-0000-0000-0000-000000000041}">AMSNETID</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.CfgSlaveCount</Name>
+							<Type>UINT</Type>
 						</Var>
 					</Vars>
 					<Vars VarGrpType="2" AreaNo="1">
@@ -2589,1727 +3809,507 @@
 							<Type>BYTE</Type>
 						</Var>
 					</Vars>
-					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
-						<Name>UnitTestTask Inputs</Name>
+					<Vars VarGrpType="1">
+						<Name>LeakTestTask Inputs</Name>
 						<Var>
-							<Name>GVL_MapValveBank.devState</Name>
-							<Type GUID="{391652FB-7F01-987E-1D53-3B165841CFCE}">ARRAY [1..8] OF UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[0].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapEL6070.Frm0State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[1].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[0].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[2].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[0].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[3].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[0].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[4].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[1].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[5].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[1].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[6].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[1].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[7].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[2].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[8].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[2].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[9].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[2].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[10].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[3].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[11].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[3].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[12].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[3].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[13].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[4].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[14].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[4].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[15].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[4].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[16].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[5].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[17].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[5].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[18].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[5].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[19].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[6].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[20].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[6].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[21].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[6].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[22].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[7].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[23].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[7].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[24].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[7].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[25].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[8].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[26].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[8].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[27].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[8].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[28].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[9].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[29].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[9].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[30].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[9].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[31].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[10].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[32].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[10].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[33].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[10].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[34].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[11].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[35].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[11].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[36].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[11].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[37].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[12].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[38].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[12].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[39].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[12].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[40].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[13].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[41].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[13].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[42].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[13].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[43].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[14].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[44].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[14].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[45].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[14].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[46].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[15].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[47].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[15].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[48].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[15].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[49].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[16].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[50].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[16].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[51].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[16].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[52].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[17].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[53].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[17].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[54].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[17].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[55].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[18].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[56].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[18].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[57].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[18].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[58].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[19].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[59].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[19].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[60].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[19].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[61].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[20].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[62].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[20].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[63].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[20].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[64].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[21].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[65].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[21].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[66].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[21].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[67].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[22].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[68].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[22].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[69].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[22].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[70].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[23].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[71].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[23].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[72].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[23].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[73].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[24].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[74].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[24].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[75].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[24].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[76].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[25].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[77].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[25].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[78].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[25].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[79].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[26].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[80].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[26].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[81].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[26].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[82].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[27].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[83].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[27].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[84].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[27].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[85].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[28].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[86].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[28].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[87].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[28].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[88].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[29].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[89].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[29].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[90].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[29].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[91].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[30].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[92].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[30].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[93].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[30].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[94].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[31].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[95].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[31].In0</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[96].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[31].In1</Name>
-							<Type>SINT</Type>
+							<Name>PRG_Main.astAteqRawIo[97].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[32].State</Name>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[98].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[32].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[32].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[33].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[33].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[33].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[34].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[34].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[34].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[35].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[35].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[35].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[36].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[36].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[36].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[37].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[37].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[37].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[38].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[38].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[38].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[39].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[39].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[39].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[40].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[40].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[40].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[41].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[41].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[41].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[42].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[42].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[42].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[43].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[43].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[43].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[44].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[44].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[44].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[45].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[45].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[45].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[46].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[46].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[46].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[47].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[47].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[47].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[48].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[48].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[48].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[49].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[49].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[49].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[50].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[50].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[50].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[51].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[51].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[51].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[52].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[52].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[52].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[53].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[53].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[53].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[54].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[54].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[54].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[55].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[55].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[55].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[56].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[56].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[56].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[57].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[57].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[57].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[58].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[58].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[58].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[59].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[59].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[59].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[60].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[60].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[60].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[61].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[61].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[61].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[62].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[62].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[62].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[63].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[63].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[63].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[64].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[64].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[64].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[65].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[65].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[65].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[66].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[66].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[66].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[67].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[67].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[67].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[68].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[68].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[68].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[69].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[69].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[69].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[70].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[70].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[70].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[71].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[71].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[71].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[72].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[72].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[72].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[73].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[73].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[73].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[74].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[74].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[74].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[75].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[75].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[75].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[76].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[76].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[76].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[77].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[77].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[77].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[78].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[78].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[78].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[79].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[79].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[79].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[80].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[80].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[80].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[81].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[81].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[81].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[82].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[82].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[82].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[83].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[83].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[83].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[84].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[84].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[84].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[85].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[85].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[85].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[86].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[86].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[86].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[87].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[87].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[87].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[88].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[88].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[88].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[89].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[89].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[89].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[90].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[90].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[90].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[91].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[91].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[91].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[92].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[92].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[92].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[93].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[93].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[93].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[94].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[94].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[94].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[95].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[95].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[95].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[96].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[96].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[96].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[97].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[97].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[97].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[98].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[98].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[98].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[99].State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[99].In0</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[99].In1</Name>
-							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.Frm0WcState</Name>
-							<Comment><![CDATA[			
-0x0001 = 1. EtherCAT command NOT sent (NOP requested)							
-0x0002 = 2. EtherCAT command not sent (NOP requested)																				
-0x0004 = 3. EtherCAT command not sent (NOP requested)																				
-...																				
-0x4000 = 15. EtherCAT command not sent (NOP requested)																				
-0x8000 = complete frame not sent										
-]]></Comment>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.Frm0InputToggle</Name>
-							<Comment><![CDATA[			
-0x0001 = wrong working counter of 1. EtherCAT command received								
-0x0002 = wrong working counter of 2. EtherCAT command received																	
-0x0004 = wrong working counter of 3. EtherCAT command received																				
-...																				
-0x4000 = wrong working counter of 15. EtherCAT command received																				
-0x8000 = complete frame missing										
-]]></Comment>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.SlaveCount</Name>
-							<Comment><![CDATA[ Actual count OF EtherCAT slaves received	]]></Comment>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.DevState</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.ChangeCount</Name>
-							<Comment><![CDATA[InfoData]]></Comment>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.DevId</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.AmsNetId</Name>
-							<Type GUID="{18071995-0000-0000-0000-000000000041}">AMSNETID</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.CfgSlaveCount</Name>
-							<Type>UINT</Type>
-						</Var>
-					</Vars>
-					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
-						<Name>UnitTestTask Outputs</Name>
-						<Var>
-							<Name>GVL_MapValveBank.devCtrl</Name>
-							<Type GUID="{391652FB-7F01-987E-1D53-3B165841CFCE}">ARRAY [1..8] OF UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[0].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[1].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[2].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[3].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[4].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[5].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[6].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[7].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[8].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[9].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[10].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[11].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[12].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[13].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[14].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[15].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[16].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[17].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[18].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[19].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[20].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[21].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[22].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[23].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[24].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[25].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[26].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[27].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[28].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[29].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[30].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[31].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[32].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[33].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[34].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[35].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[36].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[37].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[38].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[39].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[40].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[41].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[42].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[43].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[44].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[45].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[46].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[47].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[48].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[49].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[50].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[51].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[52].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[53].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[54].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[55].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[56].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[57].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[58].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[59].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[60].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[61].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[62].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[63].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[64].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[65].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[66].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[67].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[68].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[69].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[70].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[71].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[72].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[73].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[74].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[75].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[76].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[77].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[78].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[79].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[80].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[81].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[82].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[83].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[84].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[85].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[86].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[87].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[88].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[89].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[90].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[91].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[92].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[93].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[94].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[95].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[96].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[97].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[98].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapValveBank.aIoEx260[99].Ctrl</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.Frm0Ctrl</Name>
-							<Comment><![CDATA[
-0x0001 = Link error		
-								
-0x0002 = I/O locked after link error (I/O reset required)										
-										
-0x0004 = Link error (redundancy adapter)										
-										
-0x0008 = Missing one frame (redundancy mode)										
-										
-0x0010 = Out of send resources (I/O reset required)										
-										
-0x0020 = Watchdog triggered										
-										
-0x0040 = Ethernet driver (miniport) not found										
-										
-0x0080 = I/O reset active										
-										
-0x0100 = At least one device in 'INIT' state										
-										
-0x0200 = At least one device in 'PRE-OP' state										
-										
-0x0400 = At least one device in 'SAFE-OP' state										
-										
-0x0800 = At least one device indicates an error state										
-										
-0x1000 = DC not in sync										
-]]></Comment>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.Frm0WcCtrl</Name>
-							<Comment><![CDATA[
-0x0001 = prevent 1. EtherCAT command FROM sending (request NOP)										
-0x0002 = prevent 2. EtherCAT command from sending (request NOP)																				
-0x0004 = prevent 3. EtherCAT command from sending (request NOP)																				
-...										
-										
-0x4000 = prevent 15. EtherCAT command from sending (request NOP)																				
-0x8000 = prevent complete frame from sending										
-]]></Comment>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.DevCtrl</Name>
-							<Comment><![CDATA[		
-0x0001 = copy data with wrong working counter OF 1. EtherCAT command								
-0x0002 = copy data with wrong working counter of 2. EtherCAT command																			
-0x0004 = copy data with wrong working counter of 3. EtherCAT command																				
-...																				
-0x4000 = copy data with wrong working counter of 15. EtherCAT command										
-]]></Comment>
-							<Type>UINT</Type>
+							<Name>PRG_Main.astAteqRawIo[99].InByte</Name>
+							<Comment><![CDATA[ Each device has 64 bytes of input/output memory]]></Comment>
+							<Type GUID="{FFED1F84-2560-AC0C-FE38-4607242EF02C}">ARRAY [0..3] OF ARRAY [0..63] OF BYTE</Type>
 						</Var>
 					</Vars>
 					<UnrestoredVarLinks ImportTime="2026-04-02T11:51:39">
@@ -4363,15 +4363,24 @@
 			</Project>
 		</Plc>
 		<Io>
-			<Device Id="1" AmlId="{A86A7610-2FF5-4427-A1F1-68F3806A7625}" DevType="113" AmsPort="28673" AmsNetId="10.1.176.222.2.1" RemoteName="Device 1 (Profinet Controller)">
+			<Device Id="1" AmlId="{A86A7610-2FF5-4427-A1F1-68F3806A7625}" DevType="113" AmsPort="28673" AmsNetId="10.22.2.161.2.1" RemoteName="Device 1 (Profinet Controller)">
 				<Name>Device 1 (Profinet Controller)</Name>
-				<DevData>000000000000000000000000803801005c4445564943455c7b38464341303341392d323033422d343545302d424333322d4437394231423338333433417d000000000000000001000a02a8c000ffffff000105a4bc780400000000000000000000000000000000000102a8c00000000000000000000000000000000000000000</DevData>
+				<AddressInfo>
+					<Pnp>
+						<DeviceDesc>Ethernet 2 X001 (TwinCAT-Intel PCI Ethernet Adapter</DeviceDesc>
+						<DeviceName>\DEVICE\{8FCA03A9-203B-45E0-BC32-D79B1B38343A}</DeviceName>
+						<DeviceData>000105a4bc78</DeviceData>
+					</Pnp>
+				</AddressInfo>
 				<Image Id="1" AddrType="1" ImageType="3" SizeIn="260" SizeOut="266">
 					<Name>Image</Name>
 				</Image>
 				<Box Id="1" AmlId="{4D0E8789-E929-49EB-9FEF-70E07FAF4004}" BoxType="9121">
 					<Name>ateqf620</Name>
-					<Comment><![CDATA[GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
+					<Comment><![CDATA[
+The GSDML is not available!
+
+GSDML: GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml
 GSDML path: C:\Users\rt59t\Source\Repos\ValiantTMSControls\ValveController\ateqGSDML\
 VendorName: Hilscher Gesellschaft für Systemautomation mbH
 OrderNumber: 153x.10x
@@ -4429,7 +4438,7 @@ SW Release Version: 3.4.19]]></Comment>
 							<Type>UINT</Type>
 						</Var>
 					</Vars>
-					<Profinet DeviceId="257" VendorId="286" FrameOffset="49152" Flags="16" IPAdd="c0a8020f" ProtocolType="3" BoxOnDeviceTyp="113" MaxPhysSlotNr="255" AvailableSlots="0..255" InstanceServerPort="61000" InstanceClientPort="60000" InstanceId="1" InstanceNumberOfARs="1" InstanceNumberOfAPIs="1" MinDeviceInterval="32" SavePnIoBoxValues="0100" MultipleWriteSupported="true" Phase="1" WatchdogFaktor="3" ReductionRatio="8" SendClockFaktor="32" MaxInputLen="1024" MaxOutputLen="1024" SendClockFactorData="200040008000" SendClockFactorRTC3="200040008000" RedRatio="0100020004000800100020004000800000010002" RedRatioRTC3="01000200040008001000" BoxTypeInfo="Firmware version V3.4.19 - V3.4.x. Supports FastStartup, Identification &amp; Maintenance 1-4, RT and IRT Communication." GSDMLPath="C:\Users\rt59t\Source\Repos\ValiantTMSControls\ValveController\ateqGSDML\GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml" ImagePath="C:\Users\rt59t\Source\Repos\ValiantTMSControls\ValveController\ateqGSDML\GSDML-011E-0101-COMXREPNS.bmp" MainFamily="I/O" ProductFamily="PNS" OrderNr="153x.10x" DefaultDNSName="comxrepns" VendorName="Hilscher Gesellschaft für Systemautomation mbH" FamDescription="ProfiNet IO-Device communication module." GraphicFile="GSDML-011E-0101-COMXREPNS" SWVersion="3.4.19" HWVersion="2" AltLanguage="7">
+					<Profinet DeviceId="257" VendorId="286" FrameOffset="49152" Flags="16" IPAdd="c0a8020f" ProtocolType="3" BoxOnDeviceTyp="113" MaxPhysSlotNr="255" AvailableSlots="0..255" InstanceServerPort="61000" InstanceClientPort="60000" InstanceId="1" InstanceNumberOfARs="1" InstanceNumberOfAPIs="1" MinDeviceInterval="32" SavePnIoBoxValues="0100" MultipleWriteSupported="true" Phase="1" WatchdogFaktor="3" ReductionRatio="4" SendClockFaktor="32" MaxInputLen="1024" MaxOutputLen="1024" SendClockFactorData="200040008000" SendClockFactorRTC3="200040008000" RedRatio="0100020004000800100020004000800000010002" RedRatioRTC3="01000200040008001000" BoxTypeInfo="Firmware version V3.4.19 - V3.4.x. Supports FastStartup, Identification &amp; Maintenance 1-4, RT and IRT Communication." GSDMLPath="C:\Users\rt59t\Source\Repos\ValiantTMSControls\ValveController\ateqGSDML\GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml" ImagePath="C:\Users\rt59t\Source\Repos\ValiantTMSControls\ValveController\ateqGSDML\GSDML-011E-0101-COMXREPNS.bmp" MainFamily="I/O" ProductFamily="PNS" OrderNr="153x.10x" DefaultDNSName="comxrepns" VendorName="Hilscher Gesellschaft für Systemautomation mbH" FamDescription="ProfiNet IO-Device communication module." GraphicFile="GSDML-011E-0101-COMXREPNS" SWVersion="3.4.19" HWVersion="2" AltLanguage="7">
 						<UsedGsdmlModule ModuleIdentNumber="4353" ModuleName="DAP Module" InfoText="Firmware version V3.4.19 - V3.4.x. Supports FastStartup, Identification &amp; Maintenance 1-4, RT and IRT Communication." OrderNumber="153x.10x">
 							<Slot>0</Slot>
 						</UsedGsdmlModule>
@@ -5223,7 +5232,7 @@ Submodule Info: 64 Bytes Output Submodule
 					</PNController>
 				</Profinet>
 			</Device>
-			<Device Id="2" AmlId="{190F2319-DE1A-46A7-8C45-5C868E99BC9E}" DevType="111" DevFlags="#x0003" AmsPort="28674" AmsNetId="10.1.176.222.3.1" RemoteName="Device 2 (EtherCAT)" InfoImageId="3">
+			<Device Id="2" AmlId="{190F2319-DE1A-46A7-8C45-5C868E99BC9E}" DevType="111" DevFlags="#x0003" AmsPort="28674" AmsNetId="10.22.2.161.3.1" RemoteName="Device 2 (EtherCAT)" InfoImageId="3">
 				<Name>Device 2 (EtherCAT)</Name>
 				<AddressInfo>
 					<Ccat>
@@ -5276,7 +5285,7 @@ Submodule Info: 64 Bytes Output Submodule
 				</Box>
 				<EtherCAT/>
 			</Device>
-			<Device Id="8" AmlId="{A935D71F-EE97-435B-93FC-D4374DE9DFA3}" Disabled="true" DevType="133" AmsPort="28680" AmsNetId="10.1.176.222.9.1" RemoteName="Device 3 (TC3 EIP Scanner)">
+			<Device Id="8" AmlId="{A935D71F-EE97-435B-93FC-D4374DE9DFA3}" Disabled="true" DevType="133" AmsPort="28680" AmsNetId="10.22.2.161.9.1" RemoteName="Device 3 (TC3 EIP Scanner)">
 				<Name>Device 3 (TC3 EIP Scanner)</Name>
 				<AddressInfo>
 					<Pnp>
@@ -5367,7 +5376,9 @@ C:\TwinCAT\3.1\Config\Io\EtherNetIP\ex260_sen1_x194_24_v12.eds
 					</EthernetIp>
 				</Box>
 				<Ethernet DeviceDesc="Ethernet X000 (TwinCAT-Intel PCI Ethernet Adapter (Gigabit) V2)" SpecialTask="true"/>
-				<EtherNetIPMasterDev m_EthIpMasterDevPar="080000004465766963652038202854433320454950205363616e6e6572290000000000000c0000006c00000089180000030100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020105a4bc770b01a8c000ffffff0101a8c00000800001001e000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"/>
+				<EtherNetIPMasterDev m_EthIpMasterDevPar="080000004465766963652038202854433320454950205363616e6e6572290000000000000c0000006c00000089180000030100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020105a4bc770b01a8c000ffffff0101a8c00000800001001e000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000">
+					<Ethernet/>
+				</EtherNetIPMasterDev>
 			</Device>
 			<Device File="Device 4 X000 (EtherCAT).xti" Id="4" AmlId="{542F2303-6C5F-4C83-BAF9-64903B6426F3}"/>
 		</Io>

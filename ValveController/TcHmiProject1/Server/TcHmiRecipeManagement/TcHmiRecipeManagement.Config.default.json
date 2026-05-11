@@ -1,0 +1,13 @@
+{
+    "recipeList": {},
+    "recipeTypeList": {
+        "AteqRecipeType": {
+            "members": {},
+            "options": {
+                "enabled": "None"
+            },
+            "recipeTypeNames": []
+        }
+    },
+    "recipeVersioningEnabled": false
+}

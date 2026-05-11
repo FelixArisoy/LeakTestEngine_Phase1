@@ -1,0 +1,5 @@
+Id;Default
+0;Decimal
+1;Binary
+2;Hex
+;

@@ -1,0 +1,9 @@
+Id;Default
+0;PreFill
+1;PreDump
+4;Fill
+5;Stabilization
+6;Test
+7;Dump
+65535;NoStepInProgress
+;
