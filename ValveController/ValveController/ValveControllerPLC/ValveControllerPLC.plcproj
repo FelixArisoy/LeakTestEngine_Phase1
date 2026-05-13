@@ -98,6 +98,9 @@
     <Compile Include="2_DUTs\GenericFieldDevice\ST_DeviceState.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="2_DUTs\TcHmi\ST_AteqRecipeType.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="2_DUTs\TcHmi\ST_DataGridStationConfig.TcDUT">
       <SubType>Code</SubType>
     </Compile>

@@ -5,6 +5,9 @@
 // TcHmi
 	aDataGridStationConfig	: ARRAY [0..GVL_StationConfig.nMaxStationCount - 1] OF ST_DataGridStationConfig;
 	anValveMaskListToRecipe	: ARRAY [0..GVL_StationConfig.nMaxStationCount - 1] OF ARRAY [0..GVL_leakTestConfig.nMaxTestSteps - 1] OF DWORD;
+
+// Recipe Types
+	stAteqRecipeType	: ST_AteqRecipeType;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

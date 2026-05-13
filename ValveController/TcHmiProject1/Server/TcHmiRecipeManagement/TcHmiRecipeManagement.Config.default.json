@@ -2,12 +2,47 @@
     "recipeList": {},
     "recipeTypeList": {
         "AteqRecipeType": {
-            "members": {},
+            "members": {
+                "ADS.PLC1.GVL_TcHmi.stAteqRecipeType.bEnableAutoZero": {
+                    "defaultValue": true,
+                    "enabled": true,
+                    "group": "",
+                    "order": 1,
+                    "schema": {},
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stAteqRecipeType.bEnableAutoZero",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "ADS.PLC1.GVL_TcHmi.stAteqRecipeType.nActiveProgramCount": {
+                    "defaultValue": 1,
+                    "enabled": true,
+                    "group": "",
+                    "order": 2,
+                    "schema": {
+                        "maximum": 999
+                    },
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stAteqRecipeType.nActiveProgramCount",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "ADS.PLC1.GVL_TcHmi.stAteqRecipeType.nIdx": {
+                    "defaultValue": 0,
+                    "enabled": true,
+                    "group": "",
+                    "order": 0,
+                    "schema": {
+                        "maximum": 25
+                    },
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stAteqRecipeType.nIdx",
+                    "unit": "",
+                    "version": 1.0
+                }
+            },
             "options": {
                 "enabled": "None"
             },
             "recipeTypeNames": []
         }
     },
-    "recipeVersioningEnabled": false
+    "recipeVersioningEnabled": true
 }
