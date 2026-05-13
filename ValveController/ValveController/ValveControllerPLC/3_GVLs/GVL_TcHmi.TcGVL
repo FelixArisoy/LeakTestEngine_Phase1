@@ -7,7 +7,14 @@
 	anValveMaskListToRecipe	: ARRAY [0..GVL_StationConfig.nMaxStationCount - 1] OF ARRAY [0..GVL_leakTestConfig.nMaxTestSteps - 1] OF DWORD;
 
 // Recipe Types
-	stAteqRecipeType	: ST_AteqRecipeType;
+	stRecipeTypeMachine		: ST_RecipeTypeMachine;
+	stRecipeTypeStation		: ST_RecipeTypeStation;
+	stRecipeTypeLeakTest	: ST_RecipeTypeLeakTest;
+	stRecipeTypeLeakTestStep: ST_RecipeTypeLeakTestStep;
+	stRecipeTypeAteqDevice	: ST_RecipeTypeAteqDevice;
+	stRecipeTypeAteqProgram	: ST_RecipeTypeAteqProgram;
+	stRecipeTypeValveBank	: ST_RecipeTypeValveBank;
+
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

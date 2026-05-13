@@ -1,39 +1,844 @@
 {
-    "recipeList": {},
+    "recipeList": {
+        "ConfigMachine1": {
+            "recipeTypeName": "MachineRecipeType",
+            "values": {
+                "Active Station Count": 1,
+                "Enable Machine": true,
+                "Machine Index": 1
+            }
+        },
+        "Machine1": {
+            "Station1": {
+                "ConfigStation1": {
+                    "recipeTypeName": "StationRecipeType",
+                    "values": {
+                        "Active Ateq Device": 1,
+                        "Active Test Count": 2,
+                        "Active Valve Bank": 1,
+                        "Enable": true,
+                        "Station Number": 1
+                    }
+                },
+                "LeatTestRecipe1": {
+                    "Devices": {
+                        "Ateq1": {
+                            "AteqDeviceRecipe": {
+                                "recipeTypeName": "AteqDeviceRecipeType",
+                                "values": {
+                                    "Active Program Count": 1,
+                                    "Device Index": 1,
+                                    "Enable": true,
+                                    "Enable Auto Zero": true
+                                }
+                            },
+                            "AteqProgram1": {
+                                "recipeTypeName": "AteqProgramRecipeType",
+                                "values": {
+                                    "Enable": true,
+                                    "Enable Timeout": false,
+                                    "Program Index": 1,
+                                    "Store Results": true,
+                                    "TimeoutTime": "PT0.001S",
+                                    "Wait for Prg Comp": false
+                                }
+                            },
+                            "AteqProgram2": {
+                                "recipeTypeName": "AteqProgramRecipeType",
+                                "values": {
+                                    "Enable": true,
+                                    "Enable Timeout": false,
+                                    "Program Index": 2,
+                                    "Store Results": true,
+                                    "TimeoutTime": "PT0.001S",
+                                    "Wait for Prg Comp": false
+                                }
+                            }
+                        },
+                        "ValveBank1": {
+                            "ValveBank1": {
+                                "recipeTypeName": "ValveBankRecipeType",
+                                "values": {
+                                    "Active Valve Count": 1,
+                                    "Available Valve Slots": 8,
+                                    "Enable": true,
+                                    "ValveBank Index": 1
+                                }
+                            },
+                            "ValveBank2": {
+                                "recipeTypeName": "ValveBankRecipeType",
+                                "values": {
+                                    "Active Valve Count": 1,
+                                    "Available Valve Slots": 8,
+                                    "Enable": true,
+                                    "ValveBank Index": 2
+                                }
+                            }
+                        }
+                    },
+                    "Test1Steps": {
+                        "LTStep1": {
+                            "recipeTypeName": "LeakTestStepRecipeType",
+                            "values": {
+                                "Active Sub Step Count": 0,
+                                "Apply Time Off Delay": false,
+                                "Apply Time On Delay": false,
+                                "Enable Step": true,
+                                "Step Index": 1,
+                                "Time Off Delay": "PT0.001S",
+                                "Time On Delay": "PT0.001S",
+                                "Valve Mask For This Step": 1
+                            }
+                        },
+                        "LTStep2": {
+                            "recipeTypeName": "LeakTestStepRecipeType",
+                            "values": {
+                                "Active Sub Step Count": 0,
+                                "Apply Time Off Delay": false,
+                                "Apply Time On Delay": false,
+                                "Enable Step": true,
+                                "Step Index": 2,
+                                "Time Off Delay": "PT0.001S",
+                                "Time On Delay": "PT0.001S",
+                                "Valve Mask For This Step": 0
+                            }
+                        },
+                        "LTStep3": {
+                            "recipeTypeName": "LeakTestStepRecipeType",
+                            "values": {
+                                "Active Sub Step Count": 0,
+                                "Apply Time Off Delay": false,
+                                "Apply Time On Delay": false,
+                                "Enable Step": true,
+                                "Step Index": 3,
+                                "Time Off Delay": "PT0.001S",
+                                "Time On Delay": "PT0.001S",
+                                "Valve Mask For This Step": 0
+                            }
+                        }
+                    },
+                    "TestRecipe1": {
+                        "recipeTypeName": "LeakTestRecipeType",
+                        "values": {
+                            "Active Step Count": 1,
+                            "Apply Time Off Delay": false,
+                            "Apply Time On Delay": false,
+                            "Enable": true,
+                            "Test Index": 1,
+                            "Time Off Delay": "PT0.001S",
+                            "Time On Delay": "PT0.001S"
+                        }
+                    }
+                }
+            },
+            "Station2": {
+                "ConfigStation2": {
+                    "recipeTypeName": "StationRecipeType",
+                    "values": {
+                        "Active Ateq Device": 1,
+                        "Active Test Count": 2,
+                        "Active Valve Bank": 1,
+                        "Enable": true,
+                        "Station Number": 2
+                    }
+                },
+                "LeatTestRecipe1": {
+                    "Devices": {
+                        "Ateq1": {
+                            "AteqDeviceRecipe": {
+                                "recipeTypeName": "AteqDeviceRecipeType",
+                                "values": {
+                                    "Active Program Count": 1,
+                                    "Device Index": 1,
+                                    "Enable": true,
+                                    "Enable Auto Zero": true
+                                }
+                            },
+                            "AteqProgram1": {
+                                "recipeTypeName": "AteqProgramRecipeType",
+                                "values": {
+                                    "Enable": true,
+                                    "Enable Timeout": false,
+                                    "Program Index": 1,
+                                    "Store Results": true,
+                                    "TimeoutTime": "PT0.001S",
+                                    "Wait for Prg Comp": false
+                                }
+                            },
+                            "AteqProgram2": {
+                                "recipeTypeName": "AteqProgramRecipeType",
+                                "values": {
+                                    "Enable": true,
+                                    "Enable Timeout": false,
+                                    "Program Index": 2,
+                                    "Store Results": true,
+                                    "TimeoutTime": "PT0.001S",
+                                    "Wait for Prg Comp": false
+                                }
+                            }
+                        },
+                        "ValveBank1": {
+                            "ValveBank1": {
+                                "recipeTypeName": "ValveBankRecipeType",
+                                "values": {
+                                    "Active Valve Count": 1,
+                                    "Available Valve Slots": 8,
+                                    "Enable": true,
+                                    "ValveBank Index": 1
+                                }
+                            },
+                            "ValveBank2": {
+                                "recipeTypeName": "ValveBankRecipeType",
+                                "values": {
+                                    "Active Valve Count": 1,
+                                    "Available Valve Slots": 8,
+                                    "Enable": true,
+                                    "ValveBank Index": 2
+                                }
+                            }
+                        }
+                    },
+                    "Test1Steps": {
+                        "LTStep1": {
+                            "recipeTypeName": "LeakTestStepRecipeType",
+                            "values": {
+                                "Active Sub Step Count": 0,
+                                "Apply Time Off Delay": false,
+                                "Apply Time On Delay": false,
+                                "Enable Step": true,
+                                "Step Index": 1,
+                                "Time Off Delay": "PT0.001S",
+                                "Time On Delay": "PT0.001S",
+                                "Valve Mask For This Step": 0
+                            }
+                        },
+                        "LTStep2": {
+                            "recipeTypeName": "LeakTestStepRecipeType",
+                            "values": {
+                                "Active Sub Step Count": 0,
+                                "Apply Time Off Delay": false,
+                                "Apply Time On Delay": false,
+                                "Enable Step": true,
+                                "Step Index": 2,
+                                "Time Off Delay": "PT0.001S",
+                                "Time On Delay": "PT0.001S",
+                                "Valve Mask For This Step": 0
+                            }
+                        },
+                        "LTStep3": {
+                            "recipeTypeName": "LeakTestStepRecipeType",
+                            "values": {
+                                "Active Sub Step Count": 0,
+                                "Apply Time Off Delay": false,
+                                "Apply Time On Delay": false,
+                                "Enable Step": true,
+                                "Step Index": 3,
+                                "Time Off Delay": "PT0.001S",
+                                "Time On Delay": "PT0.001S",
+                                "Valve Mask For This Step": 0
+                            }
+                        }
+                    },
+                    "TestRecipe1": {
+                        "recipeTypeName": "LeakTestRecipeType",
+                        "values": {
+                            "Active Step Count": 1,
+                            "Apply Time Off Delay": false,
+                            "Apply Time On Delay": false,
+                            "Enable": true,
+                            "Test Index": 1,
+                            "Time Off Delay": "PT0.001S",
+                            "Time On Delay": "PT0.001S"
+                        }
+                    }
+                },
+                "LeatTestRecipe2": {
+                    "Devices": {
+                        "Ateq1": {
+                            "AteqDeviceRecipe": {
+                                "recipeTypeName": "AteqDeviceRecipeType",
+                                "values": {
+                                    "Active Program Count": 1,
+                                    "Device Index": 1,
+                                    "Enable": true,
+                                    "Enable Auto Zero": true
+                                }
+                            },
+                            "AteqProgram1": {
+                                "recipeTypeName": "AteqProgramRecipeType",
+                                "values": {
+                                    "Enable": true,
+                                    "Enable Timeout": false,
+                                    "Program Index": 1,
+                                    "Store Results": true,
+                                    "TimeoutTime": "PT0.001S",
+                                    "Wait for Prg Comp": false
+                                }
+                            },
+                            "AteqProgram2": {
+                                "recipeTypeName": "AteqProgramRecipeType",
+                                "values": {
+                                    "Enable": true,
+                                    "Enable Timeout": false,
+                                    "Program Index": 2,
+                                    "Store Results": true,
+                                    "TimeoutTime": "PT0.001S",
+                                    "Wait for Prg Comp": false
+                                }
+                            }
+                        },
+                        "ValveBank1": {
+                            "ValveBank1": {
+                                "recipeTypeName": "ValveBankRecipeType",
+                                "values": {
+                                    "Active Valve Count": 1,
+                                    "Available Valve Slots": 8,
+                                    "Enable": true,
+                                    "ValveBank Index": 1
+                                }
+                            },
+                            "ValveBank2": {
+                                "recipeTypeName": "ValveBankRecipeType",
+                                "values": {
+                                    "Active Valve Count": 1,
+                                    "Available Valve Slots": 8,
+                                    "Enable": true,
+                                    "ValveBank Index": 2
+                                }
+                            }
+                        }
+                    },
+                    "Test1Steps": {
+                        "LTStep1": {
+                            "recipeTypeName": "LeakTestStepRecipeType",
+                            "values": {
+                                "Active Sub Step Count": 0,
+                                "Apply Time Off Delay": false,
+                                "Apply Time On Delay": false,
+                                "Enable Step": true,
+                                "Step Index": 1,
+                                "Time Off Delay": "PT0.001S",
+                                "Time On Delay": "PT0.001S",
+                                "Valve Mask For This Step": 0
+                            }
+                        },
+                        "LTStep2": {
+                            "recipeTypeName": "LeakTestStepRecipeType",
+                            "values": {
+                                "Active Sub Step Count": 0,
+                                "Apply Time Off Delay": false,
+                                "Apply Time On Delay": false,
+                                "Enable Step": true,
+                                "Step Index": 2,
+                                "Time Off Delay": "PT0.001S",
+                                "Time On Delay": "PT0.001S",
+                                "Valve Mask For This Step": 0
+                            }
+                        },
+                        "LTStep3": {
+                            "recipeTypeName": "LeakTestStepRecipeType",
+                            "values": {
+                                "Active Sub Step Count": 0,
+                                "Apply Time Off Delay": false,
+                                "Apply Time On Delay": false,
+                                "Enable Step": true,
+                                "Step Index": 3,
+                                "Time Off Delay": "PT0.001S",
+                                "Time On Delay": "PT0.001S",
+                                "Valve Mask For This Step": 0
+                            }
+                        }
+                    },
+                    "TestRecipe1": {
+                        "recipeTypeName": "LeakTestRecipeType",
+                        "values": {
+                            "Active Step Count": 1,
+                            "Apply Time Off Delay": false,
+                            "Apply Time On Delay": false,
+                            "Enable": true,
+                            "Test Index": 1,
+                            "Time Off Delay": "PT0.001S",
+                            "Time On Delay": "PT0.001S"
+                        }
+                    }
+                }
+            }
+        }
+    },
     "recipeTypeList": {
-        "AteqRecipeType": {
+        "AteqDeviceRecipeType": {
             "members": {
-                "ADS.PLC1.GVL_TcHmi.stAteqRecipeType.bEnableAutoZero": {
+                "Active Program Count": {
+                    "defaultValue": 1,
+                    "enabled": true,
+                    "group": "",
+                    "order": 3,
+                    "schema": {
+                        "maximum": 100,
+                        "minimum": 1
+                    },
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqDevice.nActiveProgramCount",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Device Index": {
+                    "defaultValue": 1,
+                    "enabled": true,
+                    "group": "",
+                    "order": 0,
+                    "schema": {
+                        "maximum": 100,
+                        "minimum": 1
+                    },
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqDevice.nIdx",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Enable": {
                     "defaultValue": true,
                     "enabled": true,
                     "group": "",
                     "order": 1,
                     "schema": {},
-                    "symbol": "ADS.PLC1.GVL_TcHmi.stAteqRecipeType.bEnableAutoZero",
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqDevice.bEnable",
                     "unit": "",
                     "version": 1.0
                 },
-                "ADS.PLC1.GVL_TcHmi.stAteqRecipeType.nActiveProgramCount": {
+                "Enable Auto Zero": {
+                    "defaultValue": true,
+                    "enabled": true,
+                    "group": "",
+                    "order": 2,
+                    "schema": {},
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqDevice.bEnableAutoZero",
+                    "unit": "",
+                    "version": 1.0
+                }
+            },
+            "options": {
+                "enabled": "None"
+            },
+            "recipeTypeNames": []
+        },
+        "AteqProgramRecipeType": {
+            "members": {
+                "Enable": {
+                    "defaultValue": true,
+                    "enabled": true,
+                    "group": "",
+                    "order": 1,
+                    "schema": {},
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqProgram.bEnable",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Enable Timeout": {
+                    "defaultValue": false,
+                    "enabled": true,
+                    "group": "",
+                    "order": 3,
+                    "schema": {},
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqProgram.bEnableTimeout",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Program Index": {
+                    "defaultValue": 1,
+                    "enabled": true,
+                    "group": "",
+                    "order": 0,
+                    "schema": {
+                        "maximum": 100,
+                        "minimum": 1
+                    },
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqProgram.nIdx",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Store Results": {
+                    "defaultValue": true,
+                    "enabled": true,
+                    "group": "",
+                    "order": 2,
+                    "schema": {},
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqProgram.bStoreResults",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "TimeoutTime": {
+                    "defaultValue": "PT0.001S",
+                    "enabled": true,
+                    "group": "",
+                    "order": 5,
+                    "schema": {
+                        "format": "timespan",
+                        "formatMinimum": "PT0.001S",
+                        "type": "string"
+                    },
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqProgram.tTimeoutTime",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Wait for Prg Comp": {
+                    "comment": "TRUE; Test Sequence Waits for Program Tobe Completed",
+                    "defaultValue": false,
+                    "enabled": true,
+                    "group": "",
+                    "order": 4,
+                    "schema": {},
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqProgram.bHoldTestStepUntillPrgComp",
+                    "unit": "",
+                    "version": 1.0
+                }
+            },
+            "options": {
+                "enabled": "None"
+            },
+            "recipeTypeNames": []
+        },
+        "LeakTestRecipeType": {
+            "members": {
+                "Active Step Count": {
                     "defaultValue": 1,
                     "enabled": true,
                     "group": "",
                     "order": 2,
                     "schema": {
-                        "maximum": 999
+                        "maximum": 100,
+                        "minimum": 1
                     },
-                    "symbol": "ADS.PLC1.GVL_TcHmi.stAteqRecipeType.nActiveProgramCount",
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTest.nActiveStepCount",
                     "unit": "",
                     "version": 1.0
                 },
-                "ADS.PLC1.GVL_TcHmi.stAteqRecipeType.nIdx": {
-                    "defaultValue": 0,
+                "Apply Time Off Delay": {
+                    "comment": "For All Test Steps",
+                    "defaultValue": false,
+                    "enabled": true,
+                    "group": "",
+                    "order": 3,
+                    "schema": {},
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTest.bApplyTimeOffDelayForAllSteps",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Apply Time On Delay": {
+                    "comment": "For All Test Steps",
+                    "defaultValue": false,
+                    "enabled": true,
+                    "group": "",
+                    "order": 5,
+                    "schema": {},
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTest.bApplyTimeOnDelayForAllSteps",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Enable": {
+                    "defaultValue": true,
+                    "enabled": true,
+                    "group": "",
+                    "order": 1,
+                    "schema": {},
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTest.bEnable",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Test Index": {
+                    "defaultValue": 1,
                     "enabled": true,
                     "group": "",
                     "order": 0,
                     "schema": {
-                        "maximum": 25
+                        "maximum": 100,
+                        "minimum": 1
                     },
-                    "symbol": "ADS.PLC1.GVL_TcHmi.stAteqRecipeType.nIdx",
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTest.nIdx",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Time Off Delay": {
+                    "defaultValue": "PT0.001S",
+                    "enabled": true,
+                    "group": "",
+                    "order": 4,
+                    "schema": {},
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTest.tTimeOffDelay",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Time On Delay": {
+                    "defaultValue": "PT0.001S",
+                    "enabled": true,
+                    "group": "",
+                    "order": 6,
+                    "schema": {},
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTest.tTimeOnDelay",
+                    "unit": "",
+                    "version": 1.0
+                }
+            },
+            "options": {
+                "enabled": "None"
+            },
+            "recipeTypeNames": []
+        },
+        "LeakTestStepRecipeType": {
+            "members": {
+                "Active Sub Step Count": {
+                    "defaultValue": 0,
+                    "enabled": true,
+                    "group": "",
+                    "order": 2,
+                    "schema": {
+                        "maximum": 100,
+                        "minimum": 0
+                    },
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.nActiveSubStepCount",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Apply Time Off Delay": {
+                    "defaultValue": false,
+                    "enabled": true,
+                    "group": "",
+                    "order": 4,
+                    "schema": {},
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.bApplyTimeOffDelay",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Apply Time On Delay": {
+                    "defaultValue": false,
+                    "enabled": true,
+                    "group": "",
+                    "order": 6,
+                    "schema": {},
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.bApplyTimeOnDelay",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Enable Step": {
+                    "defaultValue": true,
+                    "enabled": true,
+                    "group": "",
+                    "order": 1,
+                    "schema": {},
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.bEnable",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Step Index": {
+                    "defaultValue": 1,
+                    "enabled": true,
+                    "group": "",
+                    "order": 0,
+                    "schema": {
+                        "maximum": 100,
+                        "minimum": 1
+                    },
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.nIdx",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Time Off Delay": {
+                    "defaultValue": "PT0.001S",
+                    "enabled": true,
+                    "group": "",
+                    "order": 5,
+                    "schema": {},
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.tTimeOffDelay",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Time On Delay": {
+                    "defaultValue": "PT0.001S",
+                    "enabled": true,
+                    "group": "",
+                    "order": 7,
+                    "schema": {},
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.tTimeOnDelay",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Valve Mask For This Step": {
+                    "comment": "Type mask in decimal",
+                    "defaultValue": 0,
+                    "enabled": true,
+                    "group": "",
+                    "order": 3,
+                    "schema": {},
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.nValveMaskForThisStep",
+                    "unit": "",
+                    "version": 1.0
+                }
+            },
+            "options": {
+                "enabled": "None"
+            },
+            "recipeTypeNames": []
+        },
+        "MachineRecipeType": {
+            "members": {
+                "Active Station Count": {
+                    "defaultValue": 1,
+                    "enabled": true,
+                    "group": "",
+                    "order": 2,
+                    "schema": {
+                        "maximum": 100,
+                        "minimum": 1
+                    },
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeMachine.nActiveStationCount",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Enable Machine": {
+                    "defaultValue": true,
+                    "enabled": true,
+                    "group": "",
+                    "order": 1,
+                    "schema": {},
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeMachine.bEnable",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Machine Index": {
+                    "defaultValue": 1,
+                    "enabled": true,
+                    "group": "",
+                    "order": 0,
+                    "schema": {
+                        "maximum": 100,
+                        "minimum": 1
+                    },
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeMachine.nIdx",
+                    "unit": "",
+                    "version": 1.0
+                }
+            },
+            "options": {
+                "enabled": "None"
+            },
+            "recipeTypeNames": []
+        },
+        "StationRecipeType": {
+            "members": {
+                "Active Ateq Device": {
+                    "defaultValue": 1,
+                    "enabled": true,
+                    "group": "",
+                    "order": 2,
+                    "schema": {
+                        "maximum": 100,
+                        "minimum": 1
+                    },
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeStation.nActiveAteqDevice",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Active Test Count": {
+                    "defaultValue": 1,
+                    "enabled": true,
+                    "group": "",
+                    "order": 3,
+                    "schema": {
+                        "maximum": 100,
+                        "minimum": 1
+                    },
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeStation.nActiveTestCount",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Active Valve Bank": {
+                    "defaultValue": 1,
+                    "enabled": true,
+                    "group": "",
+                    "order": 4,
+                    "schema": {
+                        "maximum": 100,
+                        "minimum": 1
+                    },
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeStation.nActiveValveBank",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Enable": {
+                    "defaultValue": true,
+                    "enabled": true,
+                    "group": "",
+                    "order": 1,
+                    "schema": {},
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeStation.bEnable",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Station Number": {
+                    "defaultValue": 1,
+                    "enabled": true,
+                    "group": "",
+                    "order": 0,
+                    "schema": {
+                        "maximum": 25,
+                        "minimum": 1
+                    },
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeStation.nIdx",
+                    "unit": "",
+                    "version": 1.0
+                }
+            },
+            "options": {
+                "enabled": "None"
+            },
+            "recipeTypeNames": []
+        },
+        "ValveBankRecipeType": {
+            "members": {
+                "Active Valve Count": {
+                    "defaultValue": 1,
+                    "enabled": true,
+                    "group": "",
+                    "order": 3,
+                    "schema": {
+                        "maximum": 32,
+                        "minimum": 1
+                    },
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeValveBank.nActiveValveCount",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Available Valve Slots": {
+                    "defaultValue": 8,
+                    "enabled": true,
+                    "group": "",
+                    "order": 2,
+                    "schema": {
+                        "maximum": 32,
+                        "minimum": 8
+                    },
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeValveBank.nAvailableValveSlots",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "Enable": {
+                    "defaultValue": true,
+                    "enabled": true,
+                    "group": "",
+                    "order": 1,
+                    "schema": {},
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeValveBank.bEnable",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "ValveBank Index": {
+                    "defaultValue": 1,
+                    "enabled": true,
+                    "group": "",
+                    "order": 0,
+                    "schema": {
+                        "maximum": 100,
+                        "minimum": 1
+                    },
+                    "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeValveBank.nIdx",
                     "unit": "",
                     "version": 1.0
                 }
@@ -44,5 +849,5 @@
             "recipeTypeNames": []
         }
     },
-    "recipeVersioningEnabled": true
+    "recipeVersioningEnabled": false
 }

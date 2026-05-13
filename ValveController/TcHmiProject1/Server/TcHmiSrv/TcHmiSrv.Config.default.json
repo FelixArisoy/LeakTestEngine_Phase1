@@ -965,6 +965,690 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqDevice.bEnable": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeAteqDevice::bEnable",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 2
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqDevice.bEnableAutoZero": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeAteqDevice::bEnableAutoZero",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 3
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqDevice.nActiveProgramCount": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeAteqDevice::nActiveProgramCount",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UINT"
+                    },
+                    {
+                        "propertyOrder": 4
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqDevice.nIdx": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeAteqDevice::nIdx",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UINT"
+                    },
+                    {
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqProgram.bEnable": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeAteqProgram::bEnable",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 2
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqProgram.bEnableTimeout": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeAteqProgram::bEnableTimeout",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 3
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqProgram.bHoldTestStepUntillPrgComp": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeAteqProgram::bHoldTestStepUntillPrgComp",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "comment": "If TRUE; Test Recipe waits for the Ateq Program Tobe completed before moving to next Test Step;",
+                        "propertyOrder": 6
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqProgram.bStoreResults": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeAteqProgram::bStoreResults",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 5
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqProgram.nIdx": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeAteqProgram::nIdx",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UINT"
+                    },
+                    {
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqProgram.tTimeoutTime": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeAteqProgram::tTimeoutTime",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/TIME"
+                    },
+                    {
+                        "propertyOrder": 4
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTest.bApplyTimeOffDelayForAllSteps": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeLeakTest::bApplyTimeOffDelayForAllSteps",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 4
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTest.bApplyTimeOnDelayForAllSteps": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeLeakTest::bApplyTimeOnDelayForAllSteps",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 5
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTest.bEnable": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeLeakTest::bEnable",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 2
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTest.nActiveStepCount": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeLeakTest::nActiveStepCount",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UINT"
+                    },
+                    {
+                        "propertyOrder": 3
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTest.nIdx": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeLeakTest::nIdx",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UINT"
+                    },
+                    {
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTest.nValveMask": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeLeakTest::nValveMask",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LWORD"
+                    },
+                    {
+                        "propertyOrder": 4
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTest.tTimeOffDelay": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeLeakTest::tTimeOffDelay",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/TIME"
+                    },
+                    {
+                        "propertyOrder": 6
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTest.tTimeOnDelay": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeLeakTest::tTimeOnDelay",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/TIME"
+                    },
+                    {
+                        "propertyOrder": 7
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.bApplyTimeOffDelay": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeLeakTestStep::bApplyTimeOffDelay",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 5
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.bApplyTimeOffDelayForAllSteps": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeLeakTestStep::bApplyTimeOffDelayForAllSteps",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 4
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.bApplyTimeOnDelay": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeLeakTestStep::bApplyTimeOnDelay",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 6
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.bApplyTimeOnDelayForAllSteps": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeLeakTestStep::bApplyTimeOnDelayForAllSteps",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 5
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.bEnable": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeLeakTestStep::bEnable",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 2
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.nActiveSubStepCount": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeLeakTestStep::nActiveSubStepCount",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UINT"
+                    },
+                    {
+                        "comment": "Default 0; No Sub Step Exist",
+                        "propertyOrder": 3
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.nIdx": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeLeakTestStep::nIdx",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UINT"
+                    },
+                    {
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.nValveMaskForThisStep": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeLeakTestStep::nValveMaskForThisStep",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UINT"
+                    },
+                    {
+                        "propertyOrder": 4
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.tTimeOffDelay": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeLeakTestStep::tTimeOffDelay",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/TIME"
+                    },
+                    {
+                        "propertyOrder": 7
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.tTimeOnDelay": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeLeakTestStep::tTimeOnDelay",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/TIME"
+                    },
+                    {
+                        "propertyOrder": 8
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeMachine.bEnable": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeMachine::bEnable",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 2
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeMachine.nActiveStationCount": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeMachine::nActiveStationCount",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UINT"
+                    },
+                    {
+                        "propertyOrder": 3
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeMachine.nIdx": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeMachine::nIdx",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UINT"
+                    },
+                    {
+                        "comment": "Test Line High Level Structure",
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeStation.bEnable": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeStation::bEnable",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 2
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeStation.nActiveAteqDevice": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeStation::nActiveAteqDevice",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UINT"
+                    },
+                    {
+                        "propertyOrder": 4
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeStation.nActiveTestCount": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeStation::nActiveTestCount",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UINT"
+                    },
+                    {
+                        "comment": "can be any type of Leak Test for any mod. This is the total num of test the station has.",
+                        "propertyOrder": 3
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeStation.nActiveValveBank": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeStation::nActiveValveBank",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UINT"
+                    },
+                    {
+                        "propertyOrder": 5
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeStation.nIdx": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeStation::nIdx",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UINT"
+                    },
+                    {
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeValveBank.bEnable": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeValveBank::bEnable",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 2
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeValveBank.nActiveValveCount": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeValveBank::nActiveValveCount",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UINT"
+                    },
+                    {
+                        "propertyOrder": 4
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeValveBank.nAvailableValveSlots": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeValveBank::nAvailableValveSlots",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UINT"
+                    },
+                    {
+                        "propertyOrder": 3
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmi.stRecipeTypeValveBank.nIdx": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmi::stRecipeTypeValveBank::nIdx",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UINT"
+                    },
+                    {
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.RuntimePorts": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -4315,6 +4999,46 @@
                 "ADS.PLC1.GVL_TcHmi.stAteqRecipeType.bEnableAutoZero": 3,
                 "ADS.PLC1.GVL_TcHmi.stAteqRecipeType.nActiveProgramCount": 3,
                 "ADS.PLC1.GVL_TcHmi.stAteqRecipeType.nIdx": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqDevice.bEnable": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqDevice.bEnableAutoZero": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqDevice.nActiveProgramCount": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqDevice.nIdx": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqProgram.bEnable": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqProgram.bEnableTimeout": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqProgram.bHoldTestStepUntillPrgComp": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqProgram.bStoreResults": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqProgram.nIdx": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeAteqProgram.tTimeoutTime": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTest.bApplyTimeOffDelayForAllSteps": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTest.bApplyTimeOnDelayForAllSteps": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTest.bEnable": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTest.nActiveStepCount": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTest.nIdx": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTest.nValveMask": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTest.tTimeOffDelay": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTest.tTimeOnDelay": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.bApplyTimeOffDelay": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.bApplyTimeOffDelayForAllSteps": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.bApplyTimeOnDelay": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.bApplyTimeOnDelayForAllSteps": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.bEnable": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.nActiveSubStepCount": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.nIdx": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.nValveMaskForThisStep": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.tTimeOffDelay": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeLeakTestStep.tTimeOnDelay": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeMachine.bEnable": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeMachine.nActiveStationCount": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeMachine.nIdx": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeStation.bEnable": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeStation.nActiveAteqDevice": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeStation.nActiveTestCount": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeStation.nActiveValveBank": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeStation.nIdx": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeValveBank.bEnable": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeValveBank.nActiveValveCount": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeValveBank.nAvailableValveSlots": 3,
+                "ADS.PLC1.GVL_TcHmi.stRecipeTypeValveBank.nIdx": 3,
                 "ChangeUserSettings": 3,
                 "ConfirmAlarm": 3,
                 "CreateEvent": 3,

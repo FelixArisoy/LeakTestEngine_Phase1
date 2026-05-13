@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_RecipeTypeLeakTest" Id="{a872dbf5-04fe-0a80-1fa7-6be3fdc1ee83}">
+    <Declaration><![CDATA[TYPE ST_RecipeTypeLeakTest :
+STRUCT
+	nIdx	: UINT;
+	bEnable	: BOOL;
+	nActiveStepCount: UINT;
+	bApplyTimeOffDelayForAllSteps	: BOOL;
+	bApplyTimeOnDelayForAllSteps	: BOOL;
+	tTimeOffDelay	: TIME;
+	tTimeOnDelay	: TIME;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

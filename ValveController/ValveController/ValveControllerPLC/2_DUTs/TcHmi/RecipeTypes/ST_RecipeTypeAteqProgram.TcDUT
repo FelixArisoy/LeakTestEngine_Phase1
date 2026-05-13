@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_RecipeTypeAteqProgram" Id="{13e43612-1b79-0563-27df-6dc4a384418d}">
+    <Declaration><![CDATA[TYPE ST_RecipeTypeAteqProgram :
+STRUCT
+	nIdx	: UINT;
+	bEnable	: BOOL;
+	bEnableTimeout	: BOOL;
+	tTimeoutTime	: TIME;
+	bStoreResults 	: BOOL;
+	bHoldTestStepUntillPrgComp : BOOL; // If TRUE; Test Recipe waits for the Ateq Program Tobe completed before moving to next Test Step;
+
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

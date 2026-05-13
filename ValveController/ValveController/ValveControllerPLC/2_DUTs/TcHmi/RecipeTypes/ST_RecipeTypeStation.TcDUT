@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_RecipeTypeStation" Id="{109aca7e-36c5-06e5-032c-1e12f3e8c0a9}">
+    <Declaration><![CDATA[TYPE ST_RecipeTypeStation : // Phisical Station
+STRUCT
+	nIdx	: UINT;
+	bEnable	: BOOL;
+	nActiveTestCount	: UINT; // can be any type of Leak Test for any mod. This is the total num of test the station has.
+	nActiveAteqDevice	: UINT;
+	nActiveValveBank	: UINT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Refactors>
+  <Renames>
+    <RenamedType>
+      <Type guid="725835c1-068f-4113-9090-d159eb9c9cba">ST_RECIPETYPETESTSTEP</Type>
+      <From>ST_RecipeTypeTestStep</From>
+      <To>ST_RecipeTypeLeakTestStep</To>
+    </RenamedType>
+  </Renames>
+</Refactors>
