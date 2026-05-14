@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_StationRecipe" Id="{62dcc4c7-c0aa-070b-24a6-858812df5796}">
+    <Declaration><![CDATA[TYPE ST_StationRecipe :
+STRUCT
+	Device		: ST_DeviceRecipe;
+	LeakTest	: ST_LeakTestRecipe;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

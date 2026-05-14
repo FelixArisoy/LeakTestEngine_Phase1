@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_TcHmiControl" Id="{9858ee0f-74da-00ba-0451-3b2bb7806a54}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_TcHmiControl
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	aMachineConfig : ARRAY[0..GVL_MachineConfig.nMaxMachineCount] OF ST_RecipeTypeMachine;
+	aStationConfig : ARRAY[0..GVL_MachineConfig.nMaxMachineCount] OF ARRAY[0..GVL_StationConfig.nMaxStationCount] OF ST_RecipeTypeStation;
+	aMachineRecipe : ARRAY[0..GVL_MachineConfig.nMaxMachineCount] OF ST_MachineRecipe;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[mMapRecipes();]]></ST>
+    </Implementation>
+    <Method Name="mMapRecipes" Id="{ddbca950-c60e-094e-351c-d6f29bf51efe}">
+      <Declaration><![CDATA[METHOD mMapRecipes
+VAR
+	nMachineIdx : UINT;
+	nStationIdx	: UINT;
+	nTestIdx	: UINT;
+	nTestStepIdx: UINT;
+	nAteqIdx	: UINT;
+	nAteqProgramIdx	: UINT;
+	nValveBankIdx	: UINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//Review here change max numf o devicecec to ACtive counts from machine+staation configs arrays.
+
+FOR nMachineIdx := 0 TO GVL_MachineConfig.nMaxMachineCount DO
+	IF nMachineIdx = GVL_TcHmi.stRecipeTypeMachine.nIdx THEN
+	aMachineConfig[nMachineIdx] := GVL_TcHmi.stRecipeTypeMachine;
+	
+		FOR nStationIdx := 0 TO GVL_StationConfig.nMaxStationCount DO
+			IF nStationIdx = GVL_TcHmi.stRecipeTypeStation.nIdx THEN
+				aStationConfig[nMachineIdx][nStationIdx] := GVL_TcHmi.stRecipeTypeStation;
+			END_IF
+		END_FOR
+		
+	END_IF
+END_FOR
+
+FOR nMachineIdx := 0 TO GVL_MachineConfig.nMaxMachineCount DO
+	
+	FOR nStationIdx := 0 TO aMachineConfig[nMachineIdx].nActiveStationCount DO
+		IF nStationIdx = GVL_TcHmi.stRecipeTypeStation.nIdx THEN
+		
+		FOR nAteqIdx := 0 TO GVL_AteqConfig.nMaxDeviceCount DO
+			IF nAteqIdx = GVL_TcHmi.stRecipeTypeAteqDevice.nIdx THEN
+				aMachineRecipe[nMachineIdx].Station[nStationIdx].Device.Ateq[nAteqIdx].Config := GVL_TcHmi.stRecipeTypeAteqDevice;
+				
+				FOR nAteqProgramIdx := 0 TO GVL_AteqConfig.nMaxProgramsToRun DO
+					IF nAteqProgramIdx = GVL_TcHmi.stRecipeTypeAteqProgram.nIdx THEN
+					aMachineRecipe[nMachineIdx].Station[nStationIdx].Device.Ateq[nAteqIdx].TestProgram[nAteqProgramIdx] := GVL_TcHmi.stRecipeTypeAteqDevice;
+					END_IF
+				END_FOR
+				
+			END_IF
+		END_FOR
+		
+		FOR nValveBankIdx := 0 TO GVL_ValveBankConfig.nMaxDeviceCount DO
+			IF nValveBankIdx = GVL_TcHmi.stRecipeTypeValveBank.nIdx THEN
+				aMachineRecipe[nMachineIdx].Station[nStationIdx].Device.ValveBank[nValveBankIdx] := GVL_TcHmi.stRecipeTypeValveBank;
+			END_IF
+		END_FOR
+		
+		END_IF
+	END_FOR
+END_FOR]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

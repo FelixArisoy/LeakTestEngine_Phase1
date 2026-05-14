@@ -106,14 +106,14 @@
                         "LTStep3": {
                             "recipeTypeName": "LeakTestStepRecipeType",
                             "values": {
-                                "Active Sub Step Count": 0,
+                                "Active Sub Step Count": 5,
                                 "Apply Time Off Delay": false,
-                                "Apply Time On Delay": false,
+                                "Apply Time On Delay": true,
                                 "Enable Step": true,
                                 "Step Index": 3,
                                 "Time Off Delay": "PT0.001S",
                                 "Time On Delay": "PT0.001S",
-                                "Valve Mask For This Step": 0
+                                "Valve Mask For This Step": 5
                             }
                         }
                     },

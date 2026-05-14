@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <GVL Name="GVL_MachineConfig" Id="{0cfccd9f-4762-035b-36cb-02254d2a1f25}">
+    <Declaration><![CDATA[VAR_GLOBAL CONSTANT
+	nMaxMachineCount : UINT := 1; // Thats the highes level of Structure, 
+//	If Machines need to be expanded then Create a "Line Recipe" that consist of ActiveMachineCount 
+//	And Increase nMaxMachineCount accordingly
+END_VAR
+VAR_GLOBAL 
+	nActiveMachineCount : UINT := 1;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

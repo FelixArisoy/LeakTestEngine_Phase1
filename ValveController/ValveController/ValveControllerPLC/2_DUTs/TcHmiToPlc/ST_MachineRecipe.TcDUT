@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_MachineRecipe" Id="{ecf82cca-35fe-0943-20e4-384f0168efe5}">
+    <Declaration><![CDATA[TYPE ST_MachineRecipe :
+STRUCT
+	Station		: ARRAY[0..GVL_StationConfig.nMaxStationCount] OF ST_StationRecipe;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

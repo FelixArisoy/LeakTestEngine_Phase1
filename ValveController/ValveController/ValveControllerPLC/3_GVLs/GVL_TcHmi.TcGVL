@@ -4,7 +4,7 @@
     <Declaration><![CDATA[VAR_GLOBAL
 // TcHmi
 	aDataGridStationConfig	: ARRAY [0..GVL_StationConfig.nMaxStationCount - 1] OF ST_DataGridStationConfig;
-	anValveMaskListToRecipe	: ARRAY [0..GVL_StationConfig.nMaxStationCount - 1] OF ARRAY [0..GVL_leakTestConfig.nMaxTestSteps - 1] OF DWORD;
+	anValveMaskListToRecipe	: ARRAY [0..GVL_StationConfig.nMaxStationCount - 1] OF ARRAY [0..GVL_leakTestConfig.nMaxTestCount - 1] OF DWORD;
 
 // Recipe Types
 	stRecipeTypeMachine		: ST_RecipeTypeMachine;
@@ -15,6 +15,10 @@
 	stRecipeTypeAteqProgram	: ST_RecipeTypeAteqProgram;
 	stRecipeTypeValveBank	: ST_RecipeTypeValveBank;
 
+// Recipe Buffers
+	aRecipeMachine	: ARRAY [0..GVL_MachineConfig.nMaxMachineCount] OF ST_RecipeTypeMachine;
+	aRecipeStation	: ARRAY [0..GVL_StationConfig.nMaxStationCount] OF ST_RecipeTypeStation;
+	aRecipeLeakTest	: ARRAY [0..GVL_LeakTestConfig.nMaxTestCount] OF ST_RecipeTypeStation;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

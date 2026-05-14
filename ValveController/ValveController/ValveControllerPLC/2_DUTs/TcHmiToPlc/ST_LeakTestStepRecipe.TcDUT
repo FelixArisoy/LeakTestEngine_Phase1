@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_LeakTestStepRecipe" Id="{440603b8-a84b-0a0b-2538-dc6b71f3cd8b}">
+    <Declaration><![CDATA[TYPE ST_LeakTestStepRecipe :
+STRUCT
+	Step : ARRAY [0..GVL_LeakTestConfig.nMaxTestStepCount] OF ST_RecipeTypeLeakTestStep;
+
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

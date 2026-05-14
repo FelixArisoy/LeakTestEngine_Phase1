@@ -9,8 +9,8 @@ nActiveTestSteps		: UINT;
 nActiveAteqDevices		: UINT;
 nActiveValveBanks		: UINT;
 nActiveTestStepCount	: UINT;
-anValveMaskList			: ARRAY [0..GVL_leakTestConfig.nMaxTestSteps - 1] OF DWORD;
-anValveMaskListToRecipe	: ARRAY [0..GVL_LeakTestConfig.nMaxTestSteps] OF DWORD;
+anValveMaskList			: ARRAY [0..GVL_leakTestConfig.nMaxTestCount - 1] OF DWORD;
+anValveMaskListToRecipe	: ARRAY [0..GVL_LeakTestConfig.nMaxTestCount] OF DWORD;
 //####### Map Io #######
     astAteqIo 			: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqMapIo;
 	astAteqRawIo   		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqRawIo;

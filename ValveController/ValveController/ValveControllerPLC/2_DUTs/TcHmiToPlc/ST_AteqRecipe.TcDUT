@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_AteqRecipe" Id="{0a9abd52-304e-0989-0c43-7ea4904cec34}">
+    <Declaration><![CDATA[TYPE ST_AteqRecipe :
+STRUCT
+	Config : ST_RecipeTypeAteqDevice;
+	TestProgram	: ARRAY [0..GVL_AteqConfig.nMaxProgramsToRun] OF ST_RecipeTypeAteqProgram;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

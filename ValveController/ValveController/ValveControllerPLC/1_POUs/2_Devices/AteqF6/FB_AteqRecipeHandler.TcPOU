@@ -6,7 +6,7 @@ VAR_INPUT
 	bValveBankHasAnyError	: BOOL;
 	bLastResultsStored		: BOOL;
     anProgramNumberRecipe	: ARRAY	[0..GVL_AteqConfig.nMaxProgramsToRun - 1] OF WORD;
-    anValveMaskList			: ARRAY [0..GVL_leakTestConfig.nMaxTestSteps - 1] OF DWORD;
+    anValveMaskList			: ARRAY [0..GVL_leakTestConfig.nMaxTestCount - 1] OF DWORD;
 	eAteqProgramSeqStates 	: E_AteqProgramSeqSteps;
 	eProgramInternalSteps	: E_AteqStepsTable;
     nActiveTestStepCount	: UINT;

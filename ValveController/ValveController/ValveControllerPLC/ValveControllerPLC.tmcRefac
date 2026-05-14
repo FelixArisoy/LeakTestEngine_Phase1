@@ -1,10 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Refactors>
   <Renames>
-    <RenamedType>
-      <Type guid="725835c1-068f-4113-9090-d159eb9c9cba">ST_RECIPETYPETESTSTEP</Type>
-      <From>ST_RecipeTypeTestStep</From>
-      <To>ST_RecipeTypeLeakTestStep</To>
-    </RenamedType>
+    <RenamedSymbol>
+      <Type guid="22ecf2c1-3cc1-4365-8222-4aaca0e506a3">mMapRecipes</Type>
+      <From>nMachineIndex</From>
+      <To>nMachineIdx</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="22ecf2c1-3cc1-4365-8222-4aaca0e506a3">mMapRecipes</Type>
+      <From>nStationIndex</From>
+      <To>nStationIdx</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="22ecf2c1-3cc1-4365-8222-4aaca0e506a3">mMapRecipes</Type>
+      <From>nTestIndex</From>
+      <To>nTestIdx</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="22ecf2c1-3cc1-4365-8222-4aaca0e506a3">mMapRecipes</Type>
+      <From>nAteqIndex</From>
+      <To>nAteqIdx</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="22ecf2c1-3cc1-4365-8222-4aaca0e506a3">mMapRecipes</Type>
+      <From>nValveBankIndex</From>
+      <To>nValveBankIdx</To>
+    </RenamedSymbol>
   </Renames>
 </Refactors>

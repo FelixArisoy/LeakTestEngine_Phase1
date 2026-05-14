@@ -2,11 +2,12 @@
 <TcPlcObject Version="1.1.0.1">
   <GVL Name="GVL_LeakTestConfig" Id="{c83396cb-5407-08f9-090a-117fcfa39c5e}">
     <Declaration><![CDATA[VAR_GLOBAL CONSTANT
-	nMaxTestSteps : UINT := 100;
+	nMaxTestCount : UINT := 100; // max num of Tests on a single Station
+	nMaxTestStepCount : UINT := 100; // max num of Steps on a single Leak Test
 END_VAR
 
 VAR_GLOBAL
-	nActiveTestStep	: UINT := 1;
+	nActiveTestStep	: UINT := 0;
 	nActiveSubStep	: UINT := 0;
 END_VAR]]></Declaration>
   </GVL>

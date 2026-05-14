@@ -41,6 +41,9 @@
     <Compile Include="1_POUs\3_Generic\FB_DwellTime.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="1_POUs\4_TcHmi\FB_TcHmiControl.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="2_DUTs\AteqControl\E_AteqControlErrorFlags.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -98,6 +101,24 @@
     <Compile Include="2_DUTs\GenericFieldDevice\ST_DeviceState.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="2_DUTs\TcHmiToPlc\ST_AteqRecipe.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="2_DUTs\TcHmiToPlc\ST_DeviceRecipe.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="2_DUTs\TcHmiToPlc\ST_LeakTestRecipe.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="2_DUTs\TcHmiToPlc\ST_LeakTestStepRecipe.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="2_DUTs\TcHmiToPlc\ST_MachineRecipe.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="2_DUTs\TcHmiToPlc\ST_StationRecipe.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="2_DUTs\TcHmi\RecipeTypes\ST_RecipeTypeAteqProgram.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -142,6 +163,10 @@
     </Compile>
     <Compile Include="2_DUTs\TcHmi\ST_ComboboxEntry.TcDUT">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="3_GVLs\GVL_MachineConfig.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
     </Compile>
     <Compile Include="3_GVLs\GVL_LeakTestConfig.TcGVL">
       <SubType>Code</SubType>
@@ -215,9 +240,6 @@
     <Compile Include="Visualization Manager.TcVMO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="4_VISUs\FB_TcHmi.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="zDisposables\E_AteqProgramSeqStateFlags.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -256,10 +278,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="1_POUs\4_TcHmi" />
     <Folder Include="2_DUTs" />
     <Folder Include="2_DUTs\GenericFieldDevice" />
     <Folder Include="2_DUTs\AteqControl" />
     <Folder Include="2_DUTs\AteqIo" />
+    <Folder Include="2_DUTs\TcHmiToPlc" />
     <Folder Include="2_DUTs\TcHmi" />
     <Folder Include="2_DUTs\TcHmi\RecipeTypes" />
     <Folder Include="2_DUTs\ValveBank" />
