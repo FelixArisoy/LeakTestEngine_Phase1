@@ -48,11 +48,11 @@ FOR nMachineIdx := 0 TO GVL_MachineConfig.nMaxMachineCount DO
 	FOR nStationIdx := 0 TO aMachineConfig[nMachineIdx].nActiveStationCount DO
 		IF nStationIdx = GVL_TcHmi.stRecipeTypeStation.nIdx THEN
 		
-		FOR nAteqIdx := 0 TO GVL_AteqConfig.nMaxDeviceCount DO
+		FOR nAteqIdx := 0 TO aStationConfig[nMachineIdx][nStationIdx].nActiveAteqDevice DO
 			IF nAteqIdx = GVL_TcHmi.stRecipeTypeAteqDevice.nIdx THEN
 				aMachineRecipe[nMachineIdx].Station[nStationIdx].Device.Ateq[nAteqIdx].Config := GVL_TcHmi.stRecipeTypeAteqDevice;
 				
-				FOR nAteqProgramIdx := 0 TO GVL_AteqConfig.nMaxProgramsToRun DO
+				FOR nAteqProgramIdx := 0 TO aMachineRecipe[nMachineIdx].Station[nStationIdx].Device.Ateq[nAteqIdx].Config.nActiveProgramCount DO
 					IF nAteqProgramIdx = GVL_TcHmi.stRecipeTypeAteqProgram.nIdx THEN
 					aMachineRecipe[nMachineIdx].Station[nStationIdx].Device.Ateq[nAteqIdx].TestProgram[nAteqProgramIdx] := GVL_TcHmi.stRecipeTypeAteqDevice;
 					END_IF

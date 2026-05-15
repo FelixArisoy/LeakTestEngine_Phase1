@@ -80,7 +80,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{FF505B91-FACF-4A2B-B73E-9C5E3B10185D}" Name="ValveControllerPLC" PrjFilePath="ValveControllerPLC\ValveControllerPLC.plcproj" TmcFilePath="ValveControllerPLC\ValveControllerPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{5846A9FA-9037-BF2A-7C24-C604BCE3C83E}" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{B0432E54-1DBE-818B-23DF-E066512FBE0A}" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc">
 					<Name>ValveControllerPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
@@ -550,6 +550,10 @@
 						<Var>
 							<Name>GVL_MapValveBank.devState</Name>
 							<Type GUID="{391652FB-7F01-987E-1D53-3B165841CFCE}">ARRAY [1..8] OF UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.Frm0State</Name>
+							<Type>UINT</Type>
 						</Var>
 						<Var>
 							<Name>GVL_MapValveBank.aIoEx260[0].State</Name>
@@ -1750,10 +1754,6 @@
 						<Var>
 							<Name>GVL_MapValveBank.aIoEx260[99].In1</Name>
 							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.Frm0State</Name>
-							<Type>UINT</Type>
 						</Var>
 						<Var>
 							<Name>GVL_MapEL6070.Frm0WcState</Name>
