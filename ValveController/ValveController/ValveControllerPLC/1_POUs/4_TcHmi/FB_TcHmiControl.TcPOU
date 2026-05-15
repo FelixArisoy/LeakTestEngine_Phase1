@@ -47,26 +47,37 @@ FOR nMachineIdx := 0 TO GVL_MachineConfig.nMaxMachineCount DO
 	
 	FOR nStationIdx := 0 TO aMachineConfig[nMachineIdx].nActiveStationCount DO
 		IF nStationIdx = GVL_TcHmi.stRecipeTypeStation.nIdx THEN
-		
+	// MAPPING ATEQ DEVICES		
 		FOR nAteqIdx := 0 TO aStationConfig[nMachineIdx][nStationIdx].nActiveAteqDevice DO
 			IF nAteqIdx = GVL_TcHmi.stRecipeTypeAteqDevice.nIdx THEN
 				aMachineRecipe[nMachineIdx].Station[nStationIdx].Device.Ateq[nAteqIdx].Config := GVL_TcHmi.stRecipeTypeAteqDevice;
-				
+			// MAPPING ATEQ PROGRAMS PER ATEQ DEVICE	
 				FOR nAteqProgramIdx := 0 TO aMachineRecipe[nMachineIdx].Station[nStationIdx].Device.Ateq[nAteqIdx].Config.nActiveProgramCount DO
 					IF nAteqProgramIdx = GVL_TcHmi.stRecipeTypeAteqProgram.nIdx THEN
-					aMachineRecipe[nMachineIdx].Station[nStationIdx].Device.Ateq[nAteqIdx].TestProgram[nAteqProgramIdx] := GVL_TcHmi.stRecipeTypeAteqDevice;
+					aMachineRecipe[nMachineIdx].Station[nStationIdx].Device.Ateq[nAteqIdx].TestProgram[nAteqProgramIdx] := GVL_TcHmi.stRecipeTypeAteqProgram;
 					END_IF
 				END_FOR
 				
 			END_IF
 		END_FOR
 		
-		FOR nValveBankIdx := 0 TO GVL_ValveBankConfig.nMaxDeviceCount DO
+		FOR nValveBankIdx := 0 TO aStationConfig[nMachineIdx][nStationIdx].nActiveValveBank DO
 			IF nValveBankIdx = GVL_TcHmi.stRecipeTypeValveBank.nIdx THEN
 				aMachineRecipe[nMachineIdx].Station[nStationIdx].Device.ValveBank[nValveBankIdx] := GVL_TcHmi.stRecipeTypeValveBank;
 			END_IF
 		END_FOR
-		
+	// MAPPING TEST RECIPES	
+		FOR nTestIdx := 0 TO aStationConfig[nMachineIdx][nStationIdx].nActiveTestCount DO
+			IF nTestIdx = GVL_TcHmi.stRecipeTypeLeakTest.nIdx THEN
+				aMachineRecipe[nMachineIdx].Station[nStationIdx].LeakTest.Config[nTestIdx] := GVL_TcHmi.stRecipeTypeLeakTest;
+			// MAPPING TEST STEP RECIPES PER LEAK TEST
+				FOR nTestStepIdx := 0 TO aMachineRecipe[nMachineIdx].Station[nStationIdx].LeakTest.Config[nTestIdx].nActiveStepCount DO
+					IF nTestStepIdx = GVL_TcHmi.stRecipeTypeLeakTestStep.nIdx THEN
+					aMachineRecipe[nMachineIdx].Station[nStationIdx].LeakTest.Recipe[nTestStepIdx] := GVL_TcHmi.stRecipeTypeLeakTestStep;
+					END_IF
+				END_FOR
+			END_IF
+		END_FOR
 		END_IF
 	END_FOR
 END_FOR]]></ST>
