@@ -3,14 +3,24 @@
   <POU Name="PRG_Main" Id="{a3d4985a-23a4-4261-9530-cafe9c795619}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_Main
 VAR
-nValveBankIdx 			: UINT;
+nMachineIdx 			: UINT;
 nStationIdx				: UINT;
-nActiveTestSteps		: UINT;
-nActiveAteqDevices		: UINT;
-nActiveValveBanks		: UINT;
+nValveBankIdx 			: UINT;
+
+nConfiguredTestCount		: UINT;
+nConfiguredAteqDeviceCount	: UINT;
+nConfiguredAteqProgramCount	: UINT;
+nConfiguredValveBankCount	: UINT;
+
 nActiveTestStepCount	: UINT;
-anValveMaskList			: ARRAY [0..GVL_leakTestConfig.nMaxTestCount - 1] OF DWORD;
-anValveMaskListToRecipe	: ARRAY [0..GVL_LeakTestConfig.nMaxTestCount] OF DWORD;
+anValveMaskListToRecipeHandler	: ARRAY[0..GVL_LeakTestConfig.nMaxTestCount - 1] OF ARRAY [0..GVL_LeakTestConfig.nMaxTestStepCount - 1] OF DWORD;
+fbTcHmiMain	: FB_TcHmiControl;
+fbSortValveMasks : ARRAY[0..GVL_StationConfig.nMaxStationCount - 1] OF FB_SortValveMasks;
+
+// Mapped Recipes
+	aMachineConfig : ARRAY[0..GVL_MachineConfig.nMaxMachineCount - 1] OF ST_RecipeTypeMachine;
+	aStationConfig : ARRAY[0..GVL_MachineConfig.nMaxMachineCount - 1] OF ARRAY[0..GVL_StationConfig.nMaxStationCount  - 1] OF ST_RecipeTypeStation;
+	aMachineRecipe : ARRAY[0..GVL_MachineConfig.nMaxMachineCount - 1] OF ST_MachineRecipe;
 //####### Map Io #######
     astAteqIo 			: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqMapIo;
 	astAteqRawIo   		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqRawIo;
@@ -54,27 +64,47 @@ END_VAR]]></Declaration>
       <ST><![CDATA[// System Method Calls
 mSystemTime();
 GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.BigEndian; // Profinet, Move To the HMI in the Future
+
+// Call HMI-Main Control - Add new Fbs for new Clients - Name HMIs as needed
+fbTcHmiMain(aMachineConfig => aMachineConfig, aStationConfig => aStationConfig, aMachineRecipe => aMachineRecipe);
+// Sort ValveMask in a 2D Array per Station for all tests ...[testIdx][stepIdx]
+
 // Process Calls
-	FOR nStationIdx := 0 TO GVL_StationConfig.nNumOfActiveStation - 1 DO
-		nActiveTestSteps	:= GVL_TcHmi.aDataGridStationConfig[nStationIdx].nActiveTestSteps;
-		nActiveAteqDevices	:= GVL_TcHmi.aDataGridStationConfig[nStationIdx].nActiveAteqDevices;
-		nActiveValveBanks	:= GVL_TcHmi.aDataGridStationConfig[nStationIdx].nActiveValveBanks;
-		nActiveTestStepCount:= GVL_TcHmi.aDataGridStationConfig[nStationIdx].nActiveTestSteps;
-		
-		anValveMaskList		:= GVL_TcHmi.anValveMaskListToRecipe[nStationIdx];
-//		anValveMaskListToRecipe	:= GVL_TcHmi.anValveMaskListToRecipe; // rework needed debug
-		mLeakTestProcess();
-	END_FOR]]></ST>
+IF GVL_MachineConfig.nMaxMachineCount > 0 THEN	
+FOR nMachineIdx := 0 TO GVL_MachineConfig.nMaxMachineCount - 1 DO
+	IF aMachineConfig[nMachineIdx].nActiveStationCount > 0 THEN
+		FOR nStationIdx := 0 TO aMachineConfig[nMachineIdx].nActiveStationCount - 1 DO
+			
+			nConfiguredTestCount		:= aStationConfig[nMachineIdx][nStationIdx].nActiveTestCount;
+			nConfiguredAteqDeviceCount	:= aStationConfig[nMachineIdx][nStationIdx].nActiveAteqDevice;
+			nConfiguredValveBankCount	:= aStationConfig[nMachineIdx][nStationIdx].nActiveValveBank;
+			
+			fbSortValveMasks[nStationIdx](
+											nMachineIdx 		:= nMachineIdx,
+											nStationIdx 		:= nStationIdx,
+											nConfiguredTestCount := nConfiguredTestCount,
+											aMachineRecipe 		:= aMachineRecipe,
+											anValveMaskList => anValveMaskListToRecipeHandler);
+											
+		//	anValveMaskListToRecipe	:= GVL_TcHmi.anValveMaskListToRecipe; // rework needed debug
+			mLeakTestProcess();
+		END_FOR
+	END_IF
+END_FOR
+END_IF]]></ST>
     </Implementation>
     <Method Name="mLeakTestProcess" Id="{68824a9f-061b-0c0b-322f-72077c8196c2}">
       <Declaration><![CDATA[METHOD mLeakTestProcess
 VAR_INPUT
 END_VAR
+VAR
+	nTestIdx : UINT;
+END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[/// VALVE BANK CALLS
-	IF nActiveValveBanks > 0 THEN	
-		FOR nValveBankIdx := 0 TO nActiveValveBanks - 1 DO
+	IF nConfiguredValveBankCount > 0 THEN	
+		FOR nValveBankIdx := 0 TO nConfiguredValveBankCount - 1 DO
 		mValveBankEnable();
 		//	IF afbValveBank[nValveBankIdx].pDeviceEnabled THEN
 				mValveBankManual();
@@ -90,8 +120,9 @@ END_VAR
 	END_IF
 
 /// ATEQ DEVICE CALLS
-	IF nActiveAteqDevices > 0 THEN
-		FOR nAteqDeviceIdx := 0 TO nActiveAteqDevices - 1 DO
+	IF nConfiguredAteqDeviceCount > 0 THEN
+		FOR nAteqDeviceIdx := 0 TO nConfiguredAteqDeviceCount - 1 DO
+			FOR nTestIdx := 0 TO nConfiguredTestCount DO
 /// ATEQ PROGRAM RECIPE CALLS
 	afbAteqRecipeHandler[nAteqDeviceIdx](
 										bValveBankHasAnyError	:= bValveBankHasAnyError, // may remove this check from the recipe handler
@@ -100,10 +131,11 @@ END_VAR
 										eAteqProgramSeqStates	:= afbAteqControl[nAteqDeviceIdx].eProgramSeqSteps,
 										eProgramInternalSteps	:= afbAteqControl[nAteqDeviceIdx].eProgramInternalSteps,
 										bAutoTestRecipeStart	:= GVL_AteqConfig.abAutoTestRecipeStart,
-										anValveMaskList			:= anValveMaskList,
+										nTestIdx				:= nTestIdx,
+										anValveMaskList			:= anValveMaskListToRecipeHandler,
 										nActiveTestStepCount	:= nActiveTestStepCount,
 										nValveMask				=> GVL_MapValveBank.nValveMaskRaw );
-
+			END_FOR
 /// ATEQ HIGH LEVEL CMD BINDING
 	afbAteqControl[nAteqDeviceIdx].pPrgSeqRunRequest 	:= afbAteqRecipeHandler[nAteqDeviceIdx].pProgramSeqRunCmdToAteq;
 	afbAteqControl[nAteqDeviceIdx].pPrgSeqResetRequest	:= afbAteqRecipeHandler[nAteqDeviceIdx].pProgramSeqResetCmdToAteq;
@@ -118,6 +150,7 @@ END_VAR
 	afbAteqResult[nAteqDeviceIdx](
 								bAutoSeqDone 	:= afbAteqControl[nAteqDeviceIdx].pPrgSeqDone,
 								anExchangeZone	:= astAteqIo[nAteqDeviceIdx].Read.ExchangeZoneByte);
+			
 		END_FOR
 	END_IF]]></ST>
       </Implementation>
@@ -289,7 +322,7 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[// Calls per ValveBank 
 
-FOR nValveBankIdx := 0 TO nActiveValveBanks - 1 DO
+FOR nValveBankIdx := 0 TO nConfiguredValveBankCount - 1 DO
 	
 // Top Level Fault check per Valvebank and per Valves									
 	IF afbValveBank[nValveBankIdx].pDeviceFaulted THEN

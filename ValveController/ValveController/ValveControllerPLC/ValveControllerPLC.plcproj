@@ -41,6 +41,9 @@
     <Compile Include="1_POUs\3_Generic\FB_DwellTime.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="1_POUs\4_TcHmi\FB_SortValveMasks.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="1_POUs\4_TcHmi\FB_TcHmiControl.TcPOU">
       <SubType>Code</SubType>
     </Compile>

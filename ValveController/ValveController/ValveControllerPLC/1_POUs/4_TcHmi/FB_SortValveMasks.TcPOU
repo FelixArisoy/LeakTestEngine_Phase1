@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_SortValveMasks" Id="{055af7c0-6535-0e3a-2e8b-c1b8d2ded029}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_SortValveMasks // Call This FB per Station, Sorted List can be viewed on dedidcated TcHMI screen
+VAR_INPUT
+	nConfiguredTestCount	: UINT;
+	aMachineRecipe 			: ARRAY[0..GVL_MachineConfig.nMaxMachineCount - 1] OF ST_MachineRecipe;
+	nMachineIdx	: UINT;
+	nStationIdx	: UINT;
+END_VAR
+VAR_OUTPUT
+	anValveMaskList			: ARRAY[0..GVL_LeakTestConfig.nMaxTestCount - 1] OF ARRAY [0..GVL_LeakTestConfig.nMaxTestStepCount - 1] OF DWORD;
+END_VAR
+VAR
+	aMachineRecipeBuffer	: ARRAY[0..GVL_MachineConfig.nMaxMachineCount - 1] OF ST_MachineRecipe;
+	anValveMaskListBuffer	: ARRAY[0..GVL_LeakTestConfig.nMaxTestCount - 1] OF ARRAY [0..GVL_LeakTestConfig.nMaxTestStepCount - 1] OF DWORD;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[aMachineRecipeBuffer := aMachineRecipe;
+anValveMaskList	:= anValveMaskListBuffer;]]></ST>
+    </Implementation>
+    <Method Name="mListValveMasks" Id="{e546c89b-ae68-0931-0a78-d0430bdbf96b}">
+      <Declaration><![CDATA[METHOD mListValveMasks
+VAR_INPUT
+END_VAR
+VAR
+	nTestIdx		: UINT;
+	nTestStepIdx	: UINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FOR nTestIdx := 0 TO nConfiguredTestCount DO
+	FOR nTestStepIdx := 0 TO GVL_LeakTestConfig.nMaxTestStepCount DO
+		anValveMaskListBuffer[nTestIdx][nTestStepIdx] := ULINT_TO_DWORD (aMachineRecipeBuffer[nMachineIdx].Station[nStationIdx].LeakTest.Recipe[nTestIdx].Step[nTestStepIdx].nValveMaskForThisStep);
+	END_FOR
+END_FOR
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

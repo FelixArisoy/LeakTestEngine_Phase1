@@ -6,7 +6,10 @@ VAR_INPUT
 	bValveBankHasAnyError	: BOOL;
 	bLastResultsStored		: BOOL;
     anProgramNumberRecipe	: ARRAY	[0..GVL_AteqConfig.nMaxProgramsToRun - 1] OF WORD;
-    anValveMaskList			: ARRAY [0..GVL_leakTestConfig.nMaxTestCount - 1] OF DWORD;
+//    anValveMaskList		: ARRAY [0..GVL_leakTestConfig.nMaxTestCount - 1] OF DWORD;
+	nTestIdx : UINT;
+	anValveMaskList	: ARRAY[0..GVL_LeakTestConfig.nMaxTestCount - 1] OF ARRAY [0..GVL_LeakTestConfig.nMaxTestStepCount - 1] OF DWORD;
+
 	eAteqProgramSeqStates 	: E_AteqProgramSeqSteps;
 	eProgramInternalSteps	: E_AteqStepsTable;
     nActiveTestStepCount	: UINT;
@@ -53,7 +56,7 @@ END_VAR
             IF NOT bValveBankHasAnyError THEN
 				tRecipeHandlerTimeout(IN := FALSE);
 				bProgramSeqResetCmdToAteq := FALSE;
-				nValveMask := anValveMaskList[nTestStepIdx];
+				nValveMask := anValveMaskList[nTestIdx][nTestStepIdx]; // Debug; added 2D Array with Test Idx input from the higher call.
             	eStatesAteqRecipeHandler := 2;
 			ELSIF tRecipeHandlerTimeout.Q THEN
 					eStatesAteqRecipeHandler := 4;
