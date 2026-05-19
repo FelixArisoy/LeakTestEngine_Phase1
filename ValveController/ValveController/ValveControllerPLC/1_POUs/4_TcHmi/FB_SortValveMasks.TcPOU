@@ -17,7 +17,8 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[aMachineRecipeBuffer := aMachineRecipe;
+      <ST><![CDATA[mListValveMasks();
+aMachineRecipeBuffer := aMachineRecipe;
 anValveMaskList	:= anValveMaskListBuffer;]]></ST>
     </Implementation>
     <Method Name="mListValveMasks" Id="{e546c89b-ae68-0931-0a78-d0430bdbf96b}">
@@ -30,12 +31,14 @@ VAR
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[FOR nTestIdx := 0 TO nConfiguredTestCount DO
-	FOR nTestStepIdx := 0 TO GVL_LeakTestConfig.nMaxTestStepCount DO
-		anValveMaskListBuffer[nTestIdx][nTestStepIdx] := ULINT_TO_DWORD (aMachineRecipeBuffer[nMachineIdx].Station[nStationIdx].LeakTest.Recipe[nTestIdx].Step[nTestStepIdx].nValveMaskForThisStep);
+        <ST><![CDATA[IF nConfiguredTestCount > 0 THEN
+FOR nTestIdx := 0 TO nConfiguredTestCount - 1 DO
+	FOR nTestStepIdx := 0 TO GVL_LeakTestConfig.nMaxTestStepCount - 1 DO
+		//Debug; Change DataType To ULINT once TcHmi Regex error fixed
+		anValveMaskListBuffer[nTestIdx][nTestStepIdx] := UDINT_TO_DWORD (aMachineRecipeBuffer[nMachineIdx].Station[nStationIdx].LeakTest.Recipe[nTestIdx].Step[nTestStepIdx].nValveMaskForThisStep);
 	END_FOR
 END_FOR
-]]></ST>
+END_IF]]></ST>
       </Implementation>
     </Method>
   </POU>

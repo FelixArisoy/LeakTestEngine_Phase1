@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <GVL Name="GVL_Debug" Id="{c06a63c8-ff2b-0a68-26c8-eb69575b945a}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	RecipeTypeTestSt	: ST_DebugTcHmi;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_DebugTcHmi" Id="{33d77131-e73c-08cf-39b3-792dd0577710}">
+    <Declaration><![CDATA[TYPE ST_DebugTcHmi :
+STRUCT
+	TestBool	: BOOL;
+	TestInt		: UINT;
+	TestLint	: ULINT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

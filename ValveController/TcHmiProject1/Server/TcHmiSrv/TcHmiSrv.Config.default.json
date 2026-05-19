@@ -914,6 +914,57 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_Debug.RecipeTypeTestSt.TestBool": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Debug::RecipeTypeTestSt::TestBool",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Debug.RecipeTypeTestSt.TestInt": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Debug::RecipeTypeTestSt::TestInt",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UINT"
+                    },
+                    {
+                        "propertyOrder": 2
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Debug.RecipeTypeTestSt.TestLint": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Debug::RecipeTypeTestSt::TestLint",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/ULINT"
+                    },
+                    {
+                        "propertyOrder": 3
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_TcHmi.stAteqRecipeType.bEnableAutoZero": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -4996,6 +5047,9 @@
                 "ADS.AdsSyncReadStateReq": 3,
                 "ADS.CheckLicense": 3,
                 "ADS.Diagnostics": 3,
+                "ADS.PLC1.GVL_Debug.RecipeTypeTestSt.TestBool": 3,
+                "ADS.PLC1.GVL_Debug.RecipeTypeTestSt.TestInt": 3,
+                "ADS.PLC1.GVL_Debug.RecipeTypeTestSt.TestLint": 3,
                 "ADS.PLC1.GVL_TcHmi.stAteqRecipeType.bEnableAutoZero": 3,
                 "ADS.PLC1.GVL_TcHmi.stAteqRecipeType.nActiveProgramCount": 3,
                 "ADS.PLC1.GVL_TcHmi.stAteqRecipeType.nIdx": 3,

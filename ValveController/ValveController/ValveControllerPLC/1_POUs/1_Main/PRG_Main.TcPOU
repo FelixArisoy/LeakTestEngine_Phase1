@@ -15,7 +15,7 @@ nConfiguredValveBankCount	: UINT;
 nActiveTestStepCount	: UINT;
 anValveMaskListToRecipeHandler	: ARRAY[0..GVL_LeakTestConfig.nMaxTestCount - 1] OF ARRAY [0..GVL_LeakTestConfig.nMaxTestStepCount - 1] OF DWORD;
 fbTcHmiMain	: FB_TcHmiControl;
-fbSortValveMasks : ARRAY[0..GVL_StationConfig.nMaxStationCount - 1] OF FB_SortValveMasks;
+fbSortValveMasksInStation : ARRAY[0..GVL_StationConfig.nMaxStationCount - 1] OF FB_SortValveMasks;
 
 // Mapped Recipes
 	aMachineConfig : ARRAY[0..GVL_MachineConfig.nMaxMachineCount - 1] OF ST_RecipeTypeMachine;
@@ -79,7 +79,7 @@ FOR nMachineIdx := 0 TO GVL_MachineConfig.nMaxMachineCount - 1 DO
 			nConfiguredAteqDeviceCount	:= aStationConfig[nMachineIdx][nStationIdx].nActiveAteqDevice;
 			nConfiguredValveBankCount	:= aStationConfig[nMachineIdx][nStationIdx].nActiveValveBank;
 			
-			fbSortValveMasks[nStationIdx](
+			fbSortValveMasksInStation[nStationIdx](
 											nMachineIdx 		:= nMachineIdx,
 											nStationIdx 		:= nStationIdx,
 											nConfiguredTestCount := nConfiguredTestCount,

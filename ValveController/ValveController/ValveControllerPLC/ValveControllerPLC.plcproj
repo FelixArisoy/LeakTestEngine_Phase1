@@ -167,19 +167,54 @@
     <Compile Include="2_DUTs\TcHmi\ST_ComboboxEntry.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_GVLs\GVL_MachineConfig.TcGVL">
+    <Compile Include="2_DUTs\zDebug\ST_DebugTcHmi.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="3_GVLs\GlobalDevices\GVL_ADSLOG.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
-    <Compile Include="3_GVLs\GVL_LeakTestConfig.TcGVL">
+    <Compile Include="3_GVLs\GlobalDevices\GVL_AteqConfig.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
-    <Compile Include="3_GVLs\GVL_MapValveBank.TcGVL">
+    <Compile Include="3_GVLs\GlobalDevices\GVL_AteqSpecialCycle.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
-    <Compile Include="3_GVLs\GVL_MapEL6070.TcGVL">
+    <Compile Include="3_GVLs\GlobalDevices\GVL_BeckhoffIpc.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="3_GVLs\GlobalDevices\GVL_MapEL6070.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="3_GVLs\GlobalDevices\GVL_MapValveBank.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="3_GVLs\GlobalDevices\GVL_ValveBankConfig.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="3_GVLs\GlobalDevices\GVL_ValveStatus.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="3_GVLs\GlobalHmi\GVL_TcHmi.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="3_GVLs\GlobalMachines\GVL_MachineConfig.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="3_GVLs\GlobalStations\GVL_StationConfig.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="3_GVLs\GlobalLeakTests\GVL_LeakTestConfig.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
@@ -225,11 +260,7 @@
     <Compile Include="1_POUs\3_Generic\FB_TextFile.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="3_GVLs\GVL_StationConfig.TcGVL">
-      <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
-    </Compile>
-    <Compile Include="3_GVLs\GVL_TcHmi.TcGVL">
+    <Compile Include="3_GVLs\GVL_Debug.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
@@ -245,30 +276,6 @@
     </Compile>
     <Compile Include="zDisposables\E_AteqProgramSeqStateFlags.TcDUT">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="3_GVLs\GVL_ADSLOG.TcGVL">
-      <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
-    </Compile>
-    <Compile Include="3_GVLs\GVL_AteqConfig.TcGVL">
-      <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
-    </Compile>
-    <Compile Include="3_GVLs\GVL_AteqSpecialCycle.TcGVL">
-      <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
-    </Compile>
-    <Compile Include="3_GVLs\GVL_BeckhoffIpc.TcGVL">
-      <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
-    </Compile>
-    <Compile Include="3_GVLs\GVL_ValveBankConfig.TcGVL">
-      <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
-    </Compile>
-    <Compile Include="3_GVLs\GVL_ValveStatus.TcGVL">
-      <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
     </Compile>
     <Compile Include="zTcUnitCalls\Test_Ateq\FB_Test_AteqControl.TcPOU">
       <SubType>Code</SubType>
@@ -286,6 +293,7 @@
     <Folder Include="2_DUTs\GenericFieldDevice" />
     <Folder Include="2_DUTs\AteqControl" />
     <Folder Include="2_DUTs\AteqIo" />
+    <Folder Include="2_DUTs\zDebug" />
     <Folder Include="2_DUTs\TcHmiToPlc" />
     <Folder Include="2_DUTs\TcHmi" />
     <Folder Include="2_DUTs\TcHmi\RecipeTypes" />
@@ -299,6 +307,11 @@
     <Folder Include="1_POUs\2_Devices\Controller" />
     <Folder Include="1_POUs\2_Devices\ValveBank" />
     <Folder Include="1_POUs\3_Generic" />
+    <Folder Include="3_GVLs\GlobalDevices" />
+    <Folder Include="3_GVLs\GlobalMachines" />
+    <Folder Include="3_GVLs\GlobalStations" />
+    <Folder Include="3_GVLs\GlobalLeakTests" />
+    <Folder Include="3_GVLs\GlobalHmi" />
     <Folder Include="zDisposables" />
     <Folder Include="zTcUnitCalls" />
     <Folder Include="zTcUnitCalls\Test_Ateq" />

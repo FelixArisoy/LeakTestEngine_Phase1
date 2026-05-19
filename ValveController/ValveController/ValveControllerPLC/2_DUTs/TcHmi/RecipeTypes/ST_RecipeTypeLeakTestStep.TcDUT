@@ -6,7 +6,7 @@ STRUCT
 	nIdx	: UINT;
 	bEnable	: BOOL;
 	nActiveSubStepCount		: UINT; // Default 0; No Sub Step Exist
-	nValveMaskForThisStep	: ULINT;
+	nValveMaskForThisStep	: UDINT; // Debug; ULINT 64 bit cannot be saved on TcHmi; Data REGEX type does not Match check with support
 	bApplyTimeOffDelay	: BOOL;
 	bApplyTimeOnDelay	: BOOL;
 	tTimeOffDelay	: TIME;

@@ -99,7 +99,7 @@
                                 "Step Index": 1,
                                 "Time Off Delay": "PT0.002S",
                                 "Time On Delay": "PT0.003S",
-                                "Valve Mask For This Step": 555
+                                "Valve Mask For This Step": 858
                             }
                         },
                         "LTStep2": {
@@ -839,6 +839,34 @@
                         "minimum": 1
                     },
                     "symbol": "ADS.PLC1.GVL_TcHmi.stRecipeTypeValveBank.nIdx",
+                    "unit": "",
+                    "version": 1.0
+                }
+            },
+            "options": {
+                "enabled": "None"
+            },
+            "recipeTypeNames": []
+        },
+        "zDebug": {
+            "members": {
+                "ADS.PLC1.GVL_Debug.RecipeTypeTestSt.TestBool": {
+                    "defaultValue": false,
+                    "enabled": true,
+                    "group": "",
+                    "order": 0,
+                    "schema": {},
+                    "symbol": "ADS.PLC1.GVL_Debug.RecipeTypeTestSt.TestBool",
+                    "unit": "",
+                    "version": 1.0
+                },
+                "ADS.PLC1.GVL_Debug.RecipeTypeTestSt.TestInt": {
+                    "defaultValue": 0,
+                    "enabled": true,
+                    "group": "",
+                    "order": 1,
+                    "schema": {},
+                    "symbol": "ADS.PLC1.GVL_Debug.RecipeTypeTestSt.TestInt",
                     "unit": "",
                     "version": 1.0
                 }
