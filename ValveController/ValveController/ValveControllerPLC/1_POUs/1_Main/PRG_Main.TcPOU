@@ -70,7 +70,7 @@ fbTcHmiMain(aMachineConfig => aMachineConfig, aStationConfig => aStationConfig, 
 // Sort ValveMask in a 2D Array per Station for all tests ...[testIdx][stepIdx]
 
 // Process Calls
-IF GVL_MachineConfig.nMaxMachineCount > 0 THEN	
+IF GVL_MachineConfig.nMaxMachineCount > 0 THEN
 FOR nMachineIdx := 0 TO GVL_MachineConfig.nMaxMachineCount - 1 DO
 	IF aMachineConfig[nMachineIdx].nActiveStationCount > 0 THEN
 		FOR nStationIdx := 0 TO aMachineConfig[nMachineIdx].nActiveStationCount - 1 DO

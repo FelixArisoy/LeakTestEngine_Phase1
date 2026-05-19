@@ -14,80 +14,92 @@
                     "recipeTypeName": "StationRecipeType",
                     "values": {
                         "Active Ateq Device": 1,
-                        "Active Test Count": 2,
+                        "Active Test Count": 1,
                         "Active Valve Bank": 1,
                         "Enable": true,
                         "Station Number": 1
                     }
                 },
-                "LeatTestRecipe1": {
-                    "Devices": {
-                        "Ateq1": {
-                            "AteqDeviceRecipe": {
-                                "recipeTypeName": "AteqDeviceRecipeType",
-                                "values": {
-                                    "Active Program Count": 1,
-                                    "Device Index": 1,
-                                    "Enable": true,
-                                    "Enable Auto Zero": true
-                                }
-                            },
-                            "AteqProgram1": {
-                                "recipeTypeName": "AteqProgramRecipeType",
-                                "values": {
-                                    "Enable": true,
-                                    "Enable Timeout": false,
-                                    "Program Index": 1,
-                                    "Store Results": true,
-                                    "TimeoutTime": "PT0.001S",
-                                    "Wait for Prg Comp": false
-                                }
-                            },
-                            "AteqProgram2": {
-                                "recipeTypeName": "AteqProgramRecipeType",
-                                "values": {
-                                    "Enable": true,
-                                    "Enable Timeout": false,
-                                    "Program Index": 2,
-                                    "Store Results": true,
-                                    "TimeoutTime": "PT0.001S",
-                                    "Wait for Prg Comp": false
-                                }
+                "Devices": {
+                    "Ateq1": {
+                        "AteqProgram1": {
+                            "recipeTypeName": "AteqProgramRecipeType",
+                            "values": {
+                                "Enable": true,
+                                "Enable Timeout": false,
+                                "Program Index": 1,
+                                "Store Results": true,
+                                "TimeoutTime": "PT0.001S",
+                                "Wait for Prg Comp": false
                             }
                         },
-                        "ValveBank1": {
-                            "ValveBank1": {
-                                "recipeTypeName": "ValveBankRecipeType",
-                                "values": {
-                                    "Active Valve Count": 1,
-                                    "Available Valve Slots": 8,
-                                    "Enable": true,
-                                    "ValveBank Index": 1
-                                }
-                            },
-                            "ValveBank2": {
-                                "recipeTypeName": "ValveBankRecipeType",
-                                "values": {
-                                    "Active Valve Count": 1,
-                                    "Available Valve Slots": 8,
-                                    "Enable": true,
-                                    "ValveBank Index": 2
-                                }
+                        "AteqProgram2": {
+                            "recipeTypeName": "AteqProgramRecipeType",
+                            "values": {
+                                "Enable": true,
+                                "Enable Timeout": false,
+                                "Program Index": 2,
+                                "Store Results": true,
+                                "TimeoutTime": "PT0.001S",
+                                "Wait for Prg Comp": false
+                            }
+                        },
+                        "ConfigAteq1": {
+                            "recipeTypeName": "AteqDeviceRecipeType",
+                            "values": {
+                                "Active Program Count": 2,
+                                "Device Index": 1,
+                                "Enable": true,
+                                "Enable Auto Zero": true
                             }
                         }
                     },
-                    "Test1Steps": {
+                    "ValveBank1": {
+                        "ValveBank1": {
+                            "recipeTypeName": "ValveBankRecipeType",
+                            "values": {
+                                "Active Valve Count": 1,
+                                "Available Valve Slots": 8,
+                                "Enable": true,
+                                "ValveBank Index": 1
+                            }
+                        },
+                        "ValveBank2": {
+                            "recipeTypeName": "ValveBankRecipeType",
+                            "values": {
+                                "Active Valve Count": 1,
+                                "Available Valve Slots": 8,
+                                "Enable": true,
+                                "ValveBank Index": 2
+                            }
+                        }
+                    }
+                },
+                "LeatTestRecipe1": {
+                    "ConfigTestRecipe1": {
+                        "recipeTypeName": "LeakTestRecipeType",
+                        "values": {
+                            "Active Step Count": 8,
+                            "Apply Time Off Delay": false,
+                            "Apply Time On Delay": false,
+                            "Enable": true,
+                            "Test Index": 1,
+                            "Time Off Delay": "PT0.001S",
+                            "Time On Delay": "PT0.001S"
+                        }
+                    },
+                    "Steps": {
                         "LTStep1": {
                             "recipeTypeName": "LeakTestStepRecipeType",
                             "values": {
-                                "Active Sub Step Count": 0,
-                                "Apply Time Off Delay": false,
-                                "Apply Time On Delay": false,
+                                "Active Sub Step Count": 3,
+                                "Apply Time Off Delay": true,
+                                "Apply Time On Delay": true,
                                 "Enable Step": true,
                                 "Step Index": 1,
-                                "Time Off Delay": "PT0.001S",
-                                "Time On Delay": "PT0.001S",
-                                "Valve Mask For This Step": 1
+                                "Time Off Delay": "PT0.002S",
+                                "Time On Delay": "PT0.003S",
+                                "Valve Mask For This Step": 555
                             }
                         },
                         "LTStep2": {
@@ -100,7 +112,7 @@
                                 "Step Index": 2,
                                 "Time Off Delay": "PT0.001S",
                                 "Time On Delay": "PT0.001S",
-                                "Valve Mask For This Step": 0
+                                "Valve Mask For This Step": 8888
                             }
                         },
                         "LTStep3": {
@@ -112,21 +124,9 @@
                                 "Enable Step": true,
                                 "Step Index": 3,
                                 "Time Off Delay": "PT0.001S",
-                                "Time On Delay": "PT0.001S",
-                                "Valve Mask For This Step": 5
+                                "Time On Delay": "PT0.006S",
+                                "Valve Mask For This Step": 1
                             }
-                        }
-                    },
-                    "TestRecipe1": {
-                        "recipeTypeName": "LeakTestRecipeType",
-                        "values": {
-                            "Active Step Count": 1,
-                            "Apply Time Off Delay": false,
-                            "Apply Time On Delay": false,
-                            "Enable": true,
-                            "Test Index": 1,
-                            "Time Off Delay": "PT0.001S",
-                            "Time On Delay": "PT0.001S"
                         }
                     }
                 }
@@ -136,7 +136,7 @@
                     "recipeTypeName": "StationRecipeType",
                     "values": {
                         "Active Ateq Device": 1,
-                        "Active Test Count": 2,
+                        "Active Test Count": 8,
                         "Active Valve Bank": 1,
                         "Enable": true,
                         "Station Number": 2
@@ -209,7 +209,7 @@
                                 "Step Index": 1,
                                 "Time Off Delay": "PT0.001S",
                                 "Time On Delay": "PT0.001S",
-                                "Valve Mask For This Step": 0
+                                "Valve Mask For This Step": 12234
                             }
                         },
                         "LTStep2": {

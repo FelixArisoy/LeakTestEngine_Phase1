@@ -16,13 +16,92 @@ VAR
 	aMachineRecipeBuffer : ARRAY[0..GVL_MachineConfig.nMaxMachineCount - 1] OF ST_MachineRecipe;
 
 END_VAR
+VAR
+	nMachineIdx : UINT;
+	nStationIdx	: UINT;
+	nTestIdx	: UINT;
+	nTestStepIdx: UINT;
+	nAteqIdx	: UINT;
+	nAteqProgramIdx	: UINT;
+	nValveBankIdx	: UINT;
+END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[mMapRecipes();
+      <ST><![CDATA[//mMapRecipes();
 
 aMachineConfig := aMachineConfigBuffer;
 aStationConfig := aStationConfigBuffer;
-aMachineRecipeBuffer := aMachineRecipeBuffer;]]></ST>
+aMachineRecipe := aMachineRecipeBuffer;
+
+
+// Debug
+
+//Review here change max numf o devicecec to ACtive counts from machine+staation configs arrays.
+IF GVL_MachineConfig.nMaxMachineCount > 0 THEN
+FOR nMachineIdx := 0 TO GVL_MachineConfig.nMaxMachineCount - 1 DO
+	IF nMachineIdx = (GVL_TcHmi.stRecipeTypeMachine.nIdx - 1) THEN
+	aMachineConfigBuffer[nMachineIdx] := GVL_TcHmi.stRecipeTypeMachine;
+	IF aMachineConfig[nMachineIdx].nActiveStationCount > 0 THEN
+		FOR nStationIdx := 0 TO GVL_StationConfig.nMaxStationCount - 1 DO
+			IF nStationIdx = (GVL_TcHmi.stRecipeTypeStation.nIdx - 1) THEN
+				aStationConfigBuffer[nMachineIdx][nStationIdx] := GVL_TcHmi.stRecipeTypeStation;
+			END_IF
+		END_FOR
+	END_IF	
+	END_IF
+END_FOR
+END_IF
+
+IF GVL_MachineConfig.nMaxMachineCount > 0 THEN
+FOR nMachineIdx := 0 TO GVL_MachineConfig.nMaxMachineCount - 1 DO
+	IF aMachineConfig[nMachineIdx].nActiveStationCount > 0 THEN
+	FOR nStationIdx := 0 TO aMachineConfigBuffer[nMachineIdx].nActiveStationCount - 1 DO
+
+	// MAPPING ATEQ DEVICES
+		IF aStationConfigBuffer[nMachineIdx][nStationIdx].nActiveAteqDevice > 0 THEN
+		FOR nAteqIdx := 0 TO aStationConfigBuffer[nMachineIdx][nStationIdx].nActiveAteqDevice - 1 DO
+			IF nAteqIdx = (GVL_TcHmi.stRecipeTypeAteqDevice.nIdx - 1) THEN
+				aMachineRecipeBuffer[nMachineIdx].Station[nStationIdx].Device.Ateq[nAteqIdx].Config := GVL_TcHmi.stRecipeTypeAteqDevice;
+			// MAPPING ATEQ PROGRAMS PER ATEQ DEVICE
+			IF aMachineRecipeBuffer[nMachineIdx].Station[nStationIdx].Device.Ateq[nAteqIdx].Config.nActiveProgramCount > 0 THEN
+				FOR nAteqProgramIdx := 0 TO aMachineRecipeBuffer[nMachineIdx].Station[nStationIdx].Device.Ateq[nAteqIdx].Config.nActiveProgramCount - 1 DO
+					IF nAteqProgramIdx = (GVL_TcHmi.stRecipeTypeAteqProgram.nIdx - 1) THEN
+					aMachineRecipeBuffer[nMachineIdx].Station[nStationIdx].Device.Ateq[nAteqIdx].TestProgram[nAteqProgramIdx] := GVL_TcHmi.stRecipeTypeAteqProgram;
+					END_IF
+				END_FOR
+			END_IF	
+			END_IF
+		END_FOR
+		END_IF
+	// MAPPING VALVEBANKS
+		IF aStationConfigBuffer[nMachineIdx][nStationIdx].nActiveValveBank > 0 THEN
+		FOR nValveBankIdx := 0 TO aStationConfigBuffer[nMachineIdx][nStationIdx].nActiveValveBank - 1 DO
+			IF nValveBankIdx = (GVL_TcHmi.stRecipeTypeValveBank.nIdx - 1) THEN
+				aMachineRecipeBuffer[nMachineIdx].Station[nStationIdx].Device.ValveBank[nValveBankIdx] := GVL_TcHmi.stRecipeTypeValveBank;
+			END_IF
+		END_FOR
+		END_IF
+	// MAPPING TEST RECIPES
+		IF aStationConfigBuffer[nMachineIdx][nStationIdx].nActiveTestCount > 0 THEN
+		FOR nTestIdx := 0 TO aStationConfigBuffer[nMachineIdx][nStationIdx].nActiveTestCount - 1 DO
+			IF nTestIdx = (GVL_TcHmi.stRecipeTypeLeakTest.nIdx - 1) THEN
+				aMachineRecipeBuffer[nMachineIdx].Station[nStationIdx].LeakTest.Config[nTestIdx] := GVL_TcHmi.stRecipeTypeLeakTest;
+			// MAPPING TEST STEP RECIPES PER LEAK TEST
+				IF aMachineRecipeBuffer[nMachineIdx].Station[nStationIdx].LeakTest.Config[nTestIdx].nActiveStepCount > 0 THEN
+				FOR nTestStepIdx := 0 TO aMachineRecipeBuffer[nMachineIdx].Station[nStationIdx].LeakTest.Config[nTestIdx].nActiveStepCount - 1 DO
+					IF nTestStepIdx = (GVL_TcHmi.stRecipeTypeLeakTestStep.nIdx - 1) THEN
+					aMachineRecipeBuffer[nMachineIdx].Station[nStationIdx].LeakTest.Recipe[nTestIdx].Step[nTestStepIdx] := GVL_TcHmi.stRecipeTypeLeakTestStep;
+					END_IF
+				END_FOR
+				END_IF
+			END_IF
+		END_FOR
+		END_IF
+	END_FOR
+	END_IF
+END_FOR
+END_IF
+]]></ST>
     </Implementation>
     <Method Name="mMapRecipes" Id="{ddbca950-c60e-094e-351c-d6f29bf51efe}">
       <Declaration><![CDATA[METHOD mMapRecipes
@@ -38,58 +117,70 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[//Review here change max numf o devicecec to ACtive counts from machine+staation configs arrays.
-
-FOR nMachineIdx := 0 TO GVL_MachineConfig.nMaxMachineCount DO
-	IF nMachineIdx = GVL_TcHmi.stRecipeTypeMachine.nIdx THEN
+IF GVL_MachineConfig.nMaxMachineCount > 0 THEN
+FOR nMachineIdx := 0 TO GVL_MachineConfig.nMaxMachineCount - 1 DO
+	IF nMachineIdx = (GVL_TcHmi.stRecipeTypeMachine.nIdx - 1) THEN
 	aMachineConfigBuffer[nMachineIdx] := GVL_TcHmi.stRecipeTypeMachine;
-	
-		FOR nStationIdx := 0 TO GVL_StationConfig.nMaxStationCount DO
-			IF nStationIdx = GVL_TcHmi.stRecipeTypeStation.nIdx THEN
+	IF aMachineConfig[nMachineIdx].nActiveStationCount > 0 THEN
+		FOR nStationIdx := 0 TO GVL_StationConfig.nMaxStationCount - 1 DO
+			IF nStationIdx = (GVL_TcHmi.stRecipeTypeStation.nIdx - 1) THEN
 				aStationConfigBuffer[nMachineIdx][nStationIdx] := GVL_TcHmi.stRecipeTypeStation;
 			END_IF
 		END_FOR
-		
+	END_IF	
 	END_IF
 END_FOR
+END_IF
 
-FOR nMachineIdx := 0 TO GVL_MachineConfig.nMaxMachineCount DO
-	
-	FOR nStationIdx := 0 TO aMachineConfigBuffer[nMachineIdx].nActiveStationCount DO
-		IF nStationIdx = GVL_TcHmi.stRecipeTypeStation.nIdx THEN
-	// MAPPING ATEQ DEVICES		
-		FOR nAteqIdx := 0 TO aStationConfigBuffer[nMachineIdx][nStationIdx].nActiveAteqDevice DO
-			IF nAteqIdx = GVL_TcHmi.stRecipeTypeAteqDevice.nIdx THEN
+IF GVL_MachineConfig.nMaxMachineCount > 0 THEN
+FOR nMachineIdx := 0 TO GVL_MachineConfig.nMaxMachineCount - 1 DO
+	IF aMachineConfig[nMachineIdx].nActiveStationCount > 0 THEN
+	FOR nStationIdx := 0 TO aMachineConfigBuffer[nMachineIdx].nActiveStationCount - 1 DO
+
+	// MAPPING ATEQ DEVICES
+		IF aStationConfigBuffer[nMachineIdx][nStationIdx].nActiveAteqDevice > 0 THEN
+		FOR nAteqIdx := 0 TO aStationConfigBuffer[nMachineIdx][nStationIdx].nActiveAteqDevice - 1 DO
+			IF nAteqIdx = (GVL_TcHmi.stRecipeTypeAteqDevice.nIdx - 1) THEN
 				aMachineRecipeBuffer[nMachineIdx].Station[nStationIdx].Device.Ateq[nAteqIdx].Config := GVL_TcHmi.stRecipeTypeAteqDevice;
-			// MAPPING ATEQ PROGRAMS PER ATEQ DEVICE	
-				FOR nAteqProgramIdx := 0 TO aMachineRecipeBuffer[nMachineIdx].Station[nStationIdx].Device.Ateq[nAteqIdx].Config.nActiveProgramCount DO
-					IF nAteqProgramIdx = GVL_TcHmi.stRecipeTypeAteqProgram.nIdx THEN
+			// MAPPING ATEQ PROGRAMS PER ATEQ DEVICE
+			IF aMachineRecipeBuffer[nMachineIdx].Station[nStationIdx].Device.Ateq[nAteqIdx].Config.nActiveProgramCount > 0 THEN
+				FOR nAteqProgramIdx := 0 TO aMachineRecipeBuffer[nMachineIdx].Station[nStationIdx].Device.Ateq[nAteqIdx].Config.nActiveProgramCount - 1 DO
+					IF nAteqProgramIdx = (GVL_TcHmi.stRecipeTypeAteqProgram.nIdx - 1) THEN
 					aMachineRecipeBuffer[nMachineIdx].Station[nStationIdx].Device.Ateq[nAteqIdx].TestProgram[nAteqProgramIdx] := GVL_TcHmi.stRecipeTypeAteqProgram;
 					END_IF
 				END_FOR
-				
+			END_IF	
 			END_IF
 		END_FOR
-		
-		FOR nValveBankIdx := 0 TO aStationConfigBuffer[nMachineIdx][nStationIdx].nActiveValveBank DO
-			IF nValveBankIdx = GVL_TcHmi.stRecipeTypeValveBank.nIdx THEN
+		END_IF
+	// MAPPING VALVEBANKS
+		IF aStationConfigBuffer[nMachineIdx][nStationIdx].nActiveValveBank > 0 THEN
+		FOR nValveBankIdx := 0 TO aStationConfigBuffer[nMachineIdx][nStationIdx].nActiveValveBank - 1 DO
+			IF nValveBankIdx = (GVL_TcHmi.stRecipeTypeValveBank.nIdx - 1) THEN
 				aMachineRecipeBuffer[nMachineIdx].Station[nStationIdx].Device.ValveBank[nValveBankIdx] := GVL_TcHmi.stRecipeTypeValveBank;
 			END_IF
 		END_FOR
-	// MAPPING TEST RECIPES	
-		FOR nTestIdx := 0 TO aStationConfigBuffer[nMachineIdx][nStationIdx].nActiveTestCount DO
-			IF nTestIdx = GVL_TcHmi.stRecipeTypeLeakTest.nIdx THEN
+		END_IF
+	// MAPPING TEST RECIPES
+		IF aStationConfigBuffer[nMachineIdx][nStationIdx].nActiveTestCount > 0 THEN
+		FOR nTestIdx := 0 TO aStationConfigBuffer[nMachineIdx][nStationIdx].nActiveTestCount - 1 DO
+			IF nTestIdx = (GVL_TcHmi.stRecipeTypeLeakTest.nIdx - 1) THEN
 				aMachineRecipeBuffer[nMachineIdx].Station[nStationIdx].LeakTest.Config[nTestIdx] := GVL_TcHmi.stRecipeTypeLeakTest;
 			// MAPPING TEST STEP RECIPES PER LEAK TEST
-				FOR nTestStepIdx := 0 TO aMachineRecipeBuffer[nMachineIdx].Station[nStationIdx].LeakTest.Config[nTestIdx].nActiveStepCount DO
-					IF nTestStepIdx = GVL_TcHmi.stRecipeTypeLeakTestStep.nIdx THEN
+				IF aMachineRecipeBuffer[nMachineIdx].Station[nStationIdx].LeakTest.Config[nTestIdx].nActiveStepCount > 0 THEN
+				FOR nTestStepIdx := 0 TO aMachineRecipeBuffer[nMachineIdx].Station[nStationIdx].LeakTest.Config[nTestIdx].nActiveStepCount - 1 DO
+					IF nTestStepIdx = (GVL_TcHmi.stRecipeTypeLeakTestStep.nIdx - 1) THEN
 					aMachineRecipeBuffer[nMachineIdx].Station[nStationIdx].LeakTest.Recipe[nTestIdx].Step[nTestStepIdx] := GVL_TcHmi.stRecipeTypeLeakTestStep;
 					END_IF
 				END_FOR
+				END_IF
 			END_IF
 		END_FOR
 		END_IF
 	END_FOR
-END_FOR]]></ST>
+	END_IF
+END_FOR
+END_IF]]></ST>
       </Implementation>
     </Method>
   </POU>
