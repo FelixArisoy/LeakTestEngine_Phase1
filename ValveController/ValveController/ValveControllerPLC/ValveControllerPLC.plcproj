@@ -206,6 +206,10 @@
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
+    <Compile Include="3_GVLs\GlobalHmi\GVL_TcHmiControl.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
     <Compile Include="3_GVLs\GlobalMachines\GVL_MachineConfig.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>

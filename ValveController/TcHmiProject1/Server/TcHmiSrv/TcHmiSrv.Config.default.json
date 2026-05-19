@@ -1700,6 +1700,56 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_TcHmiControl.bButtonAutoStart": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmiControl::bButtonAutoStart",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmiControl.bButtonManStart": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmiControl::bButtonManStart",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmiControl.nInputLeakTestIdx": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmiControl::nInputLeakTestIdx",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/UINT"
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmiControl.nInputMachineIdx": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmiControl::nInputMachineIdx",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/UINT"
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmiControl.nInputStationIdx": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmiControl::nInputStationIdx",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/UINT"
+            },
+            "USEMAPPING": true
+        },
         "ADS.RuntimePorts": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -5093,6 +5143,11 @@
                 "ADS.PLC1.GVL_TcHmi.stRecipeTypeValveBank.nActiveValveCount": 3,
                 "ADS.PLC1.GVL_TcHmi.stRecipeTypeValveBank.nAvailableValveSlots": 3,
                 "ADS.PLC1.GVL_TcHmi.stRecipeTypeValveBank.nIdx": 3,
+                "ADS.PLC1.GVL_TcHmiControl.bButtonAutoStart": 3,
+                "ADS.PLC1.GVL_TcHmiControl.bButtonManStart": 3,
+                "ADS.PLC1.GVL_TcHmiControl.nInputLeakTestIdx": 3,
+                "ADS.PLC1.GVL_TcHmiControl.nInputMachineIdx": 3,
+                "ADS.PLC1.GVL_TcHmiControl.nInputStationIdx": 3,
                 "ChangeUserSettings": 3,
                 "ConfirmAlarm": 3,
                 "CreateEvent": 3,

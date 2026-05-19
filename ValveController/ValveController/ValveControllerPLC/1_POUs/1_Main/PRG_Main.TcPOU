@@ -28,22 +28,23 @@ fbSortValveMasksInStation : ARRAY[0..GVL_StationConfig.nMaxStationCount - 1] OF 
 	nAteqDeviceIdx		: UINT;
 	afbAteqControl		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF FB_AteqControl;
 	//nProgramNumberToRun		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF WORD;
-	bAutoSeqRun			: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF BOOL;
-	bAutoSeqDone		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF BOOL;
-	bAutoSeqResetRequest: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF BOOL;
+	bAteqSeqRunInMan	: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF BOOL;
+	bAteqSeqDone		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF BOOL;
+	bAteqSeqResetRequest: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF BOOL;
 //####### Ateq Result Handler #######
 	afbAteqResult		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF FB_AteqResultHandler;
-
 //####### ValveBanks #######
 	afbValveBank		: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF FB_ValveBankControl;
 	anReqOpenManual		: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF BOOL; 
 	anReqCloseManual	: ARRAY[0..GVL_ValveBankConfig.nMaxDeviceCount - 1] OF ARRAY[0..GVL_ValveBankConfig.nMaxNumOfValveSlots - 1] OF BOOL;
 	bValveBankHasAnyError		: BOOL;
 //####### Recipe Handler per Ateq Device #######
-
 	afbAteqRecipeHandler 	: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF FB_AteqRecipeHandler;
 	anProgramNumberRecipe	: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ARRAY[0..GVL_AteqConfig.nMaxProgramsToRun - 1] OF WORD;
 
+
+
+// DEBUG
 // #######M_TestingAteqHandshakeSpeed DEBUG variables for delay and array storage:
 	bCommandSent       : BOOL := FALSE;
     bEchoReceived      : BOOL := FALSE;
@@ -57,8 +58,6 @@ fbSortValveMasksInStation : ARRAY[0..GVL_StationConfig.nMaxStationCount - 1] OF 
     bTestActive        : BOOL := FALSE;        // Master switch to start/stop the test sequence
     bDelayFinished     : BOOL := FALSE;        // Flag to indicate delay completion
     bTriggerReady      : BOOL := TRUE;         // Flag to indicate next trigger is ready
-
-	
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[// System Method Calls
@@ -80,12 +79,11 @@ FOR nMachineIdx := 0 TO GVL_MachineConfig.nMaxMachineCount - 1 DO
 			nConfiguredValveBankCount	:= aStationConfig[nMachineIdx][nStationIdx].nActiveValveBank;
 			
 			fbSortValveMasksInStation[nStationIdx](
-											nMachineIdx 		:= nMachineIdx,
-											nStationIdx 		:= nStationIdx,
-											nConfiguredTestCount := nConfiguredTestCount,
-											aMachineRecipe 		:= aMachineRecipe,
-											anValveMaskList => anValveMaskListToRecipeHandler);
-											
+													nMachineIdx 			:= nMachineIdx,
+													nStationIdx 			:= nStationIdx,
+													nConfiguredTestCount 	:= nConfiguredTestCount,
+													aMachineRecipe 			:= aMachineRecipe,
+													anValveMaskList 		=> anValveMaskListToRecipeHandler);
 		//	anValveMaskListToRecipe	:= GVL_TcHmi.anValveMaskListToRecipe; // rework needed debug
 			mLeakTestProcess();
 		END_FOR
