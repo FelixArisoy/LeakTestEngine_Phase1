@@ -9,6 +9,7 @@
 
 #added by Felix A.
 *.project.~u
+*.~u
 LineIDs.dbg
 LineIDs.dbg.bak
 
