@@ -17,6 +17,7 @@ anValveMaskListToRecipeHandler	: ARRAY[0..GVL_LeakTestConfig.nMaxTestCount - 1] 
 fbTcHmiMain	: FB_TcHmiControl;
 fbSortValveMasksInStation : ARRAY[0..GVL_StationConfig.nMaxStationCount - 1] OF FB_SortValveMasks;
 
+bAteqTestRecipeStartManCmd		: BOOL;
 // Mapped Recipes
 	aMachineConfig : ARRAY[0..GVL_MachineConfig.nMaxMachineCount - 1] OF ST_RecipeTypeMachine;
 	aStationConfig : ARRAY[0..GVL_MachineConfig.nMaxMachineCount - 1] OF ARRAY[0..GVL_StationConfig.nMaxStationCount  - 1] OF ST_RecipeTypeStation;
@@ -77,6 +78,12 @@ FOR nMachineIdx := 0 TO GVL_MachineConfig.nMaxMachineCount - 1 DO
 			nConfiguredTestCount		:= aStationConfig[nMachineIdx][nStationIdx].nActiveTestCount;
 			nConfiguredAteqDeviceCount	:= aStationConfig[nMachineIdx][nStationIdx].nActiveAteqDevice;
 			nConfiguredValveBankCount	:= aStationConfig[nMachineIdx][nStationIdx].nActiveValveBank;
+				
+				IF nMachineIdx = GVL_TcHmiControl.nInputMachineIdx AND nStationIdx = GVL_TcHmiControl.nInputStationIdx AND GVL_TcHmiControl.bButtonManStart THEN
+					bAteqTestRecipeStartManCmd	:=	TRUE;
+				ELSE
+					bAteqTestRecipeStartManCmd	:=	FALSE;
+				END_IF
 			
 			fbSortValveMasksInStation[nStationIdx](
 													nMachineIdx 			:= nMachineIdx,
@@ -128,7 +135,7 @@ END_VAR
 										anProgramNumberRecipe	:= anProgramNumberRecipe[nAteqDeviceIdx],
 										eAteqProgramSeqStates	:= afbAteqControl[nAteqDeviceIdx].eProgramSeqSteps,
 										eProgramInternalSteps	:= afbAteqControl[nAteqDeviceIdx].eProgramInternalSteps,
-										bAutoTestRecipeStart	:= GVL_AteqConfig.abAutoTestRecipeStart,
+										bAutoTestRecipeStart	:= bAteqTestRecipeStartManCmd,
 										nTestIdx				:= nTestIdx,
 										anValveMaskList			:= anValveMaskListToRecipeHandler,
 										nActiveTestStepCount	:= nActiveTestStepCount,

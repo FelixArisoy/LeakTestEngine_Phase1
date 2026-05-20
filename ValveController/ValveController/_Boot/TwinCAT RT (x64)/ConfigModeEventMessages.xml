@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<TcEventSources Version="2">
+	<Translations>
+		<Text TxtId="Challenge could not be hashed: {0,X}">
+			<Text LcId="1031">Challenge could not be hashed: {0,X}</Text>
+		</Text>
+		<Text TxtId="Challenge is not Random"/>
+		<Text TxtId="EL6070 1Ch. Licensing-Terminal">
+			<Text LcId="1031">EL6070 1K. Lizenzierungs-Klemme</Text>
+		</Text>
+		<Text TxtId="File {0} erased successfully">
+			<Text LcId="1031">File {0} erased successfully</Text>
+		</Text>
+		<Text TxtId="Key Creation failed: {0,X}">
+			<Text LcId="1031">Key Creation failed: {0,X}</Text>
+		</Text>
+		<Text TxtId="Key loading failed: {0,X}">
+			<Text LcId="1031">Key loading failed: {0,X}</Text>
+		</Text>
+		<Text TxtId="No Boot Mode">
+			<Text LcId="1031">No Boot Mode</Text>
+		</Text>
+		<Text TxtId="Operatingtime was manipulated">
+			<Text LcId="1031">Operatingtime was manipulated</Text>
+		</Text>
+		<Text TxtId="Ownership failed: {0,X}"/>
+		<Text TxtId="PCR Process failed: {0,X}">
+			<Text LcId="1031">PCR Process failed: {0,X}</Text>
+		</Text>
+		<Text TxtId="Quote Process failed: {0,X}"/>
+		<Text TxtId="Reading Certificate EK failed: {0,X}"/>
+		<Text TxtId="Reading PCR Value failed: {0,X}"/>
+		<Text TxtId="Reading Public EK failed: {0,X}">
+			<Text LcId="1031">Reading Public EK failed: {0,X}</Text>
+		</Text>
+		<Text TxtId="Reading Public Key failed: {0,X}">
+			<Text LcId="1031">Reading Public Key failed: {0,X}</Text>
+		</Text>
+		<Text TxtId="Tickstamp Process failed: {0,X}">
+			<Text LcId="1031">Tickstamp Process failed: {0,X}</Text>
+		</Text>
+		<Text TxtId="Too many Keys founded">
+			<Text LcId="1031">Too many Keys founded</Text>
+		</Text>
+	</Translations>
+	<Source>
+		<GUID>{28111931-0002-0000-5230-B61700001300}</GUID>
+		<Name>EL6070 1Ch. Licensing-Terminal</Name>
+		<Event>
+			<Id>4736</Id>
+			<Message>File {0} erased successfully</Message>
+		</Event>
+		<Event>
+			<Id>17037</Id>
+			<Message>Challenge is not Random</Message>
+		</Event>
+		<Event>
+			<Id>33409</Id>
+			<Message>Ownership failed: {0,X}</Message>
+		</Event>
+		<Event>
+			<Id>33410</Id>
+			<Message>Too many Keys founded</Message>
+		</Event>
+		<Event>
+			<Id>33411</Id>
+			<Message>Key Creation failed: {0,X}</Message>
+		</Event>
+		<Event>
+			<Id>33412</Id>
+			<Message>Key loading failed: {0,X}</Message>
+		</Event>
+		<Event>
+			<Id>33413</Id>
+			<Message>Reading Public Key failed: {0,X}</Message>
+		</Event>
+		<Event>
+			<Id>33414</Id>
+			<Message>Reading Public EK failed: {0,X}</Message>
+		</Event>
+		<Event>
+			<Id>33415</Id>
+			<Message>Reading PCR Value failed: {0,X}</Message>
+		</Event>
+		<Event>
+			<Id>33416</Id>
+			<Message>Reading Certificate EK failed: {0,X}</Message>
+		</Event>
+		<Event>
+			<Id>33417</Id>
+			<Message>Challenge could not be hashed: {0,X}</Message>
+		</Event>
+		<Event>
+			<Id>33418</Id>
+			<Message>Tickstamp Process failed: {0,X}</Message>
+		</Event>
+		<Event>
+			<Id>33419</Id>
+			<Message>PCR Process failed: {0,X}</Message>
+		</Event>
+		<Event>
+			<Id>33420</Id>
+			<Message>Quote Process failed: {0,X}</Message>
+		</Event>
+		<Event>
+			<Id>33535</Id>
+			<Message>No Boot Mode</Message>
+		</Event>
+		<Event>
+			<Id>34561</Id>
+			<Message>Operatingtime was manipulated</Message>
+		</Event>
+		<Property>
+			<Name>DisplayTxtId</Name>
+			<Value>true</Value>
+		</Property>
+	</Source>
+</TcEventSources>

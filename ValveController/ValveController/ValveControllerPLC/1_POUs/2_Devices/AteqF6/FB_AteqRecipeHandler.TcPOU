@@ -24,7 +24,7 @@ VAR_OUTPUT
 	eStatesAteqRecipeHandler : E_AteqRecipeHandlerSteps;
     nProgramNumber	: WORD;
     nValveMask		: DWORD;
-
+	
 END_VAR
 
 VAR
@@ -33,7 +33,7 @@ VAR
 	tRecipeHandlerTimeout 		: TON;
 	nTestStepIdx		: UINT;
     tValveStable : TON;
-
+	bRecipeComp		: BOOL;
 
 END_VAR
 ]]></Declaration>
@@ -49,6 +49,7 @@ END_VAR
 				bProgramSeqResetCmdToAteq := TRUE;
 				bAutoTestRecipeStart := FALSE;
 				eStatesAteqRecipeHandler := E_AteqRecipeHandlerSteps.RECIPE_TRIGGER_VALVES;
+				bRecipeComp := FALSE;
 			END_IF
 			
 			
@@ -72,8 +73,7 @@ END_VAR
 			ELSIF tRecipeHandlerTimeout.Q THEN
 					eStatesAteqRecipeHandler := E_AteqRecipeHandlerSteps.RECIPE_TIMEOUT;
             END_IF
-		
-			
+
 		E_AteqRecipeHandlerSteps.RECIPE_RUN_ATEQ:
     		nProgramNumber := anProgramNumberRecipe[nTestStepIdx];
     		bProgramSeqRunCmdToAteq := TRUE;
@@ -85,13 +85,13 @@ END_VAR
         		eStatesAteqRecipeHandler := E_AteqRecipeHandlerSteps.RECIPE_TIMEOUT;
     		END_IF
 
-			         	
 		E_AteqRecipeHandlerSteps.RECIPE_RESULT_STORED: //Recipe Handler Error
 		nValveMask := 0; // Reset Valves
 			IF bLastResultsStored THEN
 				bProgramSeqResetCmdToAteq := TRUE; // Reset ATEQ
 				 IF nTestStepIdx >= nActiveTestStepCount - 1 THEN
                 	eStatesAteqRecipeHandler := E_AteqRecipeHandlerSteps.RECIPE_IDLE;
+					bRecipeComp := TRUE;
             	ELSE
                 	nTestStepIdx := nTestStepIdx + 1;
                 	eStatesAteqRecipeHandler := E_AteqRecipeHandlerSteps.RECIPE_TRIGGER_VALVES;
@@ -145,6 +145,17 @@ END_VAR
           <ST><![CDATA[bProgramSeqRunCmdToAteq := pProgramSeqRunCmdToAteq;]]></ST>
         </Implementation>
       </Set>
+    </Property>
+    <Property Name="pRecipeComp" Id="{8b423c51-c908-0244-2e42-c8c8489f0b5d}">
+      <Declaration><![CDATA[PROPERTY pRecipeComp : BOOL]]></Declaration>
+      <Get Name="Get" Id="{b79a55fb-9d33-0cd9-2947-86ff61ca9f06}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[pRecipeComp := bRecipeComp;]]></ST>
+        </Implementation>
+      </Get>
     </Property>
   </POU>
 </TcPlcObject>

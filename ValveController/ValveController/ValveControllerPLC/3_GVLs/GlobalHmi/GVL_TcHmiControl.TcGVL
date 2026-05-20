@@ -2,6 +2,7 @@
 <TcPlcObject Version="1.1.0.1">
   <GVL Name="GVL_TcHmiControl" Id="{cd6eb97a-f3b5-020e-2085-6ba74ac78815}">
     <Declaration><![CDATA[VAR_GLOBAL
+	bGlobalReset		: BOOL;
 	bButtonManStart 	: BOOL;
 	bButtonAutoStart	: BOOL;
 	nInputMachineIdx	: UINT;

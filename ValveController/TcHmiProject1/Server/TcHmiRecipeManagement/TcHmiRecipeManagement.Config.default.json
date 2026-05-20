@@ -22,35 +22,48 @@
                 },
                 "Devices": {
                     "Ateq1": {
-                        "AteqProgram1": {
-                            "recipeTypeName": "AteqProgramRecipeType",
-                            "values": {
-                                "Enable": true,
-                                "Enable Timeout": false,
-                                "Program Index": 1,
-                                "Store Results": true,
-                                "TimeoutTime": "PT0.001S",
-                                "Wait for Prg Comp": false
-                            }
-                        },
-                        "AteqProgram2": {
-                            "recipeTypeName": "AteqProgramRecipeType",
-                            "values": {
-                                "Enable": true,
-                                "Enable Timeout": false,
-                                "Program Index": 2,
-                                "Store Results": true,
-                                "TimeoutTime": "PT0.001S",
-                                "Wait for Prg Comp": false
-                            }
-                        },
                         "ConfigAteq1": {
                             "recipeTypeName": "AteqDeviceRecipeType",
                             "values": {
-                                "Active Program Count": 2,
+                                "Active Program Count": 3,
                                 "Device Index": 1,
                                 "Enable": true,
                                 "Enable Auto Zero": true
+                            }
+                        },
+                        "Programs": {
+                            "AteqProgram1": {
+                                "recipeTypeName": "AteqProgramRecipeType",
+                                "values": {
+                                    "Enable": true,
+                                    "Enable Timeout": false,
+                                    "Program Index": 1,
+                                    "Store Results": true,
+                                    "TimeoutTime": "PT0.001S",
+                                    "Wait for Prg Comp": false
+                                }
+                            },
+                            "AteqProgram2": {
+                                "recipeTypeName": "AteqProgramRecipeType",
+                                "values": {
+                                    "Enable": true,
+                                    "Enable Timeout": false,
+                                    "Program Index": 2,
+                                    "Store Results": true,
+                                    "TimeoutTime": "PT0.001S",
+                                    "Wait for Prg Comp": false
+                                }
+                            },
+                            "AteqProgram3": {
+                                "recipeTypeName": "AteqProgramRecipeType",
+                                "values": {
+                                    "Enable": true,
+                                    "Enable Timeout": false,
+                                    "Program Index": 3,
+                                    "Store Results": true,
+                                    "TimeoutTime": "PT0.001S",
+                                    "Wait for Prg Comp": false
+                                }
                             }
                         }
                     },
@@ -58,8 +71,8 @@
                         "ValveBank1": {
                             "recipeTypeName": "ValveBankRecipeType",
                             "values": {
-                                "Active Valve Count": 1,
-                                "Available Valve Slots": 8,
+                                "Active Valve Count": 16,
+                                "Available Valve Slots": 16,
                                 "Enable": true,
                                 "ValveBank Index": 1
                             }
@@ -67,8 +80,8 @@
                         "ValveBank2": {
                             "recipeTypeName": "ValveBankRecipeType",
                             "values": {
-                                "Active Valve Count": 1,
-                                "Available Valve Slots": 8,
+                                "Active Valve Count": 16,
+                                "Available Valve Slots": 16,
                                 "Enable": true,
                                 "ValveBank Index": 2
                             }
@@ -79,7 +92,7 @@
                     "ConfigTestRecipe1": {
                         "recipeTypeName": "LeakTestRecipeType",
                         "values": {
-                            "Active Step Count": 8,
+                            "Active Step Count": 3,
                             "Apply Time Off Delay": false,
                             "Apply Time On Delay": false,
                             "Enable": true,
