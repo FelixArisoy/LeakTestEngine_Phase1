@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <GVL Name="GVL_Persistent" Id="{f1a407c0-f986-0661-278b-c3e4ce30bdcf}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL PERSISTENT
+	bLastRecipeSavedNotLoaded : BOOL;
+	aMachineConfigLastSavedStored : ARRAY[0..GVL_MachineConfig.nMaxMachineCount - 1] OF ST_RecipeTypeMachine;
+	aStationConfigLastSavedStored : ARRAY[0..GVL_MachineConfig.nMaxMachineCount - 1] OF ARRAY[0..GVL_StationConfig.nMaxStationCount  - 1] OF ST_RecipeTypeStation;
+	aMachineRecipeLastSavedStored : ARRAY[0..GVL_MachineConfig.nMaxMachineCount - 1] OF ST_MachineRecipe;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

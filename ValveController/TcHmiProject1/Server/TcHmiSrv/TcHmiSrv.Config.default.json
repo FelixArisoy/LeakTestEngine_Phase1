@@ -1710,11 +1710,31 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_TcHmiControl.bButtonLoadLastSavedRecipes": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmiControl::bButtonLoadLastSavedRecipes",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_TcHmiControl.bButtonManStart": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
             "DYNAMIC": true,
             "MAPPING": "PLC1::GVL_TcHmiControl::bButtonManStart",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_TcHmiControl.bButtonSaveRecipes": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_TcHmiControl::bButtonSaveRecipes",
             "SCHEMA": {
                 "$ref": "tchmi:general#/definitions/BOOL"
             },
@@ -5144,7 +5164,9 @@
                 "ADS.PLC1.GVL_TcHmi.stRecipeTypeValveBank.nAvailableValveSlots": 3,
                 "ADS.PLC1.GVL_TcHmi.stRecipeTypeValveBank.nIdx": 3,
                 "ADS.PLC1.GVL_TcHmiControl.bButtonAutoStart": 3,
+                "ADS.PLC1.GVL_TcHmiControl.bButtonLoadLastSavedRecipes": 3,
                 "ADS.PLC1.GVL_TcHmiControl.bButtonManStart": 3,
+                "ADS.PLC1.GVL_TcHmiControl.bButtonSaveRecipes": 3,
                 "ADS.PLC1.GVL_TcHmiControl.nInputLeakTestIdx": 3,
                 "ADS.PLC1.GVL_TcHmiControl.nInputMachineIdx": 3,
                 "ADS.PLC1.GVL_TcHmiControl.nInputStationIdx": 3,

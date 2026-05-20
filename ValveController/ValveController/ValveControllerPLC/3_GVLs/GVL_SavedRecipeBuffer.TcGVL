@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <GVL Name="GVL_SavedRecipeBuffer" Id="{ccccc17c-0574-0894-0305-2bc22ac1af9d}">
+    <Declaration><![CDATA[VAR_GLOBAL
+	aMachineConfig : ARRAY[0..GVL_MachineConfig.nMaxMachineCount - 1] OF ST_RecipeTypeMachine;
+	aStationConfig : ARRAY[0..GVL_MachineConfig.nMaxMachineCount - 1] OF ARRAY[0..GVL_StationConfig.nMaxStationCount  - 1] OF ST_RecipeTypeStation;
+	aMachineRecipe : ARRAY[0..GVL_MachineConfig.nMaxMachineCount - 1] OF ST_MachineRecipe;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

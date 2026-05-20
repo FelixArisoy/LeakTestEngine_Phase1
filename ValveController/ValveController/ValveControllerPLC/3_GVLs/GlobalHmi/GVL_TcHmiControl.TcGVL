@@ -8,6 +8,10 @@
 	nInputMachineIdx	: UINT;
 	nInputStationIdx	: UINT;
 	nInputLeakTestIdx	: UINT;
+	
+	bButtonReset		: BOOL;
+	bButtonSaveRecipes	: BOOL;
+	bButtonLoadLastSavedRecipes	: BOOL;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

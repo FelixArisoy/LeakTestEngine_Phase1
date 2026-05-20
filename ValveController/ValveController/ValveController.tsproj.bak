@@ -15,15 +15,6 @@
 			</ArrayInfo>
 		</DataType>
 		<DataType>
-			<Name GUID="{391652FB-7F01-987E-1D53-3B165841CFCE}" IecBaseType="true" AutoDeleteType="true">ARRAY [1..8] OF UINT</Name>
-			<BitSize>128</BitSize>
-			<BaseType GUID="{18071995-0000-0000-0000-000000000005}">UINT</BaseType>
-			<ArrayInfo>
-				<LBound>1</LBound>
-				<Elements>8</Elements>
-			</ArrayInfo>
-		</DataType>
-		<DataType>
 			<Name GUID="{18071995-0000-0000-0000-000000000041}" TcBaseType="true" HideSubItems="true" CName="AmsNetId">AMSNETID</Name>
 			<BitSize>48</BitSize>
 			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
@@ -40,6 +31,15 @@
 				<Parameter>[4]</Parameter>
 				<Parameter>[5]</Parameter>
 			</Format>
+		</DataType>
+		<DataType>
+			<Name GUID="{391652FB-7F01-987E-1D53-3B165841CFCE}" IecBaseType="true" AutoDeleteType="true">ARRAY [1..8] OF UINT</Name>
+			<BitSize>128</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000005}">UINT</BaseType>
+			<ArrayInfo>
+				<LBound>1</LBound>
+				<Elements>8</Elements>
+			</ArrayInfo>
 		</DataType>
 		<DataType>
 			<Name GUID="{18071995-0000-0000-0000-000300000040}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..63] OF BYTE</Name>
@@ -80,11 +80,66 @@
 		</System>
 		<Plc>
 			<Project GUID="{FF505B91-FACF-4A2B-B73E-9C5E3B10185D}" Name="ValveControllerPLC" PrjFilePath="ValveControllerPLC\ValveControllerPLC.plcproj" TmcFilePath="ValveControllerPLC\ValveControllerPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{0E1C4345-E8BA-236F-EB5E-80E9A3735C42}" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{237E2210-F741-2996-FBD2-F5E2C8E152D9}" TmcPath="ValveControllerPLC\ValveControllerPLC.tmc">
 					<Name>ValveControllerPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
 						<Name>UnitTestTask Outputs</Name>
+						<Var>
+							<Name>GVL_MapEL6070.Frm0Ctrl</Name>
+							<Comment><![CDATA[
+0x0001 = Link error		
+								
+0x0002 = I/O locked after link error (I/O reset required)										
+										
+0x0004 = Link error (redundancy adapter)										
+										
+0x0008 = Missing one frame (redundancy mode)										
+										
+0x0010 = Out of send resources (I/O reset required)										
+										
+0x0020 = Watchdog triggered										
+										
+0x0040 = Ethernet driver (miniport) not found										
+										
+0x0080 = I/O reset active										
+										
+0x0100 = At least one device in 'INIT' state										
+										
+0x0200 = At least one device in 'PRE-OP' state										
+										
+0x0400 = At least one device in 'SAFE-OP' state										
+										
+0x0800 = At least one device indicates an error state										
+										
+0x1000 = DC not in sync										
+]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.Frm0WcCtrl</Name>
+							<Comment><![CDATA[
+0x0001 = prevent 1. EtherCAT command FROM sending (request NOP)										
+0x0002 = prevent 2. EtherCAT command from sending (request NOP)																				
+0x0004 = prevent 3. EtherCAT command from sending (request NOP)																				
+...										
+										
+0x4000 = prevent 15. EtherCAT command from sending (request NOP)																				
+0x8000 = prevent complete frame from sending										
+]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.DevCtrl</Name>
+							<Comment><![CDATA[		
+0x0001 = copy data with wrong working counter OF 1. EtherCAT command								
+0x0002 = copy data with wrong working counter of 2. EtherCAT command																			
+0x0004 = copy data with wrong working counter of 3. EtherCAT command																				
+...																				
+0x4000 = copy data with wrong working counter of 15. EtherCAT command										
+]]></Comment>
+							<Type>UINT</Type>
+						</Var>
 						<Var>
 							<Name>GVL_MapValveBank.devCtrl</Name>
 							<Type GUID="{391652FB-7F01-987E-1D53-3B165841CFCE}">ARRAY [1..8] OF UINT</Type>
@@ -489,64 +544,63 @@
 							<Name>GVL_MapValveBank.aIoEx260[99].Ctrl</Name>
 							<Type>UINT</Type>
 						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.Frm0Ctrl</Name>
-							<Comment><![CDATA[
-0x0001 = Link error		
-								
-0x0002 = I/O locked after link error (I/O reset required)										
-										
-0x0004 = Link error (redundancy adapter)										
-										
-0x0008 = Missing one frame (redundancy mode)										
-										
-0x0010 = Out of send resources (I/O reset required)										
-										
-0x0020 = Watchdog triggered										
-										
-0x0040 = Ethernet driver (miniport) not found										
-										
-0x0080 = I/O reset active										
-										
-0x0100 = At least one device in 'INIT' state										
-										
-0x0200 = At least one device in 'PRE-OP' state										
-										
-0x0400 = At least one device in 'SAFE-OP' state										
-										
-0x0800 = At least one device indicates an error state										
-										
-0x1000 = DC not in sync										
-]]></Comment>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.Frm0WcCtrl</Name>
-							<Comment><![CDATA[
-0x0001 = prevent 1. EtherCAT command FROM sending (request NOP)										
-0x0002 = prevent 2. EtherCAT command from sending (request NOP)																				
-0x0004 = prevent 3. EtherCAT command from sending (request NOP)																				
-...										
-										
-0x4000 = prevent 15. EtherCAT command from sending (request NOP)																				
-0x8000 = prevent complete frame from sending										
-]]></Comment>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.DevCtrl</Name>
-							<Comment><![CDATA[		
-0x0001 = copy data with wrong working counter OF 1. EtherCAT command								
-0x0002 = copy data with wrong working counter of 2. EtherCAT command																			
-0x0004 = copy data with wrong working counter of 3. EtherCAT command																				
-...																				
-0x4000 = copy data with wrong working counter of 15. EtherCAT command										
-]]></Comment>
-							<Type>UINT</Type>
-						</Var>
 					</Vars>
 					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
 						<Name>UnitTestTask Inputs</Name>
+						<Var>
+							<Name>GVL_MapEL6070.Frm0State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.Frm0WcState</Name>
+							<Comment><![CDATA[			
+0x0001 = 1. EtherCAT command NOT sent (NOP requested)							
+0x0002 = 2. EtherCAT command not sent (NOP requested)																				
+0x0004 = 3. EtherCAT command not sent (NOP requested)																				
+...																				
+0x4000 = 15. EtherCAT command not sent (NOP requested)																				
+0x8000 = complete frame not sent										
+]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.Frm0InputToggle</Name>
+							<Comment><![CDATA[			
+0x0001 = wrong working counter of 1. EtherCAT command received								
+0x0002 = wrong working counter of 2. EtherCAT command received																	
+0x0004 = wrong working counter of 3. EtherCAT command received																				
+...																				
+0x4000 = wrong working counter of 15. EtherCAT command received																				
+0x8000 = complete frame missing										
+]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.SlaveCount</Name>
+							<Comment><![CDATA[ Actual count OF EtherCAT slaves received	]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.DevState</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.ChangeCount</Name>
+							<Comment><![CDATA[InfoData]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.DevId</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.AmsNetId</Name>
+							<Type GUID="{18071995-0000-0000-0000-000000000041}">AMSNETID</Type>
+						</Var>
+						<Var>
+							<Name>GVL_MapEL6070.CfgSlaveCount</Name>
+							<Type>UINT</Type>
+						</Var>
 						<Var>
 							<Name>GVL_MapValveBank.devState</Name>
 							<Type GUID="{391652FB-7F01-987E-1D53-3B165841CFCE}">ARRAY [1..8] OF UINT</Type>
@@ -1750,60 +1804,6 @@
 						<Var>
 							<Name>GVL_MapValveBank.aIoEx260[99].In1</Name>
 							<Type>SINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.Frm0State</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.Frm0WcState</Name>
-							<Comment><![CDATA[			
-0x0001 = 1. EtherCAT command NOT sent (NOP requested)							
-0x0002 = 2. EtherCAT command not sent (NOP requested)																				
-0x0004 = 3. EtherCAT command not sent (NOP requested)																				
-...																				
-0x4000 = 15. EtherCAT command not sent (NOP requested)																				
-0x8000 = complete frame not sent										
-]]></Comment>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.Frm0InputToggle</Name>
-							<Comment><![CDATA[			
-0x0001 = wrong working counter of 1. EtherCAT command received								
-0x0002 = wrong working counter of 2. EtherCAT command received																	
-0x0004 = wrong working counter of 3. EtherCAT command received																				
-...																				
-0x4000 = wrong working counter of 15. EtherCAT command received																				
-0x8000 = complete frame missing										
-]]></Comment>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.SlaveCount</Name>
-							<Comment><![CDATA[ Actual count OF EtherCAT slaves received	]]></Comment>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.DevState</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.ChangeCount</Name>
-							<Comment><![CDATA[InfoData]]></Comment>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.DevId</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.AmsNetId</Name>
-							<Type GUID="{18071995-0000-0000-0000-000000000041}">AMSNETID</Type>
-						</Var>
-						<Var>
-							<Name>GVL_MapEL6070.CfgSlaveCount</Name>
-							<Type>UINT</Type>
 						</Var>
 					</Vars>
 					<Vars VarGrpType="2" AreaNo="1">
@@ -4438,7 +4438,7 @@ SW Release Version: 3.4.19]]></Comment>
 							<Type>UINT</Type>
 						</Var>
 					</Vars>
-					<Profinet DeviceId="257" VendorId="286" FrameOffset="49152" Flags="16" IPAdd="c0a8020f" ProtocolType="3" BoxOnDeviceTyp="113" MaxPhysSlotNr="255" AvailableSlots="0..255" InstanceServerPort="61000" InstanceClientPort="60000" InstanceId="1" InstanceNumberOfARs="1" InstanceNumberOfAPIs="1" MinDeviceInterval="32" SavePnIoBoxValues="0100" MultipleWriteSupported="true" Phase="1" WatchdogFaktor="3" ReductionRatio="8" SendClockFaktor="32" MaxInputLen="1024" MaxOutputLen="1024" SendClockFactorData="200040008000" SendClockFactorRTC3="200040008000" RedRatio="0100020004000800100020004000800000010002" RedRatioRTC3="01000200040008001000" BoxTypeInfo="Firmware version V3.4.19 - V3.4.x. Supports FastStartup, Identification &amp; Maintenance 1-4, RT and IRT Communication." GSDMLPath="C:\Users\rt59t\Source\Repos\ValiantTMSControls\ValveController\ateqGSDML\GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml" ImagePath="C:\Users\rt59t\Source\Repos\ValiantTMSControls\ValveController\ateqGSDML\GSDML-011E-0101-COMXREPNS.bmp" MainFamily="I/O" ProductFamily="PNS" OrderNr="153x.10x" DefaultDNSName="comxrepns" VendorName="Hilscher Gesellschaft für Systemautomation mbH" FamDescription="ProfiNet IO-Device communication module." GraphicFile="GSDML-011E-0101-COMXREPNS" SWVersion="3.4.19" HWVersion="2" AltLanguage="7">
+					<Profinet DeviceId="257" VendorId="286" FrameOffset="49152" Flags="16" IPAdd="c0a8020f" ProtocolType="3" BoxOnDeviceTyp="113" MaxPhysSlotNr="255" AvailableSlots="0..255" InstanceServerPort="61000" InstanceClientPort="60000" InstanceId="1" InstanceNumberOfARs="1" InstanceNumberOfAPIs="1" MinDeviceInterval="32" SavePnIoBoxValues="0100" MultipleWriteSupported="true" Phase="1" WatchdogFaktor="3" ReductionRatio="4" SendClockFaktor="32" MaxInputLen="1024" MaxOutputLen="1024" SendClockFactorData="200040008000" SendClockFactorRTC3="200040008000" RedRatio="0100020004000800100020004000800000010002" RedRatioRTC3="01000200040008001000" BoxTypeInfo="Firmware version V3.4.19 - V3.4.x. Supports FastStartup, Identification &amp; Maintenance 1-4, RT and IRT Communication." GSDMLPath="C:\Users\rt59t\Source\Repos\ValiantTMSControls\ValveController\ateqGSDML\GSDML-V2.2-HILSCHER-COMX RE PNS-20110413.xml" ImagePath="C:\Users\rt59t\Source\Repos\ValiantTMSControls\ValveController\ateqGSDML\GSDML-011E-0101-COMXREPNS.bmp" MainFamily="I/O" ProductFamily="PNS" OrderNr="153x.10x" DefaultDNSName="comxrepns" VendorName="Hilscher Gesellschaft für Systemautomation mbH" FamDescription="ProfiNet IO-Device communication module." GraphicFile="GSDML-011E-0101-COMXREPNS" SWVersion="3.4.19" HWVersion="2" AltLanguage="7">
 						<UsedGsdmlModule ModuleIdentNumber="4353" ModuleName="DAP Module" InfoText="Firmware version V3.4.19 - V3.4.x. Supports FastStartup, Identification &amp; Maintenance 1-4, RT and IRT Communication." OrderNumber="153x.10x">
 							<Slot>0</Slot>
 						</UsedGsdmlModule>

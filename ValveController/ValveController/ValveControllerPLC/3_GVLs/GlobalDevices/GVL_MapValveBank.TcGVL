@@ -5,7 +5,6 @@
 	devState 	AT %I* 	: ARRAY[1..8] OF UINT;
 	devCtrl 	AT %Q* 	: ARRAY[1..8] OF UINT;
 	
-	nValveMaskRaw	: DWORD := 0;
 	aIoEx260 	: ARRAY [0..GVL_ValveBankConfig.nMaxDeviceCount -1] OF ST_EX260Io;
 //	aIoAteq		: ARRAY [0..GVL_ateqconfig.nMaxDeviceCount -1] OF ST_ateqrawio;  //TBD; consider moving ATEQ Io here from FB_AteqControl
 END_VAR]]></Declaration>

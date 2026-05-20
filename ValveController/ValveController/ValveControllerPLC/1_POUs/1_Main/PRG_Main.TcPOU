@@ -18,10 +18,14 @@ fbTcHmiMain	: FB_TcHmiControl;
 fbSortValveMasksInStation : ARRAY[0..GVL_StationConfig.nMaxStationCount - 1] OF FB_SortValveMasks;
 
 bAteqTestRecipeStartManCmd		: BOOL;
+nValveMaskRaw	: DWORD := 0;
+bLastSavedRecipesLoaded : BOOL := FALSE;
+fbWritePersistenData	: FB_WritePersistentData;
 // Mapped Recipes
 	aMachineConfig : ARRAY[0..GVL_MachineConfig.nMaxMachineCount - 1] OF ST_RecipeTypeMachine;
 	aStationConfig : ARRAY[0..GVL_MachineConfig.nMaxMachineCount - 1] OF ARRAY[0..GVL_StationConfig.nMaxStationCount  - 1] OF ST_RecipeTypeStation;
 	aMachineRecipe : ARRAY[0..GVL_MachineConfig.nMaxMachineCount - 1] OF ST_MachineRecipe;
+	
 //####### Map Io #######
     astAteqIo 			: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqMapIo;
 	astAteqRawIo   		: ARRAY[0..GVL_AteqConfig.nMaxDeviceCount - 1] OF ST_AteqRawIo;
@@ -66,7 +70,39 @@ mSystemTime();
 GVL_AteqConfig.eDeviceEndianSetTo := E_AteqEndianType.BigEndian; // Profinet, Move To the HMI in the Future
 
 // Call HMI-Main Control - Add new Fbs for new Clients - Name HMIs as needed
-fbTcHmiMain(aMachineConfig => aMachineConfig, aStationConfig => aStationConfig, aMachineRecipe => aMachineRecipe);
+IF NOT bLastSavedRecipesLoaded THEN
+	fbTcHmiMain(
+			aMachineConfig => aMachineConfig,
+			aStationConfig => aStationConfig,
+			aMachineRecipe => aMachineRecipe);
+END_IF
+
+/// Save/Load Recipes Logic Testing
+IF GVL_TcHmiControl.bButtonSaveRecipes THEN
+	bLastSavedRecipesLoaded := FALSE;
+	GVL_Persistent.aMachineConfigLastSavedStored 	:= aMachineConfig;
+	GVL_Persistent.aStationConfigLastSavedStored	:= aStationConfig;
+	GVL_Persistent.aMachineRecipeLastSavedStored	:= aMachineRecipe;
+	
+	fbWritePersistenData.START := TRUE;
+	fbWritePersistenData();
+	IF NOT fbWritePersistenData.BUSY AND NOT fbWritePersistenData.Err THEN
+		fbWritePersistenData.START 	:= FALSE;
+		GVL_Persistent.bLastRecipeSavedNotLoaded 	:= TRUE;
+		ELSIF fbWritePersistenData.Err THEN
+		GVL_Persistent.bLastRecipeSavedNotLoaded 	:= FALSE;
+	END_IF
+END_IF
+
+IF GVL_TcHmiControl.bButtonLoadLastSavedRecipes THEN
+	aMachineConfig	:= GVL_Persistent.aMachineConfigLastSavedStored;
+	aStationConfig	:= GVL_Persistent.aStationConfigLastSavedStored;
+	aMachineRecipe	:= GVL_Persistent.aMachineRecipeLastSavedStored;
+	GVL_Persistent.bLastRecipeSavedNotLoaded 	:= FALSE;
+	bLastSavedRecipesLoaded := TRUE;
+ELSIF NOT bLastSavedRecipesLoaded THEN
+	bLastSavedRecipesLoaded := FALSE;
+END_IF
 // Sort ValveMask in a 2D Array per Station for all tests ...[testIdx][stepIdx]
 
 // Process Calls
@@ -114,10 +150,10 @@ END_VAR
 		//	IF afbValveBank[nValveBankIdx].pDeviceEnabled THEN
 				mValveBankManual();
 				mValveBankRunMask();
-		GVL_MapValveBank.aIoEx260[nValveBankIdx].Out0 := DWORD_TO_BYTE(GVL_MapValveBank.nValveMaskRaw);
-		GVL_MapValveBank.aIoEx260[nValveBankIdx].Out1 := DWORD_TO_BYTE(SHR(GVL_MapValveBank.nValveMaskRaw, 8));
-		GVL_MapValveBank.aIoEx260[nValveBankIdx].Out2 := DWORD_TO_BYTE(SHR(GVL_MapValveBank.nValveMaskRaw, 16));
-		GVL_MapValveBank.aIoEx260[nValveBankIdx].Out3 := DWORD_TO_BYTE(SHR(GVL_MapValveBank.nValveMaskRaw, 24));
+		GVL_MapValveBank.aIoEx260[nValveBankIdx].Out0 := DWORD_TO_BYTE(nValveMaskRaw);
+		GVL_MapValveBank.aIoEx260[nValveBankIdx].Out1 := DWORD_TO_BYTE(SHR(nValveMaskRaw, 8));
+		GVL_MapValveBank.aIoEx260[nValveBankIdx].Out2 := DWORD_TO_BYTE(SHR(nValveMaskRaw, 16));
+		GVL_MapValveBank.aIoEx260[nValveBankIdx].Out3 := DWORD_TO_BYTE(SHR(nValveMaskRaw, 24));
 		//ELSE
 		//		afbValveBank[nValveBankIdx].pDeviceFaulted := TRUE;  /// add fault conditions later
 		//END_IF
@@ -139,7 +175,7 @@ END_VAR
 										nTestIdx				:= nTestIdx,
 										anValveMaskList			:= anValveMaskListToRecipeHandler,
 										nActiveTestStepCount	:= nActiveTestStepCount,
-										nValveMask				=> GVL_MapValveBank.nValveMaskRaw );
+										nValveMask				=> nValveMaskRaw );
 			END_FOR
 /// ATEQ HIGH LEVEL CMD BINDING
 	afbAteqControl[nAteqDeviceIdx].pPrgSeqRunRequest 	:= afbAteqRecipeHandler[nAteqDeviceIdx].pProgramSeqRunCmdToAteq;
@@ -158,6 +194,47 @@ END_VAR
 			
 		END_FOR
 	END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mSaveLoadLastRecipe" Id="{8a5b3c07-136a-0c3b-0209-cd9979b6615b}">
+      <Declaration><![CDATA[METHOD mSaveLoadLastRecipe
+VAR_INPUT
+	aMachineConfig : ARRAY[0..GVL_MachineConfig.nMaxMachineCount - 1] OF ST_RecipeTypeMachine;
+	aStationConfig : ARRAY[0..GVL_MachineConfig.nMaxMachineCount - 1] OF ARRAY[0..GVL_StationConfig.nMaxStationCount  - 1] OF ST_RecipeTypeStation;
+	aMachineRecipe : ARRAY[0..GVL_MachineConfig.nMaxMachineCount - 1] OF ST_MachineRecipe;
+END_VAR
+VAR_OUTPUT
+	aMachineConfigLastSavedBuffer : ARRAY[0..GVL_MachineConfig.nMaxMachineCount - 1] OF ST_RecipeTypeMachine;
+	aStationConfigLastSavedBuffer : ARRAY[0..GVL_MachineConfig.nMaxMachineCount - 1] OF ARRAY[0..GVL_StationConfig.nMaxStationCount  - 1] OF ST_RecipeTypeStation;
+	aMachineRecipeLastSavedBuffer : ARRAY[0..GVL_MachineConfig.nMaxMachineCount - 1] OF ST_MachineRecipe;
+END_VAR
+VAR
+	fbWritePersistenData	: FB_WritePersistentData;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF GVL_TcHmiControl.bButtonSaveRecipes THEN
+	bLastSavedRecipesLoaded := FALSE;
+	GVL_Persistent.aMachineConfigLastSavedStored 	:= aMachineConfig;
+	GVL_Persistent.aStationConfigLastSavedStored	:= aStationConfig;
+	GVL_Persistent.aMachineRecipeLastSavedStored	:= aMachineRecipe;
+	
+	fbWritePersistenData.START := TRUE;
+	fbWritePersistenData();
+	IF NOT fbWritePersistenData.BUSY AND NOT fbWritePersistenData.Err THEN
+		fbWritePersistenData.START 	:= FALSE;
+		GVL_Persistent.bLastRecipeSavedNotLoaded 	:= TRUE;
+		ELSIF fbWritePersistenData.Err THEN
+		GVL_Persistent.bLastRecipeSavedNotLoaded 	:= FALSE;
+	END_IF
+END_IF
+
+IF GVL_TcHmiControl.bButtonLoadLastSavedRecipes THEN
+	aMachineConfigLastSavedBuffer 	:= GVL_Persistent.aMachineConfigLastSavedStored;
+	aStationConfigLastSavedBuffer	:= GVL_Persistent.aStationConfigLastSavedStored;
+	aMachineRecipeLastSavedBuffer	:= GVL_Persistent.aMachineRecipeLastSavedStored;
+	GVL_Persistent.bLastRecipeSavedNotLoaded 	:= FALSE;
+END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="mScanAteqDevicesWithInit" Id="{33b24952-4571-466d-8bc0-6cb01ccb5101}">
