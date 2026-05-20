@@ -4,7 +4,7 @@
             "ConfigMachine1": {
                 "recipeTypeName": "MachineRecipeType",
                 "values": {
-                    "Active Station Count": 5,
+                    "Active Station Count": 1,
                     "Enable Machine": true,
                     "Machine Index": 1
                 }
