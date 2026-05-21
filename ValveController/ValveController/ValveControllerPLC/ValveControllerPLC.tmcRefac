@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Refactors>
+  <Renames>
+    <RenamedType>
+      <Type guid="693631fe-2c6a-42ad-bc5c-fa08e371087e">RUNINMAN</Type>
+      <From>RunInMan</From>
+      <To>mRunInMan</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="5728930a-b2de-46e0-a312-8c5d088bd1d0">I_MACHINE</Type>
+      <From>I_Machine</From>
+      <To>I_Production</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="3deb875c-1739-0828-2190-e802a1652414">FB_CELLCONTROLPLC</Type>
+      <From>FB_StationPLC</From>
+      <To>FB_HandshakeCellPlc</To>
+    </RenamedType>
+    <RenamedSymbol>
+      <Type guid="206004de-f59d-4a1f-95a1-250c92b46388">mFault</Type>
+      <From>bAnyFaultActive</From>
+      <To>bIsAnyFaultActive</To>
+    </RenamedSymbol>
+    <RenamedType>
+      <Type guid="9efa6cdd-89be-4bef-99ce-cb3f633a0c79">MFAULT_1</Type>
+      <From>mFault_1</From>
+      <To>mFault</To>
+    </RenamedType>
+  </Renames>
+</Refactors>
